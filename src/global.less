@@ -1,38 +1,40 @@
-@import url('./variable.less');
+@import './variable.less';
 //@import url('./editStyle.less'); //antd组件样式修改
-body{
+body {
   margin: 0;
 }
 
 .ant-pro-layout
-.ant-pro-base-menu.ant-menu:not(.ant-menu-horizontal)
-.ant-menu-item:hover,
+  .ant-pro-base-menu.ant-menu:not(.ant-menu-horizontal)
+  .ant-menu-item:hover,
 .ant-pro-layout
-.ant-pro-base-menu.ant-menu:not(.ant-menu-horizontal)
-.ant-menu-item-active,
+  .ant-pro-base-menu.ant-menu:not(.ant-menu-horizontal)
+  .ant-menu-item-active,
 .ant-pro-layout
-.ant-pro-base-menu.ant-menu:not(.ant-menu-horizontal)
-.ant-menu-submenu-title:hover {
+  .ant-pro-base-menu.ant-menu:not(.ant-menu-horizontal)
+  .ant-menu-submenu-title:hover {
   border-radius: 0;
   color: #fff;
 }
 
-.ant-tabs-nav{
-  background: #ffffff;
+.ant-tabs-nav {
+  background: #fff;
 }
 
-.ant-pro-sider-actions{
+.ant-pro-sider-actions {
   display: none !important;
 }
+
 .ant-layout-sider-children {
   padding-inline: 0 !important;
+
   &::after {
     content: '';
     display: block;
     width: 168px;
     height: 280px;
-    background: url(https://s.xinc818.com/files/webcil99b3pae1vs53p/bg_img.png)
-    no-repeat;
+    background: url('https://s.xinc818.com/files/webcil99b3pae1vs53p/bg_img.png')
+      no-repeat;
     background-size: cover;
     position: absolute;
     bottom: 0;
@@ -41,10 +43,11 @@ body{
     pointer-events: none;
   }
 }
-a{
-  color:#f5222d
-}
-a:hover{
-  color:#f5222d
+
+a {
+  color: #f5222d;
 }
 
+a:hover {
+  color: #f5222d;
+}
