@@ -13,18 +13,13 @@ export default defineConfig({
   routes: [
     {
       path: '/',
-      redirect: '/home',
+      redirect: '/goods/list',
     },
-    {
-      name: '首页',
-      path: '/home',
-      component: './Home',
-    },
-    {
-      name: '权限演示',
-      path: '/access',
-      component: './Access',
-    },
+    // {
+    //   name: '权限演示',
+    //   path: '/access',
+    //   component: './Access',
+    // },
     {
       name: '商品管理',
       path: '/goods',
@@ -56,21 +51,21 @@ export default defineConfig({
         {
           name: '报价编辑',
           path: '/quotation/edit',
-          hideInMenu:true,
+          hideInMenu: true,
           component: './quotation/edit',
         },
         {
           name: '报价编辑',
           path: '/quotation/editBoom',
-          hideInMenu:true,
+          hideInMenu: true,
           component: './quotation/editBoom',
         },
       ],
     },
     {
-      name:'订单管理',
-      path:'/order',
-      icon:'https://s.xinc818.com/files/webcila0pxx6pzc2vi7/外围投诉@2x.png',
+      name: '订单管理',
+      path: '/order',
+      icon: 'https://s.xinc818.com/files/webcila0pxx6pzc2vi7/外围投诉@2x.png',
       routes: [
         {
           name: '销售订单列表',
@@ -82,8 +77,19 @@ export default defineConfig({
           path: '/order/after-sales',
           component: './afterSales',
         },
-      ]
-    }
+        {
+          name: '采购订单列表',
+          path: '/order/purchase',
+          component: './purchase',
+        },
+        {
+          name: '采购订单详情',
+          hideInMenu: true,
+          path: '/order/purchase-detail',
+          component: './purchase/detail',
+        },
+      ],
+    },
   ],
   npmClient: 'yarn',
 });
