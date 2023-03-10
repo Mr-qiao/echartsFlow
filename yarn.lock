@@ -77,6 +77,17 @@
     classnames "^2.2.6"
     rc-util "^5.9.4"
 
+"@ant-design/icons@^5.0.1":
+  version "5.0.1"
+  resolved "https://registry.npmmirror.com/@ant-design/icons/-/icons-5.0.1.tgz#febb1fdc5776f58187b2c953ac9a4496069d045b"
+  integrity sha512-ZyF4ksXCcdtwA/1PLlnFLcF/q8/MhwxXhKHh4oCHDA4Ip+ZzAHoICtyp4wZWfiCVDP0yuz3HsjyvuldHFb3wjA==
+  dependencies:
+    "@ant-design/colors" "^7.0.0"
+    "@ant-design/icons-svg" "^4.2.1"
+    "@babel/runtime" "^7.11.2"
+    classnames "^2.2.6"
+    rc-util "^5.9.4"
+
 "@ant-design/pro-card@2.1.15":
   version "2.1.15"
   resolved "https://registry.yarnpkg.com/@ant-design/pro-card/-/pro-card-2.1.15.tgz#6894b724a1e4a59a66cb8a9e8c12f21425c4e549"

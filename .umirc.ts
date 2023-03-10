@@ -7,8 +7,9 @@ export default defineConfig({
   initialState: {},
   request: {},
   layout: {
-    title: '@umijs/max',
+    title: '设计师中台-工厂端',
   },
+  // theme: { '@primary-color': '#86909C' },
   routes: [
     {
       path: '/',
@@ -25,10 +26,64 @@ export default defineConfig({
       component: './Access',
     },
     {
-      name: ' CRUD 示例',
-      path: '/table',
-      component: './Table',
+      name: '商品管理',
+      path: '/goods',
+      icon: 'https://s.xinc818.com/files/webcila0pxx6pzc2vi7/外围投诉@2x.png',
+      routes: [
+        {
+          name: '供应商商品列表',
+          path: '/goods/list',
+          component: './goods',
+        },
+        {
+          name: '样衣列表',
+          path: '/goods/sample',
+          component: './sample',
+        },
+      ],
     },
+    {
+      name: '报价中心',
+      path: '/quotation',
+      icon: 'https://s.xinc818.com/files/webcila0pxx6pzc2vi7/外围投诉@2x.png',
+      routes: [
+        {
+          name: '报价管理',
+          path: '/quotation/list',
+          component: './quotation',
+          // hideChildrenInMenu:true,
+        },
+        {
+          name: '报价编辑',
+          path: '/quotation/edit',
+          hideInMenu:true,
+          component: './quotation/edit',
+        },
+        {
+          name: '报价编辑',
+          path: '/quotation/editBoom',
+          hideInMenu:true,
+          component: './quotation/editBoom',
+        },
+      ],
+    },
+    {
+      name:'订单管理',
+      path:'/order',
+      icon:'https://s.xinc818.com/files/webcila0pxx6pzc2vi7/外围投诉@2x.png',
+      routes: [
+        {
+          name: '销售订单列表',
+          path: '/order/sales',
+          component: './orderManagement',
+        },
+        {
+          name: '售后订单列表',
+          path: '/order/after-sales',
+          component: './afterSales',
+        },
+      ]
+    }
   ],
   npmClient: 'yarn',
 });

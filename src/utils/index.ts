@@ -1,0 +1,200 @@
+import Config from '@/config';
+import { getOssFileUrl } from '@/services/common';
+import { message, Modal } from 'antd';
+export function navigateToLogin() {
+  location.href = `${Config.loginUrl}?redirect=${encodeURIComponent(
+    document.URL,
+  )}`;
+}
+
+/**
+ * 函数在被调用fps秒才会被执行，如果中间被打断，则继续向后顺延fps秒
+ * @param {*} fn  方法
+ * @param {*} delay 延迟时间
+ * @returns
+ */
+export function debounce(fn, delay = 60) {
+  let timer = null;
+  return function (...args) {
+    if (delay > 0) {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        fn.apply(this, args);
+      }, delay);
+    } else {
+      fn.apply(this, args);
+    }
+  };
+}
+
+/**
+ * 事件被第一次触发后，立即执行，当过了delay后才能再次响应执行
+ * 节流
+ * @param {*} fn
+ * @param {*} delay
+ * @returns
+ */
+export function throttle(fn, delay = 60) {
+  let last = 0; // 上次触发时间
+  return (...args) => {
+    const now = Date.now();
+    if (now - last > delay) {
+      last = now;
+      fn.apply(this, args);
+    }
+  };
+}
+
+/**
+ * 以某个频率做某件事情，且第一次、最后一次调用必然会被触发
+ * @param {function} fn
+ * @param {number} [fps=60]
+ * @returns {function}
+ */
+export function frequency(fn, fps = 60) {
+  let time = 0;
+  let now = time;
+  let ST;
+  const newFn = (...args) => {
+    clearTimeout(ST);
+    now = Date.now();
+    const distance = now - time;
+
+    if (distance >= fps) {
+      time = now;
+      fn(...args);
+    } else {
+      ST = setTimeout(() => {
+        newFn(...args);
+      }, distance);
+    }
+  };
+  return newFn;
+}
+
+export function getSearchParams() {
+  let urlSearch = window.location.search;
+  if (!urlSearch) {
+    const hash = window.location.hash;
+    if (hash.indexOf('?') > -1) {
+      urlSearch = hash.slice(hash.indexOf('?'));
+    }
+  }
+  const urlSearchParams = new URLSearchParams(urlSearch);
+  // 把键值对列表转换为一个对象
+  const params = Object.fromEntries(urlSearchParams.entries());
+  return params;
+}
+
+// 随机字符串
+export function uuid(len = 8) {
+  const S = 'qwertyuioopasdfghjklzxcvbnmQWERTYUIOOPASDFGHJKLZXCVBNM0123456789';
+  const LEN = S.length - 1;
+  return ' '
+    .repeat(len)
+    .split('')
+    .map(() => S[Math.round(Math.random() * LEN)])
+    .join('');
+}
+
+//下载文件
+
+export function downloadFile(resourceId) {
+  if (resourceId.startsWith('https://') || resourceId.startsWith('http://')) {
+    window.location.href = resourceId;
+    return;
+  }
+  getOssFileUrl({
+    resourceId: resourceId,
+    accessTerm: 'FRONT',
+  }).then((res) => {
+    if (!res.entry) {
+      message.error('资源id失效');
+      return;
+    }
+    window.location.href = res.entry;
+  });
+}
+
+//枚举值转换
+export function convertEnum(obj = {}) {
+  const list = [];
+  for (let key in obj) {
+    list.push({
+      label: obj[key],
+      value: isNaN(Number(key)) ? key : Number(key),
+    });
+  }
+  return list;
+}
+
+//判断是否为空
+export const isEmpty = function (obj = {}) {
+  if (!obj || typeof obj !== 'object') return true;
+  let name;
+  for (name in obj) return false;
+  return true;
+};
+
+//数字值转万
+export const transNumberToShort = (value, decimal = 2) => {
+  const k = 10000;
+  const sizes = ['', '万', '亿', '万亿'];
+  let i = undefined;
+  let str = '';
+  if (value < k) {
+    str = value;
+  } else {
+    i = Math.floor(Math.log(value) / Math.log(k));
+    str = (value / Math.pow(k, i)).toFixed(decimal) + sizes[i];
+  }
+  return str;
+};
+
+/**
+ * 替换rss文件为下载链接
+ */
+export const downloadFileURL = (url: string) => {
+  if (url.includes('static')) {
+    return url.replace('static', 'static-download');
+  }
+  if (url.includes('private')) {
+    return url.replace('private', 'downloadfile');
+  }
+};
+
+//保留小数几位
+export const toFixed = (num: any, decimal: number) => {
+  if (num) {
+    let newNum = num.toString();
+    let index = newNum.indexOf('.');
+    if (index !== -1) {
+      newNum = newNum.substring(0, decimal + index + 1);
+    } else {
+      newNum = newNum.substring(0);
+    }
+    return parseFloat(newNum).toFixed(decimal);
+  }
+};
+
+export const pageHref = (() => {
+  const pages: any = {
+      daily: `https://daily.xinc818.net`,
+      development: `https://dev.xinc818.net`,
+      gray: `https://gray.xinc818.net`,
+      production: `https://h5.xinc818.com`,
+  };
+  return pages[Config.env];
+})();
+
+export const jumpExportCenter = () => {
+  Modal.confirm({
+      title: false,
+      content: '数据已生成，请至导出中心查看',
+      okText: '立即查看',
+      cancelText: '返回',
+      onOk() {
+          window.open(`${pageHref}/export/#/taskcenter/exportrecord`, '_blank');
+      },
+  })
+};
