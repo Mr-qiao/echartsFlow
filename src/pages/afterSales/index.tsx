@@ -236,15 +236,6 @@ function AfterSales() {
         );
       },
     },
-    {
-      title: '操作',
-      fixed: 'right',
-      width: 60,
-      search: false,
-      render: (_: any, recode: any) => {
-        return <a>发货</a>;
-      },
-    },
   ];
   const dcolumns: any = [
     {
