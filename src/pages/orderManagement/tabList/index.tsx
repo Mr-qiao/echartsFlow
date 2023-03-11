@@ -1,6 +1,17 @@
 import { DownOutlined } from '@ant-design/icons';
 import { ProTable } from '@ant-design/pro-components';
-import { Button, Col, DatePicker, Form, Image, Modal, Row, Select } from 'antd';
+import {
+  Button,
+  Col,
+  DatePicker,
+  Form,
+  Image,
+  Input,
+  Modal,
+  Row,
+  Select,
+  Table,
+} from 'antd';
 import GoodsTableCol from '@/components/goodsTableCol';
 import { useState } from 'react';
 import DraggerUpload from '@/components/DraggerUpload';
@@ -12,7 +23,44 @@ function TabList() {
   const [form] = Form.useForm();
   const [timeSelect, setTimeSelect] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
+  const [modalOpenDelivery, setModalOpenDelivery] = useState(false);
   const [modalOpenImport, setModalOpenImport] = useState(false);
+  const columnsDelivery: any = [
+    {
+      title: '商品信息',
+      dataIndex: 'spxx',
+      width: 400,
+      render: (_: any, recode: any) => {
+        return (
+          <GoodsTableCol
+            footerImg={false}
+            nameArr={[
+              {
+                title: '商品ID',
+                key: recode.itemId,
+              },
+              {
+                title: '款式名称',
+                key: recode.ksName,
+              },
+              {
+                title: 'SKU编码',
+                key: recode.skuCodes,
+              },
+              {
+                title: '规格',
+                key: recode.skuSpec,
+              },
+            ]}
+          />
+        );
+      },
+    },
+    {
+      title: '数量',
+      dataIndex: 'number',
+    },
+  ];
   const columns: any = [
     {
       title: '商品信息',
@@ -181,7 +229,15 @@ function TabList() {
       width: 60,
       search: false,
       render: (_: any, recode: any) => {
-        return <a>发货</a>;
+        return (
+          <a
+            onClick={() => {
+              setModalOpenDelivery(true);
+            }}
+          >
+            发货
+          </a>
+        );
       },
     },
   ];
@@ -294,6 +350,40 @@ function TabList() {
             rules={[{ required: true, message: '请选择文件' }]}
           >
             <DraggerUpload showFileName />
+          </Form.Item>
+        </Form>
+      </Modal>
+      <Modal
+        width={500}
+        open={modalOpenDelivery}
+        title={'发货'}
+        onOk={() => {
+          setModalOpenDelivery(false);
+        }}
+        onCancel={() => {
+          setModalOpenDelivery(false);
+        }}
+      >
+        <Table
+          size={'small'}
+          pagination={false}
+          columns={columnsDelivery}
+          dataSource={[{ number: 123 }]}
+        />
+        <Form form={form}>
+          <Form.Item
+            label={'快递公司'}
+            name="kdgs"
+            rules={[{ required: true, message: '请输入快递公司' }]}
+          >
+            <Input placeholder={'请输入快递公司'} />
+          </Form.Item>
+          <Form.Item
+            label={'快递单号'}
+            name="kddh"
+            rules={[{ required: true, message: '请输入快递单号' }]}
+          >
+            <Input placeholder={'请输入快递单号'} />
           </Form.Item>
         </Form>
       </Modal>

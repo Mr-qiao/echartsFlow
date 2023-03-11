@@ -4,7 +4,8 @@ import { message, Upload } from 'antd';
 import { FileExcelOutlined } from '@ant-design/icons';
 import { uuid } from '@/utils';
 import styles from './index.less';
-export default function Index(props) {
+
+export default function Index(props: any) {
   // 5M
   const {
     size = 200,
@@ -150,14 +151,7 @@ export default function Index(props) {
       setFileList(fileList);
       handleFileList(file, fileList);
     },
-    onDrop(e) {
-      console.log('Dropped files', e.dataTransfer.files);
-    },
-    onRemove: (file) => {},
   };
-
-  console.log('---props fileList--------', fileList);
-
   return (
     <Dragger className={styles.draggerUpload} {...uploadProps}>
       <p className="ant-upload-text">
