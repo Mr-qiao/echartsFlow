@@ -36,7 +36,7 @@ export async function getSignature(body, options) {
   });
 }
 
-export function getOssFileUrl(body: object, options) {
+export function getOssFileUrl(body: object) {
   return request('rss/public/resource/getResourceUrl', {
     method: 'POST',
     data: body,

@@ -13,15 +13,17 @@ export function navigateToLogin() {
  * @param {*} delay 延迟时间
  * @returns
  */
-export function debounce(fn, delay = 60) {
-  let timer = null;
-  return function (...args) {
+export function debounce(fn: any, delay = 60) {
+  let timer: any = null;
+  return (...args: any) => {
     if (delay > 0) {
       clearTimeout(timer);
       timer = setTimeout(() => {
+        // @ts-ignore
         fn.apply(this, args);
       }, delay);
     } else {
+      // @ts-ignore
       fn.apply(this, args);
     }
   };
@@ -34,12 +36,13 @@ export function debounce(fn, delay = 60) {
  * @param {*} delay
  * @returns
  */
-export function throttle(fn, delay = 60) {
+export function throttle(fn: any, delay = 60) {
   let last = 0; // 上次触发时间
-  return (...args) => {
+  return (...args: any) => {
     const now = Date.now();
     if (now - last > delay) {
       last = now;
+      // @ts-ignore
       fn.apply(this, args);
     }
   };
@@ -51,11 +54,11 @@ export function throttle(fn, delay = 60) {
  * @param {number} [fps=60]
  * @returns {function}
  */
-export function frequency(fn, fps = 60) {
+export function frequency(fn: any, fps = 60) {
   let time = 0;
   let now = time;
-  let ST;
-  const newFn = (...args) => {
+  let ST: any;
+  const newFn = (...args: any) => {
     clearTimeout(ST);
     now = Date.now();
     const distance = now - time;
@@ -116,26 +119,6 @@ export function downloadFile(resourceId) {
   });
 }
 
-//枚举值转换
-export function convertEnum(obj = {}) {
-  const list = [];
-  for (let key in obj) {
-    list.push({
-      label: obj[key],
-      value: isNaN(Number(key)) ? key : Number(key),
-    });
-  }
-  return list;
-}
-
-//判断是否为空
-export const isEmpty = function (obj = {}) {
-  if (!obj || typeof obj !== 'object') return true;
-  let name;
-  for (name in obj) return false;
-  return true;
-};
-
 //数字值转万
 export const transNumberToShort = (value, decimal = 2) => {
   const k = 10000;
@@ -179,22 +162,22 @@ export const toFixed = (num: any, decimal: number) => {
 
 export const pageHref = (() => {
   const pages: any = {
-      daily: `https://daily.xinc818.net`,
-      development: `https://dev.xinc818.net`,
-      gray: `https://gray.xinc818.net`,
-      production: `https://h5.xinc818.com`,
+    daily: `https://daily.xinc818.net`,
+    development: `https://dev.xinc818.net`,
+    gray: `https://gray.xinc818.net`,
+    production: `https://h5.xinc818.com`,
   };
   return pages[Config.env];
 })();
 
 export const jumpExportCenter = () => {
   Modal.confirm({
-      title: false,
-      content: '数据已生成，请至导出中心查看',
-      okText: '立即查看',
-      cancelText: '返回',
-      onOk() {
-          window.open(`${pageHref}/export/#/taskcenter/exportrecord`, '_blank');
-      },
-  })
+    title: false,
+    content: '数据已生成，请至导出中心查看',
+    okText: '立即查看',
+    cancelText: '返回',
+    onOk() {
+      window.open(`${pageHref}/export/#/taskcenter/exportrecord`, '_blank');
+    },
+  });
 };

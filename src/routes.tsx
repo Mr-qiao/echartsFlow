@@ -3,11 +3,23 @@ const routes = [
     path: '/',
     redirect: '/goods/list',
   },
-  // {
-  //   name: '权限演示',
-  //   path: '/access',
-  //   component: './Access',
-  // },
+  {
+    name: '登录',
+    path: '/login',
+    layout: false,
+    component: './login',
+  },
+  {
+    name: '注册',
+    path: '/register',
+    layout: false,
+    component: './register',
+  },
+  {
+    path: '/help/:id',
+    layout: false,
+    component: './register/help',
+  },
   {
     name: '商品管理',
     path: '/goods',
