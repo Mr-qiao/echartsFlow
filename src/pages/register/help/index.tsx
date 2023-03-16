@@ -13,7 +13,6 @@ export default (props: any) => {
     overflow: 'hidden',
     backgroundImage: `url(${bgUrl})`,
   };
-  console.log(params, 'params');
   const UserAgreement =
     'https://s.xinc818.com/assets/h5/prod/MTI=/index.html?a=1';
   const PrivacyAgreement =

@@ -187,7 +187,6 @@ function PurchaseDetail() {
         width={'80%'}
         onOk={() => {
           form.validateFields().then((value) => {
-            console.log('Value', value, dataSource);
             setModalOpen(false);
           });
         }}

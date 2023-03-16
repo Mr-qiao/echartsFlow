@@ -1,6 +1,7 @@
 import Config from '@/config';
 import { getOssFileUrl } from '@/services/common';
 import { message, Modal } from 'antd';
+
 export function navigateToLogin() {
   location.href = `${Config.loginUrl}?redirect=${encodeURIComponent(
     document.URL,
@@ -180,4 +181,14 @@ export const jumpExportCenter = () => {
       window.open(`${pageHref}/export/#/taskcenter/exportrecord`, '_blank');
     },
   });
+};
+
+export const filterPageName = (params: any) => {
+  const newParams = {
+    ...params,
+    pageNum: params.current,
+    pageSize: params.pageSize,
+  };
+  delete newParams.current;
+  return newParams;
 };

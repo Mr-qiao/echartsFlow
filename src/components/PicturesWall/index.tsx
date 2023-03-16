@@ -113,8 +113,6 @@ function PicturesWall(props: any) {
       triggerChange(_);
       onUpload?.(_);
     }
-
-    console.log(file);
   };
 
   useEffect(() => {

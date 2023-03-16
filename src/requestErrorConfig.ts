@@ -3,6 +3,7 @@ import type { RequestConfig } from '@umijs/max';
 import { message, notification } from 'antd';
 import { navigateToLogin } from '@/utils';
 import config from '@/config';
+
 const { ajaxBaseUrl } = config;
 
 // 与后端约定的响应数据格式
@@ -18,7 +19,7 @@ interface ResponseStructure {
   data?: any;
 }
 
-const codeMessage:any = {
+const codeMessage: any = {
   200: '服务器成功返回请求的数据。',
   201: '新建或修改数据成功。',
   202: '一个请求已经进入后台排队（异步任务）。',
@@ -46,7 +47,7 @@ export const errorConfig: RequestConfig = {
   timeout: 10000,
   withCredentials: true,
   headers: {
-    'app-code': 'SUPPLY',
+    'app-code': 'SCM',
   },
   // 错误处理： umi@3 的错误处理方案。
   errorConfig: {
@@ -90,10 +91,6 @@ export const errorConfig: RequestConfig = {
     (response) => {
       // 拦截响应数据，进行个性化处理
       const { data } = response as unknown as ResponseStructure;
-      if (!data.status) {
-        message.error(data.message);
-      }
-
       if (data.responseCode === '1000010001') {
         navigateToLogin();
       }

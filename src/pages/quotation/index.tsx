@@ -1,9 +1,12 @@
 import { ProTable } from '@ant-design/pro-components';
-import { Button } from 'antd';
+import { Button, DatePicker } from 'antd';
 import { useRef, useState } from 'react';
-import { TFunction } from '@sinclair/typebox';
 import GoodsTableCol from '@/components/goodsTableCol';
 import { history } from 'umi';
+import { queryList } from '@/pages/quotation/apis';
+import moment from 'moment';
+
+const { RangePicker } = DatePicker;
 
 function Quotation() {
   const [activeKey, setActiveKey] = useState('1');
@@ -17,17 +20,16 @@ function Quotation() {
       title: '商品信息',
       width: 400,
       render: (_: any, recode: any) => {
-        console.log(recode, 'recode');
         return (
           <GoodsTableCol
             nameArr={[
               {
                 title: '商品名称',
-                key: recode.name,
+                key: recode?.itemName,
               },
               {
                 title: '商品类目',
-                key: recode.category,
+                key: recode?.category,
               },
               {
                 title: '商品品牌',
@@ -35,11 +37,11 @@ function Quotation() {
               },
               {
                 title: '颜色',
-                key: recode.color,
+                key: recode?.color,
               },
               {
                 title: '尺码',
-                key: recode.size,
+                key: recode?.size,
               },
             ]}
           />
@@ -48,11 +50,11 @@ function Quotation() {
     },
     {
       title: '询价用途',
-      dataIndex: 'gys',
+      dataIndex: 'domainType',
     },
     {
       title: '报价类型',
-      dataIndex: 'gysbm',
+      dataIndex: 'answerType',
       valueEnum: {
         1: '成品报价',
         2: 'boom报价',
@@ -60,20 +62,36 @@ function Quotation() {
     },
     {
       title: '预计采购量',
-      dataIndex: 'yjcgl',
+      dataIndex: 'number',
     },
     {
-      title: '报价截止日期',
+      title: '创建时间',
       dataIndex: 'time',
-      valueType: 'dateTime',
+      hideInTable: true,
+      renderFormItem: (item: any, _: any, form: any) => {
+        return <RangePicker showTime />;
+      },
     },
     {
-      title: '报价状态',
-      dataIndex: 'status',
-      valueEnum: {
-        1: '未开始',
-        2: '待报价',
-        3: '已结束',
+      title: '创建时间',
+      dataIndex: 'startTime',
+      search: false,
+      width: 180,
+      render: (_: any, recode: any) => {
+        return (
+          <div>{moment(recode.startTime).format('YYYY-MM-DD HH:mm:ss')}</div>
+        );
+      },
+    },
+    {
+      title: '结束时间',
+      dataIndex: 'endTime',
+      search: false,
+      width: 180,
+      render: (_: any, recode: any) => {
+        return (
+          <div>{moment(recode.endTime).format('YYYY-MM-DD HH:mm:ss')}</div>
+        );
       },
     },
     {
@@ -90,7 +108,7 @@ function Quotation() {
                 history.push('/quotation/editBoom');
                 return;
               }
-              history.push('/quotation/edit');
+              history.push(`/quotation/edit/${recode.itemId}`);
             }}
           >
             填写报价
@@ -108,6 +126,7 @@ function Quotation() {
       rowKey={'index'}
       search={{
         labelWidth: 120,
+        defaultCollapsed: false,
       }}
       actionRef={actionRef}
       request={async (
@@ -117,95 +136,61 @@ function Quotation() {
         sort,
         filter,
       ) => {
-        console.log(activeKey, params, 'ac');
+        const arg0 = {
+          ...params,
+          startTime:
+            params.time?.length > 0
+              ? moment(params.time[0]).valueOf()
+              : undefined,
+          endTime:
+            params.time?.length > 0
+              ? moment(params.time[1]).valueOf()
+              : undefined,
+        };
+        const res = await queryList(arg0, {});
+        const data = res.data.list;
         return {
-          data: [
-            {
-              index: 1,
-              id: 2,
-              xpmc: '六味地黄丸',
-              splm: '药',
-              sppp: '六位',
-              ys: '黑色',
-              cm: 'xxl',
-            },
-            {
-              index: 2,
-              xpmc: '六味地黄丸',
-              splm: '药',
-              sppp: '六位',
-              ys: '黑色',
-              cm: 'xxl',
-            },
-            {
-              index: 3,
-              xpmc: '六味地黄丸',
-              splm: '药',
-              sppp: '六位',
-              ys: '黑色',
-              cm: 'xxl',
-            },
-            {
-              index: 4,
-              xpmc: '六味地黄丸',
-              splm: '药',
-              sppp: '六位',
-              ys: '黑色',
-              cm: 'xxl',
-            },
-          ],
+          data: data,
+          success: res.success,
+          // 不传会使用 data 的长度，如果是分页一定要传
+          total: res?.totalRecord,
         };
       }}
       defaultSize={'small'}
       form={{
         size: 'small',
       }}
-      toolbar={
-        {
-          menu: {
-            type: 'tab',
-            activeKey: activeKey,
-            items: [
-              {
-                key: '1',
-                label: <span>全部</span>,
-              },
-              {
-                key: '2',
-                label: <span>待报价</span>,
-              },
-              {
-                key: '3',
-                label: <span>已报价</span>,
-              },
-              {
-                key: '4',
-                label: <span>已采用</span>,
-              },
-              {
-                key: '5',
-                label: <span>未采用</span>,
-              },
-            ],
-            onChange: (key: string) => {
-              console.log(key, actionRef, 'key');
-              setActiveKey(key as string);
-              actionRef.current.reload();
-            },
-          },
-        } as any
-      }
-      headerTitle={
-        <Button
-          key="1"
-          type="primary"
-          onClick={() => {
-            alert('add');
-          }}
-        >
-          创建供应商款式信息
-        </Button>
-      }
+      // toolbar={
+      // 	{
+      // 		menu: {
+      // 			type: 'tab',
+      // 			activeKey: activeKey,
+      // 			items: [
+      // 				{
+      // 					key: '0',
+      // 					label: <span>全部</span>,
+      // 				},
+      // 				{
+      // 					key: '1',
+      // 					label: <span>待报价</span>,
+      // 				},
+      // 				{
+      // 					key: '2',
+      // 					label: <span>已报价</span>,
+      // 				},
+      // 				{
+      // 					key: '3',
+      // 					label: <span>已失效</span>,
+      // 				},
+      // 			],
+      // 			onChange: (key: string) => {
+      // 				console.log(key, actionRef, 'key');
+      // 				setActiveKey(key as string);
+      // 				actionRef.current.reload();
+      // 			},
+      // 		},
+      // 	} as any
+      // }
     ></ProTable>
   );
 }

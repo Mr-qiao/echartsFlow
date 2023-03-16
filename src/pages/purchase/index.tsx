@@ -3,19 +3,18 @@ import { Button, DatePicker, Modal } from 'antd';
 import { useRef, useState } from 'react';
 import BatchInput from '@/components/batchInput';
 import { history } from 'umi';
+import { queryList } from '@/pages/purchase/apis';
 
 const { RangePicker } = DatePicker;
 
 function Purchase() {
-  const [activeKey, setActiveKey] = useState('1');
   const actionRef = useRef() as any;
-  const [timeSelect, setTimeSelect] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
   const columns: any = [
     {
       title: '采购单号',
       hideInTable: true,
-      dataIndex: 'cgdh',
+      dataIndex: 'purNoList',
       renderFormItem: (item: any, _: any, form: any) => {
         return <BatchInput />;
       },
@@ -23,45 +22,46 @@ function Purchase() {
     {
       title: '包含商品',
       hideInTable: true,
+      dataIndex: 'skuIdList',
       renderFormItem: (item: any, _: any, form: any) => {
         return <a>点击搜索</a>;
       },
     },
     {
       title: '采购订单',
-      dataIndex: 'cgdd',
+      dataIndex: 'purNo',
       search: false,
     },
     {
       title: 'SKU数',
-      dataIndex: 'Sku',
+      dataIndex: 'skuNumber',
       search: false,
     },
     {
       title: '采购数量',
-      dataIndex: 'ksmc',
+      dataIndex: 'number',
       search: false,
     },
     {
       title: '采购金额',
-      dataIndex: 'itemId',
+      dataIndex: 'amount',
       search: false,
     },
     {
       title: '预计交付日期',
-      dataIndex: 'shdh',
+      dataIndex: 'expectedTime',
       renderFormItem: (item: any, _: any, form: any) => {
         return <RangePicker showTime />;
       },
     },
     {
       title: '状态',
-      dataIndex: 'type',
+      dataIndex: 'status',
       search: false,
     },
     {
       title: '采购员',
-      dataIndex: 'cgy',
+      dataIndex: 'buyer',
     },
     {
       title: '操作',
@@ -117,45 +117,17 @@ function Purchase() {
         defaultSize={'small'}
         actionRef={actionRef}
         scroll={{ x: 1000 }}
-        toolbar={
-          {
-            menu: {
-              type: 'tab',
-              activeKey: activeKey,
-              items: [
-                {
-                  key: '1',
-                  label: <span>待确认</span>,
-                },
-                {
-                  key: '2',
-                  label: <span>已确认</span>,
-                },
-                {
-                  key: '3',
-                  label: <span>已驳回</span>,
-                },
-                {
-                  key: '4',
-                  label: <span>全部</span>,
-                },
-              ],
-              onChange: (key: string) => {
-                console.log(key, actionRef, 'key');
-                setActiveKey(key as string);
-                actionRef.current.reload();
-              },
-            },
-          } as any
-        }
         request={async (params = {}, sort, filter) => {
-          console.log(params, 'params');
+          const arg0 = {
+            ...params,
+          };
+          const res: any = await queryList(arg0, {});
+          const data = res.entry.list;
           return {
-            data: [
-              { spxx: 1, key: 1 },
-              { spxx: 2, key: 2 },
-              { spxx: 3, key: 3 },
-            ],
+            data: data,
+            success: res.success,
+            // 不传会使用 data 的长度，如果是分页一定要传
+            total: res?.totalRecord,
           };
         }}
         search={{

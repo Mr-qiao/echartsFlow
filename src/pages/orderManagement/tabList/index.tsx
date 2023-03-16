@@ -1,4 +1,4 @@
-import { DownOutlined } from '@ant-design/icons';
+import { DownOutlined, UploadOutlined } from '@ant-design/icons';
 import { ProTable } from '@ant-design/pro-components';
 import {
   Button,
@@ -7,64 +7,40 @@ import {
   Form,
   Image,
   Input,
+  message,
   Modal,
   Row,
   Select,
   Table,
+  Upload,
 } from 'antd';
 import GoodsTableCol from '@/components/goodsTableCol';
-import { useState } from 'react';
-import DraggerUpload from '@/components/DraggerUpload';
+import { useRef, useState } from 'react';
+import {
+  deliverItem,
+  importList,
+  queryList,
+} from '@/pages/orderManagement/apis';
+import moment from 'moment';
+import BatchInput from '@/components/batchInput';
+import { exportList } from '@/pages/orderManagement/apis';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
-function TabList() {
+function TabList(props: any) {
+  const { tabKey } = props;
   const [form] = Form.useForm();
-  const [timeSelect, setTimeSelect] = useState(1);
+  const [timeSelect, setTimeSelect] = useState('1');
   const [modalOpen, setModalOpen] = useState(false);
   const [modalOpenDelivery, setModalOpenDelivery] = useState(false);
   const [modalOpenImport, setModalOpenImport] = useState(false);
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [queryIdList, setQueryIdList] = useState({}) as any;
+  const ref: any = useRef();
   const columnsDelivery: any = [
     {
       title: '商品信息',
-      dataIndex: 'spxx',
-      width: 400,
-      render: (_: any, recode: any) => {
-        return (
-          <GoodsTableCol
-            footerImg={false}
-            nameArr={[
-              {
-                title: '商品ID',
-                key: recode.itemId,
-              },
-              {
-                title: '款式名称',
-                key: recode.ksName,
-              },
-              {
-                title: 'SKU编码',
-                key: recode.skuCodes,
-              },
-              {
-                title: '规格',
-                key: recode.skuSpec,
-              },
-            ]}
-          />
-        );
-      },
-    },
-    {
-      title: '数量',
-      dataIndex: 'number',
-    },
-  ];
-  const columns: any = [
-    {
-      title: '商品信息',
-      dataIndex: 'spxx',
       search: false,
       width: 300,
       render: (_: any, recode: any) => {
@@ -96,16 +72,69 @@ function TabList() {
     {
       title: '数量',
       dataIndex: 'number',
+      width: 80,
+      search: false,
+    },
+  ];
+  const columns: any = [
+    {
+      title: '商品信息',
+      search: false,
+      width: 300,
+      render: (_: any, recode: any) => {
+        return (
+          <GoodsTableCol
+            footerImg={false}
+            nameArr={[
+              {
+                title: '商品ID',
+                key: recode.itemId,
+              },
+              {
+                title: '款式名称',
+                key: recode.ksName,
+              },
+              {
+                title: 'SKU编码',
+                key: recode.skuCodes,
+              },
+              {
+                title: '规格',
+                key: recode.skuSpec,
+              },
+            ]}
+          />
+        );
+      },
+    },
+    {
+      title: '数量',
+      dataIndex: 'number',
+      width: 80,
       search: false,
     },
     {
       title: '订单编号',
+      width: 180,
       dataIndex: 'companyCode',
+      search: false,
+    },
+    {
+      title: '订单编号',
+      width: 180,
+      hideInTable: true,
+      dataIndex: 'orderIds',
+      renderFormItem: (item: any, _: any, form: any) => {
+        return <BatchInput />;
+      },
     },
     {
       title: 'Sku编码',
-      dataIndex: 'skuCode',
+      dataIndex: 'skuCodes',
       hideInTable: true,
+      renderFormItem: (item: any, _: any, form: any) => {
+        return <BatchInput />;
+      },
     },
     {
       title: '款式名称',
@@ -115,10 +144,13 @@ function TabList() {
     {
       title: '订单状态',
       dataIndex: 'status',
+      search: tabKey === '3' ? true : false,
       valueEnum: {
-        0: '待发货',
-        1: '已发货',
-        2: '订单关闭',
+        1: '待发货',
+        2: '已发货',
+        3: '已收货',
+        4: '交易完成',
+        5: '订单关闭',
       },
       hideInTable: true,
     },
@@ -139,7 +171,11 @@ function TabList() {
     {
       title: '创建时间',
       search: false,
+      width: 180,
       dataIndex: 'gmtCreate',
+      render: (i: any) => {
+        return moment(i).format('YYYY-MM-DD HH:mm:ss');
+      },
     },
     {
       title: (
@@ -200,6 +236,7 @@ function TabList() {
     {
       title: '发货信息',
       dataIndex: 'fhxx',
+      width: 180,
       search: false,
       render: (_: any, recode: any) => {
         return (
@@ -216,7 +253,7 @@ function TabList() {
               },
               {
                 title: '时间',
-                key: recode.sendTime,
+                key: moment(recode.sendTime).format('YYYY-MM-DD HH:mm:ss'),
               },
             ]}
           />
@@ -232,6 +269,7 @@ function TabList() {
         return (
           <a
             onClick={() => {
+              setQueryIdList(recode);
               setModalOpenDelivery(true);
             }}
           >
@@ -241,6 +279,7 @@ function TabList() {
       },
     },
   ];
+  // 导入列表
   const dcolumns: any = [
     {
       title: '导入文件名称',
@@ -270,16 +309,82 @@ function TabList() {
       },
     },
   ];
+  const exportListClick = () => {
+    ref?.current?.validateFields().then((res: any) => {
+      const sTime: any = timeSelect === '1' ? 'beginCreateTime' : 'startTime';
+      const eTime: any = timeSelect === '1' ? 'endCreateTime' : 'endTime';
+      let arg0: any = {
+        status: tabKey === '3' ? undefined : tabKey,
+        ids: selectedRowKeys,
+        ...res,
+      };
+      arg0[sTime] =
+        res.sendTime?.length > 0
+          ? moment(res.sendTime[0]).valueOf()
+          : undefined;
+      arg0[eTime] =
+        res.sendTime?.length > 0
+          ? moment(res.sendTime[1]).valueOf()
+          : undefined;
+      exportList(arg0, { responseType: 'blob', getResponse: true }).then(
+        (res: any) => {
+          let blob = new Blob([res.data]);
+          let downloadElement = document.createElement('a');
+          let href = window.URL.createObjectURL(blob); //创建下载的链接
+          downloadElement.href = href;
+          downloadElement.download =
+            decodeURI(
+              res.headers['content-disposition'].split('filename=')[1],
+            ) || ''; //下载后文件名
+          document.body.appendChild(downloadElement);
+          downloadElement.click(); //点击下载
+          document.body.removeChild(downloadElement); //下载完成移除元素
+          window.URL.revokeObjectURL(href); //释放掉blob对象
+        },
+      );
+    });
+  };
+  const onSelectChange = (newSelectedRowKeys: any) => {
+    setSelectedRowKeys(newSelectedRowKeys);
+  };
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: onSelectChange,
+  };
+  const beforeUpload = async (file: any): Promise<any> => {
+    return false;
+  };
   return (
     <div>
       <ProTable
         columns={columns}
+        formRef={ref}
         defaultSize={'small'}
-        scroll={{ x: 1000 }}
+        scroll={{ x: 1200 }}
+        rowKey={'id'}
         request={async (params = {}, sort, filter) => {
-          console.log(params, 'params');
+          const sTime: any =
+            timeSelect === '1' ? 'beginCreateTime' : 'startTime';
+          const eTime: any = timeSelect === '1' ? 'endCreateTime' : 'endTime';
+          let arg0: any = {
+            status: tabKey === '3' ? undefined : tabKey,
+            ...params,
+          };
+          arg0[sTime] =
+            params.sendTime?.length > 0
+              ? moment(params.sendTime[0]).valueOf()
+              : undefined;
+          arg0[eTime] =
+            params.sendTime?.length > 0
+              ? moment(params.sendTime[1]).valueOf()
+              : undefined;
+          const res: any = await queryList(arg0, {});
+          const data = res?.entry?.entry.list;
           return {
-            data: [{ spxx: 1 }, { spxx: 2 }, { spxx: 3 }],
+            data: data,
+            success: res.success,
+            // 不传会使用 data 的长度，如果是分页一定要传
+            total: res?.totalRecord,
           };
         }}
         search={{
@@ -289,6 +394,7 @@ function TabList() {
           size: 'small',
         }}
         options={false}
+        rowSelection={{ ...rowSelection }}
         toolBarRender={() => [
           <Button
             key="show"
@@ -306,7 +412,7 @@ function TabList() {
           >
             导入记录
           </Button>,
-          <Button type="primary" key="primary">
+          <Button type="primary" key="primary" onClick={exportListClick}>
             导出
           </Button>,
         ]}
@@ -335,7 +441,20 @@ function TabList() {
         open={modalOpenImport}
         title={'导入发货'}
         onOk={() => {
-          setModalOpenImport(false);
+          form.validateFields().then((values: any) => {
+            const arg0 = {
+              orderFile: values.file.file,
+            };
+            // @ts-ignore
+            importList(arg0).then((res) => {
+              if (res.entry.success) {
+                message.success('上传成功');
+                setModalOpenImport(false);
+              } else {
+                message.error('上传失败，请检查文件');
+              }
+            });
+          });
         }}
         onCancel={() => {
           setModalOpenImport(false);
@@ -346,10 +465,13 @@ function TabList() {
         </div>
         <Form form={form}>
           <Form.Item
-            name="resourceId"
+            name="file"
+            help={'请上传文件'}
             rules={[{ required: true, message: '请选择文件' }]}
           >
-            <DraggerUpload showFileName />
+            <Upload beforeUpload={beforeUpload} maxCount={1}>
+              <Button icon={<UploadOutlined />}>上传文件</Button>
+            </Upload>
           </Form.Item>
         </Form>
       </Modal>
@@ -358,7 +480,21 @@ function TabList() {
         open={modalOpenDelivery}
         title={'发货'}
         onOk={() => {
-          setModalOpenDelivery(false);
+          form.validateFields().then((values: any) => {
+            const arg0 = {
+              ...values,
+              id: queryIdList?.id,
+            };
+            // @ts-ignore
+            deliverItem(arg0).then((res: any) => {
+              if (res.entry.success) {
+                message.success('发货成功');
+                setModalOpenDelivery(false);
+              } else {
+                message.error('发货失败，请稍后再试');
+              }
+            });
+          });
         }}
         onCancel={() => {
           setModalOpenDelivery(false);
@@ -368,19 +504,19 @@ function TabList() {
           size={'small'}
           pagination={false}
           columns={columnsDelivery}
-          dataSource={[{ number: 123 }]}
+          dataSource={[queryIdList]}
         />
         <Form form={form}>
           <Form.Item
             label={'快递公司'}
-            name="kdgs"
+            name="companyName"
             rules={[{ required: true, message: '请输入快递公司' }]}
           >
             <Input placeholder={'请输入快递公司'} />
           </Form.Item>
           <Form.Item
             label={'快递单号'}
-            name="kddh"
+            name="companyCode"
             rules={[{ required: true, message: '请输入快递单号' }]}
           >
             <Input placeholder={'请输入快递单号'} />

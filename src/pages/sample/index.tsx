@@ -1,9 +1,8 @@
 import { ProTable } from '@ant-design/pro-components';
 import { Button, Image, Space } from 'antd';
 import { useRef, useState } from 'react';
-import { TFunction } from '@sinclair/typebox';
-import GoodsTableCol from '@/components/goodsTableCol';
-import { history } from 'umi';
+import { queryList } from '@/pages/sample/apis';
+import moment from 'moment';
 
 function Sample() {
   const [activeKey, setActiveKey] = useState('1');
@@ -15,33 +14,24 @@ function Sample() {
       search: false,
       width: 180,
       render: (_: any, recode: any) => {
-        console.log(recode, 'recode');
-        return (
-          <Image
-            width={60}
-            height={60}
-            src={
-              'https://img1.baidu.com/it/u=664069914,3928453659&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500'
-            }
-          />
-        );
+        return <Image width={60} height={60} src={recode.refImages[0]} />;
       },
     },
     {
       title: '样衣名称',
-      dataIndex: 'name',
+      dataIndex: 'refTitle',
     },
     {
       title: '样衣编码',
-      dataIndex: 'code',
+      dataIndex: 'refSysCode',
     },
     {
       title: '需求单编码',
-      dataIndex: 'demandCode',
+      dataIndex: 'sysCode',
     },
     {
       title: '品类',
-      dataIndex: 'categoryName',
+      dataIndex: 'refCategoryName',
     },
     // {
     // 	title: '品牌',
@@ -50,17 +40,13 @@ function Sample() {
     // },
     {
       title: '商家款式编码',
-      dataIndex: 'supplierStyleCode',
-    },
-    {
-      title: '规格',
-      search: false,
-      dataIndex: 'specification',
+      dataIndex: 'refSysCode',
     },
     {
       title: '需求时间',
       search: false,
-      dataIndex: 'createTime',
+      dataIndex: 'gmtCreate',
+      render: (i: any) => moment(i).format('YYYY-MM-DD HH:mm:ss'),
     },
     {
       title: '是否现货',
@@ -124,186 +110,17 @@ function Sample() {
         labelWidth: 120,
       }}
       actionRef={actionRef}
-      request={async (
-        // 第一个参数 params 查询表单和 params 参数的结合
-        // 第一个参数中一定会有 pageSize 和  current ，这两个参数是 antd 的规范
-        params,
-        sort,
-        filter,
-      ) => {
-        console.log(activeKey, params, 'ac');
+      request={async (params, sort, filter) => {
+        const arg0 = {
+          ...params,
+        };
+        const res: any = await queryList(arg0, {});
+        const data = res.entry.data;
         return {
-          data: [
-            {
-              index: 1,
-              id: 2,
-              xpmc: '六味地黄丸',
-              splm: '药',
-              sppp: '六位',
-              ys: '黑色',
-              cm: 'xxl',
-            },
-            {
-              index: 2,
-              xpmc: '六味地黄丸',
-              splm: '药',
-              sppp: '六位',
-              ys: '黑色',
-              cm: 'xxl',
-            },
-            {
-              index: 3,
-              xpmc: '六味地黄丸',
-              splm: '药',
-              sppp: '六位',
-              ys: '黑色',
-              cm: 'xxl',
-            },
-            {
-              index: 4,
-              xpmc: '六味地黄丸',
-              splm: '药',
-              sppp: '六位',
-              ys: '黑色',
-              cm: 'xxl',
-            },
-            {
-              index: 4,
-              xpmc: '六味地黄丸',
-              splm: '药',
-              sppp: '六位',
-              ys: '黑色',
-              cm: 'xxl',
-            },
-            {
-              index: 4,
-              xpmc: '六味地黄丸',
-              splm: '药',
-              sppp: '六位',
-              ys: '黑色',
-              cm: 'xxl',
-            },
-            {
-              index: 4,
-              xpmc: '六味地黄丸',
-              splm: '药',
-              sppp: '六位',
-              ys: '黑色',
-              cm: 'xxl',
-            },
-            {
-              index: 4,
-              xpmc: '六味地黄丸',
-              splm: '药',
-              sppp: '六位',
-              ys: '黑色',
-              cm: 'xxl',
-            },
-            {
-              index: 4,
-              xpmc: '六味地黄丸',
-              splm: '药',
-              sppp: '六位',
-              ys: '黑色',
-              cm: 'xxl',
-            },
-            {
-              index: 4,
-              xpmc: '六味地黄丸',
-              splm: '药',
-              sppp: '六位',
-              ys: '黑色',
-              cm: 'xxl',
-            },
-            {
-              index: 4,
-              xpmc: '六味地黄丸',
-              splm: '药',
-              sppp: '六位',
-              ys: '黑色',
-              cm: 'xxl',
-            },
-            {
-              index: 4,
-              xpmc: '六味地黄丸',
-              splm: '药',
-              sppp: '六位',
-              ys: '黑色',
-              cm: 'xxl',
-            },
-            {
-              index: 4,
-              xpmc: '六味地黄丸',
-              splm: '药',
-              sppp: '六位',
-              ys: '黑色',
-              cm: 'xxl',
-            },
-            {
-              index: 4,
-              xpmc: '六味地黄丸',
-              splm: '药',
-              sppp: '六位',
-              ys: '黑色',
-              cm: 'xxl',
-            },
-            {
-              index: 4,
-              xpmc: '六味地黄丸',
-              splm: '药',
-              sppp: '六位',
-              ys: '黑色',
-              cm: 'xxl',
-            },
-            {
-              index: 4,
-              xpmc: '六味地黄丸',
-              splm: '药',
-              sppp: '六位',
-              ys: '黑色',
-              cm: 'xxl',
-            },
-            {
-              index: 4,
-              xpmc: '六味地黄丸',
-              splm: '药',
-              sppp: '六位',
-              ys: '黑色',
-              cm: 'xxl',
-            },
-            {
-              index: 4,
-              xpmc: '六味地黄丸',
-              splm: '药',
-              sppp: '六位',
-              ys: '黑色',
-              cm: 'xxl',
-            },
-            {
-              index: 4,
-              xpmc: '六味地黄丸',
-              splm: '药',
-              sppp: '六位',
-              ys: '黑色',
-              cm: 'xxl',
-            },
-            {
-              index: 4,
-              xpmc: '六味地黄丸',
-              splm: '药',
-              sppp: '六位',
-              ys: '黑色',
-              cm: 'xxl',
-            },
-            {
-              index: 4,
-              xpmc: '六味地黄丸',
-              splm: '药',
-              sppp: '六位',
-              ys: '黑色',
-              cm: 'xxl',
-            },
-          ],
+          data: data,
+          success: res.success,
+          // 不传会使用 data 的长度，如果是分页一定要传
+          total: res?.totalRecord,
         };
       }}
       defaultSize={'small'}
@@ -334,7 +151,6 @@ function Sample() {
               },
             ],
             onChange: (key: string) => {
-              console.log(key, actionRef, 'key');
               setActiveKey(key as string);
               actionRef.current.reload();
             },

@@ -1,7 +1,7 @@
 const routes = [
   {
     path: '/',
-    redirect: '/goods/list',
+    redirect: '/login',
   },
   {
     name: '登录',
@@ -14,6 +14,12 @@ const routes = [
     path: '/register',
     layout: false,
     component: './register',
+  },
+  {
+    name: '修改密码',
+    path: '/reset-password',
+    layout: false,
+    component: './register/resetPassword',
   },
   {
     path: '/help/:id',
@@ -50,7 +56,7 @@ const routes = [
       },
       {
         name: '报价编辑',
-        path: '/quotation/edit',
+        path: '/quotation/edit/:id',
         hideInMenu: true,
         component: './quotation/edit',
       },

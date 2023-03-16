@@ -12,4 +12,11 @@ export default defineConfig({
   // theme: { '@primary-color': '#86909C' },
   routes,
   npmClient: 'yarn',
+  // proxy: {
+  //   '/api': {
+  //     'target': 'http://192.168.10.106:8080',
+  //     'changeOrigin': true,
+  //     'pathRewrite': { '^/api' : '' },
+  //   }
+  // }
 });

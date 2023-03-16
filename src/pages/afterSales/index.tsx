@@ -1,8 +1,10 @@
 import { ProTable } from '@ant-design/pro-components';
 import { Button, Col, DatePicker, Form, Image, Modal, Row, Select } from 'antd';
 import GoodsTableCol from '@/components/goodsTableCol';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import BatchInput from '@/components/batchInput';
+import { exprotList, queryList } from '@/pages/afterSales/apis';
+import moment from 'moment/moment';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -10,10 +12,12 @@ const { RangePicker } = DatePicker;
 function AfterSales() {
   const [timeSelect, setTimeSelect] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const ref: any = useRef();
   const columns: any = [
     {
       title: '订单编号',
-      dataIndex: 'bh',
+      dataIndex: 'orderIds',
       hideInTable: true,
       renderFormItem: (item: any, _: any, form: any) => {
         return <BatchInput />;
@@ -21,7 +25,7 @@ function AfterSales() {
     },
     {
       title: 'SKU编码',
-      dataIndex: 'Sku',
+      dataIndex: 'skuCodes',
       hideInTable: true,
       renderFormItem: (item: any, _: any, form: any) => {
         return <BatchInput />;
@@ -29,12 +33,12 @@ function AfterSales() {
     },
     {
       title: '款式名称',
-      dataIndex: 'ksmc',
+      dataIndex: 'ksName',
       hideInTable: true,
     },
     {
       title: '商品ID',
-      dataIndex: 'itemId',
+      dataIndex: 'itemIds',
       hideInTable: true,
       renderFormItem: (item: any, _: any, form: any) => {
         return <BatchInput />;
@@ -42,7 +46,7 @@ function AfterSales() {
     },
     {
       title: '售后单号',
-      dataIndex: 'shdh',
+      dataIndex: 'refundId',
       hideInTable: true,
       renderFormItem: (item: any, _: any, form: any) => {
         return <BatchInput />;
@@ -50,7 +54,6 @@ function AfterSales() {
     },
     {
       title: '商品信息',
-      dataIndex: 'spxx',
       search: false,
       width: 300,
       render: (_: any, recode: any) => {
@@ -60,19 +63,19 @@ function AfterSales() {
             nameArr={[
               {
                 title: '商品ID',
-                key: '六位地黄丸',
+                key: recode?.itemId4OD,
               },
               {
                 title: '款式名称',
-                key: '药',
+                key: recode?.styleName,
               },
               {
                 title: 'SKU编码',
-                key: '六位',
+                key: recode?.skuCode4RE,
               },
               {
                 title: '规格',
-                key: '黑色',
+                key: recode?.skuSpec4OD,
               },
             ]}
           />
@@ -100,7 +103,7 @@ function AfterSales() {
           </Option>
         </Select>
       ),
-      dataIndex: 'rq',
+      dataIndex: 'time',
       renderFormItem: () => {
         return <RangePicker showTime />;
       },
@@ -111,7 +114,7 @@ function AfterSales() {
     },
     {
       title: '售后类型',
-      dataIndex: 'shlx',
+      dataIndex: 'refundType',
       hideInTable: true,
       valueEnum: {
         1: '仅退款',
@@ -121,7 +124,6 @@ function AfterSales() {
     },
     {
       title: '订单信息',
-      dataIndex: 'sl',
       search: false,
       render: (_: any, recode: any) => {
         return (
@@ -130,19 +132,19 @@ function AfterSales() {
             nameArr={[
               {
                 title: '单号',
-                key: '六位地黄丸',
+                key: recode.orderId4OD,
               },
               {
                 title: '数量',
-                key: '药',
+                key: recode.number4OD,
               },
               {
                 title: '金额',
-                key: '六位',
+                key: recode.orderPrice4OD,
               },
               {
                 title: '时间',
-                key: '黑色',
+                key: moment(recode.orderTime).format('YYYY-MM-DD HH:mm:ss'),
               },
             ]}
           />
@@ -160,23 +162,23 @@ function AfterSales() {
             nameArr={[
               {
                 title: '单号',
-                key: '六位地黄丸',
+                key: recode.refundId,
               },
               {
                 title: '数量',
-                key: '药',
+                key: recode.number4RE,
               },
               {
                 title: '金额',
-                key: '六位',
+                key: recode.refundMoney4RE,
               },
               {
                 title: '时间',
-                key: '黑色',
+                key: moment(recode.refundTime).format('YYYY-MM-DD HH:mm:ss'),
               },
               {
                 title: '类型',
-                key: '111',
+                key: recode.refundType4RE,
               },
             ]}
           />
@@ -195,15 +197,15 @@ function AfterSales() {
             nameArr={[
               {
                 title: '快递',
-                key: '六位地黄丸',
+                key: recode.companyName4OD,
               },
               {
                 title: '单号',
-                key: '药',
+                key: recode.companyCode4OD,
               },
               {
                 title: '时间',
-                key: '六位',
+                key: moment().format('YYYY-MM-DD HH:mm:ss'),
               },
             ]}
           />
@@ -221,15 +223,15 @@ function AfterSales() {
             nameArr={[
               {
                 title: '快递',
-                key: '六位地黄丸',
+                key: recode.companyName4RE,
               },
               {
                 title: '单号',
-                key: '药',
+                key: recode.companyCode4RE,
               },
               {
                 title: '时间',
-                key: '六位',
+                key: moment().format('YYYY-MM-DD HH:mm:ss'),
               },
             ]}
           />
@@ -266,19 +268,69 @@ function AfterSales() {
       },
     },
   ];
+  const exportListClick = () => {
+    ref?.current?.validateFields().then((res: any) => {
+      const arg0 = {
+        ...res,
+        ids: selectedRowKeys,
+        beginCreateTime:
+          res.time?.length > 0 ? moment(res.time[0]).valueOf() : undefined,
+        endCreateTime:
+          res.time?.length > 0 ? moment(res.time[1]).valueOf() : undefined,
+      };
+      exprotList(arg0, { responseType: 'blob', getResponse: true }).then(
+        (res: any) => {
+          let blob = new Blob([res.data]);
+          let downloadElement = document.createElement('a');
+          let href = window.URL.createObjectURL(blob); //创建下载的链接
+          downloadElement.href = href;
+          downloadElement.download =
+            decodeURI(
+              res.headers['content-disposition'].split('filename=')[1],
+            ) || ''; //下载后文件名
+          document.body.appendChild(downloadElement);
+          downloadElement.click(); //点击下载
+          document.body.removeChild(downloadElement); //下载完成移除元素
+          window.URL.revokeObjectURL(href); //释放掉blob对象
+        },
+      );
+    });
+  };
+  const onSelectChange = (newSelectedRowKeys: any) => {
+    setSelectedRowKeys(newSelectedRowKeys);
+  };
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: onSelectChange,
+  };
+  // @ts-ignore
   return (
     <div>
       <ProTable
         columns={columns}
         defaultSize={'small'}
         scroll={{ x: 1000 }}
-        request={async (params = {}, sort, filter) => {
+        rowKey={'id'}
+        formRef={ref}
+        request={async (params, sort, filter) => {
+          const arg0 = {
+            ...params,
+            beginCreateTime:
+              params.time?.length > 0
+                ? moment(params.time[0]).valueOf()
+                : undefined,
+            endCreateTime:
+              params.time?.length > 0
+                ? moment(params.time[1]).valueOf()
+                : undefined,
+          };
+          const res: any = await queryList(arg0, {});
+          const data = res?.entry.entry.list;
           return {
-            data: [
-              { spxx: 1, key: 1 },
-              { spxx: 2, key: 2 },
-              { spxx: 3, key: 3 },
-            ],
+            data: data,
+            success: res.success,
+            // 不传会使用 data 的长度，如果是分页一定要传
+            total: res?.totalRecord,
           };
         }}
         search={{
@@ -288,6 +340,7 @@ function AfterSales() {
           size: 'small',
         }}
         options={false}
+        rowSelection={{ ...rowSelection }}
         toolBarRender={() => [
           // <Button key="show">导入发货</Button>,
           // <Button key="out" onClick={() => {
@@ -295,7 +348,7 @@ function AfterSales() {
           // }}>
           // 	导入记录
           // </Button>,
-          <Button type="primary" key="primary">
+          <Button type="primary" key="primary" onClick={exportListClick}>
             导出
           </Button>,
         ]}

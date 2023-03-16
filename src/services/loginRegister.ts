@@ -6,21 +6,30 @@ export async function registerSlide(params?: any) {
     method: 'GET',
   });
 }
+
 export async function fakeAccountLogin(params: any) {
-  return request('/iam/designer/login', {
+  return request('/usercenter/corporation/login', {
     method: 'POST',
     data: params,
   });
 }
+
 export async function designerRegister(params: any) {
   return request('/iam/designer/register', {
     method: 'POST',
     data: params,
   });
 }
+export async function resetPassword(params: any) {
+  return request('/usercenter/corporation/pwd/findBack', {
+    method: 'POST',
+    data: params,
+  });
+}
 
 export async function sendValidateCode(params: any) {
-  return request(getQueryStr('/iam/sms/sendValidateCode', params), {
-    method: 'GET',
+  return request('/usercenter/authCode/send', {
+    method: 'POST',
+    data: params,
   });
 }

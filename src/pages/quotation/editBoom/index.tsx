@@ -43,13 +43,11 @@ function EditBoom() {
           align: 'center',
           dataIndex: 'sccb',
           render: (_: any, recode: any, index: number) => {
-            console.log(_, recode, index, 'recode');
             return (
               <InputNumber
                 min={0}
                 value={recode.sccb}
                 onChange={(e) => {
-                  console.log(e);
                   const NewArr = [...dataSource];
                   NewArr[index].sccb = e;
                   setDataSource(NewArr);
@@ -63,13 +61,11 @@ function EditBoom() {
           align: 'center',
           dataIndex: 'ppyj',
           render: (_: any, recode: any, index: number) => {
-            console.log(_, recode, index, 'recode');
             return (
               <InputNumber
                 min={0}
                 value={recode.ppyj}
                 onChange={(e) => {
-                  console.log(e);
                   const NewArr = [...dataSource];
                   NewArr[index].ppyj = e;
                   setDataSource(NewArr);
@@ -83,13 +79,11 @@ function EditBoom() {
           align: 'center',
           dataIndex: 'ipfy',
           render: (_: any, recode: any, index: number) => {
-            console.log(_, recode, index, 'recode');
             return (
               <InputNumber
                 min={0}
                 value={recode.ipfy}
                 onChange={(e) => {
-                  console.log(e);
                   const NewArr = [...dataSource];
                   NewArr[index].ipfy = e;
                   setDataSource(NewArr);
@@ -103,13 +97,11 @@ function EditBoom() {
           align: 'center',
           dataIndex: 'bzcl',
           render: (_: any, recode: any, index: number) => {
-            console.log(_, recode, index, 'recode');
             return (
               <InputNumber
                 min={0}
                 value={recode.bzcl}
                 onChange={(e) => {
-                  console.log(e);
                   const NewArr = [...dataSource];
                   NewArr[index].bzcl = e;
                   setDataSource(NewArr);
@@ -123,13 +115,11 @@ function EditBoom() {
           align: 'center',
           dataIndex: 'kdfy',
           render: (_: any, recode: any, index: number) => {
-            console.log(_, recode, index, 'recode');
             return (
               <InputNumber
                 min={0}
                 value={recode.kdfy}
                 onChange={(e) => {
-                  console.log(e);
                   const NewArr = [...dataSource];
                   NewArr[index].kdfy = e;
                   setDataSource(NewArr);

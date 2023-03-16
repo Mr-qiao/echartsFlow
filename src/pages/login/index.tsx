@@ -43,8 +43,8 @@ const Launch: any = () => {
     }
     fakeAccountLogin({
       flagForLogin: 1,
-      loginName: val.loginName,
-      password: Encrypt(val.password),
+      account: val.loginName,
+      pwd: Encrypt(val.password),
       key: captchaKey,
       redirect: null,
       geeTestChallenge: result.geetest_challenge,
@@ -55,9 +55,7 @@ const Launch: any = () => {
         window.localStorage.setItem('token', res.entry.token);
         setCookie('token', res.entry.token);
         setCookie('local_token', res.entry.token);
-        history.push({
-          pathname: './artwork/list',
-        });
+        history.push('/goods/list');
       }
       if (!res || (res && !res.status)) {
         //@ts-ignore
@@ -85,10 +83,10 @@ const Launch: any = () => {
   const getRegisterSlide = () => {
     registerSlide().then((res: any) => {
       let { sessionStatus, login } = res;
-      if (login) {
-        history.push({ pathname: '/artwork/list' });
-        return;
-      }
+      // if (login) {
+      //   history.push({ pathname: '/artwork/list' });
+      //   return;
+      // }
       sessionStatus = JSON.parse(sessionStatus);
       setShowWaiting(true);
       setShowText(false);
@@ -197,7 +195,7 @@ const Launch: any = () => {
               type="link"
               onClick={() =>
                 history.push({
-                  pathname: './register',
+                  pathname: './reset-password',
                 })
               }
             >

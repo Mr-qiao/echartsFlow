@@ -30,7 +30,7 @@ const bgStyle: any = {
 const Launch: any = () => {
   const [form] = Form.useForm();
   // 当前第几步
-  const [current, setCurrnt] = useState(2);
+  const [current, setCurrnt] = useState(1);
   // step 1 发送验证码时间
   const [count, setCount] = useState(60);
   // step 2 发送验证码时间
@@ -49,7 +49,6 @@ const Launch: any = () => {
 
   const handleSubmit = (val: any) => {
     // step 1 总提交
-    console.log(val, 'val');
     setCurrnt(1);
     const { password, confirmPassword } = val;
     if (password !== confirmPassword) {
@@ -74,7 +73,6 @@ const Launch: any = () => {
   };
   const handleSubmitTwo = (val: any) => {
     // step 2 总提交
-    console.log(val, 'val');
     const { password, confirmPassword } = val;
     if (password !== confirmPassword) {
       return message.error('登录密码不一致');
@@ -193,19 +191,19 @@ const Launch: any = () => {
             labelCol={{ span: 5 }}
             wrapperCol={{ span: 16 }}
           >
-            <Form.Item
-              label={'公司全称'}
-              name={'name'}
-              help="同一个企业仅可入驻 1 次，请填写完整公司名称，以避免重复注册"
-              rules={[
-                {
-                  required: true,
-                  message: '请输入公司全称',
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
+            {/*<Form.Item*/}
+            {/*  label={'公司全称'}*/}
+            {/*  name={'name'}*/}
+            {/*  help="同一个企业仅可入驻 1 次，请填写完整公司名称，以避免重复注册"*/}
+            {/*  rules={[*/}
+            {/*    {*/}
+            {/*      required: true,*/}
+            {/*      message: '请输入公司全称',*/}
+            {/*    },*/}
+            {/*  ]}*/}
+            {/*>*/}
+            {/*  <Input />*/}
+            {/*</Form.Item>*/}
             <Form.Item
               label="登录名"
               name="loginName"

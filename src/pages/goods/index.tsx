@@ -1,33 +1,56 @@
 import { ProTable } from '@ant-design/pro-components';
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 import GoodsTableCol from '@/components/goodsTableCol';
+import moment from 'moment/moment';
+import { getCategoryTree, queryList } from '@/pages/goods/apis';
+import { useEffect, useState } from 'react';
+import SelectTree from '@/components/selectTree';
+import { filterPageName } from '@/utils';
 
 function Goods() {
+  const [optionsTree, setOptionsTree] = useState([]);
+  useEffect(() => {
+    getCategoryTree({}, {}).then((res) => {
+      if (res.success) {
+        setOptionsTree(res.entry);
+      } else {
+        message.error('类目树获取失败，请稍后再试');
+      }
+    });
+  }, []);
   const columns: any = [
     {
       title: '款式编码',
-      dataIndex: 'code',
+      dataIndex: 'sysCode',
     },
     {
       title: '款式名称',
       hideInTable: true,
-      dataIndex: 'name',
+      dataIndex: 'title',
     },
     {
       title: '商品类目',
-      dataIndex: 'categoryName',
+      dataIndex: 'categoryId',
+      renderFormItem: (item: any, _: any, form: any) => {
+        return (
+          <SelectTree
+            options={optionsTree}
+            fieldNames={{
+              label: 'name',
+              value: 'categoryId',
+              children: 'children',
+            }}
+          />
+        );
+      },
       fieldProps: {
         placeholder: '请选择',
       },
       hideInTable: true,
-      valueEnum: {
-        1: '牛',
-        2: '猪',
-      },
     },
     {
       title: '商品品牌',
-      dataIndex: 'brandName',
+      dataIndex: 'brandId',
       hideInTable: true,
     },
     {
@@ -40,7 +63,7 @@ function Goods() {
         0: '成衣款',
         1: '设计师款',
       },
-      dataIndex: 'type',
+      dataIndex: 'hasSample',
       width: 48,
     },
     {
@@ -58,7 +81,7 @@ function Goods() {
               },
               {
                 title: '类目',
-                key: recode.categoryName,
+                key: recode?.categoryNames?.join('/'),
               },
               {
                 title: '品牌',
@@ -73,6 +96,11 @@ function Goods() {
                 key: recode.categoryName,
               },
             ]}
+            imgs={recode.images.map((item: any) => {
+              return {
+                src: item,
+              };
+            })}
           />
         );
       },
@@ -89,7 +117,7 @@ function Goods() {
     },
     {
       title: '快手商品id',
-      dataIndex: 'ksItemId',
+      dataIndex: 'outsideItemCode',
     },
     {
       title: '操作',
@@ -118,7 +146,19 @@ function Goods() {
         sort,
         filter,
       ) => {
-        console.log(params, 'ac');
+        const arg0 = {
+          ...filterPageName(params),
+          // startTime: params.time?.length > 0 ? moment(params.time[0]).valueOf() : undefined,
+          // endTime: params.time?.length > 0 ? moment(params.time[1]).valueOf() : undefined,
+        };
+        const res = await queryList(arg0, {});
+        const data = res.entry.data;
+        return {
+          data: data,
+          success: res.success,
+          // 不传会使用 data 的长度，如果是分页一定要传
+          total: res?.totalRecord,
+        };
         return {
           data: [
             {
