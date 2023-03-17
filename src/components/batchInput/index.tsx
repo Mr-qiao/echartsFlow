@@ -8,7 +8,7 @@ function BatchInput(props: any) {
   return (
     <div className={'batch-input'}>
       <Row className={'batch-input-row'}>
-        <Col span={17}>
+        <Col span={18}>
           <Input
             placeholder={'请输入'}
             onChange={(e) => {
@@ -18,7 +18,7 @@ function BatchInput(props: any) {
             value={value}
           />
         </Col>
-        <Col span={6} offset={1}>
+        <Col span={6}>
           <Popover
             title={false}
             trigger="click"

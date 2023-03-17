@@ -91,7 +91,7 @@ const routes = [
       {
         name: '采购订单详情',
         hideInMenu: true,
-        path: '/order/purchase-detail',
+        path: '/order/purchase-detail/:id',
         component: './purchase/detail',
       },
     ],

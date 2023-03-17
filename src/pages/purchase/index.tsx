@@ -3,13 +3,18 @@ import { Button, DatePicker, Modal } from 'antd';
 import { useRef, useState } from 'react';
 import BatchInput from '@/components/batchInput';
 import { history } from 'umi';
-import { queryList } from '@/pages/purchase/apis';
+import { exportList, queryList } from '@/pages/purchase/apis';
+import moment from 'moment';
+import { filterPageName } from '@/utils';
+import GoodsSearch from '@/components/goodsSearch';
 
 const { RangePicker } = DatePicker;
 
 function Purchase() {
   const actionRef = useRef() as any;
   const [modalOpen, setModalOpen] = useState(false);
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const ref: any = useRef();
   const columns: any = [
     {
       title: '采购单号',
@@ -24,7 +29,7 @@ function Purchase() {
       hideInTable: true,
       dataIndex: 'skuIdList',
       renderFormItem: (item: any, _: any, form: any) => {
-        return <a>点击搜索</a>;
+        return <BatchInput />;
       },
     },
     {
@@ -49,14 +54,21 @@ function Purchase() {
     },
     {
       title: '预计交付日期',
-      dataIndex: 'expectedTime',
+      dataIndex: 'time',
+      hideInTable: true,
       renderFormItem: (item: any, _: any, form: any) => {
         return <RangePicker showTime />;
       },
     },
     {
+      title: '预计交付日期',
+      search: false,
+      dataIndex: 'expectedTime',
+      render: (i: any) => moment(i).format('YYYY-MM-DD HH:mm:ss'),
+    },
+    {
       title: '状态',
-      dataIndex: 'status',
+      dataIndex: 'statusDesc',
       search: false,
     },
     {
@@ -72,7 +84,7 @@ function Purchase() {
         return (
           <a
             onClick={() => {
-              history.push('/order/purchase-detail');
+              history.push(`/order/purchase-detail/${recode.id}`);
             }}
           >
             查看
@@ -110,6 +122,40 @@ function Purchase() {
       },
     },
   ];
+  const exportListClick = () => {
+    ref?.current?.validateFields().then((res: any) => {
+      const arg0 = {
+        ...res,
+        expectedStartTime:
+          res.time?.length > 0 ? moment(res.time[0]).valueOf() : undefined,
+        expectedEndTime:
+          res.time?.length > 0 ? moment(res.time[1]).valueOf() : undefined,
+      };
+      exportList(arg0, { responseType: 'blob', getResponse: true }).then(
+        (res: any) => {
+          let blob = new Blob([res.data]);
+          let downloadElement = document.createElement('a');
+          let href = window.URL.createObjectURL(blob); //创建下载的链接
+          downloadElement.href = href;
+          downloadElement.download =
+            decodeURI(
+              res.headers['content-disposition'].split('filename=')[1],
+            ) || ''; //下载后文件名
+          document.body.appendChild(downloadElement);
+          downloadElement.click(); //点击下载
+          document.body.removeChild(downloadElement); //下载完成移除元素
+          window.URL.revokeObjectURL(href); //释放掉blob对象
+        },
+      );
+    });
+  };
+  const onSelectChange = (newSelectedRowKeys: any) => {
+    setSelectedRowKeys(newSelectedRowKeys);
+  };
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: onSelectChange,
+  };
   return (
     <div>
       <ProTable
@@ -117,9 +163,20 @@ function Purchase() {
         defaultSize={'small'}
         actionRef={actionRef}
         scroll={{ x: 1000 }}
+        rowKey={'id'}
+        formRef={ref}
         request={async (params = {}, sort, filter) => {
           const arg0 = {
-            ...params,
+            ...filterPageName(params),
+            clientType: 2,
+            beginCreateTime:
+              params.time?.length > 0
+                ? moment(params.time[0]).valueOf()
+                : undefined,
+            endCreateTime:
+              params.time?.length > 0
+                ? moment(params.time[1]).valueOf()
+                : undefined,
           };
           const res: any = await queryList(arg0, {});
           const data = res.entry.list;
@@ -133,6 +190,7 @@ function Purchase() {
         search={{
           labelWidth: 120,
         }}
+        // rowSelection={{ ...rowSelection }}
         form={{
           size: 'small',
         }}
@@ -144,7 +202,7 @@ function Purchase() {
           // }}>
           // 	导入记录
           // </Button>,
-          <Button type="primary" key="primary">
+          <Button type="primary" key="primary" onClick={exportListClick}>
             导出
           </Button>,
         ]}

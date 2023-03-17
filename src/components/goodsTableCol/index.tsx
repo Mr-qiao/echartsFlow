@@ -54,7 +54,7 @@ function GoodsTableCol(props: any) {
             </Col>
             {footerImg && imgF.length > 0 ? (
               <Row className={'bus-img'}>
-                {imgF.map((item: any, index) => (
+                {imgF.map((item: any, index: any) => (
                   <Col key={index} style={{ marginLeft: index === 0 ? 0 : 7 }}>
                     <Image width={22} height={22} src={item.src} />
                   </Col>

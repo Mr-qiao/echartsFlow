@@ -8,8 +8,9 @@ import AvatarName from '@/components/AvatarName';
 import Breadcrumb from '@/components/Breadcrumb';
 import { PageContainer, ProBreadcrumb } from '@ant-design/pro-components';
 import { ConfigProvider } from 'antd';
+import 'moment/dist/locale/zh-cn';
+
 import moment from 'moment';
-import 'moment/locale/zh-cn';
 
 moment.locale('zh-cn');
 

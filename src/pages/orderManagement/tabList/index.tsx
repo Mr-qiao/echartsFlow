@@ -190,10 +190,10 @@ function TabList(props: any) {
             whiteSpace: 'nowrap',
           }}
         >
-          <Option value={1} key={1}>
+          <Option value={'1'} key={1}>
             创建日期
           </Option>
-          <Option value={2} key={1}>
+          <Option value={'2'} key={1}>
             发货日期
           </Option>
         </Select>
@@ -389,6 +389,7 @@ function TabList(props: any) {
         }}
         search={{
           labelWidth: 120,
+          defaultCollapsed: false,
         }}
         form={{
           size: 'small',
