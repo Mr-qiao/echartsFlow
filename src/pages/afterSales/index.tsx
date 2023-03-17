@@ -325,7 +325,7 @@ function AfterSales() {
                 : undefined,
           };
           const res: any = await queryList(arg0, {});
-          const data = res?.entry.entry.list;
+          const data = res?.entry.list;
           return {
             data: data,
             success: res.success,

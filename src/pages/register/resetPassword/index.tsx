@@ -22,6 +22,8 @@ export default (props: any) => {
     };
     resetPassword(arg0).then((res) => {
       if (res.status) {
+        message.success('重置密码成功,请重新登陆!');
+        history.push('./login');
       } else {
         message.error(res?.message);
       }

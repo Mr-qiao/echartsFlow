@@ -44,7 +44,7 @@ const Launch: any = () => {
     fakeAccountLogin({
       flagForLogin: 1,
       account: val.loginName,
-      pwd: Encrypt(val.password),
+      pwd: val.password,
       key: captchaKey,
       redirect: null,
       geeTestChallenge: result.geetest_challenge,

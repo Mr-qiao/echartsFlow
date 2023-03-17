@@ -5,6 +5,7 @@ import GoodsTableCol from '@/components/goodsTableCol';
 import { history } from 'umi';
 import { queryList } from '@/pages/quotation/apis';
 import moment from 'moment';
+import { filterPageName } from '@/utils';
 
 const { RangePicker } = DatePicker;
 
@@ -137,7 +138,7 @@ function Quotation() {
         filter,
       ) => {
         const arg0 = {
-          ...params,
+          ...filterPageName(params),
           startTime:
             params.time?.length > 0
               ? moment(params.time[0]).valueOf()

@@ -6,6 +6,14 @@ export async function registerSlide(params?: any) {
     method: 'GET',
   });
 }
+export async function queryApplyInfo(params?: any) {
+  return request(
+    getQueryStr('/investment-center/supplierplatform/queryApplyInfo', params),
+    {
+      method: 'GET',
+    },
+  );
+}
 
 export async function fakeAccountLogin(params: any) {
   return request('/usercenter/corporation/login', {
