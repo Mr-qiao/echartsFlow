@@ -11,13 +11,27 @@ import {
   Steps,
   Checkbox,
   Result,
+  Upload,
+  Alert,
 } from 'antd';
 import imgURL from '../../../public/favicon.png';
 import bgUrl from '../../../public/bj.png';
+import Cookies from 'js-cookie';
 import Encrypt from '@/utils/encrypt';
-import { sendValidateCode, designerRegister } from '@/services/loginRegister';
-import { Link } from '@umijs/max';
+import {
+  sendValidateCode,
+  designerRegister,
+  register,
+  checkCompanyName,
+  applyName,
+  getCiphertext,
+  queryCompanyInfo,
+} from '@/services/loginRegister';
+import { Link, useParams } from '@umijs/max';
 import PicturesWall from '@/components/PicturesWall';
+import { UploadOutlined } from '@ant-design/icons';
+import ImgUpload from '@/pages/register/imgUpload';
+import { setCookie } from '@/utils/utils';
 
 const bgStyle: any = {
   width: '100%',
@@ -29,8 +43,9 @@ const bgStyle: any = {
 
 const Launch: any = () => {
   const [form] = Form.useForm();
+  const params = useParams();
   // 当前第几步
-  const [current, setCurrnt] = useState(1);
+  const [current, setCurrnt] = useState(params.id) as any;
   // step 1 发送验证码时间
   const [count, setCount] = useState(60);
   // step 2 发送验证码时间
@@ -46,53 +61,68 @@ const Launch: any = () => {
   const [isClick, setIsClick] = useState(false);
   // step 2 是否点击发送验证码
   const [isClickTwo, setIsClickTwo] = useState(false);
-
+  const [queryByIdList, setqueryById] = useState({}) as any;
+  useEffect(() => {
+    queryCompanyInfo().then((res) => {
+      if (res.status) {
+        form.setFieldsValue(res.entry);
+        setqueryById(res.entry);
+      }
+    });
+  }, []);
   const handleSubmit = (val: any) => {
     // step 1 总提交
-    setCurrnt(1);
-    const { password, confirmPassword } = val;
-    if (password !== confirmPassword) {
+    const { pwd, pwdConfirm } = val;
+    if (pwd !== pwdConfirm) {
       return message.error('登录密码不一致');
     }
     if (!isClick) {
       return message.error('请发送验证码');
     }
-    designerRegister(
-      Object.assign(val, {
-        password: Encrypt(password),
-        confirmPassword: Encrypt(password),
-      }),
-    ).then((res: any) => {
+    register({
+      ...val,
+    }).then((res: any) => {
       if (res.status) {
-        message.success('成功');
-        history.push({ pathname: './login' });
+        message.success('注册成功');
+        window.localStorage.setItem('token', res.entry.token);
+        window.localStorage.setItem('info', JSON.stringify(res.entry));
+        setCookie('token', res.entry.token);
+        setCookie('local_token', res.entry.token);
+        history.push('/register/1');
       } else {
         message.error(res.message);
       }
     });
   };
   const handleSubmitTwo = (val: any) => {
-    // step 2 总提交
-    const { password, confirmPassword } = val;
-    if (password !== confirmPassword) {
-      return message.error('登录密码不一致');
-    }
-    if (!isClickTwo) {
-      return message.error('请发送验证码');
-    }
-    designerRegister(
-      Object.assign(val, {
-        password: Encrypt(password),
-        confirmPassword: Encrypt(password),
-      }),
-    ).then((res: any) => {
-      if (res.status) {
-        message.success('成功');
-        history.push({ pathname: './login' });
-      } else {
-        message.error(res.message);
+    getCiphertext({
+      plaintext: val.contactsPhone,
+      typeCode: 'SUPPLIER_CONTACTS_PHONE',
+    }).then((ress: any) => {
+      if (ress.status) {
+        applyName(
+          {
+            ...val,
+            contactsPhoneId: ress.entry.sensitiveInformationId,
+            supplierId: queryByIdList?.supplierInfoId
+              ? queryByIdList.supplierInfoId
+              : undefined,
+          },
+          {
+            headers: {
+              token: Cookies.get('token'),
+            },
+          },
+        ).then((params: any) => {
+          if (params.status) {
+            history.push('/register/2');
+          } else {
+            message.error(params?.message);
+          }
+        });
       }
     });
+    // step 2 总提交
   };
 
   const onCount = () => {
@@ -122,15 +152,20 @@ const Launch: any = () => {
     }, 1000);
   };
   const sendCaptcha = () => {
-    const mobileRegexp = /^1[1-9]\d{9}$/;
-    const { phone } = form.getFieldsValue() || {};
-    if (!phone) {
-      return message.error('请输入正确的手机号');
+    const mobileRegexp =
+      /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(.[a-zA-Z0-9_-]+)+$/;
+    const { email } = form.getFieldsValue() || {};
+    if (!email) {
+      return message.error('请输入正确的邮箱');
     }
-    if (!mobileRegexp.test(phone)) {
-      return message.error('请输入正确的手机号');
+    if (!mobileRegexp.test(email)) {
+      return message.error('请输入正确的邮箱');
     }
-    sendValidateCode({ mobile: phone }).then((res: any) => {
+    sendValidateCode({
+      email: email,
+      type: 1,
+      bizType: 1,
+    }).then((res: any) => {
       if (res.status) {
         message.success('验证码发送成功');
         setIsSend(true);
@@ -142,22 +177,44 @@ const Launch: any = () => {
   };
   const sendCaptchaTwo = () => {
     const mobileRegexp = /^1[1-9]\d{9}$/;
-    const { phone } = form.getFieldsValue() || {};
-    if (!phone) {
+    const res = form.getFieldsValue() || {};
+    if (!res.contactsPhone) {
       return message.error('请输入正确的手机号');
     }
-    if (!mobileRegexp.test(phone)) {
+    if (!mobileRegexp.test(res.contactsPhone)) {
       return message.error('请输入正确的手机号');
     }
-    sendValidateCode({ mobile: phone }).then((res: any) => {
-      if (res.status) {
-        message.success('验证码发送成功');
-        setIsSendTwo(true);
-        onCountTwo();
-      } else {
-        message.error(res.message);
-      }
+    sendValidateCode({ bizType: 21, type: 2, mobile: res.contactsPhone }).then(
+      (res: any) => {
+        if (res.status) {
+          message.success('验证码发送成功');
+          setIsSendTwo(true);
+          onCountTwo();
+        } else {
+          message.error(res.message);
+        }
+      },
+    );
+  };
+  const beforeUpload = async (file: any): Promise<any> => {
+    return false;
+  };
+
+  const validatePsw = async (_: any, value: any) => {
+    const arg0 = {
+      companyName: value,
+      // unifyCreditCode: val.unifyCreditCode
+    };
+    const res = await checkCompanyName(arg0, {
+      headers: {
+        token: Cookies.get('token'),
+      },
     });
+    if (!res.status) {
+      return Promise.reject(new Error('公司已经入住过，无法入驻'));
+    } else {
+      return Promise.resolve();
+    }
   };
   return (
     <div style={bgStyle}>
@@ -165,6 +222,13 @@ const Launch: any = () => {
         <img src={imgURL}></img>
       </div>
       <div className={styles.content}>
+        {queryByIdList.supplierInfoId && (
+          <Alert
+            type="error"
+            message={`驳回原因：${queryByIdList?.auditorReason}`}
+            banner
+          />
+        )}
         <div className={styles.register}>商家入驻</div>
         <Steps
           current={current}
@@ -182,7 +246,7 @@ const Launch: any = () => {
             },
           ]}
         />
-        {current === 0 ? (
+        {params.id === '0' ? (
           <Form
             name="basic"
             className={styles.loginForm}
@@ -191,19 +255,19 @@ const Launch: any = () => {
             labelCol={{ span: 5 }}
             wrapperCol={{ span: 16 }}
           >
-            {/*<Form.Item*/}
-            {/*  label={'公司全称'}*/}
-            {/*  name={'name'}*/}
-            {/*  help="同一个企业仅可入驻 1 次，请填写完整公司名称，以避免重复注册"*/}
-            {/*  rules={[*/}
-            {/*    {*/}
-            {/*      required: true,*/}
-            {/*      message: '请输入公司全称',*/}
-            {/*    },*/}
-            {/*  ]}*/}
-            {/*>*/}
-            {/*  <Input />*/}
-            {/*</Form.Item>*/}
+            <Form.Item
+              label={'公司全称'}
+              name={'companyName'}
+              help="同一个企业仅可入驻 1 次，请填写完整公司名称，以避免重复注册"
+              rules={[
+                {
+                  required: true,
+                  message: '请输入公司全称',
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
             <Form.Item
               label="登录名"
               name="loginName"
@@ -228,7 +292,7 @@ const Launch: any = () => {
             </Form.Item>
             <Form.Item
               label="登录密码"
-              name="password"
+              name="pwd"
               rules={[
                 {
                   required: true,
@@ -246,7 +310,7 @@ const Launch: any = () => {
             </Form.Item>
             <Form.Item
               label="密码确认"
-              name="confirmPassword"
+              name="pwdConfirm"
               rules={[
                 {
                   required: true,
@@ -263,7 +327,7 @@ const Launch: any = () => {
             </Form.Item>
             <Form.Item
               label="邮箱"
-              name="phone"
+              name="email"
               rules={[
                 {
                   required: true,
@@ -275,11 +339,11 @@ const Launch: any = () => {
                 },
               ]}
             >
-              <Input placeholder="请输入邮箱" maxLength={11} />
+              <Input placeholder="请输入邮箱" />
             </Form.Item>
             <Form.Item
               label="验证码"
-              name="validateCode"
+              name="emailAuthCode"
               rules={[
                 {
                   required: true,
@@ -360,22 +424,27 @@ const Launch: any = () => {
               </Col>
             </Row>
           </Form>
-        ) : current === 1 ? (
+        ) : params.id === '1' ? (
           <Form
             className={styles.loginForm}
-            onFinish={handleSubmitTwo}
             form={form}
+            initialValues={queryByIdList}
+            onFinish={handleSubmitTwo}
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 16 }}
           >
             <Form.Item
               label={'公司全称'}
-              name={'name'}
+              name={'companyName'}
+              validateTrigger="onBlur"
               help="同一个企业仅可入驻 1 次，请填写完整公司名称，以避免重复注册"
               rules={[
                 {
                   required: true,
                   message: '请输入公司全称',
+                },
+                {
+                  validator: validatePsw,
                 },
               ]}
             >
@@ -383,13 +452,16 @@ const Launch: any = () => {
             </Form.Item>
             <Form.Item
               label="统一社会信用代码"
-              name="loginName"
+              name="unifyCreditCode"
               help={'请输入91或93开头的18位阿拉伯数字或大写英文字母'}
               rules={[
                 {
                   required: true,
                   message: '请输入正确的登录名',
-                  pattern: new RegExp(/^[A-Z0-9]+$/, 'g'),
+                  pattern: new RegExp(
+                    /[0-9A-HJ-NPQRTUWXY]{2}\d{6}[0-9A-HJ-NPQRTUWXY]{10}/,
+                    'g',
+                  ),
                 },
                 {
                   max: 18,
@@ -397,27 +469,19 @@ const Launch: any = () => {
                 },
               ]}
             >
-              <Input
-                placeholder="请输入统一社会信用代码"
-                autoComplete="new-password"
-                maxLength={18}
-              />
+              <Input placeholder="请输入统一社会信用代码" maxLength={18} />
             </Form.Item>
             <Form.Item
               label={'营业执照'}
-              name={'yyzz'}
-              rules={[
-                {
-                  required: true,
-                  message: '请上传营业执照',
-                },
-              ]}
+              name="bizLicense"
+              help={'请上传文件'}
+              rules={[{ required: true, message: '请选择文件' }]}
             >
-              <PicturesWall />
+              <ImgUpload />
             </Form.Item>
             <Form.Item
               label={'联系人'}
-              name={'name'}
+              name={'contactsName'}
               rules={[
                 {
                   required: true,
@@ -429,7 +493,7 @@ const Launch: any = () => {
             </Form.Item>
             <Form.Item
               label={'手机号码'}
-              name={'phone'}
+              name={'contactsPhone'}
               rules={[
                 {
                   required: true,
@@ -442,7 +506,7 @@ const Launch: any = () => {
             </Form.Item>
             <Form.Item
               label="验证码"
-              name="validateCode"
+              name="verifyCode"
               rules={[
                 {
                   required: true,
@@ -464,7 +528,7 @@ const Launch: any = () => {
             </Form.Item>
             <Form.Item
               label={'微信号'}
-              name={'wx'}
+              name={'wechatNo'}
               rules={[
                 {
                   required: true,
@@ -475,7 +539,7 @@ const Launch: any = () => {
             >
               <Input placeholder="请输入微信号" />
             </Form.Item>
-            <Form.Item label={'第三方店铺链接（可选）'} name={'dsf'}>
+            <Form.Item label={'第三方店铺链接（可选）'} name={'otherShopLink'}>
               <Input placeholder={'填写店铺链接有助于快速通过审核'} />
             </Form.Item>
             <Row>

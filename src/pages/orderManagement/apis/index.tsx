@@ -1,7 +1,7 @@
 import { request } from '@umijs/max';
 
 export function queryList(body: object, options: any) {
-  return request('designweb/background/order/pageOrderByCondition', {
+  return request('designweb/supplier/order/pageOrderByCondition', {
     method: 'POST',
     data: body,
     ...(options || {
@@ -13,7 +13,7 @@ export function queryList(body: object, options: any) {
 }
 
 export function exportList(body: object, options: any) {
-  return request('designweb/background/order/exportOrderList/fc', {
+  return request('designweb/backsupplierground/order/exportOrderList/fc', {
     method: 'POST',
     data: body,
     ...(options || {
@@ -25,7 +25,7 @@ export function exportList(body: object, options: any) {
 }
 
 export function importList(body: object, options: any) {
-  return request('designweb/background/order/importOrderFile', {
+  return request('designweb/supplier/order/importOrderFile', {
     method: 'POST',
     data: body,
     headers: {
@@ -36,7 +36,7 @@ export function importList(body: object, options: any) {
 
 // 发货
 export function deliverItem(body: object, options: any) {
-  return request('designweb/background/order/deliverItem', {
+  return request('designweb/supplier/order/deliverItem', {
     method: 'POST',
     data: body,
     ...(options || {

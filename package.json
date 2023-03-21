@@ -17,9 +17,12 @@
     "antd": "^5.0.0",
     "js-cookie": "^3.0.1",
     "jsencrypt": "^3.3.2",
-    "moment": "^2.29.4"
+    "moment": "^2.29.4",
+    "react-cookie": "^4.1.1",
+    "react-cookies": "^0.1.1"
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.3",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "husky": "^8.0.1",

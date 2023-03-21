@@ -12,12 +12,26 @@ export function queryList(body: object, options: any) {
   });
 }
 
-export async function getById(params?: any, options?: { [key: string]: any }) {
-  return request('/designweb/answer/get', {
+export async function queryById(
+  params?: any,
+  options?: { [key: string]: any },
+) {
+  return request('/designweb/supplier/answer/get', {
     method: 'GET',
     params: {
       ...params,
     },
+    ...(options || {}),
+  });
+}
+
+export async function updateById(
+  params?: any,
+  options?: { [key: string]: any },
+) {
+  return request('/designweb/supplier/answer/update', {
+    method: 'POST',
+    data: params,
     ...(options || {}),
   });
 }

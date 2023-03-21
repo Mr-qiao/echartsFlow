@@ -11,7 +11,7 @@ const routes = [
   },
   {
     name: '注册',
-    path: '/register',
+    path: '/register/:id',
     layout: false,
     component: './register',
   },
@@ -62,7 +62,7 @@ const routes = [
       },
       {
         name: '报价编辑',
-        path: '/quotation/editBoom',
+        path: '/quotation/editBoom/:id',
         hideInMenu: true,
         component: './quotation/editBoom',
       },
@@ -86,7 +86,7 @@ const routes = [
       {
         name: '采购订单列表',
         path: '/order/purchase',
-        component: './purchase',
+        component: './purchase/tab',
       },
       {
         name: '采购订单详情',

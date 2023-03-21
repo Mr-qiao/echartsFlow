@@ -12,14 +12,14 @@ import {
 import { useEffect, useState } from 'react';
 import RepeatTable from '@/pages/quotation/components/repeatTable';
 import BottomButton from '@/components/bottomButton';
-import { getById } from '@/pages/quotation/apis';
+import { queryById } from '@/pages/quotation/apis';
 import { useParams } from '@@/exports';
 
 function QuotationEdit() {
   const params = useParams();
   useEffect(() => {
-    getById({ id: params.id }).then((res) => {
-      const arg = JSON.parse(res?.data?.itemVO?.properties);
+    queryById({ id: params.id }).then((res) => {
+      const arg = JSON.parse(res?.data?.itemVO?.properties || '{}');
     });
   }, []);
   // 物料列表主数据

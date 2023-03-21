@@ -20,7 +20,7 @@ export default (props: any) => {
     const arg0 = {
       ...values,
     };
-    resetPassword(arg0).then((res) => {
+    resetPassword(arg0).then((res: any) => {
       if (res.status) {
         message.success('重置密码成功,请重新登陆!');
         history.push('./login');
@@ -52,15 +52,17 @@ export default (props: any) => {
     if (!mobileRegexp.test(email)) {
       return message.error('请输入正确的邮箱');
     }
-    sendValidateCode({ email: email, type: 1, bizType: 5 }).then((res: any) => {
-      if (res.status) {
-        message.success('验证码发送成功');
-        setIsSend(true);
-        onCount();
-      } else {
-        message.error(res.message);
-      }
-    });
+    sendValidateCode({ email: email, type: 1, bizType: 19 }).then(
+      (res: any) => {
+        if (res.status) {
+          message.success('验证码发送成功');
+          setIsSend(true);
+          onCount();
+        } else {
+          message.error(res.message);
+        }
+      },
+    );
   };
   const bgStyle: any = {
     width: '100%',

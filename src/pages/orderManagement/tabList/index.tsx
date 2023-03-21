@@ -37,6 +37,7 @@ function TabList(props: any) {
   const [modalOpenImport, setModalOpenImport] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [queryIdList, setQueryIdList] = useState({}) as any;
+  const actionRef = useRef() as any;
   const ref: any = useRef();
   const columnsDelivery: any = [
     {
@@ -152,14 +153,14 @@ function TabList(props: any) {
         4: '交易完成',
         5: '订单关闭',
       },
-      hideInTable: true,
+      // hideInTable: true,
     },
     {
       title: '是否作废',
       dataIndex: 'isDeleted',
       valueEnum: {
-        0: '已作废',
-        1: '未作废',
+        0: '未作废',
+        1: '已作废',
       },
       hideInTable: true,
     },
@@ -267,14 +268,16 @@ function TabList(props: any) {
       search: false,
       render: (_: any, recode: any) => {
         return (
-          <a
-            onClick={() => {
-              setQueryIdList(recode);
-              setModalOpenDelivery(true);
-            }}
-          >
-            发货
-          </a>
+          recode.status === '待发货' && (
+            <a
+              onClick={() => {
+                setQueryIdList(recode);
+                setModalOpenDelivery(true);
+              }}
+            >
+              发货
+            </a>
+          )
         );
       },
     },
@@ -362,6 +365,7 @@ function TabList(props: any) {
         defaultSize={'small'}
         scroll={{ x: 1200 }}
         rowKey={'id'}
+        actionRef={actionRef}
         request={async (params = {}, sort, filter) => {
           const sTime: any =
             timeSelect === '1' ? 'beginCreateTime' : 'startTime';
@@ -384,7 +388,7 @@ function TabList(props: any) {
             data: data,
             success: res.success,
             // 不传会使用 data 的长度，如果是分页一定要传
-            total: res?.totalRecord,
+            total: res?.entry.totalRecord,
           };
         }}
         search={{
@@ -451,6 +455,7 @@ function TabList(props: any) {
               if (res.entry.success) {
                 message.success('上传成功');
                 setModalOpenImport(false);
+                actionRef.current.reload();
               } else {
                 message.error('上传失败，请检查文件');
               }
@@ -488,9 +493,10 @@ function TabList(props: any) {
             };
             // @ts-ignore
             deliverItem(arg0).then((res: any) => {
-              if (res.entry.success) {
+              if (res.success) {
                 message.success('发货成功');
                 setModalOpenDelivery(false);
+                actionRef.current.reload();
               } else {
                 message.error('发货失败，请稍后再试');
               }

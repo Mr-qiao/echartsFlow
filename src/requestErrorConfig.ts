@@ -3,6 +3,7 @@ import type { RequestConfig } from '@umijs/max';
 import { message, notification } from 'antd';
 import { navigateToLogin } from '@/utils';
 import config from '@/config';
+import Cookies from 'js-cookie';
 
 const { ajaxBaseUrl } = config;
 
@@ -47,7 +48,8 @@ export const errorConfig: RequestConfig = {
   timeout: 10000,
   withCredentials: true,
   headers: {
-    'app-code': 'SCM',
+    // 'app-code': 'SCM',
+    token: Cookies.get('token') || '',
   },
   // 错误处理： umi@3 的错误处理方案。
   errorConfig: {

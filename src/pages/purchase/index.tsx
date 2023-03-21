@@ -10,7 +10,8 @@ import GoodsSearch from '@/components/goodsSearch';
 
 const { RangePicker } = DatePicker;
 
-function Purchase() {
+function Purchase(props: any) {
+  const { tabKey } = props;
   const actionRef = useRef() as any;
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -168,12 +169,13 @@ function Purchase() {
         request={async (params = {}, sort, filter) => {
           const arg0 = {
             ...filterPageName(params),
+            status: tabKey === '0' ? undefined : Number(tabKey),
             clientType: 2,
-            beginCreateTime:
+            expectedStartTime:
               params.time?.length > 0
                 ? moment(params.time[0]).valueOf()
                 : undefined,
-            endCreateTime:
+            expectedEndTime:
               params.time?.length > 0
                 ? moment(params.time[1]).valueOf()
                 : undefined,
@@ -184,7 +186,7 @@ function Purchase() {
             data: data,
             success: res.success,
             // 不传会使用 data 的长度，如果是分页一定要传
-            total: res?.totalRecord,
+            total: res?.entry.totalRecord,
           };
         }}
         search={{

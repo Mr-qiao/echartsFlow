@@ -330,7 +330,7 @@ function AfterSales() {
             data: data,
             success: res.success,
             // 不传会使用 data 的长度，如果是分页一定要传
-            total: res?.totalRecord,
+            total: res?.entry.totalRecord,
           };
         }}
         search={{

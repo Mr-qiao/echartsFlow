@@ -5,7 +5,11 @@ import imgURL from '../../../public/favicon.png';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { history } from 'umi';
 import Encrypt from '@/utils/encrypt';
-import { registerSlide, fakeAccountLogin } from '@/services/loginRegister';
+import {
+  registerSlide,
+  fakeAccountLogin,
+  queryApplyInfo,
+} from '@/services/loginRegister';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import bgUrl from '../../../public/bj.png';
 import { setCookie } from '@/utils/utils';
@@ -41,21 +45,55 @@ const Launch: any = () => {
       location.reload();
       return;
     }
-    fakeAccountLogin({
-      flagForLogin: 1,
-      account: val.loginName,
-      pwd: val.password,
-      key: captchaKey,
-      redirect: null,
-      geeTestChallenge: result.geetest_challenge,
-      geeTestValidate: result.geetest_validate,
-      geeTestSeccode: result.geetest_seccode,
-    }).then((res: any) => {
+    fakeAccountLogin(
+      {
+        flagForLogin: 1,
+        account: val.loginName,
+        pwd: val.password,
+        key: captchaKey,
+        redirect: null,
+        geeTestChallenge: result.geetest_challenge,
+        geeTestValidate: result.geetest_validate,
+        geeTestSeccode: result.geetest_seccode,
+      },
+      {
+        headers: {
+          dataType: '1',
+        },
+      },
+    ).then((res: any) => {
       if (res.status) {
+        console.log(res, 'res');
+        queryApplyInfo(
+          {},
+          {
+            headers: {
+              token: res.entry.token,
+            },
+          },
+        ).then((res) => {
+          console.log(res, 'res');
+          if (res.status) {
+            if (res.entry.auditStatus === 0) {
+              history.push({
+                pathname: '/register/2',
+              });
+            } else if (res.entry.auditStatus === 1) {
+              history.push({
+                pathname: '/goods/list',
+              });
+            } else {
+              history.push({
+                pathname: '/register/1',
+              });
+            }
+          }
+        });
         window.localStorage.setItem('token', res.entry.token);
+        window.localStorage.setItem('info', JSON.stringify(res.entry));
         setCookie('token', res.entry.token);
         setCookie('local_token', res.entry.token);
-        history.push('/goods/list');
+        // history.push('/goods/list');
       }
       if (!res || (res && !res.status)) {
         //@ts-ignore
@@ -205,7 +243,7 @@ const Launch: any = () => {
               type="link"
               onClick={() =>
                 history.push({
-                  pathname: './register',
+                  pathname: './register/0',
                 })
               }
             >
