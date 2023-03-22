@@ -22,13 +22,13 @@ function EditBoom() {
     const NewArr = [...dataSource];
     const data = NewArr[index];
     const hjs =
-      Number(data.sccb || 0) +
-      Number(data.ppyj || 0) +
-      Number(data.ipfy || 0) +
-      Number(data.bzcl || 0) +
-      Number(data.kdfy || 0);
+      Number(data.productionCost || 0) +
+      Number(data.brandPremium || 0) +
+      Number(data.ipExpense || 0) +
+      Number(data.packagingMaterial || 0) +
+      Number(data.expressCharge || 0);
     console.log(hjs, 'hj');
-    NewArr[index].zzbj = hjs;
+    NewArr[index].price = hjs;
     setDataSource(NewArr);
   };
   const columns: any = [
@@ -43,15 +43,15 @@ function EditBoom() {
         {
           title: '生产成本',
           align: 'center',
-          dataIndex: 'sccb',
+          dataIndex: 'productionCost',
           render: (_: any, recode: any, index: number) => {
             return (
               <InputNumber
                 min={0}
-                value={recode.sccb}
+                value={recode.productionCost}
                 onChange={(e) => {
                   const NewArr = [...dataSource];
-                  NewArr[index].sccb = e;
+                  NewArr[index].productionCost = e;
                   setDataSource(NewArr);
                   hj(index);
                 }}
@@ -62,15 +62,15 @@ function EditBoom() {
         {
           title: '品牌溢价',
           align: 'center',
-          dataIndex: 'ppyj',
+          dataIndex: 'brandPremium',
           render: (_: any, recode: any, index: number) => {
             return (
               <InputNumber
                 min={0}
-                value={recode.ppyj}
+                value={recode.brandPremium}
                 onChange={(e) => {
                   const NewArr = [...dataSource];
-                  NewArr[index].ppyj = e;
+                  NewArr[index].brandPremium = e;
                   setDataSource(NewArr);
                   hj(index);
                 }}
@@ -81,15 +81,15 @@ function EditBoom() {
         {
           title: 'Ip费用',
           align: 'center',
-          dataIndex: 'ipfy',
+          dataIndex: 'ipExpense',
           render: (_: any, recode: any, index: number) => {
             return (
               <InputNumber
                 min={0}
-                value={recode.ipfy}
+                value={recode.ipExpense}
                 onChange={(e) => {
                   const NewArr = [...dataSource];
-                  NewArr[index].ipfy = e;
+                  NewArr[index].ipExpense = e;
                   setDataSource(NewArr);
                   hj(index);
                 }}
@@ -100,15 +100,15 @@ function EditBoom() {
         {
           title: '包装材料',
           align: 'center',
-          dataIndex: 'bzcl',
+          dataIndex: 'packagingMaterial',
           render: (_: any, recode: any, index: number) => {
             return (
               <InputNumber
                 min={0}
-                value={recode.bzcl}
+                value={recode.packagingMaterial}
                 onChange={(e) => {
                   const NewArr = [...dataSource];
-                  NewArr[index].bzcl = e;
+                  NewArr[index].packagingMaterial = e;
                   setDataSource(NewArr);
                   hj(index);
                 }}
@@ -119,15 +119,15 @@ function EditBoom() {
         {
           title: '快递费用',
           align: 'center',
-          dataIndex: 'kdfy',
+          dataIndex: 'expressCharge',
           render: (_: any, recode: any, index: number) => {
             return (
               <InputNumber
                 min={0}
-                value={recode.kdfy}
+                value={recode.expressCharge}
                 onChange={(e) => {
                   const NewArr = [...dataSource];
-                  NewArr[index].kdfy = e;
+                  NewArr[index].expressCharge = e;
                   setDataSource(NewArr);
                   hj(index);
                 }}
@@ -140,7 +140,7 @@ function EditBoom() {
     {
       title: '最终报价',
       align: 'center',
-      dataIndex: 'zzbj',
+      dataIndex: 'price',
     },
   ];
   const [dataObj, setDataObj] = useState({}) as any;

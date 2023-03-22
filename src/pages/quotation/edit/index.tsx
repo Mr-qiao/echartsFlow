@@ -71,7 +71,7 @@ function QuotationEdit() {
 	// 其他列表主数据
 	const [dataSourceQt, setDataSourceQt] = useState([]) as any;
 	// 图样附图
-	const arr = data?.drawingMap?.accessoryImages.length > 0 ? data?.drawingMap.accessoryImages.map((item: any) => ({src: item})) : []
+	const arr = data?.drawingMap?.accessoryImages?.length > 0 ? data?.drawingMap.accessoryImages.map((item: any) => ({src: item})) : []
 	// 其他附件
 	const qtarr = data?.drawingMap?.accessoryFiles?.length > 0 ? data?.drawingMap?.accessoryFiles.map((item: any) => ({src: item})) : []
 	// 尺寸附图
@@ -134,6 +134,7 @@ function QuotationEdit() {
 			render: (_: any, recode: any, index: number) => {
 				return (
 					<InputNumber
+						value={recode.dj}
 						min={0}
 						onChange={(e) => {
 							const NewArr = [...dataSourcePp[tabKey]?.materialDetailList];
@@ -156,6 +157,7 @@ function QuotationEdit() {
 				return (
 					<InputNumber
 						min={0}
+						value={recode.skuyl}
 						onChange={(e) => {
 							const NewArr = [...dataSourcePp[tabKey]?.materialDetailList];
 							NewArr[index].skuyl = e;
@@ -179,6 +181,7 @@ function QuotationEdit() {
 						min={0}
 						max={100}
 						addonAfter={'%'}
+						value={recode.shl}
 						onChange={(e) => {
 							const NewArr = [...dataSourcePp[tabKey]?.materialDetailList];
 							NewArr[index].shl = e;
@@ -256,6 +259,7 @@ function QuotationEdit() {
 			render: (_: any, recode: any, index: number) => {
 				return (
 					<Select
+						style={{width: 200}}
 						value={recode.bjsxgg}
 						onChange={(e) => {
 							console.log(e, 'e')
@@ -366,7 +370,11 @@ function QuotationEdit() {
 		{
 			title: '工艺报价',
 			align: 'center',
-			dataIndex: 'gongyihuizong',
+			dataIndex: 'gyhuizong',
+			render: (_: any, recode: any) => {
+				console.log(recode.gyhuizong)
+				return recode.gyhuizong
+			}
 		},
 		{
 			title: '其他报价',
@@ -380,24 +388,29 @@ function QuotationEdit() {
 	const wuL = (index: any) => {
 		console.log(dataSourcePp, 'dataSourceWl')
 		const NewArr = [...dataSourcePp[tabKey]?.materialDetailList];
-		console.log(NewArr, 'NewArr')
 		const da = NewArr[index]
 		da.wlhz = (Number(da.dj || 0) * Number(da.skuyl || 0)) * (Number(da.shl || 0) / 100);
 		const sumby = _.sumBy(NewArr, 'wlhz')
-		const data = [...dataSourcePp]
-		data[tabKey].materialDetailList = NewArr
-		zongHz('wuliaohuizong', sumby)
-		setWlbjz(`${sumby}`)
-		setDataSourcePp(data);
+		const datas = [...dataSourcePp]
+		datas[tabKey].materialDetailList = NewArr
+		datas[tabKey].hz = sumby
+		console.log(datas, 'da')
+		const minby = _.minBy(datas, 'hz').hz
+		const maxby = _.maxBy(datas, 'hz').hz
+		datas[tabKey].minby = minby
+		datas[tabKey].maxby = maxby
+		const dataClone = {...data}
+		dataClone.materialPrice = `${minby}-${maxby}`
+		zongHz('wuliaohuizong', sumby, 0, dataClone)
+		setWlbjz(`${minby}-${maxby}`)
+		setDataSourcePp(datas);
 	}
 	const queryListAll = async () => {
 		const res = await queryById({id: params.id})
 		const entry = res.entry
-		console.log(entry, 'entry')
 		const gy = _.cloneDeep(entry?.craftMap?.workmanshipDetailList)
 		const wll = _.cloneDeep(entry?.materialMap?.skuMaterialList)
 		const wl = _.cloneDeep(entry?.materialMap?.skuMaterialList)
-
 		setDataSourcePp(wl)
 		setDataSourceGy(gy)
 		setData(entry)
@@ -409,23 +422,53 @@ function QuotationEdit() {
 		da.gyhz = Number(da.gydj || 0)
 		const sumby = _.sumBy(NewArr, 'gyhz')
 		setGybjz(`${sumby}`)
-		zongHz('gongyihuizong', sumby)
+		const dataClone = {...data}
+		dataClone.craft = `${sumby}`
 		setDataSourceGy(NewArr);
+		zongHz('gyhuizong', sumby, 0, dataClone)
 	}
 	const qiT = (index: any) => {
 		const NewArr = [...dataSourceQt];
-		const da = NewArr[index]
+		const da: any = NewArr[index]
 		da.qthz = Number(da.jsdj || 0) * Number(da.sysl || 0)
 		const sumby = _.sumBy(NewArr, 'qthz')
-		zongHz('qitahuizong', sumby)
+		const dataClone = {...data}
+		dataClone.other = `${sumby}`
+		zongHz('qitahuizong', sumby, da?.bjsxgg, dataClone)
 		setDataSourceQt(NewArr);
 	}
 	// 整个汇总
-	const zongHz = (lable: any, value: any) => {
-		const d = data
-		const a = d.itemSkuList[tabKey]
-		a[lable] = value
-		console.log(d, 'asd')
+	const zongHz = (lable: any, value: any, sku?: any, dataClone?: any) => {
+		let d = {...dataClone}
+		if (lable === 'gyhuizong') {
+			const a = d.itemSkuList.map((item: any) => {
+				return {
+					...item,
+					[lable]: value
+				}
+			})
+			console.log(a, 'a')
+			d.itemSkuList = a
+		} else if (lable === 'qitahuizong') {
+			const a = d.itemSkuList.map((item: any) => {
+				if (item.skuId === Number(sku)) {
+					return {
+						...item,
+						[lable]: value
+					}
+				} else {
+					return {
+						...item,
+					}
+				}
+			})
+			console.log(a, 'a')
+			d.itemSkuList = a
+		} else {
+			const a = d.itemSkuList[tabKey]
+			a[lable] = value
+		}
+		console.log(d, 'd')
 		setData(d)
 	}
 	// 汇总提交表单
@@ -433,8 +476,9 @@ function QuotationEdit() {
 		console.log(dataSourcePp, 'dataWl');
 		console.log(dataSourceGy, 'dataGy');
 		console.log(dataSourceQt, 'dataQt');
+		console.log(data, 'data');
 	};
-
+	console.log(data, 'data')
 	return (
 		<div className={'edit-quo'}>
 			<ProCard>
@@ -484,21 +528,21 @@ function QuotationEdit() {
 						})}
 					</Descriptions.Item>
 					<Descriptions.Item label={'物料报价'}>
-						<Tabs defaultActiveKey={tabKey} items={wuTabItems.map((item: any, index: any) => {
+						<h1 style={{margin: 0}}>物料报价:{wlbjz}</h1>
+						<Tabs defaultActiveKey={tabKey} items={dataSourcePp.map((item: any, index: any) => {
 							return ({
 								key: index,
 								label: item.properties,
 								children: (
-									<div>
-										<h1 style={{margin: 0}}>物料报价:{wlbjz}</h1>
-										<Table
-											size={'small'}
-											columns={columnsWl}
-											dataSource={wuTabItems[index].materialDetailList}
-											scroll={{x: 900}}
-											pagination={false}
-										/>
-									</div>
+									tabKey === index && <div>
+                      <Table
+                          size={'small'}
+                          columns={columnsWl}
+                          dataSource={dataSourcePp[tabKey].materialDetailList}
+                          scroll={{x: 900}}
+                          pagination={false}
+                      />
+                  </div>
 								)
 							})
 						})} onChange={(key: string) => {
@@ -530,7 +574,7 @@ function QuotationEdit() {
 							size={'small'}
 							scroll={{x: 900}}
 							columns={columnsHz}
-							dataSource={data.itemSkuList}
+							dataSource={data?.itemSkuList}
 							pagination={false}
 						/>
 					</Descriptions.Item>

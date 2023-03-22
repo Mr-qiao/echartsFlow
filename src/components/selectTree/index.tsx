@@ -9,7 +9,7 @@ function SelectTree(props: any) {
         value={value}
         options={options}
         onChange={onChange}
-        placeholder="Please select"
+        placeholder="请选择"
       />
     </div>
   );

@@ -2,10 +2,10 @@
   "private": true,
   "author": "",
   "scripts": {
-    "build": "max build",
-    "build:dev": "max build",
-    "build:daily": "max build",
-    "build:gray": "max build",
+    "build": "node ./scripts/build",
+    "build:daily": "npm run build",
+    "build:dev": "npm run build",
+    "build:gray": "npm run build",
     "dev": "max dev",
     "format": "prettier --cache --write .",
     "postinstall": "max setup",
@@ -23,7 +23,8 @@
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "react-cookie": "^4.1.1",
-    "react-cookies": "^0.1.1"
+    "react-cookies": "^0.1.1",
+    "shelljs": "^0.8.5"
   },
   "devDependencies": {
     "@types/js-cookie": "^3.0.3",
