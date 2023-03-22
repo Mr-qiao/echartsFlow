@@ -3,7 +3,7 @@
   "private": true,
   "author": "",
   "scripts": {
-    "build": "node ./scripts/build",
+    "build": "npm run build",
     "build:daily": "npm run build",
     "build:dev": "npm run build",
     "build:gray": "npm run build",

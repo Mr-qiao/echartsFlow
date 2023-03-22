@@ -14,7 +14,7 @@ import {
 import {useEffect, useState} from 'react';
 import RepeatTable from '@/pages/quotation/components/repeatTable';
 import BottomButton from '@/components/bottomButton';
-import {queryById} from '@/pages/quotation/apis';
+import {queryById, updateById} from '@/pages/quotation/apis';
 import {useParams} from '@@/exports';
 import _ from 'lodash';
 import './index.less'
@@ -366,15 +366,16 @@ function QuotationEdit() {
 			title: '物料报价',
 			align: 'center',
 			dataIndex: 'wuliaohuizong',
+			render: (_: any, recode: any) => {
+				console.log(recode.wuliaohuizong)
+				return recode.wuliaohuizong
+			}
 		},
 		{
 			title: '工艺报价',
 			align: 'center',
 			dataIndex: 'gyhuizong',
-			render: (_: any, recode: any) => {
-				console.log(recode.gyhuizong)
-				return recode.gyhuizong
-			}
+
 		},
 		{
 			title: '其他报价',
@@ -399,10 +400,8 @@ function QuotationEdit() {
 		const maxby = _.maxBy(datas, 'hz').hz
 		datas[tabKey].minby = minby
 		datas[tabKey].maxby = maxby
-		const dataClone = {...data}
-		dataClone.materialPrice = `${minby}-${maxby}`
-		zongHz('wuliaohuizong', sumby, 0, dataClone)
 		setWlbjz(`${minby}-${maxby}`)
+		zongHz('wuliaohuizong', sumby,)
 		setDataSourcePp(datas);
 	}
 	const queryListAll = async () => {
@@ -422,24 +421,20 @@ function QuotationEdit() {
 		da.gyhz = Number(da.gydj || 0)
 		const sumby = _.sumBy(NewArr, 'gyhz')
 		setGybjz(`${sumby}`)
-		const dataClone = {...data}
-		dataClone.craft = `${sumby}`
 		setDataSourceGy(NewArr);
-		zongHz('gyhuizong', sumby, 0, dataClone)
+		zongHz('gyhuizong', sumby)
 	}
 	const qiT = (index: any) => {
 		const NewArr = [...dataSourceQt];
 		const da: any = NewArr[index]
 		da.qthz = Number(da.jsdj || 0) * Number(da.sysl || 0)
 		const sumby = _.sumBy(NewArr, 'qthz')
-		const dataClone = {...data}
-		dataClone.other = `${sumby}`
-		zongHz('qitahuizong', sumby, da?.bjsxgg, dataClone)
+		zongHz('qitahuizong', sumby, da?.bjsxgg,)
 		setDataSourceQt(NewArr);
 	}
 	// 整个汇总
-	const zongHz = (lable: any, value: any, sku?: any, dataClone?: any) => {
-		let d = {...dataClone}
+	const zongHz = (lable: any, value: any, sku?: any) => {
+		let d = {...data}
 		if (lable === 'gyhuizong') {
 			const a = d.itemSkuList.map((item: any) => {
 				return {
@@ -467,6 +462,7 @@ function QuotationEdit() {
 		} else {
 			const a = d.itemSkuList[tabKey]
 			a[lable] = value
+			console.log(a, 'a')
 		}
 		console.log(d, 'd')
 		setData(d)
@@ -477,6 +473,26 @@ function QuotationEdit() {
 		console.log(dataSourceGy, 'dataGy');
 		console.log(dataSourceQt, 'dataQt');
 		console.log(data, 'data');
+		let arg0: any = {
+			...data,
+			craftMap: {
+				...data.craftMap,
+				workmanshipDetailList: dataSourceGy
+			},
+			otherPrice: {
+				ohterList: dataSourceQt
+			},
+			materialMap: {
+				...data.materialMap,
+				skuMaterialList: dataSourcePp
+			},
+			materialPrice: wlbjz,
+			craftPrice: gybjz
+		}
+		console.log(arg0, 'arg0')
+		updateById(arg0).then(res => {
+			console.log(res, 'res')
+		})
 	};
 	console.log(data, 'data')
 	return (
