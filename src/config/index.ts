@@ -10,7 +10,6 @@ if (host.includes('dev') || host.includes('localhost')) {
   env = 'gray';
 }
 
-env = 'development';
 
 const ajaxBaseUrl = {
   development: 'https://api.dev.xinc818.net',
