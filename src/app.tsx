@@ -58,7 +58,7 @@ export const layout = () => {
 					// 	style={{width: '128px', height: '31px'}}
 					// 	src="https://s.xinc818.com/files/webcil9xmqi0aolow2y/logo_name@2x.png"
 					// />
-					<h1>设计师中台-工厂端</h1>
+					<h1 style={{color:'#fff'}}>设计师中台-工厂端</h1>
 				)}
 			</div>
 		),
