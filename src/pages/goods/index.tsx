@@ -21,7 +21,7 @@ function Goods() {
   const columns: any = [
     {
       title: '款式编码',
-      dataIndex: 'sysCode',
+      dataIndex: 'sysItemCode',
     },
     {
       title: '款式名称',
@@ -50,7 +50,7 @@ function Goods() {
     },
     {
       title: '商品品牌',
-      dataIndex: 'brandId',
+      dataIndex: 'brandName',
       hideInTable: true,
     },
     {
@@ -68,7 +68,6 @@ function Goods() {
     },
     {
       title: '商品信息',
-      dataIndex: 'xx',
       search: false,
       // width: 300,
       render: (_: any, recode: any) => {
@@ -77,7 +76,7 @@ function Goods() {
             nameArr={[
               {
                 title: '款式名称',
-                key: recode.name,
+                key: recode.title,
               },
               {
                 title: '类目',
@@ -152,48 +151,12 @@ function Goods() {
           // endTime: params.time?.length > 0 ? moment(params.time[1]).valueOf() : undefined,
         };
         const res = await queryList(arg0, {});
-        const data = res.entry.data;
+        const data = res.entry.list;
         return {
           data: data,
           success: res.success,
           // 不传会使用 data 的长度，如果是分页一定要传
           total: res?.entry.totalRecord,
-        };
-        return {
-          data: [
-            {
-              index: 1,
-              xpmc: '六味地黄丸',
-              splm: '药',
-              sppp: '六位',
-              ys: '黑色',
-              cm: 'xxl',
-            },
-            {
-              index: 1,
-              xpmc: '六味地黄丸',
-              splm: '药',
-              sppp: '六位',
-              ys: '黑色',
-              cm: 'xxl',
-            },
-            {
-              index: 1,
-              xpmc: '六味地黄丸',
-              splm: '药',
-              sppp: '六位',
-              ys: '黑色',
-              cm: 'xxl',
-            },
-            {
-              index: 1,
-              xpmc: '六味地黄丸',
-              splm: '药',
-              sppp: '六位',
-              ys: '黑色',
-              cm: 'xxl',
-            },
-          ],
         };
       }}
       headerTitle={

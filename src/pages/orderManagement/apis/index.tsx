@@ -13,7 +13,7 @@ export function queryList(body: object, options: any) {
 }
 
 export function exportList(body: object, options: any) {
-  return request('designweb/backsupplierground/order/exportOrderList/fc', {
+  return request('designweb/supplier/order/exportOrderList/fc', {
     method: 'POST',
     data: body,
     ...(options || {
@@ -37,6 +37,31 @@ export function importList(body: object, options: any) {
 // 发货
 export function deliverItem(body: object, options: any) {
   return request('designweb/supplier/order/deliverItem', {
+    method: 'POST',
+    data: body,
+    ...(options || {
+      headers: {
+        'content-type': 'application/json',
+      },
+    }),
+  });
+}
+
+export function recordsList(body: object, options: any) {
+  return request('designweb/supplier/importtask/records', {
+    method: 'POST',
+    data: body,
+    ...(options || {
+      headers: {
+        'content-type': 'application/json',
+      },
+    }),
+  });
+}
+
+
+export function exportFailList(body: object, options: any) {
+  return request('designweb/supplier/importtask/exportFailList', {
     method: 'POST',
     data: body,
     ...(options || {
