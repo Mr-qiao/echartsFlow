@@ -94,11 +94,11 @@ function TabList(props: any) {
 							},
 							{
 								title: '款式名称',
-								key: recode.ksName,
+								key: recode.itemTitle,
 							},
 							{
 								title: 'SKU编码',
-								key: recode.skuCodes,
+								key: recode.skuCode,
 							},
 							{
 								title: '规格',
@@ -118,7 +118,7 @@ function TabList(props: any) {
 		{
 			title: '订单编号',
 			width: 180,
-			dataIndex: 'companyCode',
+			dataIndex: 'orderId',
 			search: false,
 		},
 		{
@@ -344,6 +344,7 @@ function TabList(props: any) {
 			let arg0: any = {
 				status: tabKey === '3' ? undefined : tabKey,
 				ids: selectedRowKeys,
+				timeType:timeSelect,
 				...res,
 			};
 			arg0[sTime] =
@@ -397,6 +398,7 @@ function TabList(props: any) {
 					const eTime: any = timeSelect === '1' ? 'endCreateTime' : 'endTime';
 					let arg0: any = {
 						status: tabKey === '3' ? undefined : tabKey,
+						timeType:timeSelect,
 						...params,
 					};
 					arg0[sTime] =

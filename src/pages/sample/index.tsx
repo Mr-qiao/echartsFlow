@@ -1,13 +1,20 @@
 import {ProTable} from '@ant-design/pro-components';
-import {Button, Image, Space} from 'antd';
+import {Select, Form, Image, Modal, Space, message} from 'antd';
 import {useRef, useState} from 'react';
-import {queryList} from '@/pages/sample/apis';
+import {delivery, mark, queryList} from '@/pages/sample/apis';
 import moment from 'moment';
 import {filterPageName} from "@/utils";
 
+
+const {Option} = Select
+
 function Sample() {
+	const [form] = Form.useForm()
 	const [activeKey, setActiveKey] = useState('1');
 	const actionRef = useRef() as any;
+	const arrOptions = ['打样中', '样板设计', '设计完成', '物料采购']
+	const [open, setOpen] = useState(false)
+	const [byId, setbyId] = useState({}) as any
 	const columns: any = [
 		{
 			title: '样衣图片',
@@ -24,11 +31,11 @@ function Sample() {
 		},
 		{
 			title: '样衣编码',
-			dataIndex: 'refSysCode',
+			dataIndex: 'refSysItemCode',
 		},
 		{
 			title: '需求单编码',
-			dataIndex: 'sysCode',
+			dataIndex: 'sysItemCode',
 		},
 		{
 			title: '品类',
@@ -53,16 +60,20 @@ function Sample() {
 			title: '是否现货',
 			search: false,
 			dataIndex: 'spotsType',
+			valueEnum: {
+				1: '有',
+				2: '没有'
+			}
 		},
 		{
 			title: '尺码',
 			search: false,
-			dataIndex: 'size',
+			dataIndex: 'clothSize',
 		},
 		{
 			title: '颜色',
 			search: false,
-			dataIndex: 'color',
+			dataIndex: 'clothColor',
 		},
 		{
 			title: '吊牌价',
@@ -77,7 +88,10 @@ function Sample() {
 		{
 			title: '需求状态',
 			search: false,
-			dataIndex: 'sampleRequirementStatus',
+			dataIndex: 'status',
+			valueEnum: {
+				1: '打样中', 2: '样板设计', 3: '设计完成', 4: '物料采购'
+			}
 		},
 		{
 			title: '对接人',
@@ -93,72 +107,119 @@ function Sample() {
 				return (
 					<Space>
 						<a>查看</a>
-						<a>备注状态</a>
-						<a>交付样衣</a>
+						<a onClick={() => {
+							console.log(recode, 'recode')
+							setbyId(recode)
+							setOpen(true)
+						}}>备注状态</a>
+						<a onClick={() => {
+							delivery(
+								{status: '3', itemId: recode?.itemId}, {}
+							).then((res: any) => {
+								console.log(res, 'res')
+								if (res.success) {
+									message.success('交付完成')
+									actionRef.current.reload()
+								}
+							})
+						}}
+						>交付样衣</a>
 					</Space>
 				);
 			},
 		},
 	];
 	return (
-		<ProTable
-			columns={columns}
-			scroll={{
-				x: 2100,
-			}}
-			rowKey={'index'}
-			search={{
-				labelWidth: 120,
-			}}
-			actionRef={actionRef}
-			request={async (params, sort, filter) => {
-				const arg0 = {
-					...filterPageName(params),
-				};
-				const res: any = await queryList(arg0, {});
-				const data = res.entry.list;
-				return {
-					data: data,
-					success: res.success,
-					// 不传会使用 data 的长度，如果是分页一定要传
-					total: res?.entry.totalRecord,
-				};
-			}}
-			defaultSize={'small'}
-			form={{
-				size: 'small',
-			}}
-			toolbar={
-				{
-					menu: {
-						type: 'tab',
-						activeKey: activeKey,
-						items: [
-							{
-								key: '1',
-								label: <span>全部</span>,
+		<div>
+			<ProTable
+				columns={columns}
+				scroll={{
+					x: 2100,
+				}}
+				rowKey={'index'}
+				search={{
+					labelWidth: 120,
+				}}
+				actionRef={actionRef}
+				request={async (params, sort, filter) => {
+					const arg0 = {
+						...filterPageName(params),
+					};
+					const res: any = await queryList(arg0, {});
+					const data = res.entry.list;
+					return {
+						data: data,
+						success: res.success,
+						// 不传会使用 data 的长度，如果是分页一定要传
+						total: res?.entry.totalRecord,
+					};
+				}}
+				defaultSize={'small'}
+				form={{
+					size: 'small',
+				}}
+				toolbar={
+					{
+						menu: {
+							type: 'tab',
+							activeKey: activeKey,
+							items: [
+								{
+									key: '1',
+									label: <span>全部</span>,
+								},
+								{
+									key: '2',
+									label: <span>待开始</span>,
+								},
+								{
+									key: '3',
+									label: <span>打样中</span>,
+								},
+								{
+									key: '4',
+									label: <span>已交付</span>,
+								},
+							],
+							onChange: (key: string) => {
+								setActiveKey(key as string);
+								actionRef.current.reload();
 							},
-							{
-								key: '2',
-								label: <span>待开始</span>,
-							},
-							{
-								key: '3',
-								label: <span>打样中</span>,
-							},
-							{
-								key: '4',
-								label: <span>已交付</span>,
-							},
-						],
-						onChange: (key: string) => {
-							setActiveKey(key as string);
-							actionRef.current.reload();
 						},
-					},
-				} as any
-			}
-		></ProTable>
+					} as any
+				}
+			/>
+			<Modal
+				title={'备注状态'}
+				open={open}
+				onOk={() => {
+					form.validateFields().then(values => {
+						mark(
+							{...values, itemId: byId?.itemId}, {}
+						).then((res: any) => {
+							console.log(res, 'res')
+							if (res.success) {
+								message.success('备注状态成功')
+								actionRef.current.reload()
+							}
+						})
+					})
+				}}
+				onCancel={() => {
+					setOpen(false)
+				}}
+			>
+				<Form form={form}>
+					<Form.Item label={'修改状态'} name={'status'}>
+						<Select>
+							{arrOptions.map((item, index) => (
+								<Option key={index + 1}>{item}</Option>
+							))}
+						</Select>
+					</Form.Item>
+				</Form>
+			</Modal>
+		</div>
 	);
 }
 

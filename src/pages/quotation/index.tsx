@@ -20,7 +20,7 @@ function Quotation() {
     },
     {
       title: '款式编码',
-      dataIndex: 'itemId',
+      dataIndex: 'itemSysCode',
       hideInTable: true,
     },
     {

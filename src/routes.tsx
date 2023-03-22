@@ -43,6 +43,12 @@ const routes = [
 				hideInMenu: true,
 			},
 			{
+				name: '商品查看',
+				path: '/goods/detail/:id',
+				component: './goods/Detail',
+				hideInMenu: true,
+			},
+			{
 				name: '样衣列表',
 				path: '/goods/sample',
 				component: './sample',

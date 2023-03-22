@@ -1,6 +1,7 @@
 import Config from '@/config';
 import { getOssFileUrl } from '@/services/common';
 import { message, Modal } from 'antd';
+import DICT_CONST from '@/common/constants';
 
 export function navigateToLogin() {
   location.href = `${Config.loginUrl}?redirect=${encodeURIComponent(
@@ -192,3 +193,29 @@ export const filterPageName = (params: any) => {
   delete newParams.current;
   return newParams;
 };
+
+//枚举 constants
+export const dict = function (val: string, type: string, defaultValue = '-') {
+  if (typeof val !== 'undefined') {
+    return getDict(val, type, 'value', defaultValue);
+  } else {
+    return defaultValue;
+  }
+};
+//枚举颜色 constants
+export const dictColor = function (val: string, type: string, defaultValue = '#eaeaea') {
+  if (typeof val !== 'undefined') {
+    return getDict(val, type, 'color', defaultValue);
+  } else {
+    return defaultValue;
+  }
+};
+function getDict(key: string, type: string, val: string, defaultValue: string) {
+  let dictList = DICT_CONST[type];
+  try {
+    let [item] = dictList.filter((dict) => dict['key'].toString() === key.toString());
+    return item ? item[val] : defaultValue;
+  } catch (e) {
+    console.log(e);
+  }
+}

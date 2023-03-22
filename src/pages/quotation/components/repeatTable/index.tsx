@@ -6,6 +6,7 @@ function RepeatTable(props: any) {
 		columns = [], dataSource = [], setData = () => {
 		}
 	} = props
+	console.log(dataSource, 'dataSource')
 	const updateData = () => {
 		const newData = [...dataSource]
 		newData.push({})
@@ -26,7 +27,7 @@ function RepeatTable(props: any) {
 					className={'repeat-table-btn'}
 					type="dashed"
 					onClick={updateData}
-				>添加一条报价  +</Button>
+				>添加一条报价 +</Button>
 			</Row>
 		</div>
 

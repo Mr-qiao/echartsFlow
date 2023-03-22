@@ -5,7 +5,7 @@ import {
 	Descriptions,
 	Image,
 	Input,
-	InputNumber,
+	InputNumber, message,
 	Select,
 	Space,
 	Table,
@@ -18,6 +18,7 @@ import {queryById, updateById} from '@/pages/quotation/apis';
 import {useParams} from '@@/exports';
 import _ from 'lodash';
 import './index.less'
+import {history} from "umi";
 
 const {Option} = Select
 
@@ -222,6 +223,7 @@ function QuotationEdit() {
 				return (
 					<InputNumber
 						min={0}
+						value={recode.gydj}
 						onChange={(e) => {
 							const NewArr = [...dataSourceGy];
 							NewArr[index].gydj = e;
@@ -410,9 +412,14 @@ function QuotationEdit() {
 		const gy = _.cloneDeep(entry?.craftMap?.workmanshipDetailList)
 		const wll = _.cloneDeep(entry?.materialMap?.skuMaterialList)
 		const wl = _.cloneDeep(entry?.materialMap?.skuMaterialList)
+		const qt = JSON.parse(_.cloneDeep(entry?.otherPrice || "{}"))?.ohterList
+		entry.itemSkuList = entry.goodsInfoMap.goodsInfoList
+		setGybjz(entry.craftPrice)
+		setWlbjz(entry.materialPrice)
 		setDataSourcePp(wl)
 		setDataSourceGy(gy)
 		setData(entry)
+		setDataSourceQt(qt)
 		setWuTabItems(wll)
 	}
 	const gongY = (index: any) => {
@@ -486,12 +493,20 @@ function QuotationEdit() {
 				...data.materialMap,
 				skuMaterialList: dataSourcePp
 			},
+			goodsInfoMap: {
+				...data.goodsInfoMap,
+				goodsInfoList: data.itemSkuList
+			},
 			materialPrice: wlbjz,
 			craftPrice: gybjz
 		}
 		console.log(arg0, 'arg0')
 		updateById(arg0).then(res => {
 			console.log(res, 'res')
+			if (res.success) {
+				message.success('成功')
+				history.push('/quotation/list')
+			}
 		})
 	};
 	console.log(data, 'data')

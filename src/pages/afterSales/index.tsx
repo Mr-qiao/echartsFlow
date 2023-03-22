@@ -17,7 +17,7 @@ function AfterSales() {
 	const ref: any = useRef();
 	const columns: any = [
 		{
-			title: '订单编号',
+			title: '款式编码',
 			dataIndex: 'orderIds',
 			hideInTable: true,
 			renderFormItem: (item: any, _: any, form: any) => {
@@ -274,6 +274,7 @@ function AfterSales() {
 			const arg0 = {
 				...res,
 				ids: selectedRowKeys,
+				timeType:timeSelect,
 				beginCreateTime:
 					res.time?.length > 0 ? moment(res.time[0]).valueOf() : undefined,
 				endCreateTime:
@@ -325,6 +326,7 @@ function AfterSales() {
 							params.time?.length > 0
 								? moment(params.time[1]).valueOf()
 								: undefined,
+						timeType:timeSelect,
 					};
 					const res: any = await queryList(arg0, {});
 					const data = res?.entry.list;

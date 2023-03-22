@@ -124,7 +124,9 @@ function Goods() {
 			width: 100,
 			search: false,
 			render: (_: any, recode: any) => {
-				return <a>查看</a>;
+				return <a onClick={() => {
+					history.push(`/goods/detail/${recode.itemId}`)
+				}}>查看</a>;
 			},
 		},
 	];
