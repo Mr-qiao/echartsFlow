@@ -8,7 +8,7 @@ function RepeatTable(props: any) {
 	} = props
 	const updateData = () => {
 		const newData = [...dataSource]
-		newData.push({bjsxgg: '牛'})
+		newData.push({})
 		setData(newData)
 	}
 	return (

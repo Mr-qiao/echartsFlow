@@ -20,7 +20,7 @@ export default defineConfig({
   npmClient: 'yarn',
   // proxy: {
   //   '/api': {
-  //     'target': 'http://192.168.10.106:8080',
+  //     'target': 'http://192.168.12.124:8080',
   //     'changeOrigin': true,
   //     'pathRewrite': { '^/api' : '' },
   //   }
