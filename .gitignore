@@ -11,5 +11,5 @@
 /dist
 /.mfsu
 .swc
-package-lock.json
-yarn.lock
+/package-lock.json
+/yarn.lock
