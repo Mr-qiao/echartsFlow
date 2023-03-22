@@ -1,11 +1,27 @@
-import {ProCard, ProForm} from "@ant-design/pro-components";
-import GoodImgEditCheck from "@/components/goodImgEditCheck";
-import {Button, Descriptions, Image, Input, InputNumber, Space, Table} from "antd";
-import {useState} from "react";
-import RepeatTable from "@/pages/quotation/components/repeatTable";
-import BottomButton from "@/components/bottomButton";
+import {ProCard, ProForm} from '@ant-design/pro-components';
+import GoodImgEditCheck from '@/components/goodImgEditCheck';
+import {
+	Button,
+	Descriptions,
+	Image,
+	Input,
+	InputNumber,
+	Space,
+	Table,
+} from 'antd';
+import {useEffect, useState} from 'react';
+import RepeatTable from '@/pages/quotation/components/repeatTable';
+import BottomButton from '@/components/bottomButton';
+import {queryById} from '@/pages/quotation/apis';
+import {useParams} from '@@/exports';
+import _ from 'lodash';
+import './index.less'
 
 function QuotationEdit() {
+	const params = useParams();
+	const [data, setData] = useState({}) as any;
+	const [wlbjz, setWlbjz] = useState('')
+	const [gybjz, setGybjz] = useState('')
 	// 物料列表主数据
 	const [dataSourceWl, setDataSourceWl] = useState([
 		{
@@ -13,113 +29,113 @@ function QuotationEdit() {
 			gys: 2,
 			wlbh: 3,
 			sybw: '牛',
-		}, {
-			wllx: 1,
-			gys: 2,
-			wlbh: 3,
-			sybw: '牛',
-		}, {
+		},
+		{
 			wllx: 1,
 			gys: 2,
 			wlbh: 3,
 			sybw: '牛',
 		},
-	]) as any
+		{
+			wllx: 1,
+			gys: 2,
+			wlbh: 3,
+			sybw: '牛',
+		},
+	]) as any;
 	// 工艺列表主数据
 	const [dataSourceGy, setDataSourceGy] = useState([
 		{
 			bw: 1,
 			gylx: 2,
 			zf: '牛',
-		}, {
-			bw: 1,
-			gylx: 2,
-			zf: '牛',
-		}, {
+		},
+		{
 			bw: 1,
 			gylx: 2,
 			zf: '牛',
 		},
-	]) as any
+		{
+			bw: 1,
+			gylx: 2,
+			zf: '牛',
+		},
+	]) as any;
 	// 汇总列表主数据
 	const [dataSourceHz, setDataSourceHz] = useState([
 		{
 			gg: 1,
 			wlbj: 2,
 			gybj: '牛',
-		}, {
-			gg: 1,
-			wlbj: 2,
-			gybj: '牛',
-		}, {
+		},
+		{
 			gg: 1,
 			wlbj: 2,
 			gybj: '牛',
 		},
-	]) as any
+		{
+			gg: 1,
+			wlbj: 2,
+			gybj: '牛',
+		},
+	]) as any;
 	// 其他列表主数据
-	const [dataSourceQt, setDataSourceQt] = useState([]) as any
-	// 暂时mock图
-	const arr = [
-		{
-			src: 'https://static.1sapp.com/qupost/images/2020/06/17/1592362881051415095.jpg?imageView2/2/w/750/q/80/format/jpeg'
-		},
-		{
-			src: 'https://img1.baidu.com/it/u=664069914,3928453659&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500'
-		},
-		{
-			src: 'https://hbimg.huabanimg.com/b886a3bc5dc7c0b8863f48b1b062fe15d582dc102633f-NnXKGZ_fw658'
-		},
-	]
+	const [dataSourceQt, setDataSourceQt] = useState([]) as any;
+	// 图样附图
+	const arr = data?.images?.length > 0 ? data?.images.map((item: any) => ({src: item})) : []
+	// 其他附件
+	const qtarr = data?.accessoryFiles?.length > 0 ? data?.accessoryFiles.map((item: any) => ({src: item})) : []
+	// 尺寸附图
+	const ccftarr = data?.workmanshipImages?.length > 0 ? data?.workmanshipImages.map((item: any) => ({src: item})) : []
 	// 尺寸列表 Columns
 	const columns: any = [
 		{
 			title: '名称',
 			align: 'center',
-			dataIndex: 'name'
+			dataIndex: 'positionName',
 		},
 		{
 			title: '测量方法',
 			align: 'center',
-			dataIndex: 'clff'
+			dataIndex: 'measureType',
 		},
 		{
 			title: '误差范围',
 			align: 'center',
-			dataIndex: 'wcfw'
+			dataIndex: 'errorRange',
 		},
 		{
 			title: '样版值',
 			align: 'center',
-			dataIndex: 'ybz'
+			dataIndex: 'modelPrice',
 		},
-		{
-			title: 'L',
-			align: 'center',
-			dataIndex: 'L'
-		},
-	]
+		// {
+		// 	title: 'L',
+		// 	align: 'center',
+		// 	dataIndex: 'L',
+		// },
+	];
 	// 物料列表 Columns
 	const columnsWl: any = [
 		{
 			title: '物料类型',
 			align: 'center',
-			dataIndex: 'wllx'
+			dataIndex: 'materialName',
 		},
 		{
 			title: '供应商',
 			align: 'center',
-			dataIndex: 'gys'
+			dataIndex: 'supplierName',
 		},
 		{
 			title: '物料编号',
 			align: 'center',
-			dataIndex: 'wlbh'
+			dataIndex: 'materialNo',
 		},
 		{
 			title: '使用部位',
 			align: 'center',
-			dataIndex: 'sybw'
+			dataIndex: 'positionName',
 		},
 		{
 			title: '单价',
@@ -127,66 +143,74 @@ function QuotationEdit() {
 			dataIndex: 'dj',
 			width: 100,
 			render: (_: any, recode: any, index: number) => {
-				console.log(_, recode, index, 'recode')
 				return (
-					<InputNumber min={0} onChange={(e) => {
-						console.log(e)
-						const NewArr = [...dataSourceWl]
-						NewArr[index].dj = e
-						setDataSourceWl(NewArr)
-					}}/>
-				)
-			}
+					<InputNumber
+						min={0}
+						onChange={(e) => {
+							const NewArr = [...dataSourceWl];
+							NewArr[index].dj = e;
+							setDataSourceWl(NewArr);
+							wuL(index)
+						}}
+					/>
+				);
+			},
 		},
 		{
 			title: 'sku用量',
 			dataIndex: 'skuyl',
 			width: 100,
 			render: (_: any, recode: any, index: number) => {
-				console.log(_, recode, index, 'recode')
 				return (
-					<InputNumber min={0} onChange={(e) => {
-						console.log(e)
-						const NewArr = [...dataSourceWl]
-						NewArr[index].skuyl = e
-						setDataSourceWl(NewArr)
-					}}/>
-				)
-			}
+					<InputNumber
+						min={0}
+						onChange={(e) => {
+							const NewArr = [...dataSourceWl];
+							NewArr[index].skuyl = e;
+							setDataSourceWl(NewArr);
+							wuL(index)
+						}}
+					/>
+				);
+			},
 		},
 		{
 			title: '损耗率',
 			dataIndex: 'shl',
 			width: 130,
 			render: (_: any, recode: any, index: number) => {
-				console.log(_, recode, index, 'recode')
 				return (
-					<InputNumber min={0} max={100} addonAfter={'%'} onChange={(e) => {
-						console.log(e)
-						const NewArr = [...dataSourceWl]
-						NewArr[index].shl = e
-						setDataSourceWl(NewArr)
-					}}/>
-				)
-			}
+					<InputNumber
+						min={0}
+						max={100}
+						addonAfter={'%'}
+						onChange={(e) => {
+							const NewArr = [...dataSourceWl];
+							NewArr[index].shl = e;
+							setDataSourceWl(NewArr);
+							wuL(index)
+						}}
+					/>
+				);
+			},
 		},
-	]
+	];
 	// 工艺列表 Columns
 	const columnsGy: any = [
 		{
 			title: '部位',
 			align: 'center',
-			dataIndex: 'bw'
+			dataIndex: 'positionName',
 		},
 		{
 			title: '工艺类型',
 			align: 'center',
-			dataIndex: 'gylx'
+			dataIndex: 'processType',
 		},
 		{
 			title: '做法',
 			align: 'center',
-			dataIndex: 'zf'
+			dataIndex: 'practice',
 		},
 		{
 			title: '单价',
@@ -194,18 +218,20 @@ function QuotationEdit() {
 			dataIndex: 'gydj',
 			width: 100,
 			render: (_: any, recode: any, index: number) => {
-				console.log(_, recode, index, 'recode')
 				return (
-					<InputNumber min={0} onChange={(e) => {
-						console.log(e)
-						const NewArr = [...dataSourceGy]
-						NewArr[index].gydj = e
-						setDataSourceGy(NewArr)
-					}}/>
-				)
-			}
+					<InputNumber
+						min={0}
+						onChange={(e) => {
+							const NewArr = [...dataSourceGy];
+							NewArr[index].gydj = e;
+							setDataSourceGy(NewArr);
+							gongY(index)
+						}}
+					/>
+				);
+			},
 		},
-	]
+	];
 	// 其他列表 Columns
 	const columnsQt: any = [
 		{
@@ -213,36 +239,38 @@ function QuotationEdit() {
 			align: 'center',
 			dataIndex: 'bjxm',
 			render: (_: any, recode: any, index: number) => {
-				console.log(_, recode, index, 'recode')
 				return (
-					<Input value={recode.bjxm} onChange={(e) => {
-						console.log(e)
-						const NewArr = [...dataSourceQt]
-						NewArr[index].bjxm = e.target.value
-						setDataSourceQt(NewArr)
-					}}/>
-				)
+					<Input
+						value={recode.bjxm}
+						onChange={(e) => {
+							const NewArr = [...dataSourceQt];
+							NewArr[index].bjxm = e.target.value;
+							setDataSourceQt(NewArr);
+						}}
+					/>
+				);
 			},
 		},
 		{
 			title: '报价生效规格',
 			align: 'center',
-			dataIndex: 'bjsxgg'
+			dataIndex: 'bjsxgg',
 		},
 		{
 			title: '用途',
 			align: 'center',
 			dataIndex: 'yt',
 			render: (_: any, recode: any, index: number) => {
-				console.log(_, recode, index, 'recode')
 				return (
-					<Input value={recode.yt} onChange={(e) => {
-						console.log(e)
-						const NewArr = [...dataSourceQt]
-						NewArr[index].yt = e.target.value
-						setDataSourceQt(NewArr)
-					}}/>
-				)
+					<Input
+						value={recode.yt}
+						onChange={(e) => {
+							const NewArr = [...dataSourceQt];
+							NewArr[index].yt = e.target.value;
+							setDataSourceQt(NewArr);
+						}}
+					/>
+				);
 			},
 		},
 		{
@@ -251,15 +279,16 @@ function QuotationEdit() {
 			dataIndex: 'jsdw',
 			width: 100,
 			render: (_: any, recode: any, index: number) => {
-				console.log(_, recode, index, 'recode')
 				return (
-					<Input value={recode.jsdw} onChange={(e) => {
-						console.log(e)
-						const NewArr = [...dataSourceQt]
-						NewArr[index].jsdw = e.target.value
-						setDataSourceQt(NewArr)
-					}}/>
-				)
+					<Input
+						value={recode.jsdw}
+						onChange={(e) => {
+							const NewArr = [...dataSourceQt];
+							NewArr[index].jsdw = e.target.value;
+							setDataSourceQt(NewArr);
+						}}
+					/>
+				);
 			},
 		},
 		{
@@ -268,34 +297,37 @@ function QuotationEdit() {
 			dataIndex: 'sysl',
 			width: 100,
 			render: (_: any, recode: any, index: number) => {
-				console.log(_, recode, index, 'recode')
 				return (
-					<InputNumber value={recode.sysl} min={0} onChange={(e) => {
-						console.log(e)
-						const NewArr = [...dataSourceQt]
-						NewArr[index].sysl = e
-						setDataSourceQt(NewArr)
-					}}/>
-				)
-			}
+					<InputNumber
+						value={recode.sysl}
+						min={0}
+						onChange={(e) => {
+							const NewArr = [...dataSourceQt];
+							NewArr[index].sysl = e;
+							setDataSourceQt(NewArr);
+						}}
+					/>
+				);
+			},
 		},
 		{
 			title: '操作',
 			align: 'center',
 			render: (_: any, recode: any, index: number) => {
 				return (
-					<a onClick={() => {
-						const NewArr = [...dataSourceQt]
-						console.log(index, '当前是第一个')
-						NewArr.splice(index, 1)
-						console.log(NewArr, 'NewArr')
-						setDataSourceQt(NewArr)
-					}
-					}>删除</a>
-				)
-			}
-		}
-	]
+					<a
+						onClick={() => {
+							const NewArr = [...dataSourceQt];
+							NewArr.splice(index, 1);
+							setDataSourceQt(NewArr);
+						}}
+					>
+						删除
+					</a>
+				);
+			},
+		},
+	];
 	// 其他列表 Columns
 	const columnsHz: any = [
 		{
@@ -306,7 +338,7 @@ function QuotationEdit() {
 		{
 			title: '物料报价',
 			align: 'center',
-			dataIndex: 'wlbj'
+			dataIndex: 'wlbj',
 		},
 		{
 			title: '工艺报价',
@@ -318,58 +350,131 @@ function QuotationEdit() {
 			align: 'center',
 			dataIndex: 'qtbj',
 		},
-	]
+	];
+	useEffect(() => {
+		queryById({id: params.id}).then((res) => {
+			const entry = JSON.parse(res.entry.extra || '')
+			console.log(entry, 'entry')
+			setDataSourceWl(entry.materialDetailList)
+			setDataSourceGy(entry.workmanshipDetailList)
+			setData(entry)
+		});
+	}, []);
+	const wuL = (index: any) => {
+		const NewArr = [...dataSourceWl];
+		const da = NewArr[index]
+		da.wlhz = (Number(da.dj || 0) * Number(da.skuyl || 0)) * (Number(da.shl || 0) / 100);
+		const minby = _.minBy(NewArr, 'wlhz').wlhz
+		const maxby = _.maxBy(NewArr, 'wlhz').wlhz
+		console.log(minby, maxby)
+		setWlbjz(`${minby}元~${maxby}元`)
+		setDataSourceWl(NewArr);
+	}
+	const gongY = (index: any) => {
+		const NewArr = [...dataSourceGy];
+		const da = NewArr[index]
+		da.gyhz = Number(da.gydj || 0)
+		const minby = _.minBy(NewArr, 'gyhz').gyhz
+		const maxby = _.maxBy(NewArr, 'gyhz').gyhz
+		console.log(minby, maxby)
+		setGybjz(`${minby}元~${maxby}元`)
+		setDataSourceGy(NewArr);
+	}
 	// 汇总提交表单
 	const submit = () => {
-		console.log(dataSourceWl, 'dataWl')
-		console.log(dataSourceGy, 'dataGy')
-	}
+		console.log(dataSourceWl, 'dataWl');
+		console.log(dataSourceGy, 'dataGy');
+	};
+
 	return (
-		<div>
+		<div className={'edit-quo'}>
 			<ProCard>
 				<GoodImgEditCheck/>
 			</ProCard>
-			<ProCard
-				title={'图样副图'}>
+			<ProCard title={'图样副图'}>
 				<Descriptions column={1}>
 					<Descriptions.Item label={'图片附件'}>
 						<Image.PreviewGroup>
 							{arr.map((item: any, index) => {
 								return (
-									<span key={index} style={{marginLeft: index === 0 ? 0 : 20}}>
-										<Image src={item.src} width={100} height={100}/>
-									</span>
-								)
+									<span
+										key={index}
+										style={{marginLeft: index === 0 ? 0 : 20}}
+									>
+                    <Image src={item.src} width={100} height={100}/>
+                  </span>
+								);
 							})}
 						</Image.PreviewGroup>
 					</Descriptions.Item>
 					<Descriptions.Item label={'其他附件'}>
-						<div>内部机密</div>
+						{qtarr.map((item: any, index) => {
+							return (
+								<span
+									key={index}
+									style={{marginLeft: index === 0 ? 0 : 20}}
+								>
+                    <Image src={item.src} width={100} height={100}/>
+                  </span>
+							);
+						})}
 					</Descriptions.Item>
 					<Descriptions.Item label={'尺寸标准'}>
-						<Table size={'small'} scroll={{x: 900}} columns={columns}/>
+						<Table size={'small'} scroll={{x: 900}} columns={columns} dataSource={data.sizeDetailList}/>
 					</Descriptions.Item>
 					<Descriptions.Item label={'尺寸副图'}>
-						<Image src={'https://img1.baidu.com/it/u=664069914,3928453659&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500'}
-									 width={100} height={100}/>
+						{ccftarr.map((item: any, index) => {
+							return (
+								<span
+									key={index}
+									style={{marginLeft: index === 0 ? 0 : 20}}
+								>
+                    <Image src={item.src} width={100} height={100}/>
+                  </span>
+							);
+						})}
 					</Descriptions.Item>
 					<Descriptions.Item label={'物料报价'}>
-						<Table size={'small'} columns={columnsWl} dataSource={dataSourceWl} scroll={{x: 900}} pagination={false}/>
+						<h1 style={{margin: 0}}>物料报价:{wlbjz}</h1>
+						<Table
+							size={'small'}
+							columns={columnsWl}
+							dataSource={dataSourceWl}
+							scroll={{x: 900}}
+							pagination={false}
+						/>
 					</Descriptions.Item>
 					<Descriptions.Item label={'工艺报价'}>
-						<Table size={'small'} columns={columnsGy} dataSource={dataSourceGy} scroll={{x: 900}} pagination={false}/>
+						<h1 style={{margin: 0}}>工艺报价:{gybjz}</h1>
+						<Table
+							size={'small'}
+							columns={columnsGy}
+							dataSource={dataSourceGy}
+							scroll={{x: 900}}
+							pagination={false}
+						/>
 					</Descriptions.Item>
 					<Descriptions.Item label={'其他报价'}>
-						<RepeatTable columns={columnsQt} dataSource={dataSourceQt} setData={setDataSourceQt}/>
+						<RepeatTable
+							columns={columnsQt}
+							dataSource={dataSourceQt}
+							setData={setDataSourceQt}
+						/>
 					</Descriptions.Item>
 					<Descriptions.Item label={'汇总报价'}>
-						<Table size={'small'} scroll={{x: 900}} columns={columnsHz} dataSource={dataSourceHz} pagination={false}/>
+						<Table
+							size={'small'}
+							scroll={{x: 900}}
+							columns={columnsHz}
+							dataSource={dataSourceHz}
+							pagination={false}
+						/>
 					</Descriptions.Item>
 				</Descriptions>
 			</ProCard>
 			<BottomButton onOk={submit}/>
 		</div>
-	)
+	);
 }
 
-export default QuotationEdit
+export default QuotationEdit;

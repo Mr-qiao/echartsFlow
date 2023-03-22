@@ -1,18 +1,7 @@
 import { request } from '@umijs/max';
 
 //合作商服务概况
-export async function getProblemTypeTree(
-  params?: API.HomeInfo,
-  options?: { [key: string]: any },
-) {
-  return request<API.Result_Home>('customer-manage/type/problemTypeTree', {
-    method: 'GET',
-    params: {
-      ...params,
-    },
-    ...(options || {}),
-  });
-}
+
 
 /** 获取当前系统登录者 用户信息 */
 
@@ -36,7 +25,7 @@ export async function getSignature(body, options) {
   });
 }
 
-export function getOssFileUrl(body: object, options) {
+export function getOssFileUrl(body: object) {
   return request('rss/public/resource/getResourceUrl', {
     method: 'POST',
     data: body,

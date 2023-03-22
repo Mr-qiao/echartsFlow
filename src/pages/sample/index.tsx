@@ -1,42 +1,38 @@
-import {ProTable} from "@ant-design/pro-components";
-import {Button, Image, Space} from "antd";
-import {useRef, useState} from "react";
-import {TFunction} from "@sinclair/typebox";
-import GoodsTableCol from "@/components/goodsTableCol";
-import {history} from "umi";
-
+import {ProTable} from '@ant-design/pro-components';
+import {Button, Image, Space} from 'antd';
+import {useRef, useState} from 'react';
+import {queryList} from '@/pages/sample/apis';
+import moment from 'moment';
+import {filterPageName} from "@/utils";
 
 function Sample() {
-	const [activeKey, setActiveKey] = useState('1')
-	const actionRef = useRef() as any
+	const [activeKey, setActiveKey] = useState('1');
+	const actionRef = useRef() as any;
 	const columns: any = [
 		{
 			title: '样衣图片',
-			dataIndex: 'imageUrls',
-			search:false,
+			dataIndex: 'imgs',
+			search: false,
 			width: 180,
 			render: (_: any, recode: any) => {
-				console.log(recode, 'recode')
-				return (
-					<Image width={60} height={60} src={'https://img1.baidu.com/it/u=664069914,3928453659&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500'}/>
-				)
-			}
+				return <Image width={60} height={60} src={recode.refImages[0]}/>;
+			},
 		},
 		{
 			title: '样衣名称',
-			dataIndex: 'sampleClothesName',
+			dataIndex: 'refTitle',
 		},
 		{
 			title: '样衣编码',
-			dataIndex: 'sampleClothesCode',
+			dataIndex: 'refSysCode',
 		},
 		{
 			title: '需求单编码',
-			dataIndex: 'requirementCode',
+			dataIndex: 'sysCode',
 		},
 		{
 			title: '品类',
-			dataIndex: 'categoryId',
+			dataIndex: 'refCategoryName',
 		},
 		// {
 		// 	title: '品牌',
@@ -45,17 +41,13 @@ function Sample() {
 		// },
 		{
 			title: '商家款式编码',
-			dataIndex: 'supplierStyleCode',
-		},
-		{
-			title: '规格',
-			search:false,
-			dataIndex: 'specification',
+			dataIndex: 'refSysCode',
 		},
 		{
 			title: '需求时间',
 			search: false,
-			dataIndex: 'createTime',
+			dataIndex: 'gmtCreate',
+			render: (i: any) => moment(i).format('YYYY-MM-DD HH:mm:ss'),
 		},
 		{
 			title: '是否现货',
@@ -79,7 +71,7 @@ function Sample() {
 		},
 		{
 			title: '预计交付时间',
-			search:false,
+			search: false,
 			dataIndex: 'requirementTime',
 		},
 		{
@@ -104,270 +96,70 @@ function Sample() {
 						<a>备注状态</a>
 						<a>交付样衣</a>
 					</Space>
-				)
-			}
+				);
+			},
 		},
-	]
+	];
 	return (
 		<ProTable
 			columns={columns}
 			scroll={{
-				x: 2100
+				x: 2100,
 			}}
 			rowKey={'index'}
 			search={{
-				labelWidth: 120
+				labelWidth: 120,
 			}}
 			actionRef={actionRef}
-			request={async (
-				// 第一个参数 params 查询表单和 params 参数的结合
-				// 第一个参数中一定会有 pageSize 和  current ，这两个参数是 antd 的规范
-				params,
-				sort,
-				filter,
-			) => {
-				console.log(activeKey, params, 'ac')
+			request={async (params, sort, filter) => {
+				const arg0 = {
+					...filterPageName(params),
+				};
+				const res: any = await queryList(arg0, {});
+				const data = res.entry.list;
 				return {
-					data: [
-						{
-							index: 1,
-							id: 2,
-							xpmc: '六味地黄丸',
-							splm: '药',
-							sppp: '六位',
-							ys: '黑色',
-							cm: 'xxl'
-						},
-						{
-							index: 2,
-							xpmc: '六味地黄丸',
-							splm: '药',
-							sppp: '六位',
-							ys: '黑色',
-							cm: 'xxl'
-						}
-						,
-						{
-							index: 3,
-							xpmc: '六味地黄丸',
-							splm: '药',
-							sppp: '六位',
-							ys: '黑色',
-							cm: 'xxl'
-						}
-						,
-						{
-							index: 4,
-							xpmc: '六味地黄丸',
-							splm: '药',
-							sppp: '六位',
-							ys: '黑色',
-							cm: 'xxl'
-						}
-						,
-						{
-							index: 4,
-							xpmc: '六味地黄丸',
-							splm: '药',
-							sppp: '六位',
-							ys: '黑色',
-							cm: 'xxl'
-						}
-						,
-						{
-							index: 4,
-							xpmc: '六味地黄丸',
-							splm: '药',
-							sppp: '六位',
-							ys: '黑色',
-							cm: 'xxl'
-						}
-						,
-						{
-							index: 4,
-							xpmc: '六味地黄丸',
-							splm: '药',
-							sppp: '六位',
-							ys: '黑色',
-							cm: 'xxl'
-						}
-						,
-						{
-							index: 4,
-							xpmc: '六味地黄丸',
-							splm: '药',
-							sppp: '六位',
-							ys: '黑色',
-							cm: 'xxl'
-						}
-						,
-						{
-							index: 4,
-							xpmc: '六味地黄丸',
-							splm: '药',
-							sppp: '六位',
-							ys: '黑色',
-							cm: 'xxl'
-						}
-						,
-						{
-							index: 4,
-							xpmc: '六味地黄丸',
-							splm: '药',
-							sppp: '六位',
-							ys: '黑色',
-							cm: 'xxl'
-						}
-						,
-						{
-							index: 4,
-							xpmc: '六味地黄丸',
-							splm: '药',
-							sppp: '六位',
-							ys: '黑色',
-							cm: 'xxl'
-						}
-						,
-						{
-							index: 4,
-							xpmc: '六味地黄丸',
-							splm: '药',
-							sppp: '六位',
-							ys: '黑色',
-							cm: 'xxl'
-						}
-						,
-						{
-							index: 4,
-							xpmc: '六味地黄丸',
-							splm: '药',
-							sppp: '六位',
-							ys: '黑色',
-							cm: 'xxl'
-						}
-						,
-						{
-							index: 4,
-							xpmc: '六味地黄丸',
-							splm: '药',
-							sppp: '六位',
-							ys: '黑色',
-							cm: 'xxl'
-						}
-						,
-						{
-							index: 4,
-							xpmc: '六味地黄丸',
-							splm: '药',
-							sppp: '六位',
-							ys: '黑色',
-							cm: 'xxl'
-						}
-						,
-						{
-							index: 4,
-							xpmc: '六味地黄丸',
-							splm: '药',
-							sppp: '六位',
-							ys: '黑色',
-							cm: 'xxl'
-						}
-						,
-						{
-							index: 4,
-							xpmc: '六味地黄丸',
-							splm: '药',
-							sppp: '六位',
-							ys: '黑色',
-							cm: 'xxl'
-						}
-						,
-						{
-							index: 4,
-							xpmc: '六味地黄丸',
-							splm: '药',
-							sppp: '六位',
-							ys: '黑色',
-							cm: 'xxl'
-						}
-						,
-						{
-							index: 4,
-							xpmc: '六味地黄丸',
-							splm: '药',
-							sppp: '六位',
-							ys: '黑色',
-							cm: 'xxl'
-						}
-						,
-						{
-							index: 4,
-							xpmc: '六味地黄丸',
-							splm: '药',
-							sppp: '六位',
-							ys: '黑色',
-							cm: 'xxl'
-						}
-						,
-						{
-							index: 4,
-							xpmc: '六味地黄丸',
-							splm: '药',
-							sppp: '六位',
-							ys: '黑色',
-							cm: 'xxl'
-						}
-					]
-				}
-
+					data: data,
+					success: res.success,
+					// 不传会使用 data 的长度，如果是分页一定要传
+					total: res?.entry.totalRecord,
+				};
 			}}
 			defaultSize={'small'}
 			form={{
-				size: 'small'
+				size: 'small',
 			}}
-			toolbar={{
-				menu: {
-					type: 'tab',
-					activeKey: activeKey,
-					items: [
-						{
-							key: '1',
-							label: <span>全部</span>,
+			toolbar={
+				{
+					menu: {
+						type: 'tab',
+						activeKey: activeKey,
+						items: [
+							{
+								key: '1',
+								label: <span>全部</span>,
+							},
+							{
+								key: '2',
+								label: <span>待开始</span>,
+							},
+							{
+								key: '3',
+								label: <span>打样中</span>,
+							},
+							{
+								key: '4',
+								label: <span>已交付</span>,
+							},
+						],
+						onChange: (key: string) => {
+							setActiveKey(key as string);
+							actionRef.current.reload();
 						},
-						{
-							key: '2',
-							label: <span>待开始</span>,
-						},
-						{
-							key: '3',
-							label: <span>打样中</span>,
-						},
-						{
-							key: '4',
-							label: <span>已交付</span>,
-						},
-					],
-					onChange: (key: string) => {
-						console.log(key, actionRef, 'key')
-						setActiveKey(key as string);
-						actionRef.current.reload()
 					},
-				},
-			} as any}
-			headerTitle={
-				<Button
-					key="1"
-					type="primary"
-					onClick={() => {
-						alert('add');
-					}}
-				>
-					创建供应商款式信息
-				</Button>
+				} as any
 			}
-		>
-		</ProTable>
-	)
+		></ProTable>
+	);
 }
 
-export default Sample
+export default Sample;

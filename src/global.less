@@ -1,5 +1,8 @@
+// eslint-disable-next-line function-url-quotes
+
 @import url('./variable.less');
-//@import url('./editStyle.less'); //antd组件样式修改
+@import url('./editStyle.less'); //antd组件样式修改
+
 body {
   margin: 0;
 }
@@ -50,4 +53,10 @@ a {
 
 a:hover {
   color: #f5222d;
+}
+
+:where(
+    .css-dev-only-do-not-override-jbrqf2
+  ).ant-pro-query-filter-collapse-button {
+  color: #f5222d !important;
 }
