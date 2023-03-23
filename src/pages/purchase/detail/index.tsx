@@ -296,7 +296,7 @@ function PurchaseDetail() {
             <TextArea maxLength={180} />
           </Form.Item>
           <Form.Item label={'商品备注'}>
-            <Table rowKey={'key'} columns={columnsBh} dataSource={dataSource} />
+            <Table rowKey={'key'} columns={columnsBh} pagination={false} dataSource={dataSource} />
           </Form.Item>
         </Form>
       </Modal>
