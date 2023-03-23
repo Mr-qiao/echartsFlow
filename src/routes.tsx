@@ -52,6 +52,11 @@ const routes = [
 				name: '打样需求列表',
 				path: '/goods/sample',
 				component: './sample',
+			},{
+				name: '打样需求详情',
+				hideInMenu: true,
+				path: '/goods/sample/detail',
+				component: './sample/CreateProof',
 			},
 		],
 	},

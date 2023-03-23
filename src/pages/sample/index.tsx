@@ -4,6 +4,7 @@ import {useRef, useState} from 'react';
 import {delivery, mark, queryList} from '@/pages/sample/apis';
 import moment from 'moment';
 import {filterPageName} from "@/utils";
+import {history} from "umi";
 
 
 const {Option} = Select
@@ -106,7 +107,9 @@ function Sample() {
 			render: (_: any, recode: any) => {
 				return (
 					<Space>
-						<a>查看</a>
+						<a onClick={() => {
+							history.push(`/goods/sample/detail?sampleId=${recode.id}`)
+						}}>查看</a>
 						<a onClick={() => {
 							console.log(recode, 'recode')
 							setbyId(recode)
