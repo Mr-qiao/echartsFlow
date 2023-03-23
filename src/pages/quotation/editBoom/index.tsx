@@ -178,33 +178,22 @@ function EditBoom() {
 						</Col>
 						<Col style={{marginLeft: 10}}>
 							<Row>
-								<Col span={24}>
-									<Image
-										width={80}
-										height={80}
-										src={
-											dataObj?.imgUrlList?.length > 0 && dataObj.imgUrlList[1]
+
+								{
+									dataObj?.imgUrlList?.length > 0 ? dataObj?.imgUrlList.map(((item, index) => {
+										if (index > 0) {
+											return (
+												<Col span={24} style={{marginTop: index > 1 ? 10 : 0}}>
+													<Image
+														width={80}
+														height={80}
+														src={item}
+													/>
+												</Col>
+											)
 										}
-									/>
-								</Col>
-								<Col span={24} style={{marginTop: 10}}>
-									<Image
-										width={80}
-										height={80}
-										src={
-											dataObj?.imgUrlList?.length > 0 && dataObj.imgUrlList[2]
-										}
-									/>
-								</Col>
-								<Col span={24} style={{marginTop: 10}}>
-									<Image
-										width={80}
-										height={80}
-										src={
-											dataObj?.imgUrlList?.length > 0 && dataObj.imgUrlList[3]
-										}
-									/>
-								</Col>
+									})) : null
+								}
 							</Row>
 						</Col>
 						<Col span={12}>
