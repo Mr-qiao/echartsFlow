@@ -416,7 +416,7 @@ const Launch: any = () => {
 												style={{border: '0', height: '100%'}}
 												onClick={() =>
 													history.push({
-														pathname: './login',
+														pathname: '/login',
 													})
 												}
 											>
