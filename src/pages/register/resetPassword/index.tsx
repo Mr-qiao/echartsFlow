@@ -161,7 +161,7 @@ export default (props: any) => {
           <Row>
             <Col offset={6}>
               <div>
-                <div style={{ display: 'flex' }}>
+                <div className={btn} style={{ display: 'flex' }}>
                   <Button
                     block
                     type="primary"
@@ -170,8 +170,9 @@ export default (props: any) => {
                   >
                     提交
                   </Button>
-                  <Button
+                  <a
                     type="link"
+                    style={{border: '0', height: '100%', color: '#466eff', padding: 0}}
                     onClick={() =>
                       history.push({
                         pathname: '/login',
@@ -179,7 +180,7 @@ export default (props: any) => {
                     }
                   >
                     返回登录
-                  </Button>
+                  </a>
                 </div>
               </div>
             </Col>
