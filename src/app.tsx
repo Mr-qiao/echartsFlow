@@ -6,6 +6,7 @@ import {useState} from 'react';
 import {errorConfig} from './requestErrorConfig';
 import AvatarName from '@/components/AvatarName';
 import Breadcrumb from '@/components/Breadcrumb';
+import 'antd/dist/antd.less'
 import {PageContainer, ProBreadcrumb} from '@ant-design/pro-components';
 import {ConfigProvider} from 'antd';
 import 'moment/dist/locale/zh-cn';
@@ -58,7 +59,7 @@ export const layout = () => {
 					// 	style={{width: '128px', height: '31px'}}
 					// 	src="https://s.xinc818.com/files/webcil9xmqi0aolow2y/logo_name@2x.png"
 					// />
-					<h1 style={{color:'#fff'}}>设计师中台-工厂端</h1>
+					<h1 style={{color: '#fff'}}>设计师中台-工厂端</h1>
 				)}
 			</div>
 		),

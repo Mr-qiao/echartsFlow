@@ -2,7 +2,7 @@ import {defineConfig} from '@umijs/max';
 import {routes} from './src/routes';
 
 export default defineConfig({
-	publicPath:'./',
+	publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
 	model: {},
 	initialState: {},
 	devtool: 'source-map',
