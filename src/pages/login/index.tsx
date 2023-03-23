@@ -233,7 +233,7 @@ const Launch: any = () => {
               type="link"
               onClick={() =>
                 history.push({
-                  pathname: './reset-password',
+                  pathname: '/reset-password',
                 })
               }
             >
@@ -243,7 +243,7 @@ const Launch: any = () => {
               type="link"
               onClick={() =>
                 history.push({
-                  pathname: './register/0',
+                  pathname: '/register/0',
                 })
               }
             >
