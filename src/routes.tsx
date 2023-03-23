@@ -49,7 +49,7 @@ const routes = [
 				hideInMenu: true,
 			},
 			{
-				name: '样衣列表',
+				name: '打样需求列表',
 				path: '/goods/sample',
 				component: './sample',
 			},
