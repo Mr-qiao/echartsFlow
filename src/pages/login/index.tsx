@@ -181,7 +181,7 @@ const Launch: any = () => {
             <Input
               size={'large'}
               prefix={<UserOutlined className="site-form-item-icon" />}
-              placeholder="请输入用户名/手机号"
+              placeholder="请输入用户名/邮箱"
               maxLength={20}
             />
           </Form.Item>
