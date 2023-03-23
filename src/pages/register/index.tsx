@@ -410,17 +410,19 @@ const Launch: any = () => {
 									</div>
 									<div className={styles.link}>
 										<span style={{color: '#333333'}}>已经入驻？</span>
-										<Button
-											type="link"
-											style={{border: '0', height: '100%'}}
-											onClick={() =>
-												history.push({
-													pathname: './login',
-												})
-											}
-										>
-											返回登录
-										</Button>
+										<div className={styles.btn}>
+											<Button
+												type="link"
+												style={{border: '0', height: '100%'}}
+												onClick={() =>
+													history.push({
+														pathname: './login',
+													})
+												}
+											>
+												返回登录
+											</Button>
+										</div>
 									</div>
 								</div>
 							</Col>
