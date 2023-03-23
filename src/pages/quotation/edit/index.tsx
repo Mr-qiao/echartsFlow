@@ -413,7 +413,7 @@ function QuotationEdit() {
 		const wll = _.cloneDeep(entry?.materialMap?.skuMaterialList)
 		const wl = _.cloneDeep(entry?.materialMap?.skuMaterialList)
 		const qt = JSON.parse(_.cloneDeep(entry?.otherPrice || "{}"))?.ohterList
-		entry.itemSkuList = entry.goodsInfoMap.goodsInfoList
+		entry.itemSkuList = entry?.goodsInfoMap?.goodsInfoList
 		setGybjz(entry.craftPrice)
 		setWlbjz(entry.materialPrice)
 		setDataSourcePp(wl)
