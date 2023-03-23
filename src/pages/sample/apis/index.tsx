@@ -35,3 +35,9 @@ export function delivery(body: object, options: any) {
 		}),
 	});
 }
+export function detail(body: object) {
+	return request('/item/item/designer/sample/clothes/requirement/detail', {
+		method: 'POST',
+		data: body,
+	});
+}
