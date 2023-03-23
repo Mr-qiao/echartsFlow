@@ -43,14 +43,16 @@ const codeMessage: any = {
  * pro 自带的错误处理， 可以在这里做自己的改动
  * @doc https://umijs.org/docs/max/request#配置
  */
+
+console.log(Cookies.get('token'), localStorage.getItem('token'), '123')
 export const errorConfig: RequestConfig = {
 	baseURL: ajaxBaseUrl,
 	timeout: 10000,
 	withCredentials: true,
-	headers: {
-		// 'app-code': 'SCM',
-		token: Cookies.get('token') || '',
-	},
+	// headers: {
+	// 	// 'app-code': 'SCM',
+	// 	token: localStorage.getItem('token') || '',
+	// },
 	// 错误处理： umi@3 的错误处理方案。
 	errorConfig: {
 		errorThrower: (res) => {
@@ -81,10 +83,12 @@ export const errorConfig: RequestConfig = {
 
 	// 请求拦截器
 	requestInterceptors: [
-		(config: RequestOptions) => {
+		(config: any) => {
+			console.log(config, 'config')
 			// 拦截请求配置，进行个性化处理。
 			// const url = config?.url?.concat('?token = 123');
 			const url = config?.url;
+			config.headers['token'] = Cookies.get('token') || localStorage.getItem('token');
 			return {...config, url};
 		},
 	],
