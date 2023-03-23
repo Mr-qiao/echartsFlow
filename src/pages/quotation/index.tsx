@@ -31,7 +31,7 @@ function Quotation() {
 		{
 			title: '商品信息',
 			width: 400,
-			search: true,
+			search: false,
 			render: (_: any, recode: any) => {
 				console.log(recode, 'imgUrlList');
 				return (
@@ -87,7 +87,7 @@ function Quotation() {
 				2: '待报价',
 				3: '已报价',
 				4: '已结束',
-				5: '已采用',
+				// 5: '已采用',
 			},
 		},
 		{
@@ -96,7 +96,7 @@ function Quotation() {
 			search: false,
 		},
 		{
-			title: '创建时间',
+			title: '询价时间',
 			dataIndex: 'time',
 			hideInTable: true,
 			renderFormItem: (item: any, _: any, form: any) => {
@@ -104,27 +104,46 @@ function Quotation() {
 			},
 		},
 		{
-			title: '创建时间',
-			dataIndex: 'startTime',
+			title: '报价时间',
+			dataIndex: 'bjTime',
+			hideInTable: true,
+			renderFormItem: (item: any, _: any, form: any) => {
+				return <RangePicker showTime placeholder={['请选择开始时间', '请选择结束时间']}/>;
+			},
+		},
+		{
+			title: '询价日期',
+			dataIndex: 'askTime',
 			search: false,
 			width: 180,
 			render: (_: any, recode: any) => {
 				return (
-					<div>{moment(recode.startTime).format('YYYY-MM-DD HH:mm:ss')}</div>
+					<div>{moment(recode.askTime).format('YYYY-MM-DD HH:mm:ss')}</div>
 				);
 			},
 		},
 		{
-			title: '结束时间',
-			dataIndex: 'endTime',
+			title: '报价截止日期',
+			dataIndex: 'askEndTime',
 			search: false,
 			width: 180,
 			render: (_: any, recode: any) => {
 				return (
-					<div>{moment(recode.endTime).format('YYYY-MM-DD HH:mm:ss')}</div>
+					<div>{moment(recode.askEndTime).format('YYYY-MM-DD HH:mm:ss')}</div>
 				);
 			},
 		},
+		// {
+		// 	title: '结束时间',
+		// 	dataIndex: 'endTime',
+		// 	search: false,
+		// 	width: 180,
+		// 	render: (_: any, recode: any) => {
+		// 		return (
+		// 			<div>{moment(recode.endTime).format('YYYY-MM-DD HH:mm:ss')}</div>
+		// 		);
+		// 	},
+		// },
 		{
 			title: '操作',
 			search: false,
@@ -171,14 +190,23 @@ function Quotation() {
 					status: activeKey === '0' ? undefined : activeKey,
 					...filterPageName(params),
 					itemIdList: params.itemId && [params.itemId],
-					startTime:
+					askStartTime:
 						params.time?.length > 0
 							? moment(params.time[0]).valueOf()
 							: undefined,
 
-					endTime:
+					askEndTime:
 						params.time?.length > 0
 							? moment(params.time[1]).valueOf()
+							: undefined,
+					answerStartTime:
+						params.bjTime?.length > 0
+							? moment(params.bjTime[0]).valueOf()
+							: undefined,
+
+					answerEndTime:
+						params.bjTime?.length > 0
+							? moment(params.bjTime[1]).valueOf()
 							: undefined,
 				};
 				const res = await queryList(arg0, {});
