@@ -1,43 +1,51 @@
-import { Tabs } from 'antd';
-import { ProCard } from '@ant-design/pro-components';
+import {Tabs} from 'antd';
+import {ProCard} from '@ant-design/pro-components';
 import TabList from '@/pages/orderManagement/tabList';
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
+import {statistics} from "@/pages/orderManagement/apis";
 
 function OrderManagement() {
-  const [tabKey, setTabKey] = useState('1') as any;
-  const items: any = [
-    {
-      key: '1',
-      label: `待发货`,
-      children: tabKey === '1' && <TabList tabKey={tabKey} />,
-    },
-    {
-      key: '2',
-      label: `已发货`,
-      children: tabKey === '2' && <TabList tabKey={tabKey} />,
-    },
-    {
-      key: '3',
-      label: `全部`,
-      children: tabKey === '3' && <TabList tabKey={tabKey} />,
-    },
-  ];
-  const onChange = (key: string) => {
-    setTabKey(key);
-  };
-  return (
-    <div>
-      {/*<ProCard>*/}
-      <Tabs
-        // type="card"
-        size={'large'}
-        defaultActiveKey={tabKey}
-        onChange={onChange}
-        items={items}
-      />
-      {/*</ProCard>*/}
-    </div>
-  );
+	const [tabKey, setTabKey] = useState('1') as any;
+	const [countNumber, setCountNumber] = useState({}) as any;
+	useEffect(() => {
+		statistics({}, {}).then((res: any) => {
+			console.log(res, 'res')
+			setCountNumber(res.entry)
+		})
+	}, [])
+	const items: any = [
+		{
+			key: '1',
+			label: `待发货(${countNumber.noSendCount})`,
+			children: tabKey === '1' && <TabList tabKey={tabKey}/>,
+		},
+		{
+			key: '2',
+			label: `已发货(${countNumber.sendCount})`,
+			children: tabKey === '2' && <TabList tabKey={tabKey}/>,
+		},
+		{
+			key: '3',
+			label: `全部(${countNumber.count})`,
+			children: tabKey === '3' && <TabList tabKey={tabKey}/>,
+		},
+	];
+	const onChange = (key: string) => {
+		setTabKey(key);
+	};
+	return (
+		<div>
+			{/*<ProCard>*/}
+			<Tabs
+				// type="card"
+				size={'large'}
+				defaultActiveKey={tabKey}
+				onChange={onChange}
+				items={items}
+			/>
+			{/*</ProCard>*/}
+		</div>
+	);
 }
 
 export default OrderManagement;
