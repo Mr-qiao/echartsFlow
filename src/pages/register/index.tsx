@@ -395,7 +395,7 @@ const Launch: any = () => {
 							</Checkbox>
 						</Form.Item>
 						<Row>
-							<Col offset={6}>
+							<Col offset={6} span={18}>
 								<div className={styles.btnFlex}>
 									<div className={styles.btn}>
 										<Button
@@ -410,10 +410,10 @@ const Launch: any = () => {
 									</div>
 									<div className={styles.link}>
 										<span style={{color: '#333333'}}>已经入驻？</span>
-										<div className={styles.btn}>
-											<Button
+										<div>
+											<a
 												type="link"
-												style={{border: '0', height: '100%'}}
+												style={{border: '0', height: '100%', color: '#466eff', padding: 0}}
 												onClick={() =>
 													history.push({
 														pathname: '/login',
@@ -421,7 +421,7 @@ const Launch: any = () => {
 												}
 											>
 												返回登录
-											</Button>
+											</a>
 										</div>
 									</div>
 								</div>
