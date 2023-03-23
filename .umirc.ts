@@ -19,6 +19,7 @@ export default defineConfig({
 	layout: {
 		title: '设计师中台-工厂端',
 	},
+	history: { type: 'hash' },
 	// theme: { '@primary-color': '#86909C' },
 	routes,
 	npmClient: 'yarn',
