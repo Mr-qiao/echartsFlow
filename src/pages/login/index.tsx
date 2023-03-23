@@ -173,7 +173,7 @@ const Launch: any = () => {
             rules={[
               {
                 required: true,
-                message: '请输入用户名/手机号',
+                message: '请输入用户名',
                 pattern: new RegExp(/^[A-Za-z0-9]+$/, 'g'),
               },
             ]}
