@@ -23,7 +23,7 @@ export default (props: any) => {
     resetPassword(arg0).then((res: any) => {
       if (res.status) {
         message.success('重置密码成功,请重新登陆!');
-        history.push('./login');
+        history.push('/login');
       } else {
         message.error(res?.message);
       }
@@ -174,7 +174,7 @@ export default (props: any) => {
                     type="link"
                     onClick={() =>
                       history.push({
-                        pathname: './login',
+                        pathname: '/login',
                       })
                     }
                   >
