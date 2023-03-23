@@ -28,9 +28,7 @@ function EditBoom() {
 			Number(data.ipExpense || 0) +
 			Number(data.packagingMaterial || 0) +
 			Number(data.expressCharge || 0);
-		console.log(hjs, 'hj');
 		NewArr[index].price = hjs;
-		console.log(NewArr, 'NewArr')
 		setDataSource(NewArr);
 	};
 	const columns: any = [
@@ -144,7 +142,6 @@ function EditBoom() {
 			align: 'center',
 			dataIndex: 'price',
 			render: (_, recode: any) => {
-				console.log(recode, 'recode')
 				return recode.price
 			}
 		},
@@ -154,7 +151,6 @@ function EditBoom() {
 	const {id} = useParams();
 	useEffect(() => {
 		queryById({id: id}).then((res) => {
-			console.log(res, 'res');
 			if (res.success) {
 				setDataObj(res.entry);
 				setItemProperties(res.entry?.itemProperties || []);
@@ -168,7 +164,6 @@ function EditBoom() {
 			}
 		});
 	}, []);
-	console.log(dataSource, 'data')
 	return (
 		<div>
 			<ProCard>
@@ -243,7 +238,6 @@ function EditBoom() {
 			<BottomButton
 				okText={'提交报价'}
 				onOk={() => {
-					console.log(dataSource, 'dataSource');
 					const arg0 = {
 						...dataObj,
 						goodsInfoMap: {
@@ -251,7 +245,6 @@ function EditBoom() {
 						}
 					};
 					updateById(arg0).then((res) => {
-						console.log(res, 'res');
 						if (res.success) {
 							message.success('成功')
 							history.push('/quotation/list')
