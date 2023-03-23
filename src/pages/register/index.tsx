@@ -570,16 +570,19 @@ const Launch: any = () => {
 						title="提交审核成功"
 						subTitle="企业认证信息已提交，工作人员将在 1-2 个工作日完成资料审核"
 						extra={[
-							<div className={styles.btn}>
-								<Button
-									type="primary"
-									key="console"
-									onClick={() => {
-										history.push('/login');
-									}}
-								>
-									返回
-								</Button>
+							<div className={styles.btnFlex} style={{justifyContent: 'center'}}>
+								<div className={styles.btn}>
+									<Button
+										type="primary"
+										key="console"
+										style={{border: '0', height: '100%', width: '100%'}}
+										onClick={() => {
+											history.push('/login');
+										}}
+									>
+										返回
+									</Button>
+								</div>
 							</div>
 						]}
 					/>
