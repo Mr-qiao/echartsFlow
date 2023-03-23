@@ -282,7 +282,6 @@ function AfterSales() {
 			};
 			exprotList(arg0, {responseType: 'blob', getResponse: true}).then(
 				(res: any) => {
-					if (!res.success) return
 					let blob = new Blob([res.data]);
 					let downloadElement = document.createElement('a');
 					let href = window.URL.createObjectURL(blob); //创建下载的链接
