@@ -166,7 +166,7 @@ const Launch: any = () => {
 		sendValidateCode({
 			email: email,
 			type: 1,
-			bizType: 1,
+			bizType: 18,
 		}).then((res: any) => {
 			if (res.status) {
 				message.success('验证码发送成功');
