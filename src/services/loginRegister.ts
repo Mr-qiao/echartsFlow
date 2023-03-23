@@ -83,7 +83,7 @@ export async function sendValidateCode(params: any, options?: any) {
 
 // 商家注册
 export async function register(params: any, options?: any) {
-  return request('/usercenter/corporation/register', {
+  return request('/usercenter/corporation/design/register', {
     method: 'POST',
     data: params,
     ...(options || {
