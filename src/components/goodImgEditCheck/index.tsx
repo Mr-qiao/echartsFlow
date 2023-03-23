@@ -33,13 +33,13 @@ function GoodImgEditCheck(props) {
 					<div className={'good-detail-title'}>{data.itemTitle}</div>
 					<Descriptions column={2}>
 						{data?.itemProperties?.map((item: any, index: any) => {
-							return (
-								item.propertyValues && item.propertyName && (
+							if (item.propertyValues && item.propertyName) {
+								return (
 									<Descriptions.Item key={index} label={item.propertyName}>
 										{item.propertyValues}
 									</Descriptions.Item>
 								)
-							);
+							}
 						})}
 					</Descriptions>
 					{/*<Descriptions column={1}>*/}
