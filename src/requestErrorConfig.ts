@@ -95,7 +95,7 @@ export const errorConfig: RequestConfig = {
 			// 拦截响应数据，进行个性化处理
 			const {data} = response as unknown as ResponseStructure;
 			console.log(data, 'data')
-			if (data.code === '1000010001') {
+			if (data.code === 1000010001) {
 				navigateToLogin();
 			}
 			return response;

@@ -16,17 +16,17 @@ function OrderManagement() {
 	const items: any = [
 		{
 			key: '1',
-			label: `待发货(${countNumber.noSendCount})`,
+			label: `待发货(${countNumber?.noSendCount||0})`,
 			children: tabKey === '1' && <TabList tabKey={tabKey}/>,
 		},
 		{
 			key: '2',
-			label: `已发货(${countNumber.sendCount})`,
+			label: `已发货(${countNumber?.sendCount||0})`,
 			children: tabKey === '2' && <TabList tabKey={tabKey}/>,
 		},
 		{
 			key: '3',
-			label: `全部(${countNumber.count})`,
+			label: `全部(${countNumber?.count||0})`,
 			children: tabKey === '3' && <TabList tabKey={tabKey}/>,
 		},
 	];

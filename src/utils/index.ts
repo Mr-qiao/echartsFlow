@@ -5,6 +5,7 @@ import DICT_CONST from '@/common/constants';
 import {history} from "umi";
 
 export function navigateToLogin() {
+	console.log('登录失效')
 	message.error('登录状态失效，请重新登陆')
 	history.push('/login')
 }
