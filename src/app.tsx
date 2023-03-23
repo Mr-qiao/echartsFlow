@@ -10,6 +10,7 @@ import 'antd/dist/antd.less'
 import {PageContainer, ProBreadcrumb} from '@ant-design/pro-components';
 import {ConfigProvider} from 'antd';
 import 'moment/dist/locale/zh-cn';
+import './global.less'
 
 import moment from 'moment';
 
