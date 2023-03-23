@@ -341,6 +341,9 @@ function QuotationEdit() {
 			title: '单个用价',
 			align: 'center',
 			dataIndex: 'qthz',
+			render:(_,recode:any)=>{
+				return recode.qthz
+			}
 		},
 		{
 			title: '操作',
@@ -420,7 +423,7 @@ function QuotationEdit() {
 		const gy = _.cloneDeep(entry?.craftMap?.workmanshipDetailList)
 		const wll = _.cloneDeep(entry?.materialMap?.skuMaterialList)
 		const wl = _.cloneDeep(entry?.materialMap?.skuMaterialList)
-		const qt = JSON.parse(_.cloneDeep(entry?.otherPrice || "{}"))?.ohterList
+		const qt = _.cloneDeep(entry?.otherMap?.ohterList)
 		entry.itemSkuList = entry?.goodsInfoMap?.goodsInfoList
 		setGybjz(entry.craftPrice)
 		setWlbjz(entry.materialPrice)
@@ -445,6 +448,7 @@ function QuotationEdit() {
 		da.qthz = Number(da.jsdj || 0) * Number(da.sysl || 0)
 		const sumby = _.sumBy(NewArr, 'qthz')
 		zongHz('qitahuizong', sumby, da?.bjsxgg,)
+		console.log(NewArr,'new')
 		setDataSourceQt(NewArr);
 	}
 	// 整个汇总
@@ -506,7 +510,7 @@ function QuotationEdit() {
 				...data.craftMap,
 				workmanshipDetailList: dataSourceGy
 			},
-			otherPrice: {
+			otherMap: {
 				ohterList: dataSourceQt
 			},
 			materialMap: {
