@@ -211,13 +211,13 @@ function EditBoom() {
 							<h1 style={{margin: 0}}>{dataObj?.itemTitle}</h1>
 							<Descriptions column={2}>
 								{itemProperties.map((item: any, index: any) => {
-									return (
-										item.propertyValues && (
-											<DescriptionsItem key={index} label={item.propertyName}>
+									if (item.propertyValues && item.propertyName) {
+										return (
+											<Descriptions.Item key={index} label={item.propertyName}>
 												{item.propertyValues}
-											</DescriptionsItem>
+											</Descriptions.Item>
 										)
-									);
+									}
 								})}
 							</Descriptions>
 							{/*<Descriptions column={1}>*/}
