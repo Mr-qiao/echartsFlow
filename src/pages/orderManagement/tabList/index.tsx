@@ -202,7 +202,7 @@ function TabList(props: any) {
 			),
 			dataIndex: 'sendTime',
 			renderFormItem: () => {
-				return <RangePicker showTime/>;
+				return <RangePicker showTime placeholder={['请选择开始时间','请选择结束时间']}/>;
 			},
 			formItemProps: {
 				htmlFor: '',

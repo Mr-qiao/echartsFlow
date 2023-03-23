@@ -58,7 +58,7 @@ function Purchase(props: any) {
       dataIndex: 'time',
       hideInTable: true,
       renderFormItem: (item: any, _: any, form: any) => {
-        return <RangePicker showTime />;
+        return <RangePicker showTime placeholder={['请选择开始时间','请选择结束时间']}/>;
       },
     },
     {
