@@ -178,7 +178,6 @@ function EditBoom() {
 						</Col>
 						<Col style={{marginLeft: 10}}>
 							<Row>
-
 								{
 									dataObj?.imgUrlList?.length > 0 ? dataObj?.imgUrlList.map(((item, index) => {
 										if (index > 0) {

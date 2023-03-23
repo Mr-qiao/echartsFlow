@@ -27,7 +27,7 @@ function QuotationEdit() {
 	const [data, setData] = useState({}) as any;
 	const [wlbjz, setWlbjz] = useState('')
 	const [gybjz, setGybjz] = useState('')
-	const [qtbjz, setQtbjz] = useState('')
+	const [huizong, setHuizong] = useState('')
 	const [hzData, setHzData] = useState([])
 	const [tabKey, setTabKey] = useState(0) as any;
 	const [wuTabItems, setWuTabItems] = useState([]) as any
@@ -135,6 +135,7 @@ function QuotationEdit() {
 			render: (_: any, recode: any, index: number) => {
 				return (
 					<InputNumber
+						precision={2}
 						value={recode.dj}
 						min={0}
 						onChange={(e) => {
@@ -223,6 +224,7 @@ function QuotationEdit() {
 				return (
 					<InputNumber
 						min={0}
+						precision={2}
 						value={recode.gydj}
 						onChange={(e) => {
 							const NewArr = [...dataSourceGy];
@@ -303,6 +305,7 @@ function QuotationEdit() {
 			render: (_: any, recode: any, index: number) => {
 				return (
 					<InputNumber
+						precision={2}
 						value={recode.jsdj}
 						onChange={(e) => {
 							const NewArr = [...dataSourceQt];
@@ -384,6 +387,11 @@ function QuotationEdit() {
 			align: 'center',
 			dataIndex: 'qitahuizong',
 		},
+		{
+			title: '汇总',
+			align: 'center',
+			dataIndex: 'huizong',
+		},
 	];
 	useEffect(() => {
 		queryListAll()
@@ -464,14 +472,26 @@ function QuotationEdit() {
 					}
 				}
 			})
-			console.log(a, 'a')
 			d.itemSkuList = a
 		} else {
 			const a = d.itemSkuList[tabKey]
 			a[lable] = value
 			console.log(a, 'a')
 		}
-		console.log(d, 'd')
+		const asd = d?.itemSkuList?.map((item: any) => {
+			const huizong = (Number(item?.gyhuizong || 0)
+				+ Number(item?.qitahuizong || 0)
+				+ Number(item?.wuliaohuizong || 0)).toFixed(2)
+			return ({
+				...item,
+				huizong: huizong
+			})
+		})
+
+		const minbyhuizong = _.minBy(asd, 'huizong').huizong
+		const maxbyhuizong = _.maxBy(asd, 'huizong').huizong
+		setHuizong(`${minbyhuizong}-${maxbyhuizong}`)
+		d.itemSkuList = asd
 		setData(d)
 	}
 	// 汇总提交表单
@@ -498,7 +518,8 @@ function QuotationEdit() {
 				goodsInfoList: data.itemSkuList
 			},
 			materialPrice: wlbjz,
-			craftPrice: gybjz
+			craftPrice: gybjz,
+			sumPrice: huizong
 		}
 		console.log(arg0, 'arg0')
 		updateById(arg0).then(res => {
