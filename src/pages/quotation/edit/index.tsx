@@ -410,7 +410,7 @@ function QuotationEdit() {
 		const NewArr = [...dataSourcePp[tabKey]?.materialDetailList];
 		const da = NewArr[index]
 		da.wlhz = _.ceil((Number(da.dj || 0) * Number(da.skuyl || 0)) / (Number(da.shl || 0) / 100), 2)
-		const sumby = _.sumBy(NewArr, 'wlhz')
+		const sumby = _.ceil(_.sumBy(NewArr, 'wlhz'), 2)
 		const datas = [...dataSourcePp]
 		datas[tabKey].materialDetailList = NewArr
 		datas[tabKey].hz = sumby

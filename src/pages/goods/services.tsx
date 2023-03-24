@@ -29,7 +29,7 @@ let Api = {
     },
     //商品-新增
     Add: async (body: { itemId: string }) => {
-      return request(`/item/item/saveItem/v3`, {
+      return request(`/item/item/saveItem/v3/forSupplier`, {
         method: 'POST',
         data: body,
       });

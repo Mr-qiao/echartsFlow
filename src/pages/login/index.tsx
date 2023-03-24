@@ -174,7 +174,6 @@ const Launch: any = () => {
               {
                 required: true,
                 message: '请输入用户名',
-                pattern: new RegExp(/^[A-Za-z0-9]+$/, 'g'),
               },
             ]}
           >
@@ -182,10 +181,8 @@ const Launch: any = () => {
               size={'large'}
               prefix={<UserOutlined className="site-form-item-icon" />}
               placeholder="请输入用户名/邮箱"
-              maxLength={20}
             />
           </Form.Item>
-
           <Form.Item
             label=""
             name="password"
