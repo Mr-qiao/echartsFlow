@@ -7,26 +7,26 @@ import {statistics} from "@/pages/orderManagement/apis";
 function OrderManagement() {
 	const [tabKey, setTabKey] = useState('1') as any;
 	const [countNumber, setCountNumber] = useState({}) as any;
-	useEffect(() => {
-		statistics({}, {}).then((res: any) => {
-			console.log(res, 'res')
-			setCountNumber(res.entry)
-		})
-	}, [])
+	// useEffect(() => {
+	// 	statistics({}, {}).then((res: any) => {
+	// 		console.log(res, 'res')
+	// 		setCountNumber(res.entry)
+	// 	})
+	// }, [])
 	const items: any = [
 		{
 			key: '1',
-			label: `待发货(${countNumber?.noSendCount||0})`,
+			label: `待发货`,
 			children: tabKey === '1' && <TabList tabKey={tabKey}/>,
 		},
 		{
 			key: '2',
-			label: `已发货(${countNumber?.sendCount||0})`,
+			label: `已发货`,
 			children: tabKey === '2' && <TabList tabKey={tabKey}/>,
 		},
 		{
 			key: '3',
-			label: `全部(${countNumber?.count||0})`,
+			label: `全部`,
 			children: tabKey === '3' && <TabList tabKey={tabKey}/>,
 		},
 	];

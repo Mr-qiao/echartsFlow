@@ -6,7 +6,6 @@ import {useState} from 'react';
 import {errorConfig} from './requestErrorConfig';
 import AvatarName from '@/components/AvatarName';
 import Breadcrumb from '@/components/Breadcrumb';
-import 'antd/dist/antd.less'
 import {PageContainer, ProBreadcrumb} from '@ant-design/pro-components';
 import {ConfigProvider} from 'antd';
 import 'moment/dist/locale/zh-cn';
@@ -109,7 +108,15 @@ export const layout = () => {
 							return <Breadcrumb {...props} />;
 						}}
 					>
-						{children}
+						<ConfigProvider
+							theme={{
+								token: {
+									colorPrimary: '#f5222d',
+								},
+							}}
+						>
+							{children}
+						</ConfigProvider>
 					</PageContainer>
 				</div>
 			);
