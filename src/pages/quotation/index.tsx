@@ -221,36 +221,36 @@ function Quotation() {
 			form={{
 				size: 'small',
 			}}
-			toolbar={
-				{
-					menu: {
-						type: 'tab',
-						activeKey: activeKey,
-						items: [
-							{
-								key: '0',
-								label: <span>全部</span>,
-							},
-							{
-								key: '2',
-								label: <span>待报价</span>,
-							},
-							{
-								key: '3',
-								label: <span>已报价</span>,
-							},
-							{
-								key: '4',
-								label: <span>已失效</span>,
-							},
-						],
-						onChange: (key: string) => {
-							setActiveKey(key as string);
-							actionRef.current.reload();
-						},
-					},
-				} as any
-			}
+			// toolbar={
+			// 	{
+			// 		menu: {
+			// 			type: 'tab',
+			// 			activeKey: activeKey,
+			// 			items: [
+			// 				{
+			// 					key: '0',
+			// 					label: <span>全部</span>,
+			// 				},
+			// 				{
+			// 					key: '2',
+			// 					label: <span>待报价</span>,
+			// 				},
+			// 				{
+			// 					key: '3',
+			// 					label: <span>已报价</span>,
+			// 				},
+			// 				{
+			// 					key: '4',
+			// 					label: <span>已失效</span>,
+			// 				},
+			// 			],
+			// 			onChange: (key: string) => {
+			// 				setActiveKey(key as string);
+			// 				actionRef.current.reload();
+			// 			},
+			// 		},
+			// 	} as any
+			// }
 		></ProTable>
 	);
 }
