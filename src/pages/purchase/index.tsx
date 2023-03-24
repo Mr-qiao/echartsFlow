@@ -65,7 +65,7 @@ function Purchase(props: any) {
       title: '预计交付日期',
       search: false,
       dataIndex: 'expectedTime',
-      render: (i: any) => moment(i).format('YYYY-MM-DD HH:mm:ss'),
+      render: (i: any) => moment(i).format('YYYY-MM-DD'),
     },
     {
       title: '状态',

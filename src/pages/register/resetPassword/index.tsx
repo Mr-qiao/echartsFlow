@@ -10,6 +10,7 @@ import {history} from '@@/core/history';
 
 export default (props: any) => {
 	const [form] = Form.useForm();
+	const [yanZhengName,setYanZhengName] =  useState('发送验证码') as any;
 	// step 1 发送验证码
 	const [isSend, setIsSend] = useState(false);
 	// step 1 是否点击发送验证码
@@ -57,6 +58,7 @@ export default (props: any) => {
 				if (res.status) {
 					message.success('验证码发送成功');
 					setIsSend(true);
+					setYanZhengName('重新获取')
 					onCount();
 				} else {
 					message.error(res.message);
@@ -118,7 +120,7 @@ export default (props: any) => {
 							</Col>
 							<Col span={8} offset={2}>
 								<Button onClick={sendCaptcha} disabled={isSend}>
-									{isSend ? `${count}后再次发送` : '发送验证码'}
+									{isSend ? `${count}后再次发送` : yanZhengName}
 								</Button>
 							</Col>
 						</Row>

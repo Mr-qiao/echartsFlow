@@ -288,14 +288,15 @@ const SkuCpt: any = ({ form }: any) => {
                           >
                             <Input style={{ width: '80%' }} placeholder="请输入规格分类～" />
                           </Form.Item>
-
-                          <DeleteOutlined
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              remove(o.name);
-                            }}
-                            style={{ display: 'inline-block', marginLeft: 10, color: '#ff3029' }}
-                          />
+                          {o.name !== 0 && (
+                            <DeleteOutlined
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                remove(o.name);
+                              }}
+                              style={{ display: 'inline-block', marginLeft: 10, color: '#ff3029' }}
+                            />
+                          )}
                         </Form.Item>
                       );
                     })}

@@ -1,8 +1,7 @@
-/* eslint-disable */
+import { Button, Input, message, Popconfirm, Table } from 'antd';
 import React, { useMemo, useState } from 'react';
 
 import PicturesWall from '@/components/PicturesWall';
-import { Button, Input, message, Popconfirm, Table } from 'antd';
 
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   editable?: boolean;
@@ -99,9 +98,9 @@ const SkuTablesCpt: any = React.forwardRef(({ value, onChange }: any, ref): any 
     },
     {
       title: '渠道销售sku编码',
-      dataIndex: 'commodityType',
+      dataIndex: 'outsideSkuCode',
       width: 130,
-      key: 2,
+      key: 'outsideSkuCode',
       editable: true,
       component: (record: any, idx: number) => {
         return (

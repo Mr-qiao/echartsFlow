@@ -297,19 +297,57 @@ const Launch: any = () => {
 							/>
 						</Form.Item>
 						<Form.Item
+							label="邮箱"
+							name="email"
+							rules={[
+								{
+									required: true,
+									message: '请输入正确邮箱',
+									pattern: new RegExp(
+										/^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(.[a-zA-Z0-9_-]+)+$/,
+										'g',
+									),
+								},
+							]}
+						>
+							<Input placeholder="推荐使用企业邮箱"/>
+						</Form.Item>
+						<Form.Item
+							label="验证码"
+							name="emailAuthCode"
+							rules={[
+								{
+									required: true,
+									message: '请输入6位邮箱验证码',
+									pattern: new RegExp(/^[0-9]+$/, 'g'),
+								},
+							]}
+						>
+							<Row>
+								<Col span={12}>
+									<Input placeholder="请输入6位邮箱验证码" maxLength={6}/>
+								</Col>
+								<Col span={8} offset={2}>
+									<Button onClick={sendCaptcha} disabled={isSend}>
+										{isSend ? `${count}后再次发送` : yanZhengName}
+									</Button>
+								</Col>
+							</Row>
+						</Form.Item>
+						<Form.Item
 							label="登录密码"
 							name="pwd"
 							rules={[
 								{
 									required: true,
-									message: '请输入登录密码',
+									message: '8-16位字母与数字组合，需同时包含大写、小写字母与数字',
 									pattern: new RegExp(/^[A-Za-z0-9]+$/, 'g'),
 								},
 							]}
 						>
 							<Input.Password
 								type="password"
-								placeholder="请输入密码"
+								placeholder="8-16位字母与数字组合，需同时包含大写、小写字母与数字"
 								autoComplete="new-password"
 								maxLength={20}
 							/>
@@ -327,47 +365,9 @@ const Launch: any = () => {
 						>
 							<Input.Password
 								type="password"
-								placeholder="请输入密码"
+								placeholder="8-16位字母与数字组合，需同时包含大写、小写字母与数字"
 								maxLength={20}
 							/>
-						</Form.Item>
-						<Form.Item
-							label="邮箱"
-							name="email"
-							rules={[
-								{
-									required: true,
-									message: '请输入正确邮箱',
-									pattern: new RegExp(
-										/^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(.[a-zA-Z0-9_-]+)+$/,
-										'g',
-									),
-								},
-							]}
-						>
-							<Input placeholder="请输入邮箱"/>
-						</Form.Item>
-						<Form.Item
-							label="验证码"
-							name="emailAuthCode"
-							rules={[
-								{
-									required: true,
-									message: '请输入验证码',
-									pattern: new RegExp(/^[0-9]+$/, 'g'),
-								},
-							]}
-						>
-							<Row>
-								<Col span={12}>
-									<Input placeholder="请输入6位验证码" maxLength={6}/>
-								</Col>
-								<Col span={8} offset={2}>
-									<Button onClick={sendCaptcha} disabled={isSend}>
-										{isSend ? `${count}后再次发送` : yanZhengName}
-									</Button>
-								</Col>
-							</Row>
 						</Form.Item>
 						<Form.Item
 							wrapperCol={{
@@ -404,7 +404,7 @@ const Launch: any = () => {
 									<div className={styles.btn}>
 										<Button
 											block
-											// disabled={!check}
+											disabled={!check}
 											type="primary"
 											htmlType="submit"
 											style={{border: '0', height: '100%'}}
