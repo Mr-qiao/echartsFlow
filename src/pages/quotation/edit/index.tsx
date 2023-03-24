@@ -409,13 +409,13 @@ function QuotationEdit() {
 	const wuL = (index: any) => {
 		const NewArr = [...dataSourcePp[tabKey]?.materialDetailList];
 		const da = NewArr[index]
-		da.wlhz = (Number(da.dj || 0) * Number(da.skuyl || 0)) * (Number(da.shl || 0) / 100);
+		da.wlhz = _.ceil((Number(da.dj || 0) * Number(da.skuyl || 0)) / (Number(da.shl || 0) / 100), 2)
 		const sumby = _.sumBy(NewArr, 'wlhz')
 		const datas = [...dataSourcePp]
 		datas[tabKey].materialDetailList = NewArr
 		datas[tabKey].hz = sumby
-		const minby = _.minBy(datas, 'hz').hz
-		const maxby = _.maxBy(datas, 'hz').hz
+		const minby = _.ceil(_.minBy(datas, 'hz').hz, 2)
+		const maxby = _.ceil(_.maxBy(datas, 'hz').hz, 2)
 		datas[tabKey].minby = minby
 		datas[tabKey].maxby = maxby
 		setWlbjz(`${minby}-${maxby}`)
@@ -490,9 +490,9 @@ function QuotationEdit() {
 			a[lable] = value
 		}
 		const asd = d?.itemSkuList?.map((item: any) => {
-			const huizong = (Number(item?.gyhuizong || 0)
+			const huizong = _.ceil(Number(item?.gyhuizong || 0)
 				+ Number(item?.qitahuizong || 0)
-				+ Number(item?.wuliaohuizong || 0)).toFixed(2)
+				+ Number(item?.wuliaohuizong || 0), 2)
 			return ({
 				...item,
 				huizong: huizong
