@@ -143,7 +143,6 @@ function QuotationEdit() {
 							NewArr[index].dj = e;
 							const da = [...dataSourcePp]
 							da[tabKey].materialDetailList = NewArr
-							console.log(da)
 							setDataSourcePp(da);
 							wuL(index)
 						}}
@@ -165,7 +164,6 @@ function QuotationEdit() {
 							NewArr[index].skuyl = e;
 							const da = [...dataSourcePp]
 							da[tabKey].materialDetailList = NewArr
-							console.log(da)
 							setDataSourcePp(da);
 							wuL(index)
 						}}
@@ -189,7 +187,6 @@ function QuotationEdit() {
 							NewArr[index].shl = e;
 							const da = [...dataSourcePp]
 							da[tabKey].materialDetailList = NewArr
-							console.log(da)
 							setDataSourcePp(da);
 							wuL(index)
 						}}
@@ -260,16 +257,21 @@ function QuotationEdit() {
 			title: '报价生效规格',
 			align: 'center',
 			dataIndex: 'bjsxgg',
-			render: (_: any, recode: any, index: number) => {
+			render: (i: any, recode: any, index: number) => {
 				return (
 					<Select
 						style={{width: 200}}
 						value={recode.bjsxgg}
 						onChange={(e) => {
-							console.log(e, 'e')
 							const NewArr = [...dataSourceQt];
+							const info = NewArr[index]
 							NewArr[index].bjsxgg = e
 							setDataSourceQt(NewArr);
+							const asd = NewArr.filter(item => item.bjsxgg === recode.bjsxgg)
+							const qthz = Number(info.jsdj || 0) * Number(info.sysl || 0)
+							info.qthz = qthz
+							const sumby = _.sumBy(asd, 'qthz')
+							zongHz('qitahuizong', sumby, recode.bjsxgg)
 						}}>
 						{data?.itemSkuList?.map(item => {
 							return (
@@ -341,19 +343,25 @@ function QuotationEdit() {
 			title: '单个用价',
 			align: 'center',
 			dataIndex: 'qthz',
-			render:(_,recode:any)=>{
+			render: (_, recode: any) => {
 				return recode.qthz
 			}
 		},
 		{
 			title: '操作',
 			align: 'center',
-			render: (_: any, recode: any, index: number) => {
+			render: (i: any, recode: any, index: number) => {
 				return (
 					<a
 						onClick={() => {
 							const NewArr = [...dataSourceQt];
+							const info = NewArr[index]
 							NewArr.splice(index, 1);
+							const asd = NewArr.filter(item => item.bjsxgg === recode.bjsxgg)
+							const qthz = Number(info.jsdj || 0) * Number(info.sysl || 0)
+							info.qthz = qthz
+							const sumby = _.sumBy(asd, 'qthz')
+							zongHz('qitahuizong', sumby, recode.bjsxgg)
 							setDataSourceQt(NewArr);
 						}}
 					>
@@ -375,7 +383,6 @@ function QuotationEdit() {
 			align: 'center',
 			dataIndex: 'wuliaohuizong',
 			render: (_: any, recode: any) => {
-				console.log(recode.wuliaohuizong)
 				return recode.wuliaohuizong
 			}
 		},
@@ -400,7 +407,6 @@ function QuotationEdit() {
 		queryListAll()
 	}, []);
 	const wuL = (index: any) => {
-		console.log(dataSourcePp, 'dataSourceWl')
 		const NewArr = [...dataSourcePp[tabKey]?.materialDetailList];
 		const da = NewArr[index]
 		da.wlhz = (Number(da.dj || 0) * Number(da.skuyl || 0)) * (Number(da.shl || 0) / 100);
@@ -408,7 +414,6 @@ function QuotationEdit() {
 		const datas = [...dataSourcePp]
 		datas[tabKey].materialDetailList = NewArr
 		datas[tabKey].hz = sumby
-		console.log(datas, 'da')
 		const minby = _.minBy(datas, 'hz').hz
 		const maxby = _.maxBy(datas, 'hz').hz
 		datas[tabKey].minby = minby
@@ -442,13 +447,14 @@ function QuotationEdit() {
 		setDataSourceGy(NewArr);
 		zongHz('gyhuizong', sumby)
 	}
-	const qiT = (index: any) => {
+	const qiT = (index: any, select = false) => {
 		const NewArr = [...dataSourceQt];
 		const da: any = NewArr[index]
-		da.qthz = Number(da.jsdj || 0) * Number(da.sysl || 0)
-		const sumby = _.sumBy(NewArr, 'qthz')
+		const asd = NewArr.filter(item => item.bjsxgg === da.bjsxgg)
+		const qthz = Number(da.jsdj || 0) * Number(da.sysl || 0)
+		da.qthz = qthz
+		const sumby = _.sumBy(asd, 'qthz')
 		zongHz('qitahuizong', sumby, da?.bjsxgg,)
-		console.log(NewArr,'new')
 		setDataSourceQt(NewArr);
 	}
 	// 整个汇总
@@ -461,10 +467,12 @@ function QuotationEdit() {
 					[lable]: value
 				}
 			})
-			console.log(a, 'a')
 			d.itemSkuList = a
 		} else if (lable === 'qitahuizong') {
+			console.log(d.itemSkuList, dataSourceQt, 'd.itemSkuList')
+			console.log(Number(sku), 'Number(sku)')
 			const a = d.itemSkuList.map((item: any) => {
+				console.log(item, 'item')
 				if (item.skuId === Number(sku)) {
 					return {
 						...item,
@@ -480,7 +488,6 @@ function QuotationEdit() {
 		} else {
 			const a = d.itemSkuList[tabKey]
 			a[lable] = value
-			console.log(a, 'a')
 		}
 		const asd = d?.itemSkuList?.map((item: any) => {
 			const huizong = (Number(item?.gyhuizong || 0)
@@ -527,14 +534,12 @@ function QuotationEdit() {
 		}
 		console.log(arg0, 'arg0')
 		updateById(arg0).then(res => {
-			console.log(res, 'res')
 			if (res.success) {
 				message.success('成功')
 				history.push('/quotation/list')
 			}
 		})
 	};
-	console.log(data, 'data')
 	return (
 		<div className={'edit-quo'}>
 			<ProCard>
