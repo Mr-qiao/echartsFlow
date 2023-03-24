@@ -14,13 +14,13 @@ const getBase64 = (img: RcFile, callback: (url: string) => void) => {
 const beforeUpload = (file: RcFile) => {
   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
   if (!isJpgOrPng) {
-    message.error('You can only upload JPG/PNG file!');
+    message.error('只能上传jpg或png格式的图片');
   }
-  const isLt2M = file.size / 1024 / 1024 < 2;
+  const isLt2M = file.size / 1024 / 1024 < 5;
   if (!isLt2M) {
-    message.error('Image must smaller than 2MB!');
+    message.error('最大长传5m');
   }
-  return true;
+  return isJpgOrPng && isLt2M;
 };
 
 const ImgUpload: React.FC = (props: any) => {
@@ -53,6 +53,7 @@ const ImgUpload: React.FC = (props: any) => {
         className="avatar-uploader"
         showUploadList={false}
         beforeUpload={beforeUpload}
+        accept={'image/png, image/jpeg'}
         onChange={handleChange}
       >
         {imageUrl ? (

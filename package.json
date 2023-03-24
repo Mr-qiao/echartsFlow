@@ -25,7 +25,7 @@
     "@xlion/component": "^0.2.0",
     "@xlion/utils": "^0.3.3",
     "ahooks": "^3.7.5",
-    "antd": "^4.24.8",
+    "antd": "^5.3.2",
     "html2canvas": "~1.1.5",
     "js-base64": "^3.7.3",
     "js-cookie": "^3.0.1",

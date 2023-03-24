@@ -6,9 +6,6 @@ export default defineConfig({
 	model: {},
 	initialState: {},
 	devtool: 'source-map',
-	theme: {
-		"primary-color": "#f5222d",
-	},
 	request: {},
 	locale: {
 		default: 'zh-CN', // 工程默认语言

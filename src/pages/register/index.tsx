@@ -44,6 +44,8 @@ const bgStyle: any = {
 const Launch: any = () => {
 	const [form] = Form.useForm();
 	const params = useParams();
+	const [yanZhengName,setYanZhengName] =  useState('发送验证码') as any;
+	const [yanZhengNameTwo,setYanZhengNameTwo] = useState('发送验证码') as any;
 	// 当前第几步
 	const [current, setCurrnt] = useState(params.id) as any;
 	// step 1 发送验证码时间
@@ -171,6 +173,7 @@ const Launch: any = () => {
 			if (res.status) {
 				message.success('验证码发送成功');
 				setIsSend(true);
+				setYanZhengName('重新发送');
 				onCount();
 			} else {
 				message.error(res.message);
@@ -191,6 +194,7 @@ const Launch: any = () => {
 				if (res.status) {
 					message.success('验证码发送成功');
 					setIsSendTwo(true);
+					setYanZhengNameTwo('重新发送');
 					onCountTwo();
 				} else {
 					message.error(res.message);
@@ -231,9 +235,9 @@ const Launch: any = () => {
 						banner
 					/>
 				)}
-				<div className={styles.register}>商家入驻</div>
+				<div className={styles.register}>工厂入驻</div>
 				<Steps
-					current={current}
+					current={Number(current)}
 					className={styles.steps}
 					labelPlacement="vertical"
 					items={[
@@ -268,7 +272,7 @@ const Launch: any = () => {
 								},
 							]}
 						>
-							<Input/>
+							<Input maxLength={50} placeholder={'请输入营业执照上的公司全称'}/>
 						</Form.Item>
 						<Form.Item
 							label="登录名"
@@ -360,7 +364,7 @@ const Launch: any = () => {
 								</Col>
 								<Col span={8} offset={2}>
 									<Button onClick={sendCaptcha} disabled={isSend}>
-										{isSend ? `${count}后再次发送` : '发送验证码'}
+										{isSend ? `${count}后再次发送` : yanZhengName}
 									</Button>
 								</Col>
 							</Row>
@@ -400,7 +404,7 @@ const Launch: any = () => {
 									<div className={styles.btn}>
 										<Button
 											block
-											disabled={!check}
+											// disabled={!check}
 											type="primary"
 											htmlType="submit"
 											style={{border: '0', height: '100%'}}
@@ -452,7 +456,7 @@ const Launch: any = () => {
 								},
 							]}
 						>
-							<Input placeholder={'请输入公司全称'}/>
+							<Input maxLength={50} placeholder={'请输入营业执照上的公司全称'}/>
 						</Form.Item>
 						<Form.Item
 							label="统一社会信用代码"
@@ -525,7 +529,7 @@ const Launch: any = () => {
 								</Col>
 								<Col span={8} offset={2}>
 									<Button onClick={sendCaptchaTwo} disabled={isSendTwo}>
-										{isSendTwo ? `${countTwo}后再次发送` : '发送验证码'}
+										{isSendTwo ? `${countTwo}后再次发送` : yanZhengNameTwo}
 									</Button>
 								</Col>
 							</Row>
