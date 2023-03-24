@@ -33,7 +33,6 @@ function Quotation() {
 			width: 400,
 			search: false,
 			render: (_: any, recode: any) => {
-				console.log(recode, 'imgUrlList');
 				return (
 					<GoodsTableCol
 						imgs={recode?.imgUrlList?.map((item: any) => ({src: item}))}
@@ -246,7 +245,6 @@ function Quotation() {
 							},
 						],
 						onChange: (key: string) => {
-							console.log(key, actionRef, 'key');
 							setActiveKey(key as string);
 							actionRef.current.reload();
 						},

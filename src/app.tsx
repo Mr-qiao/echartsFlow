@@ -8,6 +8,7 @@ import AvatarName from '@/components/AvatarName';
 import Breadcrumb from '@/components/Breadcrumb';
 import {PageContainer, ProBreadcrumb} from '@ant-design/pro-components';
 import {ConfigProvider} from 'antd';
+import 'antd/dist/reset.css';
 import 'moment/dist/locale/zh-cn';
 import './global.less'
 
