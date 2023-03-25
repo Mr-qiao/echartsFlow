@@ -15,8 +15,9 @@ export default defineConfig({
 	},
 	layout: {
 		title: '设计师中台-工厂端',
+		logo: 'https://s.xinc818.com/assets/images/favicon.ico'
 	},
-	history: { type: 'hash' },
+	history: {type: 'hash'},
 	routes,
 	npmClient: 'yarn',
 	// proxy: {

@@ -28,7 +28,7 @@ function Purchase(props: any) {
     {
       title: '包含商品',
       hideInTable: true,
-      dataIndex: 'skuIdList',
+      dataIndex: 'skuCodeList',
       renderFormItem: (item: any, _: any, form: any) => {
         return <BatchInput />;
       },

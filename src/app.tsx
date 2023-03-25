@@ -23,6 +23,7 @@ export const layout = () => {
 	const [collapsed, setCollapsed] = useState(false);
 	return {
 		// layout: 'side',
+		logo: 'https://s.xinc818.com/assets/images/favicon.ico',
 		navTheme: 'light',
 		headerTheme: 'light',
 		token: {
