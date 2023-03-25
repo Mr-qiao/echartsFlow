@@ -21,7 +21,8 @@ function Purchase(props: any) {
 	const columns: any = [
 		{
 			title: '序号',
-			dataIndex: 'index'
+			dataIndex: 'index',
+			search: false,
 		},
 		{
 			title: '采购单号',
