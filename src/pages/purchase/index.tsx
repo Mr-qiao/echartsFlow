@@ -94,17 +94,11 @@ function Purchase(props: any) {
 			render: (i: any) => moment(i).format('YYYY-MM-DD'),
 		},
 		{
-			title: '状态',
-			dataIndex: 'statusDesc',
-			search: false,
-		},
-		{
 			title: '采购状态',
 			dataIndex: 'status',
-			hideInTable: true,
 			search: tabKey !== '0' ? false : true,
 			valueEnum: {
-				2: '代工厂确认', 3: '工厂已确认', 4: '工厂驳回', 5: '已作废'
+				2: '待确认', 3: '已确认', 4: '已驳回',
 			}
 		},
 		{
@@ -212,7 +206,7 @@ function Purchase(props: any) {
 					console.log(params, 'params')
 					const arg0 = {
 						...filterPageName(params),
-						status: tabKey === '0' ? undefined : Number(tabKey),
+						status: tabKey === '0' ? tabKey : Number(tabKey),
 						clientType: 2,
 						skuCodeList: params.skuCodeList ? params.skuCodeList?.split(',') : undefined,
 						purNoList: params.purNoList ? params.purNoList?.split(',') : undefined,
