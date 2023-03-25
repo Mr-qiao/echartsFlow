@@ -62,7 +62,6 @@ function PurchaseDetail() {
 			title: '商品信息',
 			dataIndex: 'xx',
 			search: false,
-			width: 400,
 			render: (_: any, recode: any) => {
 				return (
 					<GoodsTableCol
@@ -90,27 +89,22 @@ function PurchaseDetail() {
 		},
 		{
 			title: '采购单价',
-			width: 180,
 			dataIndex: 'price',
 		},
 		{
 			title: '采购数量',
-			width: 180,
 			dataIndex: 'number',
 		},
 		{
 			title: '采购金额',
-			width: 180,
 			dataIndex: 'amount',
 		},
 		{
 			title: '最近采购单价',
-			width: 180,
 			dataIndex: 'latelyPrice',
 		},
 		{
 			title: '最近询货单价',
-			width: 180,
 			dataIndex: 'askPrice',
 		},
 	];
@@ -274,9 +268,11 @@ function PurchaseDetail() {
 			</Card>
 			<Card title={'采购明细'}>
 				<Table
+					scroll={{
+						x: 'max-content',
+					}}
 					pagination={false}
 					columns={columns}
-					scroll={{x: 1440}}
 					size={'small'}
 					dataSource={data?.detailVOList}
 				/>
