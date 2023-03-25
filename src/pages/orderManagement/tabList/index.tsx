@@ -105,7 +105,7 @@ function TabList(props: any) {
 								key: recode.skuSpec,
 							},
 						]}
-						imgs={[{src: recode.itemImage}]}
+						imgs={[{src: recode?.itemImage || ''}]}
 					/>
 				);
 			},
