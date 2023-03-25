@@ -170,7 +170,7 @@ function Quotation() {
 		<ProTable
 			columns={columns}
 			scroll={{
-				x: 1440,
+				x: 'max-content',
 			}}
 			rowKey={'index'}
 			search={{

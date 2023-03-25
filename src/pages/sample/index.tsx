@@ -137,7 +137,7 @@ function Sample() {
 			<ProTable
 				columns={columns}
 				scroll={{
-					x: 2100,
+					x: 'max-content',
 				}}
 				rowKey={'index'}
 				search={{

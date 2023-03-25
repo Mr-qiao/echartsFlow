@@ -389,7 +389,9 @@ function TabList(props: any) {
 				columns={columns}
 				formRef={ref}
 				defaultSize={'small'}
-				scroll={{x: 1200}}
+				scroll={{
+					x: 'max-content',
+				}}
 				rowKey={'id'}
 				actionRef={actionRef}
 				request={async (params = {}, sort, filter) => {
