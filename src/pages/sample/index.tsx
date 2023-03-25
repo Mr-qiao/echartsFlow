@@ -111,7 +111,6 @@ function Sample() {
 							history.push(`/goods/sample/detail?sampleId=${recode.id}`)
 						}}>查看</a>
 						<a onClick={() => {
-							console.log(recode, 'recode')
 							setbyId(recode)
 							setOpen(true)
 						}}>备注状态</a>
@@ -119,7 +118,6 @@ function Sample() {
 							delivery(
 								{status: '3', itemId: recode?.itemId}, {}
 							).then((res: any) => {
-								console.log(res, 'res')
 								if (res.success) {
 									message.success('交付完成')
 									actionRef.current.reload()
@@ -200,7 +198,6 @@ function Sample() {
 						mark(
 							{...values, itemId: byId?.itemId}, {}
 						).then((res: any) => {
-							console.log(res, 'res')
 							if (res.success) {
 								message.success('备注状态成功')
 								actionRef.current.reload()

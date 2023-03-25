@@ -76,8 +76,15 @@ function Purchase(props: any) {
 			title: '预计交付日期',
 			dataIndex: 'time',
 			hideInTable: true,
-			renderFormItem: (item: any, _: any, form: any) => {
-				return <RangePicker placeholder={['请选择开始时间', '请选择结束时间']}/>;
+			valueType: 'dateRange',
+			search: {
+				transform: (value) => {
+					const [startTime, endTime] = value;
+					return {
+						expectedStartTime: moment(startTime).format('YYYY-MM-DD 00:00:00'),
+						expectedEndTime: moment(endTime).format('YYYY-MM-DD 23:59:59'),
+					};
+				},
 			},
 		},
 		{
@@ -164,10 +171,6 @@ function Purchase(props: any) {
 		ref?.current?.validateFields().then((res: any) => {
 			const arg0 = {
 				...res,
-				expectedStartTime:
-					res.time?.length > 0 ? moment(res.time[0]).valueOf() : undefined,
-				expectedEndTime:
-					res.time?.length > 0 ? moment(res.time[1]).valueOf() : undefined,
 			};
 			exportList(arg0, {responseType: 'blob', getResponse: true}).then(
 				(res: any) => {
@@ -206,20 +209,13 @@ function Purchase(props: any) {
 				rowKey={'id'}
 				formRef={ref}
 				request={async (params = {}, sort, filter) => {
+					console.log(params, 'params')
 					const arg0 = {
 						...filterPageName(params),
 						status: tabKey === '0' ? undefined : Number(tabKey),
 						clientType: 2,
-						expectedStartTime:
-							params.time?.length > 0
-								? moment(params.time[0]).valueOf()
-								: undefined,
-						expectedEndTime:
-							params.time?.length > 0
-								? moment(params.time[1]).valueOf()
-								: undefined,
-						skuCodeList:params.skuCodeList?params.skuCodeList?.split(','):undefined,
-						purNoList:params.purNoList?params.purNoList?.split(','):undefined,
+						skuCodeList: params.skuCodeList ? params.skuCodeList?.split(',') : undefined,
+						purNoList: params.purNoList ? params.purNoList?.split(',') : undefined,
 					};
 					const res: any = await queryList(arg0, {});
 					const data = res.entry.list.map((item, index) => ({...item, index: index + 1}));

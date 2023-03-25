@@ -6,7 +6,6 @@ import Cookies from "js-cookie";
 export default function () {
   const info: any = window.localStorage.getItem('info') || '';
   const JSONInfo = JSON.parse(info || '{}');
-  console.log(info, 'JSONInfo');
   return (
     <div className={'avatar-name'}>
       <Dropdown
