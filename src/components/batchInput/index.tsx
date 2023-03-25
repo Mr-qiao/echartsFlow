@@ -35,7 +35,7 @@ function BatchInput(props: any) {
               />
             }
           >
-            <a href="#">批量添加</a>
+            <a>批量添加</a>
           </Popover>
         </Col>
       </Row>
