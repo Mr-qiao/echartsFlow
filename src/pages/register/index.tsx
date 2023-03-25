@@ -206,13 +206,13 @@ const Launch: any = () => {
 			companyName: value,
 			// unifyCreditCode: val.unifyCreditCode
 		};
-		const res = await checkCompanyName(arg0, {
+		const res: any = await checkCompanyName(arg0, {
 			headers: {
 				token: Cookies.get('token'),
 			},
 		});
-		if (!res.status) {
-			return Promise.reject(new Error('公司已经入住过，无法入驻'));
+		if (res?.entry?.status == "error") {
+			return Promise.reject(new Error(res.entry.message));
 		} else {
 			return Promise.resolve();
 		}
