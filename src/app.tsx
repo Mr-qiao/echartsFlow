@@ -9,12 +9,12 @@ import Breadcrumb from '@/components/Breadcrumb';
 import {PageContainer, ProBreadcrumb} from '@ant-design/pro-components';
 import {ConfigProvider} from 'antd';
 import 'antd/dist/reset.css';
-import 'moment/dist/locale/zh-cn';
 import './global.less'
+import dayjs from 'dayjs';
+import 'dayjs/locale/zh-cn';
+dayjs.locale('zh-cn');
 
-import moment from 'moment';
 
-moment.locale('zh-cn');
 
 // 全局初始化数据配置，用于 Layout 用户信息和权限初始化
 // 更多信息见文档：https://umijs.org/docs/api/runtime-config#getinitialstate

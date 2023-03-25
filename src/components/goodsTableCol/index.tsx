@@ -46,7 +46,7 @@ function GoodsTableCol(props: any) {
   const imgF = imgs.slice(1);
   return (
     <Row className={'good-table-list'}>
-      {showImg && imgZ ? (
+      {showImg ? (
         <Image.PreviewGroup>
           <Col className={'good-table-list-img'}>
             <Col>

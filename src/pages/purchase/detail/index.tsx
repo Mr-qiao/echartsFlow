@@ -39,6 +39,7 @@ function PurchaseDetail() {
 				if (res.entry.status === 4) {
 					setBhShow(true);
 				}
+				res.entry.detailVOList = res.entry.detailVOList.map((item, index) => ({...item, index: index + 1}))
 				setData(res.entry);
 				setDataSource(res.entry.detailVOList);
 				queryByIdLogList({purNo: res.entry.purNo}, {}).then((res) => {
@@ -53,6 +54,10 @@ function PurchaseDetail() {
 	const [modalOpen, setModalOpen] = useState(false);
 	const [form] = Form.useForm();
 	const columns: any = [
+		{
+			title: '序号',
+			dataIndex: 'index',
+		},
 		{
 			title: '商品信息',
 			dataIndex: 'xx',
@@ -109,7 +114,7 @@ function PurchaseDetail() {
 			dataIndex: 'askPrice',
 		},
 	];
-	if(bhShow){
+	if (bhShow) {
 		columns.push(
 			{
 				title: bhShow && '驳回原因',
