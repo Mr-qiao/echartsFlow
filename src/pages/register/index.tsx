@@ -222,13 +222,13 @@ const Launch: any = () => {
 			unifyCreditCode: value,
 			// unifyCreditCode: val.unifyCreditCode
 		};
-		const res = await checkUnifyCreditCodeOld(arg0, {
+		const res: any = await checkUnifyCreditCodeOld(arg0, {
 			headers: {
 				token: Cookies.get('token'),
 			},
 		});
-		if (!res.status) {
-			return Promise.reject(new Error('该统一社会信用代码已经注册'));
+		if (res?.entry?.status == "error") {
+			return Promise.reject(new Error(res.entry.message));
 		} else {
 			return Promise.resolve();
 		}
@@ -473,11 +473,11 @@ const Launch: any = () => {
 							label="统一社会信用代码"
 							name="unifyCreditCode"
 							validateTrigger="onBlur"
-							help={'请输入91或93开头的18位阿拉伯数字或大写英文字母'}
+							// help={'请输入91或93开头的18位阿拉伯数字或大写英文字母'}
 							rules={[
 								{
 									required: true,
-									message: '请输入正确的登录名',
+									message: '请输入91或93开头的18位阿拉伯数字或大写英文字母',
 									pattern: new RegExp(
 										/[0-9A-HJ-NPQRTUWXY]{2}\d{6}[0-9A-HJ-NPQRTUWXY]{10}/,
 										'g',
