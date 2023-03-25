@@ -96,11 +96,11 @@ function Goods() {
 								key: recode.categoryName,
 							},
 						]}
-						imgs={recode.images.map((item: any) => {
+						imgs={recode?.images?.length > 0 ? recode?.images?.map((item: any) => {
 							return {
 								src: item,
 							};
-						})}
+						}) : []}
 					/>
 				);
 			},
