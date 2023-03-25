@@ -105,6 +105,7 @@ function TabList(props: any) {
 								key: recode.skuSpec,
 							},
 						]}
+						imgs={[{src: recode?.itemImage || ''}]}
 					/>
 				);
 			},
@@ -202,7 +203,7 @@ function TabList(props: any) {
 			),
 			dataIndex: 'sendTime',
 			renderFormItem: () => {
-				return <RangePicker showTime placeholder={['请选择开始时间','请选择结束时间']}/>;
+				return <RangePicker showTime placeholder={['请选择开始时间', '请选择结束时间']}/>;
 			},
 			formItemProps: {
 				htmlFor: '',
@@ -247,7 +248,7 @@ function TabList(props: any) {
 						nameArr={[
 							{
 								title: '快递',
-								key: recode.buyer,
+								key: recode.companyName,
 							},
 							{
 								title: '单号',
@@ -344,7 +345,7 @@ function TabList(props: any) {
 			let arg0: any = {
 				status: tabKey === '3' ? undefined : tabKey,
 				ids: selectedRowKeys,
-				timeType:timeSelect,
+				timeType: timeSelect,
 				...res,
 			};
 			arg0[sTime] =
@@ -400,7 +401,7 @@ function TabList(props: any) {
 					const eTime: any = timeSelect === '1' ? 'endCreateTime' : 'endTime';
 					let arg0: any = {
 						status: tabKey === '3' ? undefined : tabKey,
-						timeType:timeSelect,
+						timeType: timeSelect,
 						...params,
 					};
 					arg0[sTime] =
