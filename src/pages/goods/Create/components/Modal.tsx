@@ -106,7 +106,6 @@ export const SampleListModal = React.forwardRef(({ onChange }: any, ref) => {
       message.warning('请勾选后，在进行批量操作～');
       return;
     } else {
-      console.log(selectedRowKeys);
       onChange?.(selectedRowKeys);
       formModalRef.current?.hide();
     }
@@ -130,7 +129,6 @@ export const SampleListModal = React.forwardRef(({ onChange }: any, ref) => {
   //   form.setFieldsValue({ userIdsName: selectedRows?.[0]?.userName, userIds: selectedRows?.[0]?.userId });
   // }
   function onSelectChange(selectedRowKeys, selectedRows) {
-    console.log(selectedRowKeys);
     setSelectedRowKeys(selectedRowKeys);
   }
   return (

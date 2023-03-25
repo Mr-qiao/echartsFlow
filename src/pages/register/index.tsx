@@ -44,10 +44,10 @@ const bgStyle: any = {
 const Launch: any = () => {
 	const [form] = Form.useForm();
 	const params = useParams();
-	const [yanZhengName,setYanZhengName] =  useState('发送验证码') as any;
-	const [yanZhengNameTwo,setYanZhengNameTwo] = useState('发送验证码') as any;
+	const [yanZhengName, setYanZhengName] = useState('发送验证码') as any;
+	const [yanZhengNameTwo, setYanZhengNameTwo] = useState('发送验证码') as any;
 	// 当前第几步
-	const [current, setCurrnt] = useState(params.id) as any;
+	// const [current, setCurrent] = useState(params.id) as any;
 	// step 1 发送验证码时间
 	const [count, setCount] = useState(60);
 	// step 2 发送验证码时间
@@ -202,9 +202,6 @@ const Launch: any = () => {
 			},
 		);
 	};
-	const beforeUpload = async (file: any): Promise<any> => {
-		return false;
-	};
 
 	const validatePsw = async (_: any, value: any) => {
 		const arg0 = {
@@ -237,7 +234,7 @@ const Launch: any = () => {
 				)}
 				<div className={styles.register}>工厂入驻</div>
 				<Steps
-					current={Number(current)}
+					current={Number(params.id)}
 					className={styles.steps}
 					labelPlacement="vertical"
 					items={[
@@ -482,7 +479,7 @@ const Launch: any = () => {
 						<Form.Item
 							label={'营业执照'}
 							name="bizLicense"
-							help={'请上传文件'}
+							help={'支持扩展名：.jpg .png,最大不超过5M'}
 							rules={[{required: true, message: '请选择文件'}]}
 						>
 							<ImgUpload/>

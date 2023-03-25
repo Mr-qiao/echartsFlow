@@ -14,11 +14,13 @@ import BottomButton from '@/components/bottomButton';
 import {queryById, updateById} from '@/pages/quotation/apis';
 import {useParams} from '@umijs/max';
 import {history} from "umi";
+import _ from "lodash";
 
 const DescriptionsItem = Descriptions.Item;
 
 function EditBoom() {
 	const [dataSource, setDataSource] = useState([]) as any;
+	const [sumPrice, setSumPrice] = useState(0) as any
 	const hj = (index: any) => {
 		const NewArr = [...dataSource];
 		const data = NewArr[index];
@@ -29,6 +31,8 @@ function EditBoom() {
 			Number(data.packagingMaterial || 0) +
 			Number(data.expressCharge || 0);
 		NewArr[index].price = hjs;
+		const sum = _.sumBy(NewArr, 'price')
+		setSumPrice(sum)
 		setDataSource(NewArr);
 	};
 	const columns: any = [
@@ -230,7 +234,8 @@ function EditBoom() {
 						...dataObj,
 						goodsInfoMap: {
 							goodsInfoList: dataSource
-						}
+						},
+						sumPrice: sumPrice
 					};
 					updateById(arg0).then((res) => {
 						if (res.success) {

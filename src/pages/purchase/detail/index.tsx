@@ -32,7 +32,6 @@ function PurchaseDetail() {
 	const [dataSource, setDataSource] = useState([]) as any;
 	useEffect(() => {
 		queryById({id: urlParams.id}, {}).then((res) => {
-			console.log(res, 'res');
 			if (res.success) {
 				if (res.entry.status === 2) {
 					setActionBtnShow(true);
@@ -44,7 +43,6 @@ function PurchaseDetail() {
 				setDataSource(res.entry.detailVOList);
 				queryByIdLogList({purNo: res.entry.purNo}, {}).then((res) => {
 					if (res.success) {
-						console.log(res, 'res');
 						setLogList(res.entry);
 					}
 				});
@@ -59,23 +57,26 @@ function PurchaseDetail() {
 			title: '商品信息',
 			dataIndex: 'xx',
 			search: false,
-			// width: 300,
+			width: 400,
 			render: (_: any, recode: any) => {
 				return (
 					<GoodsTableCol
 						footerImg={false}
+						imgs={recode.imgUrlList.map((item: any) => ({
+							src: item
+						}))}
 						nameArr={[
 							{
 								title: '款式名称',
-								key: recode.name,
+								key: recode.itemTitle,
 							},
 							{
 								title: '货品编码',
-								key: recode.categoryName,
+								key: recode.skuId,
 							},
 							{
 								title: '规格',
-								key: recode.brandName,
+								key: recode.specification,
 							},
 						]}
 					/>
@@ -84,29 +85,39 @@ function PurchaseDetail() {
 		},
 		{
 			title: '采购单价',
+			width: 180,
 			dataIndex: 'price',
 		},
 		{
 			title: '采购数量',
+			width: 180,
 			dataIndex: 'number',
 		},
 		{
 			title: '采购金额',
+			width: 180,
 			dataIndex: 'amount',
 		},
 		{
 			title: '最近采购单价',
+			width: 180,
 			dataIndex: 'latelyPrice',
 		},
 		{
 			title: '最近询货单价',
+			width: 180,
 			dataIndex: 'askPrice',
 		},
-		{
-			title: bhShow && '驳回原因',
-			dataIndex: bhShow && 'rejectReason',
-		},
 	];
+	if(bhShow){
+		columns.push(
+			{
+				title: bhShow && '驳回原因',
+				width: 200,
+				dataIndex: bhShow && 'rejectReason',
+			},
+		)
+	}
 	const columnsCz: any = [
 		{title: '操作', dataIndex: 'operation'},
 		{title: '触发结果', dataIndex: 'result'},
@@ -131,7 +142,6 @@ function PurchaseDetail() {
 			rejectReason: action === 4 ? value.rejectReason : undefined,
 		};
 		updateStatus(arg0, {}).then((res: any) => {
-			console.log(res, 'res');
 			if (res.success) {
 				message.success(`${action === 3 ? '确认' : '驳回'}成功`);
 				history.push('/order/purchase');

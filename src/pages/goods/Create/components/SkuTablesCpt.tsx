@@ -188,10 +188,8 @@ const SkuTablesCpt: any = React.forwardRef(({ value, onChange }: any, ref): any 
   ];
   //table input change
   const handleInputValue = (value, record, idx) => {
-    // console.log(record, idx, name);
     let arr = [...dataSource];
     arr[idx][record.dataIndex] = value;
-    console.log(value);
     serDataSource(arr);
     triggerChange(arr);
   };

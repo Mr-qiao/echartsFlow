@@ -28,7 +28,7 @@ function QuotationEdit() {
 	const [wlbjz, setWlbjz] = useState('')
 	const [gybjz, setGybjz] = useState('')
 	const [huizong, setHuizong] = useState('')
-	const [hzData, setHzData] = useState([])
+	const [qitaPirce, setQitaPirce] = useState('')
 	const [tabKey, setTabKey] = useState(0) as any;
 	const [wuTabItems, setWuTabItems] = useState([]) as any
 	// 物料列表主数据
@@ -400,7 +400,7 @@ function QuotationEdit() {
 		{
 			title: '汇总',
 			align: 'center',
-			dataIndex: 'huizong',
+			dataIndex: 'price',
 		},
 	];
 	useEffect(() => {
@@ -453,6 +453,9 @@ function QuotationEdit() {
 		const asd = NewArr.filter(item => item.bjsxgg === da.bjsxgg)
 		const qthz = Number(da.jsdj || 0) * Number(da.sysl || 0)
 		da.qthz = qthz
+		const minbyhuizong = _.minBy(NewArr, 'qthz')?.qthz
+		const maxbyhuizong = _.maxBy(NewArr, 'qthz')?.qthz
+		setQitaPirce(`${minbyhuizong}-${maxbyhuizong}`)
 		const sumby = _.sumBy(asd, 'qthz')
 		zongHz('qitahuizong', sumby, da?.bjsxgg,)
 		setDataSourceQt(NewArr);
@@ -495,12 +498,12 @@ function QuotationEdit() {
 				+ Number(item?.wuliaohuizong || 0), 2)
 			return ({
 				...item,
-				huizong: huizong
+				price: huizong
 			})
 		})
 
-		const minbyhuizong = _.minBy(asd, 'huizong').huizong
-		const maxbyhuizong = _.maxBy(asd, 'huizong').huizong
+		const minbyhuizong = _.minBy(asd, 'price')?.price
+		const maxbyhuizong = _.maxBy(asd, 'price')?.price
 		setHuizong(`${minbyhuizong}-${maxbyhuizong}`)
 		d.itemSkuList = asd
 		setData(d)
@@ -530,7 +533,8 @@ function QuotationEdit() {
 			},
 			materialPrice: wlbjz,
 			craftPrice: gybjz,
-			sumPrice: huizong
+			sumPrice: huizong,
+			otherPrice: qitaPirce
 		}
 		console.log(arg0, 'arg0')
 		updateById(arg0).then(res => {
@@ -624,6 +628,7 @@ function QuotationEdit() {
 						/>
 					</Descriptions.Item>
 					<Descriptions.Item label={'其他报价'}>
+						<h1 style={{margin: 0}}>工艺报价:{qitaPirce}</h1>
 						<RepeatTable
 							columns={columnsQt}
 							dataSource={dataSourceQt}
