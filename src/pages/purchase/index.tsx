@@ -199,7 +199,9 @@ function Purchase(props: any) {
 				columns={columns}
 				defaultSize={'small'}
 				actionRef={actionRef}
-				scroll={{x: 1200}}
+				scroll={{
+					x: 'max-content',
+				}}
 				rowKey={'id'}
 				formRef={ref}
 				request={async (params = {}, sort, filter) => {
@@ -215,6 +217,8 @@ function Purchase(props: any) {
 							params.time?.length > 0
 								? moment(params.time[1]).valueOf()
 								: undefined,
+						skuCodeList:params.skuCodeList?params.skuCodeList?.split(','):undefined,
+						purNoList:params.purNoList?params.purNoList?.split(','):undefined,
 					};
 					const res: any = await queryList(arg0, {});
 					const data = res.entry.list.map((item, index) => ({...item, index: index + 1}));

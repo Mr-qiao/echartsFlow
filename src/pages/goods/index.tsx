@@ -136,6 +136,9 @@ function Goods() {
 			search={{
 				labelWidth: 120,
 			}}
+			scroll={{
+				x: 'max-content',
+			}}
 			defaultSize={'small'}
 			form={{
 				size: 'small',

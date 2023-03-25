@@ -311,7 +311,9 @@ function AfterSales() {
 			<ProTable
 				columns={columns}
 				defaultSize={'small'}
-				scroll={{x: 1000}}
+				scroll={{
+					x: 'max-content',
+				}}
 				rowKey={'id'}
 				formRef={ref}
 				request={async (params, sort, filter) => {
