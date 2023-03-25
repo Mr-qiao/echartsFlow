@@ -206,7 +206,7 @@ function Purchase(props: any) {
 					console.log(params, 'params')
 					const arg0 = {
 						...filterPageName(params),
-						status: tabKey === '0' ? tabKey : Number(tabKey),
+						status: tabKey === '0' ? params.status : Number(tabKey),
 						clientType: 2,
 						skuCodeList: params.skuCodeList ? params.skuCodeList?.split(',') : undefined,
 						purNoList: params.purNoList ? params.purNoList?.split(',') : undefined,
