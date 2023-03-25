@@ -165,6 +165,7 @@ function Purchase(props: any) {
 		ref?.current?.validateFields().then((res: any) => {
 			const arg0 = {
 				...res,
+				status: tabKey === '0' ? params.status : Number(tabKey),
 			};
 			exportList(arg0, {responseType: 'blob', getResponse: true}).then(
 				(res: any) => {
