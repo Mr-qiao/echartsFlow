@@ -20,6 +20,7 @@ export default function () {
                 onClick: () => {
                   Cookies.remove('token')
                   Cookies.remove('local_token')
+                  localStorage.clear()
                   history.push('/login');
                   console.log('已经退出！！！');
                 },

@@ -17,7 +17,6 @@ import {
 import imgURL from '../../../public/favicon.png';
 import bgUrl from '../../../public/bj.png';
 import Cookies from 'js-cookie';
-import Encrypt from '@/utils/encrypt';
 import {
 	sendValidateCode,
 	designerRegister,
@@ -26,10 +25,9 @@ import {
 	applyName,
 	getCiphertext,
 	queryCompanyInfo,
+	checkUnifyCreditCodeOld,
 } from '@/services/loginRegister';
 import {Link, useParams} from '@umijs/max';
-import PicturesWall from '@/components/PicturesWall';
-import {UploadOutlined} from '@ant-design/icons';
 import ImgUpload from '@/pages/register/imgUpload';
 import {setCookie} from '@/utils/utils';
 
@@ -215,6 +213,22 @@ const Launch: any = () => {
 		});
 		if (!res.status) {
 			return Promise.reject(new Error('公司已经入住过，无法入驻'));
+		} else {
+			return Promise.resolve();
+		}
+	};
+	const validateTysh = async (_: any, value: any) => {
+		const arg0 = {
+			unifyCreditCode: value,
+			// unifyCreditCode: val.unifyCreditCode
+		};
+		const res = await checkUnifyCreditCodeOld(arg0, {
+			headers: {
+				token: Cookies.get('token'),
+			},
+		});
+		if (!res.status) {
+			return Promise.reject(new Error('该统一社会信用代码已经注册'));
 		} else {
 			return Promise.resolve();
 		}
@@ -458,6 +472,7 @@ const Launch: any = () => {
 						<Form.Item
 							label="统一社会信用代码"
 							name="unifyCreditCode"
+							validateTrigger="onBlur"
 							help={'请输入91或93开头的18位阿拉伯数字或大写英文字母'}
 							rules={[
 								{
@@ -471,6 +486,9 @@ const Launch: any = () => {
 								{
 									max: 18,
 									message: '请输入91或93开头的18位阿拉伯数字或大写英文字母',
+								},
+								{
+									validator: validateTysh,
 								},
 							]}
 						>
