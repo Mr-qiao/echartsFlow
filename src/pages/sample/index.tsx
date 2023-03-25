@@ -108,7 +108,7 @@ function Sample() {
 				return (
 					<Space>
 						<a onClick={() => {
-							history.push(`/goods/sample/detail?sampleId=${recode.id}`)
+							history.push(`/goods/sample/detail?sampleId=${recode.itemId}`)
 						}}>查看</a>
 						<a onClick={() => {
 							setbyId(recode)
