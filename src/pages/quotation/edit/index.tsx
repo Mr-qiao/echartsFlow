@@ -472,10 +472,7 @@ function QuotationEdit() {
 			})
 			d.itemSkuList = a
 		} else if (lable === 'qitahuizong') {
-			console.log(d.itemSkuList, dataSourceQt, 'd.itemSkuList')
-			console.log(Number(sku), 'Number(sku)')
 			const a = d.itemSkuList.map((item: any) => {
-				console.log(item, 'item')
 				if (item.skuId === Number(sku)) {
 					return {
 						...item,
@@ -536,7 +533,6 @@ function QuotationEdit() {
 			sumPrice: huizong,
 			otherPrice: qitaPirce
 		}
-		console.log(arg0, 'arg0')
 		updateById(arg0).then(res => {
 			if (res.success) {
 				message.success('成功')

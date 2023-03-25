@@ -6,7 +6,6 @@ function RepeatTable(props: any) {
 		columns = [], dataSource = [], setData = () => {
 		}
 	} = props
-	console.log(dataSource, 'dataSource')
 	const updateData = () => {
 		const newData = [...dataSource]
 		newData.push({})
