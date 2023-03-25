@@ -91,7 +91,6 @@ const SkuCpt: any = ({ form }: any) => {
   //生成sku
   const handleCreateSku = () => {
     let list = form.getFieldValue('saleProperties');
-    console.log(list);
     if (Array.isArray(list) && list.length > 0) {
       let _array = [];
       for (let i of list) {
