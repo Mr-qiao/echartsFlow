@@ -3,6 +3,7 @@ import {getOssFileUrl} from '@/services/common';
 import {message, Modal} from 'antd';
 import DICT_CONST from '@/common/constants';
 import {history} from "umi";
+import { math } from '@xlion/utils';
 
 export function navigateToLogin() {
 	console.log('登录失效')
@@ -220,4 +221,20 @@ function getDict(key: string, type: string, val: string, defaultValue: string) {
 	} catch (e) {
 		console.log(e);
 	}
+}
+
+export function transformFen2Yuan<T>(obj: T, keys: Array<keyof T>, reverse = false) {
+	const newObj: Partial<Record<keyof T, number>> = {};
+	keys.forEach((key) => {
+		if (obj[key]) {
+			if (reverse) {
+				// 乘以100
+				newObj[key] = math.mul(obj[key] as number, 1000);
+			} else {
+				// 除以100
+				newObj[key] = math.div(obj[key] as number, 1000);
+			}
+		}
+	});
+	return newObj as Record<keyof T, number>;
 }

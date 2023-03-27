@@ -83,3 +83,16 @@ export function exportFailList(body: object, options: any) {
     }),
   });
 }
+export function exportOrderTemplate(body: object, options: any) {
+  return request('/designweb/supplier/order/exportOrderTemplate', {
+    method: 'POST',
+    data: body,
+    ...(options || {
+      headers: {
+        'content-type': 'application/json',
+      },
+    }),
+  });
+}
+
+

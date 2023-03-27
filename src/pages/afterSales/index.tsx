@@ -56,7 +56,6 @@ function AfterSales() {
 		{
 			title: '商品信息',
 			search: false,
-			width: 300,
 			render: (_: any, recode: any) => {
 				return (
 					<GoodsTableCol
@@ -65,11 +64,11 @@ function AfterSales() {
 						nameArr={[
 							{
 								title: '商品ID',
-								key: recode?.itemId4OD,
+								key: recode?.itemId4RE,
 							},
 							{
 								title: '款式名称',
-								key: recode?.styleName,
+								key: recode?.itemName,
 							},
 							{
 								title: 'SKU编码',
@@ -134,7 +133,7 @@ function AfterSales() {
 						nameArr={[
 							{
 								title: '单号',
-								key: recode.orderId4OD,
+								key: recode.orderCode,
 							},
 							{
 								title: '数量',
@@ -164,7 +163,7 @@ function AfterSales() {
 						nameArr={[
 							{
 								title: '单号',
-								key: recode.refundId,
+								key: recode.fundCode,
 							},
 							{
 								title: '数量',

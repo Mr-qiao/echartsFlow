@@ -39,6 +39,8 @@ function OrderManagement() {
 			<Tabs
 				// type="card"
 				size={'large'}
+				tabBarGutter={30}
+				tabBarStyle={{padding:'0 20px'}}
 				defaultActiveKey={tabKey}
 				onChange={onChange}
 				items={items}
