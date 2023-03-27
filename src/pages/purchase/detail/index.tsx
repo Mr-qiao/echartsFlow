@@ -152,7 +152,6 @@ function PurchaseDetail() {
 	const columnsBh: any = [
 		{
 			title: '商品信息',
-			width: 350,
 			render: (_: any, recode: any, index: number) => {
 				console.log(recode, 'recode')
 				return (
