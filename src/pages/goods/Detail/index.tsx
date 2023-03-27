@@ -136,7 +136,9 @@ const GoodsInfo = React.forwardRef((props: any, ref) => {
 			}
 			//动态属性
 
+
 			setDynProps(
+				// @ts-ignore
 				groupBy(
 					entry?.baseProperties.sort((a, b) => a.order - b.order),
 					(item) => {
@@ -146,7 +148,7 @@ const GoodsInfo = React.forwardRef((props: any, ref) => {
 			);
 			setDetail({
 				...data,
-				baseProperties: entry.baseProperties?.reduce((acc: Recordable<any>, cur) => {
+				baseProperties: entry.baseProperties?.reduce((acc: any, cur) => {
 					let value: any;
 					if (Array.isArray(cur.categoryPropertyValues)) {
 						switch (cur.type) {
@@ -182,7 +184,7 @@ const GoodsInfo = React.forwardRef((props: any, ref) => {
 				<Col>
 					<Image width={200} height={200} src={detail?.mainImg} fallback={fallback} style={{borderRadius: 10}}/>
 					<div className="u-flex u-mt10">
-						{detail.images?.map((item, i) => {
+						{detail.images?.map((item:any, i:any) => {
 							if (i === 0) return '';
 							if (i > 3) return ''
 							return (

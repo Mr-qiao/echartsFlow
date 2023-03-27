@@ -61,6 +61,7 @@ function AfterSales() {
 				return (
 					<GoodsTableCol
 						footerImg={false}
+						imgs={[{src:recode.imgUrl}]}
 						nameArr={[
 							{
 								title: '商品ID',

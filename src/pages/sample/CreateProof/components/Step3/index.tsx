@@ -135,7 +135,7 @@ const StandardSize: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => 
       ...(sampleInfo.sizeComb?.map((size: string) => ({
         title: size,
         width: 120,
-        render: (_, record, index) => {
+        render: (_:any, record:any, index:any) => {
           const field = fields[index];
           return (
             <FormItem {...field} className="mb-0" name={[field.name, `size-${size}`]}>

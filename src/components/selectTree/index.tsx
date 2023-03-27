@@ -10,6 +10,7 @@ function SelectTree(props: any) {
 		<div>
 			<Cascader
 				{...prop}
+				changeOnSelect
 				// value={value}
 				options={options}
 				onChange={onChanges}

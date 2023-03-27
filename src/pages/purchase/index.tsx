@@ -78,7 +78,7 @@ function Purchase(props: any) {
 			hideInTable: true,
 			valueType: 'dateRange',
 			search: {
-				transform: (value) => {
+				transform: (value: any) => {
 					const [startTime, endTime] = value;
 					return {
 						expectedStartTime: moment(startTime).format('YYYY-MM-DD 00:00:00'),
@@ -213,7 +213,7 @@ function Purchase(props: any) {
 						purNoList: params.purNoList ? params.purNoList?.split(',') : undefined,
 					};
 					const res: any = await queryList(arg0, {});
-					const data = res.entry.list.map((item, index) => ({...item, index: index + 1}));
+					const data = res.entry.list.map((item: any, index: any) => ({...item, index: index + 1}));
 					return {
 						data: data,
 						success: res.success,
