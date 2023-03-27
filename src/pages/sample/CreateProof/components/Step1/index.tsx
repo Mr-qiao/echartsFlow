@@ -55,7 +55,7 @@ const BasicInfo: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => {
     const data = pick(proofInfo, Object.keys(values));
     form.setFieldsValue({
       ...data,
-      ...shouldDateTransformKeys.reduce((acc: any, cur) => {
+      ...shouldDateTransformKeys.reduce((acc: Recordable<any>, cur) => {
         if (data[cur]) {
           acc[cur] = moment(data[cur]);
         }
@@ -75,7 +75,7 @@ const BasicInfo: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => {
       const values = await form.validateFields();
       const data = {
         ...values,
-        ...shouldDateTransformKeys.reduce((acc: any, cur) => {
+        ...shouldDateTransformKeys.reduce((acc: Recordable<any>, cur) => {
           if (values[cur]) {
             acc[cur] = moment(values[cur]).format('YYYY-MM-DD');
           }
@@ -88,6 +88,7 @@ const BasicInfo: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => {
           skcImageUrls: skc.skcImageUrls.map((item: any) => item.url),
         })),
       };
+      console.log(data);
       onOk(data);
     } catch (err) {
       console.log(err);
@@ -111,6 +112,7 @@ const BasicInfo: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => {
         width: 140,
         render: (_, record, index: number) => {
           const field = fields[index];
+          const options = sampleInfo.colorComb.map((color) => ({ label: color, value: color }));
           return (
             <FormItem
               {...field}
@@ -118,7 +120,7 @@ const BasicInfo: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => {
               name={[field.name, 'skcColorName']}
               rules={[{ required: true, message: '请选择' }]}
             >
-              <Select allowClear />
+              <Select allowClear options={options} />
             </FormItem>
           );
         },
@@ -156,6 +158,7 @@ const BasicInfo: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => {
         width: 140,
         render: (_, record, index: number) => {
           const field = fields[index];
+          const options = sampleInfo.sizeComb.map((size) => ({ label: size, value: size }));
           return (
             <FormItem
               {...field}
@@ -163,7 +166,7 @@ const BasicInfo: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => {
               name={[field.name, 'skcSize']}
               rules={[{ required: true, message: '请选择' }]}
             >
-              <Select allowClear />
+              <Select allowClear options={options} />
             </FormItem>
           );
         },
@@ -204,9 +207,7 @@ const BasicInfo: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => {
           {selectDictMap.typeSampleSource?.[sampleInfo.forPeople] ?? '-'}
         </Descriptions.Item>
         <Descriptions.Item label="品类">服装鞋包 / 女装/女士精品 / POLO衫</Descriptions.Item>
-        {/* <Descriptions.Item label="设计师">
-          灯泡-唐家和(灯泡-唐家和)
-        </Descriptions.Item> */}
+        <Descriptions.Item label="设计师">{sampleInfo.designerName ?? '-'}</Descriptions.Item>
         <Descriptions.Item label="供应商">供应商</Descriptions.Item>
         {/* <Descriptions.Item label="部门" span={2}>
           -
@@ -394,11 +395,11 @@ const BasicInfo: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => {
           </FormList>
         </Col>
       </Row>
-      {/*<div className={ss.footer}>*/}
-      {/*  <Button type="primary" onClick={handleSave}>*/}
-      {/*    保存*/}
-      {/*  </Button>*/}
-      {/*</div>*/}
+      <div className={ss.footer}>
+        <Button type="primary" onClick={handleSave}>
+          保存
+        </Button>
+      </div>
     </Form>
   );
 };

@@ -135,7 +135,7 @@ const StandardSize: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => 
       ...(sampleInfo.sizeComb?.map((size: string) => ({
         title: size,
         width: 120,
-        render: (_:any, record:any, index:any) => {
+        render: (_, record, index) => {
           const field = fields[index];
           return (
             <FormItem {...field} className="mb-0" name={[field.name, `size-${size}`]}>
@@ -199,11 +199,11 @@ const StandardSize: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => 
           </FormItem>
         )}
       </FormList>
-      {/*<div className={ss.footer}>*/}
-      {/*  <Button type="primary" onClick={handleSave}>*/}
-      {/*    保存*/}
-      {/*  </Button>*/}
-      {/*</div>*/}
+      <div className={ss.footer}>
+        <Button type="primary" onClick={handleSave}>
+          保存
+        </Button>
+      </div>
     </Form>
   );
 };

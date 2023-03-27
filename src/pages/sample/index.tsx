@@ -24,9 +24,9 @@ function Sample() {
 		});
 	}, []);
 	const [form] = Form.useForm()
-	const [activeKey, setActiveKey] = useState('1');
+	const [activeKey, setActiveKey] = useState('99');
 	const actionRef = useRef() as any;
-	const arrOptions = ['打样中', '样板设计', '设计完成', '物料采购']
+	const arrOptions = ['待确认', '打样中', '已交付',]
 	const [open, setOpen] = useState(false)
 	const [byId, setbyId] = useState({}) as any
 	const columns: any = [
@@ -45,7 +45,7 @@ function Sample() {
 		},
 		{
 			title: '样衣编码',
-			dataIndex: 'refSysItemCode',
+			dataIndex: 'refSampleTitle',
 		},
 		{
 			title: '需求单编码',
@@ -77,7 +77,7 @@ function Sample() {
 		// },
 		{
 			title: '商家款式编码',
-			dataIndex: 'refSysCode',
+			dataIndex: 'sampleSupplierStyleCode',
 		},
 		{
 			title: '需求时间',
@@ -117,19 +117,19 @@ function Sample() {
 		{
 			title: '需求状态',
 			search: false,
-			dataIndex: 'status',
+			dataIndex: 'sampleSupplierStyleCode',
 			valueEnum: {
-				1: '打样中', 2: '样板设计', 3: '设计完成', 4: '物料采购'
+				0: '待确认', 1: '打样中', 3: '已交付'
 			}
 		},
 		{
 			title: '对接人',
-			dataIndex: 'creator',
+			dataIndex: 'contactPersonId',
 			search: false
 		},
 		{
 			title: '对接人',
-			dataIndex: 'creator',
+			dataIndex: 'contactPersonId',
 			hideInTable: true,
 			renderFormItem: (item: any, _: any, form: any) => {
 				return <SelectCpt/>;
@@ -145,7 +145,7 @@ function Sample() {
 				return (
 					<Space>
 						<a onClick={() => {
-							history.push(`/goods/sample/detail?sampleId=${recode.itemId}`)
+							history.push(`/goods/sample/detail?id=${recode.itemId}`)
 						}}>查看</a>
 						<a onClick={() => {
 							setbyId(recode)
@@ -153,7 +153,7 @@ function Sample() {
 						}}>备注状态</a>
 						<a onClick={() => {
 							delivery(
-								{status: '3', itemId: recode?.itemId}, {}
+								{sampleSupplierStyleCode: '2', itemId: recode?.itemId}, {}
 							).then((res: any) => {
 								if (res.success) {
 									message.success('交付完成')
@@ -183,6 +183,7 @@ function Sample() {
 				request={async (params, sort, filter) => {
 					const arg0 = {
 						...filterPageName(params),
+						sampleSupplierStyleCode: activeKey==='99' ? undefined : activeKey
 					};
 					const res: any = await queryList(arg0, {});
 					const data = res.entry.list;
@@ -204,19 +205,19 @@ function Sample() {
 							activeKey: activeKey,
 							items: [
 								{
-									key: '1',
+									key: '99',
 									label: <span>全部</span>,
 								},
 								{
-									key: '2',
+									key: '0',
 									label: <span>待开始</span>,
 								},
 								{
-									key: '3',
+									key: '1',
 									label: <span>打样中</span>,
 								},
 								{
-									key: '4',
+									key: '2',
 									label: <span>已交付</span>,
 								},
 							],
@@ -248,7 +249,7 @@ function Sample() {
 				}}
 			>
 				<Form form={form}>
-					<Form.Item label={'修改状态'} name={'status'}>
+					<Form.Item label={'修改状态'} name={'sampleSupplierStyleCode'}>
 						<Select>
 							{arrOptions.map((item, index) => (
 								<Option key={index + 1}>{item}</Option>

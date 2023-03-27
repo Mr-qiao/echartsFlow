@@ -60,11 +60,11 @@ const PatternAttachment: React.FC<IStepProps> = ({ proofInfo, onOk }) => {
         <Input.TextArea rows={3} showCount maxLength={500} />
       </FormItem>
 
-      {/*<div className={ss.footer}>*/}
-      {/*  <Button type="primary" onClick={handleSave}>*/}
-      {/*    保存*/}
-      {/*  </Button>*/}
-      {/*</div>*/}
+      <div className={ss.footer}>
+        <Button type="primary" onClick={handleSave}>
+          保存
+        </Button>
+      </div>
     </Form>
   );
 };
