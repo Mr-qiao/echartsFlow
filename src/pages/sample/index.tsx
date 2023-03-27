@@ -36,7 +36,7 @@ function Sample() {
 			search: false,
 			width: 180,
 			render: (_: any, recode: any) => {
-				return <Image width={60} height={60} src={recode.refImages[0]}/>;
+				return <Image width={60} height={60} src={recode?.refImages !== null ? recode?.refImages[0] : ''}/>;
 			},
 		},
 		{
