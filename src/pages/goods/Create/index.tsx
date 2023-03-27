@@ -63,6 +63,7 @@ const Index: React.FC = () => {
     setSampleId('');
   };
   useEffect(() => {
+    // console.log(id);
     // getGoodsDetail();
     let _: { itemId?: string | number; type: number; categoryId?: string | number } = { type: 3 };
     if (id) {
@@ -129,10 +130,12 @@ const Index: React.FC = () => {
 
   //提交
   async function onFinish(values) {
+    console.log(values);
     let _: any = { ...values };
     _.images = normFile(_.images);
     _.categoryId = (_.categoryId as []) ? _.categoryId[_.categoryId.length - 1] : '';
-    _.baseProperties = _.dynProps && _.dynProps[0];
+    // console.log(_,'_')
+    // _.baseProperties = _.dynProps[0];
     Api.Goods.Add(_).then(({}) => {
       message.success('添加成功', 0.5, () => {
         navigate(-1);
@@ -141,6 +144,7 @@ const Index: React.FC = () => {
   }
 
   function normFile(e) {
+    console.log('Upload event:', e);
     if (Array.isArray(e)) {
       return e?.map((item) => (typeof item === 'object' ? item.url : item));
     }
@@ -149,6 +153,15 @@ const Index: React.FC = () => {
 
   return (
     <div className={styles.goodsCreate}>
+      <Button
+        onClick={() => {
+          history.back();
+        }}
+        style={{ color: '#666' }}
+        className="u-mr10 u-mb20"
+      >
+        返回
+      </Button>
       <Form labelCol={{ span: 6 }} wrapperCol={{ span: 14 }} form={form} onFinish={onFinish}>
         {/* 样衣 or 款式 */}
         <Form.Item label="类型" name="type" hidden={true} initialValue={3}>
@@ -162,7 +175,7 @@ const Index: React.FC = () => {
           <Input />
         </Form.Item>
         {/* 1未关联  2关联*/}
-        <Form.Item label="关联样衣" name="source" hidden={true} initialValue={5}>
+        <Form.Item label="关联样衣" name="source" hidden={true} initialValue={1}>
           <Input />
         </Form.Item>
         <h2>基本信息</h2>

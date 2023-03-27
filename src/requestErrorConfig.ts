@@ -44,7 +44,6 @@ const codeMessage: any = {
  * @doc https://umijs.org/docs/max/request#配置
  */
 
-console.log(Cookies.get('token'), localStorage.getItem('token'), '123')
 export const errorConfig: RequestConfig = {
 	baseURL: ajaxBaseUrl,
 	timeout: 10000,
@@ -84,7 +83,6 @@ export const errorConfig: RequestConfig = {
 	// 请求拦截器
 	requestInterceptors: [
 		(config: any) => {
-			console.log(config, 'config')
 			// 拦截请求配置，进行个性化处理。
 			// const url = config?.url?.concat('?token = 123');
 			const url = config?.url;
@@ -98,7 +96,6 @@ export const errorConfig: RequestConfig = {
 		(response) => {
 			// 拦截响应数据，进行个性化处理
 			const {data} = response as unknown as ResponseStructure;
-			console.log(data, 'data')
 			if (data.code === 1000010001) {
 				navigateToLogin();
 			}

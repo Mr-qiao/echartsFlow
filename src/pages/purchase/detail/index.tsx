@@ -152,15 +152,19 @@ function PurchaseDetail() {
 	const columnsBh: any = [
 		{
 			title: '商品信息',
+			width: 300,
 			render: (_: any, recode: any, index: number) => {
+				console.log(recode, 'recode')
 				return (
 					<GoodsTableCol
 						footerImg={false}
-						imgs={recode.imgUrlList}
+						imgs={recode.imgUrlList.map((item: any) => ({
+							src: item
+						}))}
 						nameArr={[
-							{title: '款式名称', key: recode.title},
+							{title: '款式名称', key: recode.itemTitle},
 							{title: '货品编码', key: recode.itemId},
-							{title: '规格', key: recode.size},
+							{title: '规格', key: recode.specification},
 						]}
 					/>
 				);
@@ -173,7 +177,7 @@ function PurchaseDetail() {
 					<GoodsTableCol
 						showImg={false}
 						nameArr={[
-							{title: '采购单价', key: recode.latelyPrice},
+							{title: '采购单价', key: recode.price},
 							{title: '采购数量', key: recode.number},
 							{title: '采购金额', key: recode.amount},
 						]}
@@ -308,7 +312,9 @@ function PurchaseDetail() {
 						<TextArea maxLength={180}/>
 					</Form.Item>
 					<Form.Item label={'商品备注'}>
-						<Table rowKey={'key'} columns={columnsBh} pagination={false} dataSource={dataSource}/>
+						<Table rowKey={'key'} scroll={{
+							x: 'max-content',
+						}} columns={columnsBh} pagination={false} dataSource={dataSource}/>
 					</Form.Item>
 				</Form>
 			</Modal>

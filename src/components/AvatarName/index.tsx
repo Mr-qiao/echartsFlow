@@ -1,4 +1,4 @@
-import { Avatar, Dropdown, Menu } from 'antd';
+import {Avatar, Dropdown, Menu, message} from 'antd';
 import './index.less';
 import { history } from 'umi';
 import Cookies from "js-cookie";
@@ -6,6 +6,7 @@ import Cookies from "js-cookie";
 export default function () {
   const info: any = window.localStorage.getItem('info') || '';
   const JSONInfo = JSON.parse(info || '{}');
+  console.log(JSONInfo,'Json')
   return (
     <div className={'avatar-name'}>
       <Dropdown

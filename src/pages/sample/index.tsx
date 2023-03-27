@@ -1,15 +1,28 @@
 import {ProTable} from '@ant-design/pro-components';
 import {Select, Form, Image, Modal, Space, message} from 'antd';
-import {useRef, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {delivery, mark, queryList} from '@/pages/sample/apis';
 import moment from 'moment';
 import {filterPageName} from "@/utils";
 import {history} from "umi";
+import SelectTree from "@/components/selectTree";
+import {getCategoryTree} from "@/pages/goods/apis";
+import SelectCpt from "@/components/selectCpt";
 
 
 const {Option} = Select
 
 function Sample() {
+	const [optionsTree, setOptionsTree] = useState([]);
+	useEffect(() => {
+		getCategoryTree({}, {}).then((res) => {
+			if (res.success) {
+				setOptionsTree(res.entry);
+			} else {
+				message.error('类目树获取失败，请稍后再试');
+			}
+		});
+	}, []);
 	const [form] = Form.useForm()
 	const [activeKey, setActiveKey] = useState('1');
 	const actionRef = useRef() as any;
@@ -41,6 +54,21 @@ function Sample() {
 		{
 			title: '品类',
 			dataIndex: 'refCategoryName',
+			renderFormItem: (item: any, _: any, form: any) => {
+				return (
+					<SelectTree
+						options={optionsTree}
+						fieldNames={{
+							label: 'name',
+							value: 'categoryId',
+							children: 'children',
+						}}
+					/>
+				);
+			},
+			fieldProps: {
+				placeholder: '请选择',
+			},
 		},
 		// {
 		// 	title: '品牌',
@@ -97,6 +125,15 @@ function Sample() {
 		{
 			title: '对接人',
 			dataIndex: 'creator',
+			search: false
+		},
+		{
+			title: '对接人',
+			dataIndex: 'creator',
+			hideInTable: true,
+			renderFormItem: (item: any, _: any, form: any) => {
+				return <SelectCpt/>;
+			},
 		},
 		{
 			title: '操作',
