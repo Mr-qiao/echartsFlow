@@ -209,7 +209,7 @@ function Purchase(props: any) {
 						...filterPageName(params),
 						status: tabKey === '0' ? params.status : Number(tabKey),
 						clientType: 2,
-						skuCodeList: params.skuSysCodeList ? params.skuSysCodeList?.split(',') : undefined,
+						skuSysCodeList: params.skuSysCodeList ? params.skuSysCodeList?.split(',') : undefined,
 						purNoList: params.purNoList ? params.purNoList?.split(',') : undefined,
 					};
 					const res: any = await queryList(arg0, {});
