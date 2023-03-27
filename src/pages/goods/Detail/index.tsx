@@ -1,13 +1,13 @@
 import './index.less';
 
-import { Col, Image, Row, Table, Tag } from 'antd';
-import { groupBy } from 'lodash-es';
+import {Col, Image, Row, Table, Tag} from 'antd';
+import {groupBy} from 'lodash-es';
 import moment from 'moment';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 
-import { dict, dictColor } from '@/utils';
+import {dict, dictColor} from '@/utils';
 
-import { AttrTypes } from '../Create/constant';
+import {AttrTypes} from '../Create/constant';
 import Api from '../services';
 import {useParams} from "@umijs/max";
 
@@ -21,13 +21,13 @@ const columns = [
 		width: 300,
 		render: (item, record) => {
 			return (
-				<div className="u-f__center" style={{ justifyContent: 'flex-start' }}>
+				<div className="u-f__center" style={{justifyContent: 'flex-start'}}>
 					<Image
 						width={90}
 						height={90}
 						src={Array.isArray(record.images) && record.images.length > 0 && record.images[0]}
 					/>
-					<div className="u-ml10" style={{ width: 'calc(100% - 100px)' }}>
+					<div className="u-ml10" style={{width: 'calc(100% - 100px)'}}>
 						<p className="u-fs12 u-mb5">
 							<span className="u-c888">规格：</span>
 							{record.properties || '-'}
@@ -104,7 +104,7 @@ const columns = [
 	},
 ];
 const GoodsInfo = React.forwardRef((props: any, ref) => {
-	const { id } = useParams();
+	const {id} = useParams();
 
 	const [detail, setDetail] = useState<any>({});
 	const [dynProps, setDynProps] = useState<any[]>([]);
@@ -119,9 +119,10 @@ const GoodsInfo = React.forwardRef((props: any, ref) => {
 		// console.log(id);
 		getGoodsDetail(id);
 	}, [id]);
+
 	//获取商品信息
 	async function getGoodsDetail(itemId: any) {
-		return Api.Goods.Detail({ itemId }).then(({ entry }) => {
+		return Api.Goods.Detail({itemId}).then(({entry}) => {
 			let data: any = {
 				...entry.item,
 				refSalePrice: entry.refSalePrice,
@@ -174,16 +175,18 @@ const GoodsInfo = React.forwardRef((props: any, ref) => {
 			setSkus(entry?.skus);
 		});
 	}
+
 	return (
 		<div className="goods__detail-wrap">
 			<Row className="u-w100">
 				<Col>
-					<Image width={200} height={200} src={detail?.mainImg} fallback={fallback} style={{ borderRadius: 10 }} />
+					<Image width={200} height={200} src={detail?.mainImg} fallback={fallback} style={{borderRadius: 10}}/>
 					<div className="u-flex u-mt10">
 						{detail.images?.map((item, i) => {
 							if (i === 0) return '';
+							if (i > 3) return ''
 							return (
-								<Image key={i} width={60} height={60} src={item} fallback={fallback} style={{ borderRadius: 10 }} />
+								<Image key={i} width={60} height={60} src={item} fallback={fallback} style={{borderRadius: 10}}/>
 							);
 						})}
 					</div>
@@ -302,6 +305,7 @@ const GoodsInfo = React.forwardRef((props: any, ref) => {
 			</Row>
 		</div>
 	);
+
 	function renderAttrItem(attr: {
 		type: number;
 		required: 0 | 1;
@@ -313,7 +317,7 @@ const GoodsInfo = React.forwardRef((props: any, ref) => {
 	}) {
 		const props = {
 			label: attr.categoryPropertyName,
-			rules: [{ required: attr.required === 1 ? true : false }],
+			rules: [{required: attr.required === 1 ? true : false}],
 			name: ['baseProperties', `${attr.categoryPropertyCode}`],
 			preserve: false,
 			value: detail.baseProperties[attr.categoryPropertyCode],

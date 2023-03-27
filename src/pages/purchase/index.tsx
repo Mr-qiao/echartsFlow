@@ -35,7 +35,7 @@ function Purchase(props: any) {
 		{
 			title: '货品编码',
 			hideInTable: true,
-			dataIndex: 'skuCodeList',
+			dataIndex: 'skuSysCodeList',
 			renderFormItem: (item: any, _: any, form: any) => {
 				return <BatchInput/>;
 			},
