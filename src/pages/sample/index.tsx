@@ -177,6 +177,7 @@ function Sample() {
 				rowKey={'index'}
 				search={{
 					labelWidth: 120,
+					defaultCollapsed: false,
 				}}
 				actionRef={actionRef}
 				request={async (params, sort, filter) => {

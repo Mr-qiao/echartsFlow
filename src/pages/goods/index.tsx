@@ -142,6 +142,7 @@ function Goods() {
 			columns={columns}
 			search={{
 				labelWidth: 120,
+				defaultCollapsed: false,
 			}}
 			scroll={{
 				x: 'max-content',

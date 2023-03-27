@@ -340,6 +340,7 @@ function AfterSales() {
 				}}
 				search={{
 					labelWidth: 120,
+					defaultCollapsed: false,
 				}}
 				form={{
 					size: 'small',
