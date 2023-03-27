@@ -9,7 +9,7 @@ if (host.includes('dev') || host.includes('localhost')) {
 } else if (host.includes('gray')) {
 	env = 'gray';
 }
-env = 'daily';
+// env = 'daily';
 
 
 const ajaxBaseUrl = {
