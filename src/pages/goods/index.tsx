@@ -7,6 +7,7 @@ import {useEffect, useState} from 'react';
 import SelectTree from '@/components/selectTree';
 import {filterPageName} from '@/utils';
 import {history} from '@umijs/max';
+import BrandSelectCpt from './Create/components/BrandSelectCpt';
 
 function Goods() {
 	const [optionsTree, setOptionsTree] = useState([]);
@@ -51,8 +52,13 @@ function Goods() {
 		},
 		{
 			title: '商品品牌',
-			dataIndex: 'brandName',
 			hideInTable: true,
+			dataIndex: 'brandId',
+			key: 'brandId',
+			order: 6,
+			renderFormItem: () => {
+				return <BrandSelectCpt/>;
+			},
 		},
 		{
 			title: '商品类型',
@@ -89,18 +95,18 @@ function Goods() {
 							},
 							{
 								title: '颜色',
-								key: recode.categoryName,
+								key: recode.clothColor,
 							},
 							{
 								title: '尺码',
-								key: recode.categoryName,
+								key: recode.clothSize,
 							},
 						]}
 						imgs={recode?.images?.length > 0 ? recode?.images?.map((item: any) => {
 							return {
-								src: item,
+								src: item || '',
 							};
-						}) : []}
+						}) : [{src: ''}]}
 					/>
 				);
 			},
@@ -108,12 +114,12 @@ function Goods() {
 		{
 			title: '供应商信息',
 			search: false,
-			dataIndex: 'userName',
+			dataIndex: 'supplierName',
 		},
 		{
 			title: '供应商商品编码',
 			search: false,
-			dataIndex: 'supplierItemCode',
+			dataIndex: 'supplierStyleCode',
 		},
 		{
 			title: '快手商品id',
@@ -122,6 +128,7 @@ function Goods() {
 		{
 			title: '操作',
 			width: 100,
+			fixed: 'right',
 			search: false,
 			render: (_: any, recode: any) => {
 				return <a onClick={() => {
@@ -159,7 +166,7 @@ function Goods() {
 				const res = await queryList(arg0, {});
 				const data = res.entry.list;
 				return {
-					data: data,
+					data: data || [],
 					success: res.success,
 					// 不传会使用 data 的长度，如果是分页一定要传
 					total: res?.entry.totalRecord,

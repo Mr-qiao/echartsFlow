@@ -17,7 +17,7 @@ import {
 import GoodsTableCol from '@/components/goodsTableCol';
 import {useRef, useState} from 'react';
 import {
-	deliverItem, exportFailList,
+	deliverItem, exportFailList, exportOrderTemplate,
 	importList,
 	queryList, recordsList,
 } from '@/pages/orderManagement/apis';
@@ -512,7 +512,24 @@ function TabList(props: any) {
 				}}
 			>
 				<div>
-					请先下载<a>导入发货模版</a>
+					请先下载<a onClick={() => {
+					exportOrderTemplate({}, {responseType: 'blob', getResponse: true}).then(
+						(res: any) => {
+							let blob = new Blob([res.data]);
+							let downloadElement = document.createElement('a');
+							let href = window.URL.createObjectURL(blob); //创建下载的链接
+							downloadElement.href = href;
+							downloadElement.download =
+								decodeURI(
+									res.headers['content-disposition'].split('filename=')[1],
+								) || ''; //下载后文件名
+							document.body.appendChild(downloadElement);
+							downloadElement.click(); //点击下载
+							document.body.removeChild(downloadElement); //下载完成移除元素
+							window.URL.revokeObjectURL(href); //释放掉blob对象
+						},
+					)
+				}}>导入发货模版</a>
 				</div>
 				<Form form={form}>
 					<Form.Item

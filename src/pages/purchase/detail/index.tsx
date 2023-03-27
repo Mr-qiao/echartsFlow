@@ -76,7 +76,7 @@ function PurchaseDetail() {
 							},
 							{
 								title: '货品编码',
-								key: recode.skuId,
+								key: recode.skuSysCode,
 							},
 							{
 								title: '规格',
@@ -163,7 +163,7 @@ function PurchaseDetail() {
 						}))}
 						nameArr={[
 							{title: '款式名称', key: recode.itemTitle},
-							{title: '货品编码', key: recode.itemId},
+							{title: '货品编码', key: recode.skuSysCode},
 							{title: '规格', key: recode.specification},
 						]}
 					/>
