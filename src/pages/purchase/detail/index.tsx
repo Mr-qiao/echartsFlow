@@ -39,7 +39,7 @@ function PurchaseDetail() {
 				if (res.entry.status === 4) {
 					setBhShow(true);
 				}
-				res.entry.detailVOList = res.entry.detailVOList.map((item, index) => ({...item, index: index + 1}))
+				res.entry.detailVOList = res.entry.detailVOList.map((item: any, index: any) => ({...item, index: index + 1}))
 				setData(res.entry);
 				setDataSource(res.entry.detailVOList);
 				queryByIdLogList({purNo: res.entry.purNo}, {}).then((res) => {

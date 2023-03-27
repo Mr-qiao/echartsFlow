@@ -82,7 +82,6 @@ function TabList(props: any) {
 		{
 			title: '商品信息',
 			search: false,
-			width: 300,
 			render: (_: any, recode: any) => {
 				return (
 					<GoodsTableCol
@@ -168,8 +167,11 @@ function TabList(props: any) {
 		},
 		{
 			title: '商品id',
-			dataIndex: 'itemId',
+			dataIndex: 'itemIds',
 			hideInTable: true,
+			renderFormItem: (item: any, _: any, form: any) => {
+				return <BatchInput/>;
+			},
 		},
 		{
 			title: '创建时间',
@@ -256,7 +258,7 @@ function TabList(props: any) {
 							},
 							{
 								title: '时间',
-								key: moment(recode.sendTime).format('YYYY-MM-DD HH:mm:ss'),
+								key: recode?.sendTime !== null ? moment(recode?.sendTime).format('YYYY-MM-DD HH:mm:ss') : '',
 							},
 						]}
 					/>
@@ -270,7 +272,7 @@ function TabList(props: any) {
 			search: false,
 			render: (_: any, recode: any) => {
 				return (
-					recode.status === '待发货' && (
+					recode.status === '待发货' && recode.isDeleted === 1 ? null : (
 						<a
 							onClick={() => {
 								setQueryIdList(recode);
@@ -495,7 +497,7 @@ function TabList(props: any) {
 						};
 						// @ts-ignore
 						importList(arg0).then((res) => {
-							if (res.entry.success) {
+							if (res.entry) {
 								message.success('上传成功');
 								setModalOpenImport(false);
 								actionRef.current.reload();
@@ -518,7 +520,7 @@ function TabList(props: any) {
 						help={'请上传文件'}
 						rules={[{required: true, message: '请选择文件'}]}
 					>
-						<Upload beforeUpload={beforeUpload} maxCount={1}>
+						<Upload beforeUpload={beforeUpload} accept=".xls, .xlsx" maxCount={1}>
 							<Button icon={<UploadOutlined/>}>上传文件</Button>
 						</Upload>
 					</Form.Item>

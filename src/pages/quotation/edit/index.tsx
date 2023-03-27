@@ -273,7 +273,7 @@ function QuotationEdit() {
 							const sumby = _.sumBy(asd, 'qthz')
 							zongHz('qitahuizong', sumby, recode.bjsxgg)
 						}}>
-						{data?.itemSkuList?.map(item => {
+						{data?.itemSkuList?.map((item: any) => {
 							return (
 								<Option key={item.skuId}>{item.properties}</Option>
 							)
@@ -343,7 +343,7 @@ function QuotationEdit() {
 			title: '单个用价',
 			align: 'center',
 			dataIndex: 'qthz',
-			render: (_, recode: any) => {
+			render: (_: any, recode: any) => {
 				return recode.qthz
 			}
 		},
@@ -499,7 +499,9 @@ function QuotationEdit() {
 			})
 		})
 
+		// @ts-ignore
 		const minbyhuizong = _.minBy(asd, 'price')?.price
+		// @ts-ignore
 		const maxbyhuizong = _.maxBy(asd, 'price')?.price
 		setHuizong(`${minbyhuizong}-${maxbyhuizong}`)
 		d.itemSkuList = asd
@@ -549,7 +551,7 @@ function QuotationEdit() {
 				<Descriptions column={1}>
 					<Descriptions.Item label={'图片附件'}>
 						<Image.PreviewGroup>
-							{arr.map((item: any, index) => {
+							{arr.map((item: any, index: any) => {
 								return (
 									<span
 										key={index}
@@ -562,7 +564,7 @@ function QuotationEdit() {
 						</Image.PreviewGroup>
 					</Descriptions.Item>
 					<Descriptions.Item label={'其他附件'}>
-						{qtarr.map((item: any, index) => {
+						{qtarr.map((item: any, index: any) => {
 							return (
 								<span
 									key={index}
@@ -577,7 +579,7 @@ function QuotationEdit() {
 						<Table size={'small'} scroll={{x: 900}} columns={columns} dataSource={data?.sizeMap?.sizeDetailList}/>
 					</Descriptions.Item>
 					<Descriptions.Item label={'尺寸副图'}>
-						{ccftarr.map((item: any, index) => {
+						{ccftarr.map((item: any, index: any) => {
 							return (
 								<span
 									key={index}

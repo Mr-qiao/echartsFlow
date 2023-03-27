@@ -21,13 +21,13 @@ const MaterialList: React.FC<IStepProps> = ({sampleInfo, proofInfo, onOk}) => {
 		form.setFieldsValue({
 			materialDetailList:
 				proofInfo.materialDetailList?.map((item: any) => {
-					const sizeMaterials = item.sizeMaterials?.reduce((prev, curr) => {
+					const sizeMaterials = item.sizeMaterials?.reduce((prev:any, curr:any) => {
 						return {
 							...prev,
 							[`size-${curr.size}`]: curr.value,
 						};
 					}, {});
-					const colorMaterials = item.colorMaterials?.reduce((prev, curr) => {
+					const colorMaterials = item.colorMaterials?.reduce((prev:any, curr:any) => {
 						return {
 							...prev,
 							[`color-${curr.colorName}`]: curr.materialName,

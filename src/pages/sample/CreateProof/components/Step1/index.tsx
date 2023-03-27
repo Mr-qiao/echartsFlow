@@ -55,7 +55,7 @@ const BasicInfo: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => {
     const data = pick(proofInfo, Object.keys(values));
     form.setFieldsValue({
       ...data,
-      ...shouldDateTransformKeys.reduce((acc: Recordable<any>, cur) => {
+      ...shouldDateTransformKeys.reduce((acc: any, cur) => {
         if (data[cur]) {
           acc[cur] = moment(data[cur]);
         }
@@ -75,7 +75,7 @@ const BasicInfo: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => {
       const values = await form.validateFields();
       const data = {
         ...values,
-        ...shouldDateTransformKeys.reduce((acc: Recordable<any>, cur) => {
+        ...shouldDateTransformKeys.reduce((acc: any, cur) => {
           if (values[cur]) {
             acc[cur] = moment(values[cur]).format('YYYY-MM-DD');
           }

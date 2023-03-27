@@ -145,7 +145,7 @@ function EditBoom() {
 			title: '最终报价',
 			align: 'center',
 			dataIndex: 'price',
-			render: (_, recode: any) => {
+			render: (_: any, recode: any) => {
 				return recode.price
 			}
 		},
@@ -183,10 +183,10 @@ function EditBoom() {
 						<Col style={{marginLeft: 10}}>
 							<Row>
 								{
-									dataObj?.imgUrlList?.length > 0 ? dataObj?.imgUrlList.map(((item, index) => {
+									dataObj?.imgUrlList?.length > 0 ? dataObj?.imgUrlList.map(((item: any, index: any) => {
 										if (index > 0) {
 											return (
-												<Col span={24} style={{marginTop: index > 1 ? 10 : 0}}>
+												<Col key={index} span={24} style={{marginTop: index > 1 ? 10 : 0}}>
 													<Image
 														width={80}
 														height={80}
