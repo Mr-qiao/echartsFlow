@@ -136,7 +136,7 @@ function QuotationEdit() {
 				return (
 					<InputNumber
 						precision={2}
-						value={recode.dj}
+						value={recode.dj || 0}
 						min={0}
 						onChange={(e) => {
 							const NewArr = [...dataSourcePp[tabKey]?.materialDetailList];
@@ -158,7 +158,7 @@ function QuotationEdit() {
 				return (
 					<InputNumber
 						min={0}
-						value={recode.skuyl}
+						value={recode.skuyl || 0}
 						onChange={(e) => {
 							const NewArr = [...dataSourcePp[tabKey]?.materialDetailList];
 							NewArr[index].skuyl = e;
@@ -181,7 +181,7 @@ function QuotationEdit() {
 						min={0}
 						max={100}
 						addonAfter={'%'}
-						value={recode.shl}
+						value={recode.shl || 0}
 						onChange={(e) => {
 							const NewArr = [...dataSourcePp[tabKey]?.materialDetailList];
 							NewArr[index].shl = e;
@@ -414,7 +414,11 @@ function QuotationEdit() {
 	const wuL = (index: any) => {
 		const NewArr = [...dataSourcePp[tabKey]?.materialDetailList];
 		const da = NewArr[index]
-		da.wlhz = _.ceil((Number(da.dj || 0) * Number(da.skuyl || 0)) / (Number(da.shl || 0) / 100), 2) || 0
+		da.wlhz = (Number(da.dj || 0) * Number(da.skuyl || 0))
+		if (da.shl) {
+			da.wlhz = da.wlhz / (Number(da.shl || 0) / 100)
+		}
+		da.wlhz = _.ceil(da.wlhz)
 		const sumby = _.ceil(_.sumBy(NewArr, 'wlhz'), 2)
 		const datas = [...dataSourcePp]
 		datas[tabKey].hz = sumby
@@ -438,7 +442,7 @@ function QuotationEdit() {
 		entry.itemSkuList = entry?.goodsInfoMap?.goodsInfoList
 		setGybjz(entry.craftPrice)
 		setWlbjz(entry.materialPrice)
-		setDataSourcePp(wl)
+		setDataSourcePp(wl || [])
 		setDataSourceGy(gy)
 		setData(entry)
 		setDataSourceQt(qt)
