@@ -3,7 +3,7 @@ import { useModel } from '@umijs/max';
 import { Image, message, Tooltip } from 'antd';
 import React, { useImperativeHandle, useRef, useState } from 'react';
 
-import CustomModal, { ModalInstance } from '@/components/CustomModal';
+import CustomModal from '@/components/CustomModal';
 
 import Api from '../../services';
 
@@ -13,7 +13,6 @@ export const SampleListModal = React.forwardRef(({ onChange }: any, ref) => {
   const [params, setParams] = useState({});
   let [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const formRef = useRef<ProFormInstance>();
-  const editRef = useRef<ModalInstance>();
   const actionRef = useRef();
 
   const formModalRef = useRef<any>();
@@ -70,8 +69,8 @@ export const SampleListModal = React.forwardRef(({ onChange }: any, ref) => {
           <p className="u-fs12 u-mb5">
             {/* <span className="u-c888">商品类目：</span> */}
             {Array.isArray(record.categoryNames) ? (
-              <Tooltip title={record.categoryNames?.join('；')}>
-                <p className="u-els">{record.categoryNames?.join('；')}</p>
+              <Tooltip title={record.categoryNames?.join(' / ')}>
+                <p className="u-els">{record.categoryNames?.join(' / ')}</p>
               </Tooltip>
             ) : (
               '-'
@@ -106,12 +105,13 @@ export const SampleListModal = React.forwardRef(({ onChange }: any, ref) => {
       message.warning('请勾选后，在进行批量操作～');
       return;
     } else {
+      console.log(selectedRowKeys);
       onChange?.(selectedRowKeys);
       formModalRef.current?.hide();
     }
   };
   useImperativeHandle(ref, () => ({
-    show: (user) => {
+    show: () => {
       // setStatus(status);
       setSelectedRowKeys([]);
 
@@ -128,7 +128,8 @@ export const SampleListModal = React.forwardRef(({ onChange }: any, ref) => {
   //   const form = formModalRef.current.form;
   //   form.setFieldsValue({ userIdsName: selectedRows?.[0]?.userName, userIds: selectedRows?.[0]?.userId });
   // }
-  function onSelectChange(selectedRowKeys, selectedRows) {
+  function onSelectChange(selectedRowKeys) {
+    console.log(selectedRowKeys);
     setSelectedRowKeys(selectedRowKeys);
   }
   return (
@@ -174,7 +175,7 @@ export const SampleListModal = React.forwardRef(({ onChange }: any, ref) => {
           };
           const { entry }: any = await Api.Sample.List(searchData);
           return {
-            data: entry?.list,
+            data: entry?.list || [],
             success: true,
             total: entry?.totalRecord || 0,
           };
