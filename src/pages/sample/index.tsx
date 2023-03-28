@@ -232,6 +232,7 @@ function Sample() {
 			<Modal
 				title={'备注状态'}
 				open={open}
+				destroyOnClose
 				onOk={() => {
 					form.validateFields().then(values => {
 						mark(
@@ -239,6 +240,7 @@ function Sample() {
 						).then((res: any) => {
 							if (res.success) {
 								message.success('备注状态成功')
+								setOpen(false)
 								actionRef.current.reload()
 							}
 						})
