@@ -284,7 +284,7 @@ function TabList(props: any) {
 			search: false,
 			render: (_: any, recode: any) => {
 				return (
-					recode.status === '待发货' && recode.isDeleted === 1 ? <a
+					recode.status === '待发货' && recode.isDeleted !== 1 ? <a
 						onClick={() => {
 							setQueryIdList(recode);
 							setModalOpenDelivery(true);

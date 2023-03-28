@@ -30,7 +30,6 @@ function Quotation() {
 		},
 		{
 			title: '商品信息',
-			width: 400,
 			search: false,
 			render: (_: any, recode: any) => {
 				return (
