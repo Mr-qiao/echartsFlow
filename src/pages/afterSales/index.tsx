@@ -17,7 +17,7 @@ function AfterSales() {
 	const ref: any = useRef();
 	const columns: any = [
 		{
-			title: '订单编号',
+			title: '款式编码',
 			dataIndex: 'orderIds',
 			hideInTable: true,
 			renderFormItem: (item: any, _: any, form: any) => {
@@ -56,19 +56,19 @@ function AfterSales() {
 		{
 			title: '商品信息',
 			search: false,
-			width: 300,
 			render: (_: any, recode: any) => {
 				return (
 					<GoodsTableCol
 						footerImg={false}
+						imgs={[{src:recode.imgUrl}]}
 						nameArr={[
 							{
 								title: '商品ID',
-								key: recode?.itemId4OD,
+								key: recode?.itemId4RE,
 							},
 							{
 								title: '款式名称',
-								key: recode?.styleName,
+								key: recode?.itemName,
 							},
 							{
 								title: 'SKU编码',
@@ -106,7 +106,7 @@ function AfterSales() {
 			),
 			dataIndex: 'time',
 			renderFormItem: () => {
-				return <RangePicker showTime/>;
+				return <RangePicker showTime placeholder={['请选择开始时间','请选择结束时间']}/>;
 			},
 			formItemProps: {
 				htmlFor: '',
@@ -133,7 +133,7 @@ function AfterSales() {
 						nameArr={[
 							{
 								title: '单号',
-								key: recode.orderId4OD,
+								key: recode.orderCode,
 							},
 							{
 								title: '数量',
@@ -163,7 +163,7 @@ function AfterSales() {
 						nameArr={[
 							{
 								title: '单号',
-								key: recode.refundId,
+								key: recode.fundCode,
 							},
 							{
 								title: '数量',
@@ -274,6 +274,7 @@ function AfterSales() {
 			const arg0 = {
 				...res,
 				ids: selectedRowKeys,
+				timeType:timeSelect,
 				beginCreateTime:
 					res.time?.length > 0 ? moment(res.time[0]).valueOf() : undefined,
 				endCreateTime:
@@ -281,7 +282,6 @@ function AfterSales() {
 			};
 			exprotList(arg0, {responseType: 'blob', getResponse: true}).then(
 				(res: any) => {
-					if (!res.success) return
 					let blob = new Blob([res.data]);
 					let downloadElement = document.createElement('a');
 					let href = window.URL.createObjectURL(blob); //创建下载的链接
@@ -311,7 +311,9 @@ function AfterSales() {
 			<ProTable
 				columns={columns}
 				defaultSize={'small'}
-				scroll={{x: 1000}}
+				scroll={{
+					x: 'max-content',
+				}}
 				rowKey={'id'}
 				formRef={ref}
 				request={async (params, sort, filter) => {
@@ -325,6 +327,7 @@ function AfterSales() {
 							params.time?.length > 0
 								? moment(params.time[1]).valueOf()
 								: undefined,
+						timeType:timeSelect,
 					};
 					const res: any = await queryList(arg0, {});
 					const data = res?.entry.list;
@@ -337,6 +340,7 @@ function AfterSales() {
 				}}
 				search={{
 					labelWidth: 120,
+					defaultCollapsed: false,
 				}}
 				form={{
 					size: 'small',

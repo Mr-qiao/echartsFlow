@@ -17,7 +17,7 @@ import {
 import GoodsTableCol from '@/components/goodsTableCol';
 import {useRef, useState} from 'react';
 import {
-	deliverItem, exportFailList,
+	deliverItem, exportFailList, exportOrderTemplate,
 	importList,
 	queryList, recordsList,
 } from '@/pages/orderManagement/apis';
@@ -32,6 +32,7 @@ const {RangePicker} = DatePicker;
 function TabList(props: any) {
 	const {tabKey} = props;
 	const [form] = Form.useForm();
+	const actionRefImport = useRef()
 	const [timeSelect, setTimeSelect] = useState('1');
 	const [modalOpen, setModalOpen] = useState(false);
 	const [modalOpenDelivery, setModalOpenDelivery] = useState(false);
@@ -48,6 +49,7 @@ function TabList(props: any) {
 			render: (_: any, recode: any) => {
 				return (
 					<GoodsTableCol
+						imgs={[{src: recode?.itemImage || ''}]}
 						footerImg={false}
 						nameArr={[
 							{
@@ -56,11 +58,11 @@ function TabList(props: any) {
 							},
 							{
 								title: '款式名称',
-								key: recode.ksName,
+								key: recode.itemTitle,
 							},
 							{
 								title: 'SKU编码',
-								key: recode.skuCodes,
+								key: recode.skuCode,
 							},
 							{
 								title: '规格',
@@ -82,10 +84,10 @@ function TabList(props: any) {
 		{
 			title: '商品信息',
 			search: false,
-			width: 300,
 			render: (_: any, recode: any) => {
 				return (
 					<GoodsTableCol
+						isDeleted={recode.isDeleted}
 						footerImg={false}
 						nameArr={[
 							{
@@ -94,17 +96,18 @@ function TabList(props: any) {
 							},
 							{
 								title: '款式名称',
-								key: recode.ksName,
+								key: recode.itemTitle,
 							},
 							{
 								title: 'SKU编码',
-								key: recode.skuCodes,
+								key: recode.skuCode,
 							},
 							{
 								title: '规格',
 								key: recode.skuSpec,
 							},
 						]}
+						imgs={[{src: recode?.itemImage || ''}]}
 					/>
 				);
 			},
@@ -118,7 +121,7 @@ function TabList(props: any) {
 		{
 			title: '订单编号',
 			width: 180,
-			dataIndex: 'companyCode',
+			dataIndex: 'orderId',
 			search: false,
 		},
 		{
@@ -140,7 +143,7 @@ function TabList(props: any) {
 		},
 		{
 			title: '款式名称',
-			dataIndex: 'itemTitle',
+			dataIndex: 'ksName',
 			hideInTable: true,
 		},
 		{
@@ -151,8 +154,9 @@ function TabList(props: any) {
 				1: '待发货',
 				2: '已发货',
 				3: '已收货',
-				4: '交易完成',
-				5: '订单关闭',
+				4: '交易关闭',
+				5: '交易成功',
+				6: '已签收',
 			},
 			// hideInTable: true,
 		},
@@ -167,8 +171,19 @@ function TabList(props: any) {
 		},
 		{
 			title: '商品id',
-			dataIndex: 'itemId',
+			dataIndex: 'itemIds',
 			hideInTable: true,
+			renderFormItem: (item: any, _: any, form: any) => {
+				return <BatchInput/>;
+			},
+		},
+		{
+			title: '快递单号',
+			dataIndex: 'companyCodes',
+			hideInTable: true,
+			renderFormItem: (item: any, _: any, form: any) => {
+				return <BatchInput/>;
+			},
 		},
 		{
 			title: '创建时间',
@@ -195,14 +210,14 @@ function TabList(props: any) {
 					<Option value={'1'} key={1}>
 						创建日期
 					</Option>
-					<Option value={'2'} key={1}>
+					{tabKey !== '1' ? <Option value={'2'} key={1}>
 						发货日期
-					</Option>
+					</Option> : null}
 				</Select>
 			),
 			dataIndex: 'sendTime',
 			renderFormItem: () => {
-				return <RangePicker showTime/>;
+				return <RangePicker showTime placeholder={['请选择开始时间', '请选择结束时间']}/>;
 			},
 			formItemProps: {
 				htmlFor: '',
@@ -247,7 +262,7 @@ function TabList(props: any) {
 						nameArr={[
 							{
 								title: '快递',
-								key: recode.buyer,
+								key: recode.companyName,
 							},
 							{
 								title: '单号',
@@ -255,7 +270,7 @@ function TabList(props: any) {
 							},
 							{
 								title: '时间',
-								key: moment(recode.sendTime).format('YYYY-MM-DD HH:mm:ss'),
+								key: recode?.sendTime !== null ? moment(recode?.sendTime).format('YYYY-MM-DD HH:mm:ss') : '',
 							},
 						]}
 					/>
@@ -269,16 +284,14 @@ function TabList(props: any) {
 			search: false,
 			render: (_: any, recode: any) => {
 				return (
-					recode.status === '待发货' && (
-						<a
-							onClick={() => {
-								setQueryIdList(recode);
-								setModalOpenDelivery(true);
-							}}
-						>
-							发货
-						</a>
-					)
+					recode.status === '待发货' && recode.isDeleted !== 1 ? <a
+						onClick={() => {
+							setQueryIdList(recode);
+							setModalOpenDelivery(true);
+						}}
+					>
+						发货
+					</a> : null
 				);
 			},
 		},
@@ -344,6 +357,7 @@ function TabList(props: any) {
 			let arg0: any = {
 				status: tabKey === '3' ? undefined : tabKey,
 				ids: selectedRowKeys,
+				timeType: timeSelect,
 				...res,
 			};
 			arg0[sTime] =
@@ -388,7 +402,9 @@ function TabList(props: any) {
 				columns={columns}
 				formRef={ref}
 				defaultSize={'small'}
-				scroll={{x: 1200}}
+				scroll={{
+					x: 'max-content',
+				}}
 				rowKey={'id'}
 				actionRef={actionRef}
 				request={async (params = {}, sort, filter) => {
@@ -397,6 +413,7 @@ function TabList(props: any) {
 					const eTime: any = timeSelect === '1' ? 'endCreateTime' : 'endTime';
 					let arg0: any = {
 						status: tabKey === '3' ? undefined : tabKey,
+						timeType: timeSelect,
 						...params,
 					};
 					arg0[sTime] =
@@ -450,6 +467,7 @@ function TabList(props: any) {
 			<Modal
 				width={800}
 				open={modalOpen}
+				destroyOnClose
 				title={'导入记录列表'}
 				onOk={() => {
 					setModalOpen(false);
@@ -458,10 +476,15 @@ function TabList(props: any) {
 					setModalOpen(false);
 				}}
 			>
+				<Button type={'primary'} onClick={() => {
+					actionRefImport.current.reload();
+				}} style={{position: 'absolute', right: 80, top: 18}}>刷新列表</Button>
 				<ProTable
 					size={'small'}
+					style={{marginTop: 40}}
 					search={false}
 					options={false}
+					actionRef={actionRefImport}
 					request={async (params) => {
 						const arg0 = {
 							...filterPageName(params),
@@ -482,6 +505,7 @@ function TabList(props: any) {
 			<Modal
 				width={400}
 				open={modalOpenImport}
+				destroyOnClose
 				title={'导入发货'}
 				onOk={() => {
 					form.validateFields().then((values: any) => {
@@ -490,9 +514,10 @@ function TabList(props: any) {
 						};
 						// @ts-ignore
 						importList(arg0).then((res) => {
-							if (res.entry.success) {
+							if (res.entry) {
 								message.success('上传成功');
 								setModalOpenImport(false);
+								setModalOpen(true);
 								actionRef.current.reload();
 							} else {
 								message.error('上传失败，请检查文件');
@@ -505,7 +530,24 @@ function TabList(props: any) {
 				}}
 			>
 				<div>
-					请先下载<a>导入发货模版</a>
+					请先下载<a onClick={() => {
+					exportOrderTemplate({}, {responseType: 'blob', getResponse: true}).then(
+						(res: any) => {
+							let blob = new Blob([res.data]);
+							let downloadElement = document.createElement('a');
+							let href = window.URL.createObjectURL(blob); //创建下载的链接
+							downloadElement.href = href;
+							downloadElement.download =
+								decodeURI(
+									res.headers['content-disposition'].split('filename=')[1],
+								) || ''; //下载后文件名
+							document.body.appendChild(downloadElement);
+							downloadElement.click(); //点击下载
+							document.body.removeChild(downloadElement); //下载完成移除元素
+							window.URL.revokeObjectURL(href); //释放掉blob对象
+						},
+					)
+				}}>导入发货模版</a>
 				</div>
 				<Form form={form}>
 					<Form.Item
@@ -513,7 +555,7 @@ function TabList(props: any) {
 						help={'请上传文件'}
 						rules={[{required: true, message: '请选择文件'}]}
 					>
-						<Upload beforeUpload={beforeUpload} maxCount={1}>
+						<Upload beforeUpload={beforeUpload} accept=".xls, .xlsx" maxCount={1}>
 							<Button icon={<UploadOutlined/>}>上传文件</Button>
 						</Upload>
 					</Form.Item>
@@ -523,6 +565,7 @@ function TabList(props: any) {
 				width={500}
 				open={modalOpenDelivery}
 				title={'发货'}
+				destroyOnClose
 				onOk={() => {
 					form.validateFields().then((values: any) => {
 						const arg0 = {

@@ -63,7 +63,6 @@ const Launch: any = () => {
       },
     ).then((res: any) => {
       if (res.status) {
-        console.log(res, 'res');
         queryApplyInfo(
           {},
           {
@@ -72,7 +71,6 @@ const Launch: any = () => {
             },
           },
         ).then((res) => {
-          console.log(res, 'res');
           if (res.status) {
             if (res.entry.auditStatus === 0) {
               history.push({
@@ -173,19 +171,16 @@ const Launch: any = () => {
             rules={[
               {
                 required: true,
-                message: '请输入用户名/手机号',
-                pattern: new RegExp(/^[A-Za-z0-9]+$/, 'g'),
+                message: '请输入用户名',
               },
             ]}
           >
             <Input
               size={'large'}
               prefix={<UserOutlined className="site-form-item-icon" />}
-              placeholder="请输入用户名/手机号"
-              maxLength={20}
+              placeholder="请输入用户名/邮箱"
             />
           </Form.Item>
-
           <Form.Item
             label=""
             name="password"
@@ -233,7 +228,7 @@ const Launch: any = () => {
               type="link"
               onClick={() =>
                 history.push({
-                  pathname: './reset-password',
+                  pathname: '/reset-password',
                 })
               }
             >
@@ -243,7 +238,7 @@ const Launch: any = () => {
               type="link"
               onClick={() =>
                 history.push({
-                  pathname: './register/0',
+                  pathname: '/register/0',
                 })
               }
             >

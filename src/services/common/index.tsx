@@ -1,4 +1,5 @@
 import { request } from '@umijs/max';
+import { camelCase } from 'lodash-es';
 
 //合作商服务概况
 
@@ -36,13 +37,33 @@ export function getOssFileUrl(body: object) {
     }),
   });
 }
-
-//获取用户权限
-export function getAccess() {
-  return request('/iam/home/menu?appCode=MSP');
+export function getSelectDict(params: Recordable<any>) {
+  return request('/designweb/dict/dropdown/batch', {
+    method: 'GET',
+    params,
+  }).then(({ entry }) => {
+    const data: any = {};
+    Object.keys(entry).forEach((key: string) => {
+      const itemEnum: any[] = entry[key].map((item: any) => {
+        return {
+          value: Number(item.value),
+          key: Number(item.value),
+          label: item.name,
+          disabled: item.disabled,
+        };
+      });
+      data[camelCase(key)] =
+        itemEnum.length > 1
+          ? [...itemEnum.filter((item: any) => !item.disabled), ...itemEnum.filter((item: any) => item.disabled)]
+          : itemEnum;
+    });
+    return data;
+  });
 }
 
-//获取盖亚一级类目
-export function getGaeaCategory() {
-  return request('/itemcenter/gaea/cates/tree');
+export function getAreaList() {
+  return request('/usercenter/location/getLocations/special', {
+    method: 'GET',
+  });
 }
+

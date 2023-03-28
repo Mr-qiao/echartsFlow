@@ -1,11 +1,11 @@
-import { Avatar, Dropdown, Menu } from 'antd';
+import {Avatar, Dropdown, Menu, message} from 'antd';
 import './index.less';
 import { history } from 'umi';
+import Cookies from "js-cookie";
 
 export default function () {
   const info: any = window.localStorage.getItem('info') || '';
   const JSONInfo = JSON.parse(info || '{}');
-  console.log(info, 'JSONInfo');
   return (
     <div className={'avatar-name'}>
       <Dropdown
@@ -17,6 +17,9 @@ export default function () {
                 label: '退出登陆',
                 key: 'logout',
                 onClick: () => {
+                  Cookies.remove('token')
+                  Cookies.remove('local_token')
+                  localStorage.clear()
                   history.push('/login');
                   console.log('已经退出！！！');
                 },

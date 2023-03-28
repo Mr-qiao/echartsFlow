@@ -34,6 +34,8 @@ function TabList() {
       {/*<ProCard>*/}
       <Tabs
         // type="card"
+        tabBarGutter={30}
+        tabBarStyle={{padding:'0 20px'}}
         size={'large'}
         defaultActiveKey={tabKey}
         onChange={onChange}

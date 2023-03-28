@@ -11,6 +11,18 @@ export function queryList(body: object, options: any) {
     }),
   });
 }
+export function statistics(body: object, options: any) {
+  return request('/designweb/supplier/order/statistics', {
+    method: 'POST',
+    data: body,
+    ...(options || {
+      headers: {
+        'content-type': 'application/json',
+      },
+    }),
+  });
+}
+
 
 export function exportList(body: object, options: any) {
   return request('designweb/supplier/order/exportOrderList/fc', {
@@ -71,3 +83,16 @@ export function exportFailList(body: object, options: any) {
     }),
   });
 }
+export function exportOrderTemplate(body: object, options: any) {
+  return request('/designweb/supplier/order/exportOrderTemplate', {
+    method: 'POST',
+    data: body,
+    ...(options || {
+      headers: {
+        'content-type': 'application/json',
+      },
+    }),
+  });
+}
+
+

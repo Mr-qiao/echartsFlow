@@ -83,7 +83,7 @@ export async function sendValidateCode(params: any, options?: any) {
 
 // 商家注册
 export async function register(params: any, options?: any) {
-  return request('/usercenter/corporation/register', {
+  return request('/usercenter/corporation/design/register', {
     method: 'POST',
     data: params,
     ...(options || {
@@ -106,7 +106,7 @@ export async function uploadPicture(params: any, options?: any) {
 
 export async function checkCompanyName(params: any, options?: any) {
   return request(
-    '/investment-center/supplierplatformDesign/checkCompanyName ',
+    '/investment-center/supplierplatformDesign/checkCompanyName',
     {
       method: 'POST',
       data: params,
@@ -120,8 +120,7 @@ export async function checkCompanyName(params: any, options?: any) {
 }
 
 export async function checkUnifyCreditCodeOld(params: any, options?: any) {
-  return request(
-    '/investment-center/supplierplatformDesign/checkUnifyCreditCodeOld',
+  return request('/investment-center/supplierplatformDesign/checkUnifyCreditCodeOld',
     {
       method: 'POST',
       data: params,
@@ -133,6 +132,7 @@ export async function checkUnifyCreditCodeOld(params: any, options?: any) {
     },
   );
 }
+
 export async function applyName(params: any, options?: any) {
   return request('/investment-center/supplierplatformDesign/apply', {
     method: 'POST',
