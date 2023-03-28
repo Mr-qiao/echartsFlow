@@ -176,6 +176,14 @@ function TabList(props: any) {
 			},
 		},
 		{
+			title: '快递单号',
+			dataIndex: 'companyCodes',
+			hideInTable: true,
+			renderFormItem: (item: any, _: any, form: any) => {
+				return <BatchInput/>;
+			},
+		},
+		{
 			title: '创建时间',
 			search: false,
 			width: 180,
@@ -200,9 +208,9 @@ function TabList(props: any) {
 					<Option value={'1'} key={1}>
 						创建日期
 					</Option>
-					<Option value={'2'} key={1}>
+					{tabKey !== '1' ? <Option value={'2'} key={1}>
 						发货日期
-					</Option>
+					</Option> : null}
 				</Select>
 			),
 			dataIndex: 'sendTime',
@@ -467,8 +475,10 @@ function TabList(props: any) {
 					setModalOpen(false);
 				}}
 			>
+				<Button type={'primary'} style={{position: 'absolute', right: 80, top: 18}}>刷新列表</Button>
 				<ProTable
 					size={'small'}
+					style={{marginTop: 40}}
 					search={false}
 					options={false}
 					request={async (params) => {
@@ -502,6 +512,7 @@ function TabList(props: any) {
 							if (res.entry) {
 								message.success('上传成功');
 								setModalOpenImport(false);
+								setModalOpen(true);
 								actionRef.current.reload();
 							} else {
 								message.error('上传失败，请检查文件');

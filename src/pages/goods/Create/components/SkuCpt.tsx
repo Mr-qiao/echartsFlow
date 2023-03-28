@@ -230,7 +230,7 @@ const SkuCpt: any = ({ form }: any) => {
                     return Promise.reject('请输入参考销售价');
                   }
                   if (!value[i].estimateLivePrice) {
-                    return Promise.reject('estimateLivePrice');
+                    // return Promise.reject('estimateLivePrice');
                   }
                 }
                 return Promise.resolve();

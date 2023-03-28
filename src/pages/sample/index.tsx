@@ -112,14 +112,14 @@ function Sample() {
 		{
 			title: '预计交付时间',
 			search: false,
-			dataIndex: 'requirementTime',
+			dataIndex: 'sampleClothesFinishTime',
 		},
 		{
 			title: '需求状态',
 			search: false,
-			dataIndex: 'sampleSupplierStyleCode',
+			dataIndex: 'status',
 			valueEnum: {
-				0: '待确认', 1: '打样中', 3: '已交付'
+				0: '待确认', 1: '打样中', 2: '已交付'
 			}
 		},
 		{
@@ -153,7 +153,7 @@ function Sample() {
 						}}>备注状态</a>
 						<a onClick={() => {
 							delivery(
-								{sampleSupplierStyleCode: '2', itemId: recode?.itemId}, {}
+								{status: '2', itemId: recode?.itemId}, {}
 							).then((res: any) => {
 								if (res.success) {
 									message.success('交付完成')
@@ -183,7 +183,7 @@ function Sample() {
 				request={async (params, sort, filter) => {
 					const arg0 = {
 						...filterPageName(params),
-						sampleSupplierStyleCode: activeKey==='99' ? undefined : activeKey
+						status: activeKey==='99' ? undefined : activeKey
 					};
 					const res: any = await queryList(arg0, {});
 					const data = res.entry.list;
@@ -249,10 +249,10 @@ function Sample() {
 				}}
 			>
 				<Form form={form}>
-					<Form.Item label={'修改状态'} name={'sampleSupplierStyleCode'}>
+					<Form.Item label={'修改状态'} name={'status'}>
 						<Select>
 							{arrOptions.map((item, index) => (
-								<Option key={index + 1}>{item}</Option>
+								<Option key={index}>{item}</Option>
 							))}
 						</Select>
 					</Form.Item>
