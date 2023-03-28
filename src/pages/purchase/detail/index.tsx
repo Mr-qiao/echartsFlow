@@ -82,6 +82,10 @@ function PurchaseDetail() {
 								title: '规格',
 								key: recode.specification,
 							},
+							{
+								title: '商品类型',
+								key: recode.itemTypeDesc
+							},
 						]}
 					/>
 				);
@@ -163,6 +167,7 @@ function PurchaseDetail() {
 							{title: '款式名称', key: recode.itemTitle},
 							{title: '货品编码', key: recode.skuSysCode},
 							{title: '规格', key: recode.specification},
+							{title: '商品类型', key: recode.itemTypeDesc},
 						]}
 					/>
 				);

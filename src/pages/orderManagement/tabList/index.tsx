@@ -155,7 +155,7 @@ function TabList(props: any) {
 				2: '已发货',
 				3: '已收货',
 				4: '交易关闭',
-				5: '交易完成',
+				5: '交易成功',
 				6: '已签收',
 			},
 			// hideInTable: true,
