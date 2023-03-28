@@ -239,6 +239,7 @@ function Sample() {
 						).then((res: any) => {
 							if (res.success) {
 								message.success('备注状态成功')
+								setOpen(false)
 								actionRef.current.reload()
 							}
 						})
