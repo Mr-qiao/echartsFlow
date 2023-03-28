@@ -32,7 +32,7 @@ const {RangePicker} = DatePicker;
 function TabList(props: any) {
 	const {tabKey} = props;
 	const [form] = Form.useForm();
-	const actionRefImport=useRef()
+	const actionRefImport = useRef()
 	const [timeSelect, setTimeSelect] = useState('1');
 	const [modalOpen, setModalOpen] = useState(false);
 	const [modalOpenDelivery, setModalOpenDelivery] = useState(false);
@@ -154,8 +154,9 @@ function TabList(props: any) {
 				1: '待发货',
 				2: '已发货',
 				3: '已收货',
-				4: '交易完成',
-				5: '订单关闭',
+				4: '交易关闭',
+				5: '交易完成',
+				6: '已签收',
 			},
 			// hideInTable: true,
 		},
@@ -283,16 +284,14 @@ function TabList(props: any) {
 			search: false,
 			render: (_: any, recode: any) => {
 				return (
-					recode.status === '待发货' && recode.isDeleted === 1 ? null : (
-						<a
-							onClick={() => {
-								setQueryIdList(recode);
-								setModalOpenDelivery(true);
-							}}
-						>
-							发货
-						</a>
-					)
+					recode.status === '待发货' && recode.isDeleted === 1 ? <a
+						onClick={() => {
+							setQueryIdList(recode);
+							setModalOpenDelivery(true);
+						}}
+					>
+						发货
+					</a> : null
 				);
 			},
 		},
@@ -477,7 +476,7 @@ function TabList(props: any) {
 					setModalOpen(false);
 				}}
 			>
-				<Button type={'primary'} onClick={()=>{
+				<Button type={'primary'} onClick={() => {
 					actionRefImport.current.reload();
 				}} style={{position: 'absolute', right: 80, top: 18}}>刷新列表</Button>
 				<ProTable
