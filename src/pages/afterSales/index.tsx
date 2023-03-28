@@ -17,7 +17,7 @@ function AfterSales() {
 	const ref: any = useRef();
 	const columns: any = [
 		{
-			title: '款式编码',
+			title: '订单编码',
 			dataIndex: 'orderIds',
 			hideInTable: true,
 			renderFormItem: (item: any, _: any, form: any) => {
@@ -179,7 +179,7 @@ function AfterSales() {
 							},
 							{
 								title: '类型',
-								key: recode.refundType4RE,
+								key: recode.refundType4REDs,
 							},
 						]}
 					/>
