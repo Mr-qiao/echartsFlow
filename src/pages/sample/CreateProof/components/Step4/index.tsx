@@ -353,11 +353,11 @@ const MaterialList: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => 
           )}
         </FormList>
 
-        <div className={ss.footer}>
-          <Button type="primary" onClick={handleSave}>
-            保存
-          </Button>
-        </div>
+        {/*<div className={ss.footer}>*/}
+        {/*  <Button type="primary" onClick={handleSave}>*/}
+        {/*    保存*/}
+        {/*  </Button>*/}
+        {/*</div>*/}
       </Space>
     </Form>
   );

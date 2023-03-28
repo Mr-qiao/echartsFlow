@@ -199,11 +199,11 @@ const StandardSize: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => 
           </FormItem>
         )}
       </FormList>
-      <div className={ss.footer}>
-        <Button type="primary" onClick={handleSave}>
-          保存
-        </Button>
-      </div>
+      {/*<div className={ss.footer}>*/}
+      {/*  <Button type="primary" onClick={handleSave}>*/}
+      {/*    保存*/}
+      {/*  </Button>*/}
+      {/*</div>*/}
     </Form>
   );
 };
