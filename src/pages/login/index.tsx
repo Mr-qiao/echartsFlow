@@ -63,7 +63,6 @@ const Launch: any = () => {
       },
     ).then((res: any) => {
       if (res.status) {
-        console.log(res, 'res');
         queryApplyInfo(
           {},
           {
@@ -72,7 +71,6 @@ const Launch: any = () => {
             },
           },
         ).then((res) => {
-          console.log(res, 'res');
           if (res.status) {
             if (res.entry.auditStatus === 0) {
               history.push({

@@ -13,7 +13,6 @@ export default () => {
 	}, []);
 
 	const getCategoryList = () => {
-		console.log(cookie, 'cookie')
 		if (cookie) {
 			Api.Goods.Category({}).then((res) => {
 				setCategory(res.entry || []);

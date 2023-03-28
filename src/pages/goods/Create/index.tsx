@@ -63,8 +63,6 @@ const Index: React.FC = () => {
     setSampleId('');
   };
   useEffect(() => {
-    // console.log(id);
-    // getGoodsDetail();
     let _: { itemId?: string | number; type: number; categoryId?: string | number } = { type: 3 };
     if (id) {
       _ = { itemId: id, type: 3 };
@@ -130,12 +128,9 @@ const Index: React.FC = () => {
 
   //提交
   async function onFinish(values) {
-    console.log(values);
     let _: any = { ...values };
     _.images = normFile(_.images);
     _.categoryId = (_.categoryId as []) ? _.categoryId[_.categoryId.length - 1] : '';
-    // console.log(_,'_')
-    // _.baseProperties = _.dynProps[0];
     Api.Goods.Add(_).then(({}) => {
       message.success('添加成功', 0.5, () => {
         navigate(-1);
@@ -144,7 +139,6 @@ const Index: React.FC = () => {
   }
 
   function normFile(e) {
-    console.log('Upload event:', e);
     if (Array.isArray(e)) {
       return e?.map((item) => (typeof item === 'object' ? item.url : item));
     }

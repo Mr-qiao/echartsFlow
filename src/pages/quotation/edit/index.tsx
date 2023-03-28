@@ -509,10 +509,6 @@ function QuotationEdit() {
 	}
 	// 汇总提交表单
 	const submit = () => {
-		console.log(dataSourcePp, 'dataWl');
-		console.log(dataSourceGy, 'dataGy');
-		console.log(dataSourceQt, 'dataQt');
-		console.log(data, 'data');
 		let arg0: any = {
 			...data,
 			craftMap: {

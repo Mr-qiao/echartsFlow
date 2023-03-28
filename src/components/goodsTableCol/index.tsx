@@ -41,6 +41,7 @@ function GoodsTableCol(props: any) {
 			// 	src: 'https://hbimg.huabanimg.com/b886a3bc5dc7c0b8863f48b1b062fe15d582dc102633f-NnXKGZ_fw658'
 			// },
 		],
+		isDeleted = 0
 	} = props;
 	const imgZ = imgs[0]?.src;
 	const imgF = imgs.slice(1, 4);
@@ -51,6 +52,7 @@ function GoodsTableCol(props: any) {
 					<Col className={'good-table-list-img'}>
 						<Col>
 							<Image width={80} height={80} src={imgZ}/>
+							{isDeleted === 1 && <div className={'iamgeTitle'}>已作废</div>}
 						</Col>
 						{footerImg && imgF.length > 0 ? (
 							<Row className={'bus-img'}>

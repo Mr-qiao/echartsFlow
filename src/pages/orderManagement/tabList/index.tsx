@@ -48,6 +48,7 @@ function TabList(props: any) {
 			render: (_: any, recode: any) => {
 				return (
 					<GoodsTableCol
+						imgs={[{src: recode?.itemImage || ''}]}
 						footerImg={false}
 						nameArr={[
 							{
@@ -56,11 +57,11 @@ function TabList(props: any) {
 							},
 							{
 								title: '款式名称',
-								key: recode.ksName,
+								key: recode.itemTitle,
 							},
 							{
 								title: 'SKU编码',
-								key: recode.skuCodes,
+								key: recode.skuCode,
 							},
 							{
 								title: '规格',
@@ -85,6 +86,7 @@ function TabList(props: any) {
 			render: (_: any, recode: any) => {
 				return (
 					<GoodsTableCol
+						isDeleted={recode.isDeleted}
 						footerImg={false}
 						nameArr={[
 							{
@@ -140,7 +142,7 @@ function TabList(props: any) {
 		},
 		{
 			title: '款式名称',
-			dataIndex: 'itemTitle',
+			dataIndex: 'ksName',
 			hideInTable: true,
 		},
 		{

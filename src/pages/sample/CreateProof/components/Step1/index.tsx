@@ -88,7 +88,6 @@ const BasicInfo: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => {
           skcImageUrls: skc.skcImageUrls.map((item: any) => item.url),
         })),
       };
-      console.log(data);
       onOk(data);
     } catch (err) {
       console.log(err);
