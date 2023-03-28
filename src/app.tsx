@@ -12,8 +12,8 @@ import 'antd/dist/reset.css';
 import './global.less'
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
-dayjs.locale('zh-cn');
 
+dayjs.locale('zh-cn');
 
 
 // 全局初始化数据配置，用于 Layout 用户信息和权限初始化
@@ -61,7 +61,7 @@ export const layout = () => {
 					// 	style={{width: '128px', height: '31px'}}
 					// 	src="https://s.xinc818.com/files/webcil9xmqi0aolow2y/logo_name@2x.png"
 					// />
-					<h1 style={{color: '#fff'}}>设计师中台-工厂端</h1>
+					<h1 style={{color: '#fff', marginTop: 6, marginLeft: 6}}>设计师中台-工厂端</h1>
 				)}
 			</div>
 		),
