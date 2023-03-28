@@ -232,6 +232,7 @@ function Sample() {
 			<Modal
 				title={'备注状态'}
 				open={open}
+				destroyOnClose
 				onOk={() => {
 					form.validateFields().then(values => {
 						mark(
