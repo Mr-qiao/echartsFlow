@@ -15,7 +15,7 @@ if (host.includes('dev') || host.includes('localhost')) {
 const ajaxBaseUrl = {
 	development: 'https://api.dev.xinc818.net',
 	daily: 'https://api.daily.xinc818.net',
-	gray: 'http://192.168.11.185:8080',
+	gray: 'https://api.gray.xinc818.net',
 	production: 'https://api.xinc818.com',
 }[env];
 
