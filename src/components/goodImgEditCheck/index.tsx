@@ -9,7 +9,7 @@ function GoodImgEditCheck(props) {
 		src: item
 	})) || []
 	const imgZ = arr[0]?.src;
-	const imgF = arr.slice(1);
+	const imgF = arr.slice(1, 4);
 	return (
 		<Row className={'good-detail'}>
 			<Image.PreviewGroup>
