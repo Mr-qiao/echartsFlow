@@ -17,7 +17,6 @@ function Purchase(props: any) {
 	const [modalOpen, setModalOpen] = useState(false);
 	const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 	const ref: any = useRef();
-	console.log(tabKey, 'tabKey')
 	const columns: any = [
 		{
 			title: '序号',
@@ -204,7 +203,6 @@ function Purchase(props: any) {
 				rowKey={'id'}
 				formRef={ref}
 				request={async (params = {}, sort, filter) => {
-					console.log(params, 'params')
 					const arg0 = {
 						...filterPageName(params),
 						status: tabKey === '0' ? params.status : Number(tabKey),

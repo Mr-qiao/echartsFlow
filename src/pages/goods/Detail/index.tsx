@@ -25,7 +25,7 @@ const columns = [
 					<Image
 						width={90}
 						height={90}
-						src={Array.isArray(record.images) && record.images.length > 0 && record.images[0]}
+						src={Array.isArray(record?.images) && record?.images.length > 0 && record?.images[0]}
 					/>
 					<div className="u-ml10" style={{width: 'calc(100% - 100px)'}}>
 						<p className="u-fs12 u-mb5">
@@ -125,7 +125,6 @@ const GoodsInfo = React.forwardRef((props: any, ref) => {
 	}));
 
 	useEffect(() => {
-		// console.log(id);
 		getGoodsDetail(id);
 	}, [id]);
 
@@ -206,13 +205,15 @@ const GoodsInfo = React.forwardRef((props: any, ref) => {
 		<div className="goods__detail-wrap">
 			<Row className="u-w100">
 				<Col>
-					<Image width={200} height={200} src={detail?.mainImg} fallback={fallback} style={{borderRadius: 10}}/>
+					{detail?.mainImg &&
+              <Image width={200} height={200} src={detail?.mainImg} fallback={fallback} style={{borderRadius: 10}}/>}
 					<div className="u-flex u-mt10">
-						{detail.images?.map((item, i) => {
-							if (i === 0) return '';
-							return (
-								<Image key={i} width={60} height={60} src={item} fallback={fallback} style={{borderRadius: 10}}/>
-							);
+						{detail?.images?.map((item: any, i: any) => {
+							if (i !== 0) {
+								return (
+									<Image key={i} width={60} height={60} src={item} fallback={fallback} style={{borderRadius: 10}}/>
+								);
+							}
 						})}
 					</div>
 				</Col>
@@ -242,7 +243,7 @@ const GoodsInfo = React.forwardRef((props: any, ref) => {
 							<Col span={12}>
 								<p>
 									<span className="u-c888">商家款式编码：</span>
-									{detail.itemCode || '-'}
+									{detail.supplierStyleCode || '-'}
 								</p>
 							</Col>
 							<Col span={12}>
@@ -261,16 +262,16 @@ const GoodsInfo = React.forwardRef((props: any, ref) => {
 							<Col span={12}>
 								<p>
 									<span className="u-c888">采购价：</span>
-									{detail.salePriceRange}
+									{detail.salePriceRange || '-'}
 								</p>
 							</Col>
 							<Col span={12}>
-								<p>{detail.snCode}</p>
+								<p>{detail.snCode || '-'}</p>
 							</Col>
 							<Col span={12}>
 								<p>
 									<span className="u-c888">供货参考价：</span>
-									{detail.supplyPriceRange}
+									{detail?.supplyPriceRange || '-'}
 								</p>
 							</Col>
 							<Col span={12}>
@@ -282,13 +283,13 @@ const GoodsInfo = React.forwardRef((props: any, ref) => {
 							<Col span={12}>
 								<p>
 									<span className="u-c888">参考佣金比例：</span>
-									{detail.commissionRatioRange}
+									{detail?.commissionRatioRange || '-'}
 								</p>
 							</Col>
 							<Col span={12}>
 								<p>
 									<span className="u-c888">渠道商品编码：</span>
-									{detail.outsideItemCode}
+									{detail.outsideItemCode || '-'}
 								</p>
 							</Col>
 
@@ -310,7 +311,7 @@ const GoodsInfo = React.forwardRef((props: any, ref) => {
 								<Col span={24}>
 									<p>
 										<span className="u-c888">卖点信息：</span>
-										{detail.sellPoint}
+										{detail.sellPoint || '-'}
 									</p>
 								</Col>
 							)}

@@ -271,12 +271,10 @@ const SkuCpt: any = ({ form }: any) => {
           )}
           <Form.List name={['saleProperties', index, dataIndex]} initialValue={['']}>
             {(lv1, { add, remove }) => {
-              // console.log('lv1', lv1);
               return (
                 <>
                   <div className={`sku__list-main `}>
                     {lv1.map((o) => {
-                      // console.log('lv1 item---', o);
                       return (
                         <Form.Item key={`plan_${o.key}_${index}`} wrapperCol={{ span: 16 }}>
                           <Form.Item

@@ -3,8 +3,11 @@ import {Cascader} from 'antd';
 function SelectTree(props: any) {
 	const {options = [], onChange, value, ...prop} = props;
 	const onChanges = (value) => {
-		console.log(value, 'value')
-		onChange(value[value.length - 1])
+		if (value) {
+			onChange(value.length > 0 ? value[value.length - 1] : '')
+		} else {
+			onChange('')
+		}
 	}
 	return (
 		<div>

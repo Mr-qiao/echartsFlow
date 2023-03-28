@@ -153,7 +153,6 @@ function PurchaseDetail() {
 		{
 			title: '商品信息',
 			render: (_: any, recode: any, index: number) => {
-				console.log(recode, 'recode')
 				return (
 					<GoodsTableCol
 						footerImg={false}
