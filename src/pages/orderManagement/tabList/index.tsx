@@ -32,6 +32,7 @@ const {RangePicker} = DatePicker;
 function TabList(props: any) {
 	const {tabKey} = props;
 	const [form] = Form.useForm();
+	const actionRefImport=useRef()
 	const [timeSelect, setTimeSelect] = useState('1');
 	const [modalOpen, setModalOpen] = useState(false);
 	const [modalOpenDelivery, setModalOpenDelivery] = useState(false);
@@ -467,6 +468,7 @@ function TabList(props: any) {
 			<Modal
 				width={800}
 				open={modalOpen}
+				destroyOnClose
 				title={'导入记录列表'}
 				onOk={() => {
 					setModalOpen(false);
@@ -475,12 +477,15 @@ function TabList(props: any) {
 					setModalOpen(false);
 				}}
 			>
-				<Button type={'primary'} style={{position: 'absolute', right: 80, top: 18}}>刷新列表</Button>
+				<Button type={'primary'} onClick={()=>{
+					actionRefImport.current.reload();
+				}} style={{position: 'absolute', right: 80, top: 18}}>刷新列表</Button>
 				<ProTable
 					size={'small'}
 					style={{marginTop: 40}}
 					search={false}
 					options={false}
+					actionRef={actionRefImport}
 					request={async (params) => {
 						const arg0 = {
 							...filterPageName(params),
@@ -501,6 +506,7 @@ function TabList(props: any) {
 			<Modal
 				width={400}
 				open={modalOpenImport}
+				destroyOnClose
 				title={'导入发货'}
 				onOk={() => {
 					form.validateFields().then((values: any) => {
@@ -560,6 +566,7 @@ function TabList(props: any) {
 				width={500}
 				open={modalOpenDelivery}
 				title={'发货'}
+				destroyOnClose
 				onOk={() => {
 					form.validateFields().then((values: any) => {
 						const arg0 = {
