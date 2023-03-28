@@ -153,10 +153,11 @@ function TabList(props: any) {
 			valueEnum: {
 				1: '待发货',
 				2: '已发货',
-				3: '已收货',
+				3: '已收货交易成功',
 				4: '交易关闭',
 				5: '交易成功',
 				6: '已签收',
+				7: '已收货'
 			},
 			// hideInTable: true,
 		},
