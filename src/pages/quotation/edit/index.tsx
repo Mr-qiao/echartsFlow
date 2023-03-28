@@ -261,6 +261,7 @@ function QuotationEdit() {
 				return (
 					<Select
 						style={{width: 200}}
+						disabled={recode?.dis}
 						value={recode.bjsxgg}
 						onChange={(e) => {
 							const NewArr = [...dataSourceQt];
@@ -270,6 +271,7 @@ function QuotationEdit() {
 							const asd = NewArr.filter(item => item.bjsxgg === recode.bjsxgg)
 							const qthz = Number(info.jsdj || 0) * Number(info.sysl || 0)
 							info.qthz = qthz
+							info.dis = true
 							const sumby = _.sumBy(asd, 'qthz')
 							zongHz('qitahuizong', sumby, recode.bjsxgg)
 						}}>
@@ -361,6 +363,9 @@ function QuotationEdit() {
 							const qthz = Number(info.jsdj || 0) * Number(info.sysl || 0)
 							info.qthz = qthz
 							const sumby = _.sumBy(asd, 'qthz')
+							const minbyhuizong = _.ceil(_.minBy(NewArr, 'qthz')?.qthz, 2) || 0
+							const maxbyhuizong = _.ceil(_.maxBy(NewArr, 'qthz')?.qthz, 2) || 0
+							setQitaPirce(`${minbyhuizong}-${maxbyhuizong}`)
 							zongHz('qitahuizong', sumby, recode.bjsxgg)
 							setDataSourceQt(NewArr);
 						}}
@@ -409,22 +414,23 @@ function QuotationEdit() {
 	const wuL = (index: any) => {
 		const NewArr = [...dataSourcePp[tabKey]?.materialDetailList];
 		const da = NewArr[index]
-		da.wlhz = _.ceil((Number(da.dj || 0) * Number(da.skuyl || 0)) / (Number(da.shl || 0) / 100), 2)
+		da.wlhz = _.ceil((Number(da.dj || 0) * Number(da.skuyl || 0)) / (Number(da.shl || 0) / 100), 2) || 0
 		const sumby = _.ceil(_.sumBy(NewArr, 'wlhz'), 2)
 		const datas = [...dataSourcePp]
-		datas[tabKey].materialDetailList = NewArr
 		datas[tabKey].hz = sumby
-		const minby = _.ceil(_.minBy(datas, 'hz').hz, 2)
-		const maxby = _.ceil(_.maxBy(datas, 'hz').hz, 2)
+		console.log(datas, '_.minBy(datas, \'hz\')')
+		const minby = _.ceil(_.minBy(datas, 'hz')?.hz, 2) || 0
+		const maxby = _.ceil(_.maxBy(datas, 'hz')?.hz, 2) || 0
 		datas[tabKey].minby = minby
 		datas[tabKey].maxby = maxby
+		datas[tabKey].materialDetailList = NewArr
 		setWlbjz(`${minby}-${maxby}`)
 		zongHz('wuliaohuizong', sumby,)
 		setDataSourcePp(datas);
 	}
 	const queryListAll = async () => {
 		const res = await queryById({id: params.id})
-		const entry = res.entry
+		const entry = res?.entry || {}
 		const gy = _.cloneDeep(entry?.craftMap?.workmanshipDetailList)
 		const wll = _.cloneDeep(entry?.materialMap?.skuMaterialList)
 		const wl = _.cloneDeep(entry?.materialMap?.skuMaterialList)
