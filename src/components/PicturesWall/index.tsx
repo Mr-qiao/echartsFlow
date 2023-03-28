@@ -152,14 +152,17 @@ function PicturesWall({ onChange, value, uploadButton, size, maxCount, onUpload,
   useEffect(() => {
     if (value) {
       if (Array.isArray(value)) {
-        let _ = value?.map((item) => {
-          if (typeof item !== 'object') {
-            return { url: item, uid: uuid(), name: new Date().getTime(), status: 'done' };
-          } else {
-            return item;
-          }
-        });
-        setFileList(_);
+        let fileListStr = fileList.map((o) => o.url);
+        if (fileListStr.toString() !== value.toString()) {
+          let _ = value?.map((item) => {
+            if (typeof item !== 'object') {
+              return { url: item, uid: uuid(), name: new Date().getTime(), status: 'done' };
+            } else {
+              return item;
+            }
+          });
+          setFileList(_);
+        }
       } else {
         setFileList([{ url: value, uid: uuid(), name: new Date().getTime(), status: 'done' }]);
       }

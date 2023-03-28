@@ -1,4 +1,4 @@
-import { Button, Input, message, Popconfirm, Table } from 'antd';
+import { Button, Input, InputNumber, message, Popconfirm, Table } from 'antd';
 import React, { useMemo, useState } from 'react';
 
 import PicturesWall from '@/components/PicturesWall';
@@ -57,7 +57,7 @@ const SkuTablesCpt: any = React.forwardRef(({ value, onChange }: any, ref): any 
     },
     {
       title: '货品图',
-      width: 300,
+      width: 400,
       dataIndex: 'images',
       key: 'images',
       editable: true,
@@ -122,14 +122,18 @@ const SkuTablesCpt: any = React.forwardRef(({ value, onChange }: any, ref): any 
       editable: true,
       component: (record: any, idx: number) => {
         return (
-          <Input
+          <InputNumber
+            placeholder="请输入吊牌价"
             className="ant-input-required"
             value={dataSource[idx][record.dataIndex]}
             status={dataSource[idx][record.dataIndex] ? '' : 'error'}
-            placeholder="请输入吊牌价"
-            onChange={(e) => {
-              handleInputValue(e.target.value, record, idx);
+            onChange={(value) => {
+              handleInputValue(value, record, idx);
             }}
+            controls={false}
+            min={0}
+            max={999999999.99}
+            precision={2}
           />
         );
       },
@@ -146,14 +150,18 @@ const SkuTablesCpt: any = React.forwardRef(({ value, onChange }: any, ref): any 
       editable: true,
       component: (record: any, idx: number) => {
         return (
-          <Input
+          <InputNumber
             placeholder="请输入参考销售价"
             className="ant-input-required"
             value={dataSource[idx][record.dataIndex]}
             status={dataSource[idx][record.dataIndex] ? '' : 'error'}
-            onChange={(e) => {
-              handleInputValue(e.target.value, record, idx);
+            onChange={(value) => {
+              handleInputValue(value, record, idx);
             }}
+            controls={false}
+            min={0}
+            max={999999999.99}
+            precision={2}
           />
         );
       },
@@ -170,14 +178,75 @@ const SkuTablesCpt: any = React.forwardRef(({ value, onChange }: any, ref): any 
       editable: true,
       component: (record, idx) => {
         return (
-          <Input
+          <InputNumber
             placeholder="请输入预计直播价"
             className="ant-input-required"
             value={dataSource[idx][record.dataIndex]}
             status={dataSource[idx][record.dataIndex] ? '' : 'error'}
-            onChange={(e) => {
-              handleInputValue(e.target.value, record, idx);
+            onChange={(value) => {
+              handleInputValue(value, record, idx);
             }}
+            controls={false}
+            min={0}
+            max={999999999.99}
+            precision={2}
+          />
+        );
+      },
+      rules: () => {
+        return [{ required: true }];
+      },
+    },
+
+    {
+      title: '预计佣金比例',
+      titleType: 'input',
+      dataIndex: 'commissionRatio',
+      width: 120,
+      key: 'commissionRatio',
+      editable: true,
+      component: (record, idx) => {
+        return (
+          <InputNumber
+            placeholder="请输入预计佣金比例"
+            className="ant-input-required"
+            value={dataSource[idx][record.dataIndex]}
+            status={dataSource[idx][record.dataIndex] ? '' : 'error'}
+            onChange={(value) => {
+              handleInputValue(value, record, idx);
+            }}
+            controls={false}
+            min={0}
+            max={100}
+            precision={2}
+          />
+        );
+      },
+      rules: () => {
+        return [{ required: true }];
+      },
+    },
+    {
+      title: '参考供货价',
+      titleType: 'input',
+      dataIndex: 'supplyPrice',
+      width: 120,
+      key: 'supplyPrice',
+      editable: true,
+      component: (record, idx) => {
+        return (
+          <InputNumber
+            placeholder="请输入参考供货价"
+            className="ant-input-required"
+            value={dataSource[idx][record.dataIndex]}
+            status={dataSource[idx][record.dataIndex] ? '' : 'error'}
+            onChange={(value) => {
+              handleInputValue(value, record, idx);
+            }}
+            controls={false}
+            min={0}
+            max={999999999.99}
+            precision={2}
           />
         );
       },
@@ -188,8 +257,10 @@ const SkuTablesCpt: any = React.forwardRef(({ value, onChange }: any, ref): any 
   ];
   //table input change
   const handleInputValue = (value, record, idx) => {
+    // console.log(record, idx, name);
     let arr = [...dataSource];
     arr[idx][record.dataIndex] = value;
+    console.log(value);
     serDataSource(arr);
     triggerChange(arr);
   };
@@ -236,6 +307,7 @@ const SkuTablesCpt: any = React.forwardRef(({ value, onChange }: any, ref): any 
     const handleInputChange = (e) => {
       e.stopPropagation();
       inputValue = e.target.value;
+      if (inputValue === '') return;
       let _arr = [...dataSource];
       let _data: any = _arr.map((item: any) => {
         item[dataIndex] = inputValue;

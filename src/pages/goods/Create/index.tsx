@@ -1,11 +1,13 @@
 import { useModel, useNavigate, useParams, useSearchParams } from '@umijs/max';
 import { InputNumberRange } from '@xlion/component';
+import { math } from '@xlion/utils';
 import { Button, Cascader, Col, DatePicker, Form, Input, InputNumber, message, Row, Select, Typography } from 'antd';
-import { groupBy } from 'lodash-es';
+import { groupBy, omit } from 'lodash-es';
 import moment from 'moment';
 import React, { createContext, useEffect, useRef, useState } from 'react';
 
 import PicturesWall from '@/components/PicturesWall';
+import { transformFen2Yuan } from '@/utils';
 
 import BrandSelectCpt from './components/BrandSelectCpt';
 import Api from '../services';
@@ -15,6 +17,8 @@ import { AttrTypes } from './constant';
 import styles from './index.less';
 
 export const CptContext = createContext<any>(null);
+
+const PriceKeys = ['estimateLivePrice', 'originPrice', 'salePrice', 'supplyPrice'];
 
 const Index: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -65,11 +69,9 @@ const Index: React.FC = () => {
   useEffect(() => {
     let _: { itemId?: string | number; type: number; categoryId?: string | number } = { type: 3 };
     if (id) {
-      _ = { itemId: id, type: 3 };
+      _ = { itemId: Number(id), type: 3 };
     }
     Promise.all([Api.Goods.Detail(_)]).then(([{ entry: info }]) => {
-      // setBrandList(brand);
-      // info.categoryId = info?.categoryIds;
       //动态属性
       setDynProps(
         groupBy(
@@ -83,66 +85,55 @@ const Index: React.FC = () => {
       setAttrEnum(info?.salePropertiesEnum);
       //sku值
       setSaleProperties(info?.saleProperties);
-
-      // info.dynProps = [info.baseProperties];
-      let _ = { ...info.item, ...info };
-      if (sampleId) {
-        _.source = 2;
-        _.refSampleClothesId = sampleId;
-        setSampleId(sampleId);
-      }
-      //删除type，新建都是 款式
-      delete _?.type;
-
-      // setDetail(_);
-      form.setFieldsValue({
-        ..._,
-        categoryId: _?.categoryIds,
-
-        baseProperties: info.baseProperties?.reduce((acc: Recordable<any>, cur) => {
-          let value: any;
-          if (Array.isArray(cur.categoryPropertyValues)) {
-            switch (cur.type) {
-              case AttrTypes.TEXT:
-              case AttrTypes.NUMBER:
-              case AttrTypes.SELECT:
-              case AttrTypes.TEXTAREA:
-                value = cur.categoryPropertyValues[0];
-                break;
-              case AttrTypes.DATE:
-                value = moment(cur.categoryPropertyValues[0]);
-                break;
-              case AttrTypes.DATE_RANGE:
-                value = value.map((item: string) => moment(item));
-                break;
-              default:
-                value = cur.categoryPropertyValues;
-            }
-          }
-          acc[cur.categoryPropertyCode] = value;
-          return acc;
-        }, {}),
-      });
     });
   }, []);
 
   //提交
   async function onFinish(values) {
-    let _: any = { ...values };
-    _.images = normFile(_.images);
-    _.categoryId = (_.categoryId as []) ? _.categoryId[_.categoryId.length - 1] : '';
-    Api.Goods.Add(_).then(({}) => {
+    const attrKeyTypeMap = Object.keys(dynProps).reduce((acc: any, cur: any) => {
+      dynProps[cur].forEach((item) => {
+        acc[item.categoryPropertyCode] = item.type;
+      });
+      return acc;
+    }, {});
+    const data = {
+      ...values,
+      images: values.images?.map((img: { url: string }) => (typeof img === 'object' ? img.url : img)) || [],
+      categoryId: [...values.categoryId].pop(),
+      baseProperties: Object.keys(values.baseProperties).reduce((acc: Recordable<any>, key: string) => {
+        if (values.baseProperties[key] !== undefined) {
+          const type = attrKeyTypeMap[key];
+          switch (type) {
+            case AttrTypes.DATE:
+              acc[key] = moment(values.baseProperties[key]).format('YYYY-MM-DD');
+              break;
+            case AttrTypes.DATE_RANGE:
+              acc[key] = [
+                moment(values.baseProperties[key][0]).format('YYYY-MM-DD'),
+                moment(values.baseProperties[key][1]).format('YYYY-MM-DD'),
+              ];
+              break;
+            default:
+              acc[key] = values.baseProperties[key];
+              break;
+          }
+        }
+        return acc;
+      }, {}),
+      skus: values.skus.map((item: any) => ({
+        ...omit(item, ['images', ...PriceKeys]),
+        images: item.images?.map((img: { url: string }) => (typeof img === 'object' ? img.url : img)),
+        itemPrice: {
+          commissionRatio: math.mul(item.commissionRatio, 100),
+          ...transformFen2Yuan(item, PriceKeys, true),
+        },
+      })),
+    };
+    Api.Goods.Add(data).then(({}) => {
       message.success('添加成功', 0.5, () => {
         navigate(-1);
       });
     });
-  }
-
-  function normFile(e) {
-    if (Array.isArray(e)) {
-      return e?.map((item) => (typeof item === 'object' ? item.url : item));
-    }
-    return [e];
   }
 
   return (
@@ -242,19 +233,6 @@ const Index: React.FC = () => {
           </Col>
         </Row>
         {renderDynProps()}
-        {/* {dynProps && dynProps.length > 0 && (
-          <>
-            <h2>类目属性</h2>
-
-            <Row>
-              {dynProps?.map((item) => (
-                <Col key={item.categoryPropertyName} span={12}>
-                  <RenderItem propsValue={item} />
-                </Col>
-              ))}
-            </Row>
-          </>
-        )} */}
 
         <h2>sku信息</h2>
         <CptContext.Provider value={{ saleProperties: saleProperties || [], attrEnum: attrEnum }}>
