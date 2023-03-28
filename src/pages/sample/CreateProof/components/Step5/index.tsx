@@ -157,11 +157,11 @@ const ProcessInstruct: React.FC<IStepProps> = ({ proofInfo, onOk }) => {
           <Upload listType="picture-card" maxCount={6} />
         </FormItem>
       </Form>
-      <div className={ss.footer}>
-        <Button type="primary" onClick={handleSave}>
-          保存
-        </Button>
-      </div>
+      {/*<div className={ss.footer}>*/}
+      {/*  <Button type="primary" onClick={handleSave}>*/}
+      {/*    保存*/}
+      {/*  </Button>*/}
+      {/*</div>*/}
     </Space>
   );
 };
