@@ -5,6 +5,7 @@ import {delivery, mark, queryList} from '@/pages/sample/apis';
 import moment from 'moment';
 import {filterPageName} from "@/utils";
 import {history} from "umi";
+import {transformFen2Yuan} from "@/utils"
 import SelectTree from "@/components/selectTree";
 import {getCategoryTree} from "@/pages/goods/apis";
 import SelectCpt from "@/components/selectCpt";
@@ -45,7 +46,7 @@ function Sample() {
 		},
 		{
 			title: '样衣编码',
-			dataIndex: 'refSampleTitle',
+			dataIndex: 'refSysItemCode',
 		},
 		{
 			title: '需求单编码',
@@ -90,8 +91,8 @@ function Sample() {
 			search: false,
 			dataIndex: 'spotsType',
 			valueEnum: {
-				1: '有',
-				2: '没有'
+				1: '现货',
+				2: '期货'
 			}
 		},
 		{
@@ -108,6 +109,7 @@ function Sample() {
 			title: '吊牌价',
 			search: false,
 			dataIndex: 'tagPrice',
+			render: (_: any, recode: any)=>transformFen2Yuan(recode,['tagPrice']).tagPrice
 		},
 		{
 			title: '预计交付时间',
@@ -118,13 +120,15 @@ function Sample() {
 			title: '需求状态',
 			search: false,
 			dataIndex: 'status',
-			valueEnum: {
-				0: '待确认', 1: '打样中', 2: '已交付'
+			render: (val: any, recode: any)=>{
+				return recode.status?{
+					0: '待开始', 1: '打样中', 2: '已交付'
+				}[val]:'待开始'
 			}
 		},
 		{
 			title: '对接人',
-			dataIndex: 'contactPersonId',
+			dataIndex: 'creatorName',
 			search: false
 		},
 		{
@@ -142,26 +146,40 @@ function Sample() {
 			fixed: 'right',
 			width: 200,
 			render: (_: any, recode: any) => {
+				const {status} = recode
 				return (
 					<Space>
 						<a onClick={() => {
 							history.push(`/goods/sample/detail?id=${recode.itemId}`)
 						}}>查看</a>
-						<a onClick={() => {
-							setbyId(recode)
-							setOpen(true)
-						}}>备注状态</a>
-						<a onClick={() => {
-							delivery(
-								{status: '2', itemId: recode?.itemId}, {}
-							).then((res: any) => {
-								if (res.success) {
-									message.success('交付完成')
-									actionRef.current.reload()
-								}
-							})
-						}}
-						>交付样衣</a>
+						{
+							[0].includes(status) || !status?<a onClick={() => {
+								setbyId(recode)
+								// setOpen(true)
+								mark(
+									{status:'1', itemId: recode?.itemId}, {}
+								).then((res: any) => {
+									if (res.success) {
+										message.success('打样成功')
+										setOpen(false)
+										actionRef.current.reload()
+									}
+								})
+							}}>开始打样</a>:null
+						}
+						{
+							[1].includes(status)?<a onClick={() => {
+								delivery(
+									{status: '2', itemId: recode?.itemId}, {}
+								).then((res: any) => {
+									if (res.success) {
+										message.success('交付完成')
+										actionRef.current.reload()
+									}
+								})
+							}}
+							>交付样衣</a>:null
+						}
 					</Space>
 				);
 			},
@@ -250,8 +268,8 @@ function Sample() {
 					setOpen(false)
 				}}
 			>
-				<Form form={form}>
-					<Form.Item label={'修改状态'} name={'status'}>
+				<Form form={form} >
+					<Form.Item label={'修改状态'} name={'status'} initialValue={'1'}>
 						<Select>
 							{arrOptions.map((item, index) => (
 								<Option key={index}>{item}</Option>
