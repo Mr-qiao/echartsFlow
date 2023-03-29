@@ -243,13 +243,15 @@ const GoodsInfo = React.forwardRef((props: any, ref) => {
       setSkus(() =>
         skus.map((sku) => ({
           ...sku,
-          itemPrice: transformFen2Yuan(sku.itemPrice, [
-            'originPrice',
-            'salePrice',
-            'estimateLivePrice',
-            'supplyPrice',
-            'commissionRatio',
-          ]),
+          itemPrice: {
+            ...transformFen2Yuan(sku.itemPrice, [
+              'originPrice',
+              'salePrice',
+              'estimateLivePrice',
+              'supplyPrice',
+            ]),
+            commissionRatio: math.div(sku?.itemPrice?.commissionRatio, 100),
+          },
         })),
       );
     });
@@ -389,14 +391,7 @@ const GoodsInfo = React.forwardRef((props: any, ref) => {
                 </p>
               </Col> */}
 
-              {/* {detail.sellPoint && ( */}
-              <Col span={24}>
-                <p>
-                  <span className="u-c888">卖点信息：</span>
-                  {detail.sellPoint || '-'}
-                </p>
-              </Col>
-              {/* )} */}
+              {renderDynProps(true)}
             </Row>
           </div>
         </Col>
