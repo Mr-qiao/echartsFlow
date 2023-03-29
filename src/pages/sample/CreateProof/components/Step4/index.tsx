@@ -4,7 +4,17 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { Table } from '@xlion/component';
 import { uuid } from '@xlion/utils';
-import { Button, Form, FormListFieldData, Input, InputNumber, Select, Space, TableProps, Typography } from 'antd';
+import {
+  Button,
+  Form,
+  FormListFieldData,
+  Input,
+  InputNumber,
+  Select,
+  Space,
+  TableProps,
+  Typography,
+} from 'antd';
 import { useEffect } from 'react';
 
 import ss from '../../index.less';
@@ -13,31 +23,35 @@ import { IStepProps } from '../../types';
 const FormItem = Form.Item;
 const FormList = Form.List;
 
-const MaterialList: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => {
+const MaterialList: React.FC<IStepProps> = ({
+  sampleInfo,
+  proofInfo,
+  onOk,
+}) => {
   const [form] = Form.useForm();
 
   useEffect(() => {
     form.setFieldsValue({
-      materialDetailList:
-        proofInfo.materialDetailList?.map((item: any) => {
-          const sizeMaterials = item.sizeMaterials?.reduce((prev, curr) => {
-            return {
-              ...prev,
-              [`size-${curr.size}`]: curr.value,
-            };
-          }, {});
-          const colorMaterials = item.colorMaterials?.reduce((prev, curr) => {
-            return {
-              ...prev,
-              [`color-${curr.colorName}`]: curr.materialName,
-            };
-          }, {});
-          return {
-            ...item,
-            ...sizeMaterials,
-            ...colorMaterials,
-          };
-        }) || [],
+      materialDetailList: proofInfo.materialDetailList,
+      // proofInfo.materialDetailList?.map((item: any) => {
+      //   const sizeMaterials = item.sizeMaterials?.reduce((prev, curr) => {
+      //     return {
+      //       ...prev,
+      //       [`size-${curr.size}`]: curr.value,
+      //     };
+      //   }, {});
+      //   const colorMaterials = item.colorMaterials?.reduce((prev, curr) => {
+      //     return {
+      //       ...prev,
+      //       [`color-${curr.colorName}`]: curr.materialName,
+      //     };
+      //   }, {});
+      //   return {
+      //     ...item,
+      //     ...sizeMaterials,
+      //     ...colorMaterials,
+      //   };
+      // }) || [],
     });
   }, [proofInfo]);
 
@@ -46,28 +60,28 @@ const MaterialList: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => 
       const { materialDetailList = [] } = await form.validateFields();
       const data = {
         materialDetailList: materialDetailList.map((item: any) => {
-          const sizeMaterials = Object.keys(item)
-            .filter((key) => key.startsWith('size-'))
-            .map((key) => {
-              const size = key.split('-')[1];
-              const value = item[key];
-              delete item[key];
-              return { size, value };
-            });
-          const colorMaterials = Object.keys(item)
-            .filter((key) => key.startsWith('color-'))
-            .map((key) => {
-              const color = key.split('-')[1];
-              const value = item[key];
-              delete item[key];
-              return { colorName: color, materialName: value };
-            });
+          // const sizeMaterials = Object.keys(item)
+          //   .filter((key) => key.startsWith('size-'))
+          //   .map((key) => {
+          //     const size = key.split('-')[1];
+          //     const value = item[key];
+          //     delete item[key];
+          //     return { size, value };
+          //   });
+          // const colorMaterials = Object.keys(item)
+          //   .filter((key) => key.startsWith('color-'))
+          //   .map((key) => {
+          //     const color = key.split('-')[1];
+          //     const value = item[key];
+          //     delete item[key];
+          //     return { colorName: color, materialName: value };
+          //   });
 
           delete item.uuid;
           return {
             ...item,
-            sizeMaterials,
-            colorMaterials,
+            // sizeMaterials,
+            // colorMaterials,
           };
         }),
       };
@@ -84,33 +98,53 @@ const MaterialList: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => 
     fields: FormListFieldData[];
     remove: (index: number | number[]) => void;
   }) => {
-    const sizeColumns =
-      sampleInfo.sizeComb?.map((size: string) => ({
-        title: size,
-        width: 120,
-        render: (_: any, record: any, index: number) => {
-          const field = fields[index];
-          return (
-            <FormItem {...field} className="mb-0" name={[field.name, `size-${size}`]}>
-              <InputNumber placeholder="请输入" min={0} max={999999.99} precision={2} step={0.01} />
-            </FormItem>
-          );
-        },
-      })) || [];
+    // const sizeColumns =
+    //   sampleInfo.sizeComb?.map((size: string) => ({
+    //     title: size,
+    //     width: 120,
+    //     render: (_: any, record: any, index: number) => {
+    //       const field = fields[index];
+    //       return (
+    //         <FormItem
+    //           {...field}
+    //           className="mb-0"
+    //           name={[field.name, `size-${size}`]}
+    //         >
+    //           <InputNumber
+    //             placeholder="请输入"
+    //             min={0}
+    //             max={999999.99}
+    //             precision={2}
+    //             step={0.01}
+    //           />
+    //         </FormItem>
+    //       );
+    //     },
+    //   })) || [];
 
-    const colorColumns =
-      sampleInfo.colorComb?.map((color: string) => ({
-        title: color,
-        width: 120,
-        render: (_: any, record: any, index: number) => {
-          const field = fields[index];
-          return (
-            <FormItem {...field} className="mb-0" name={[field.name, `color-${color}`]}>
-              <InputNumber placeholder="请输入" min={0} max={999999.99} precision={2} step={0.01} />
-            </FormItem>
-          );
-        },
-      })) || [];
+    // const colorColumns =
+    //   sampleInfo.colorComb?.map((color: string) => ({
+    //     title: color,
+    //     width: 120,
+    //     render: (_: any, record: any, index: number) => {
+    //       const field = fields[index];
+    //       return (
+    //         <FormItem
+    //           {...field}
+    //           className="mb-0"
+    //           name={[field.name, `color-${color}`]}
+    //         >
+    //           <InputNumber
+    //             placeholder="请输入"
+    //             min={0}
+    //             max={999999.99}
+    //             precision={2}
+    //             step={0.01}
+    //           />
+    //         </FormItem>
+    //       );
+    //     },
+    //   })) || [];
 
     return [
       {
@@ -153,7 +187,11 @@ const MaterialList: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => 
         render: (_, record, index) => {
           const field = fields[index];
           return (
-            <FormItem {...field} className="mb-0" name={[field.name, 'supplierName']}>
+            <FormItem
+              {...field}
+              className="mb-0"
+              name={[field.name, 'supplierName']}
+            >
               <Input placeholder="请输入" maxLength={100} />
             </FormItem>
           );
@@ -165,8 +203,41 @@ const MaterialList: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => 
         render: (_, record, index) => {
           const field = fields[index];
           return (
-            <FormItem {...field} className="mb-0" name={[field.name, 'materialNo']}>
+            <FormItem
+              {...field}
+              className="mb-0"
+              name={[field.name, 'materialNo']}
+            >
               {/* <Input placeholder="请输入" maxLength={100} /> */}
+            </FormItem>
+          );
+        },
+      },
+      {
+        title: '物料类型',
+        width: 200,
+        render: (_, record, index) => {
+          const field = fields[index];
+          return (
+            <FormItem
+              {...field}
+              className="mb-0"
+              name={[field.name, 'materialType']}
+            >
+              <Select
+                options={[
+                  {
+                    value: '主料',
+                    label: '主料',
+                  },
+                  {
+                    value: '辅料',
+                    label: '辅料',
+                  },
+                ]}
+                allowClear
+                placeholder="请选择"
+              />
             </FormItem>
           );
         },
@@ -178,16 +249,46 @@ const MaterialList: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => 
           return record.materialName ?? '-';
         },
       },
-      ...sizeColumns,
-      ...colorColumns,
+      {
+        title: '物料用量',
+        width: 200,
+        render: (_, record, index) => {
+          const field = fields[index];
+          return (
+            <FormItem
+              {...field}
+              className="mb-0"
+              name={[field.name, 'useValue']}
+            >
+              <InputNumber
+                placeholder="请输入"
+                min={0}
+                max={999999.99}
+                precision={2}
+                step={0.01}
+              />
+            </FormItem>
+          );
+        },
+      },
       {
         title: '损耗率',
         width: 150,
         render: (_, record, index) => {
           const field = fields[index];
           return (
-            <FormItem {...field} className="mb-0" name={[field.name, 'attritionRate']}>
-              <InputNumber placeholder="请输入" min={0} max={99.99} precision={2} step={0.01} />
+            <FormItem
+              {...field}
+              className="mb-0"
+              name={[field.name, 'attritionRate']}
+            >
+              <InputNumber
+                placeholder="请输入"
+                min={0}
+                max={99.99}
+                precision={2}
+                step={0.01}
+              />
             </FormItem>
           );
         },
@@ -198,7 +299,11 @@ const MaterialList: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => 
         render: (_, record, index) => {
           const field = fields[index];
           return (
-            <FormItem {...field} className="mb-0" name={[field.name, 'positionName']}>
+            <FormItem
+              {...field}
+              className="mb-0"
+              name={[field.name, 'positionName']}
+            >
               <Input placeholder="请输入" maxLength={100} />
             </FormItem>
           );
@@ -210,8 +315,18 @@ const MaterialList: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => 
         render: (_, record, index) => {
           const field = fields[index];
           return (
-            <FormItem {...field} className="mb-0" name={[field.name, 'doorWidth']}>
-              <InputNumber placeholder="请输入" min={0} max={999.99} precision={2} step={0.01} />
+            <FormItem
+              {...field}
+              className="mb-0"
+              name={[field.name, 'doorWidth']}
+            >
+              <InputNumber
+                placeholder="请输入"
+                min={0}
+                max={999.99}
+                precision={2}
+                step={0.01}
+              />
             </FormItem>
           );
         },
@@ -222,8 +337,18 @@ const MaterialList: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => 
         render: (_, record, index) => {
           const field = fields[index];
           return (
-            <FormItem {...field} className="mb-0" name={[field.name, 'gramWeight']}>
-              <InputNumber placeholder="请输入" min={0} max={999999.99} precision={2} step={0.01} />
+            <FormItem
+              {...field}
+              className="mb-0"
+              name={[field.name, 'gramWeight']}
+            >
+              <InputNumber
+                placeholder="请输入"
+                min={0}
+                max={999999.99}
+                precision={2}
+                step={0.01}
+              />
             </FormItem>
           );
         },
@@ -234,8 +359,18 @@ const MaterialList: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => 
         render: (_, record, index) => {
           const field = fields[index];
           return (
-            <FormItem {...field} className="mb-0" name={[field.name, 'paperTube']}>
-              <InputNumber placeholder="请输入" min={0} max={999999.99} precision={2} step={0.01} />
+            <FormItem
+              {...field}
+              className="mb-0"
+              name={[field.name, 'paperTube']}
+            >
+              <InputNumber
+                placeholder="请输入"
+                min={0}
+                max={999999.99}
+                precision={2}
+                step={0.01}
+              />
             </FormItem>
           );
         },
@@ -246,8 +381,18 @@ const MaterialList: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => 
         render: (_, record, index) => {
           const field = fields[index];
           return (
-            <FormItem {...field} className="mb-0" name={[field.name, 'spaceDifference']}>
-              <InputNumber placeholder="请输入" min={0} max={999999.99} precision={2} step={0.01} />
+            <FormItem
+              {...field}
+              className="mb-0"
+              name={[field.name, 'spaceDifference']}
+            >
+              <InputNumber
+                placeholder="请输入"
+                min={0}
+                max={999999.99}
+                precision={2}
+                step={0.01}
+              />
             </FormItem>
           );
         },
@@ -258,8 +403,18 @@ const MaterialList: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => 
         render: (_, record, index) => {
           const field = fields[index];
           return (
-            <FormItem {...field} className="mb-0" name={[field.name, 'rollWeight']}>
-              <InputNumber placeholder="请输入" min={0} max={999999.99} precision={2} step={0.01} />
+            <FormItem
+              {...field}
+              className="mb-0"
+              name={[field.name, 'rollWeight']}
+            >
+              <InputNumber
+                placeholder="请输入"
+                min={0}
+                max={999999.99}
+                precision={2}
+                step={0.01}
+              />
             </FormItem>
           );
         },
@@ -277,8 +432,18 @@ const MaterialList: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => 
         render: (_, record, index) => {
           const field = fields[index];
           return (
-            <FormItem {...field} className="mb-0" name={[field.name, 'kneesDefects']}>
-              <InputNumber placeholder="请输入" min={0} max={99.99} precision={2} step={0.01} />
+            <FormItem
+              {...field}
+              className="mb-0"
+              name={[field.name, 'kneesDefects']}
+            >
+              <InputNumber
+                placeholder="请输入"
+                min={0}
+                max={99.99}
+                precision={2}
+                step={0.01}
+              />
             </FormItem>
           );
         },
@@ -289,15 +454,25 @@ const MaterialList: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => 
         render: (_, record, index) => {
           const field = fields[index];
           return (
-            <FormItem {...field} className="mb-0" name={[field.name, 'woofShrink']}>
-              <InputNumber placeholder="请输入" min={0} max={99.99} precision={2} step={0.01} />
+            <FormItem
+              {...field}
+              className="mb-0"
+              name={[field.name, 'woofShrink']}
+            >
+              <InputNumber
+                placeholder="请输入"
+                min={0}
+                max={99.99}
+                precision={2}
+                step={0.01}
+              />
             </FormItem>
           );
         },
       },
       {
         title: '备注',
-        width: 300,
+        // width: 300,
         render: (_, record, index) => {
           const field = fields[index];
           return (
@@ -344,7 +519,12 @@ const MaterialList: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => 
                 scroll={{ x: 1090 }}
                 pagination={false}
                 footer={() => (
-                  <Button block type="dashed" icon={<PlusOutlined />} onClick={() => add({ uuid: uuid() })}>
+                  <Button
+                    block
+                    type="dashed"
+                    icon={<PlusOutlined />}
+                    onClick={() => add({ uuid: uuid() })}
+                  >
                     新增一行
                   </Button>
                 )}
