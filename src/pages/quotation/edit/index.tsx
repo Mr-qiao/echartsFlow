@@ -110,7 +110,7 @@ function QuotationEdit() {
 		{
 			title: '物料类型',
 			align: 'center',
-			dataIndex: 'materialName',
+			dataIndex: 'materialType',
 		},
 		{
 			title: '供应商',
