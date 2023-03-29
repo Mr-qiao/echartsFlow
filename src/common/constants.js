@@ -47,12 +47,17 @@ const DICT_CONST = {
   ],
   ONLINE_OR_OFFLINE: [
     {
+      key: null,
+      value: '待上架',
+      color: 'default',
+    },
+    {
       key: '1',
       value: '已上架',
       color: 'green',
     },
     {
-      key: '2',
+      key: '0',
       value: '未上架',
       color: 'cyan',
     },
