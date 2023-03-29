@@ -244,7 +244,7 @@ const Index: React.FC = () => {
           </Col>
           <Col span={12}>
             <Form.Item label="渠道商品编码" name="outsideItemCode">
-              <Input />
+              <Input maxLength={50} />
             </Form.Item>
           </Col>
           <Col span={12}>

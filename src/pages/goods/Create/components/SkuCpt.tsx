@@ -1,6 +1,17 @@
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Col, Form, Input, message, Row, Select, Table } from 'antd';
-import React, { useContext, useState } from 'react';
+import {
+  Button,
+  Col,
+  Form,
+  Input,
+  message,
+  Row,
+  Select,
+  Space,
+  Table,
+  Typography,
+} from 'antd';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { CptContext } from '../index';
 import SkuTablesCpt from './SkuTablesCpt';
@@ -23,7 +34,7 @@ const SkuCpt: any = ({ form }: any) => {
   let { saleProperties = [], attrEnum = [] } = info;
 
   let keyRef = React.useRef(0);
-  let [dataSource, setDataSource] = useState<any[]>();
+  let [dataSource, setDataSource] = useState<any[]>([]);
   let [enmu, setEnmu] = useState(attrEnum); //规格下拉筛选项
 
   const columns = [
@@ -41,7 +52,6 @@ const SkuCpt: any = ({ form }: any) => {
     {
       title: '规格分类',
       dataIndex: 'categoryPropertyValues',
-      width: '40%',
       key: 2,
       editable: true,
       // component: <Input placeholder="请输入规格分类～" />,
@@ -52,20 +62,20 @@ const SkuCpt: any = ({ form }: any) => {
     {
       title: '设置',
       dataIndex: 'operation',
-      width: '10%',
+      width: 80,
       fixed: 'right',
+      align: 'center',
       key: 3,
       render: (_, record, idx) => (
-        <>
-          {idx >= 1 ? (
-            <DeleteOutlined
-              style={{ transform: 'translateY(5px)', color: '#ff3029' }}
-              onClick={() => {
-                handleDelete(record.key);
-              }}
-            ></DeleteOutlined>
-          ) : null}
-        </>
+        <Typography.Link
+          type="danger"
+          disabled={dataSource.length <= 1}
+          onClick={() => {
+            handleDelete(record.key);
+          }}
+        >
+          <DeleteOutlined />
+        </Typography.Link>
       ),
     },
   ];
@@ -96,17 +106,27 @@ const SkuCpt: any = ({ form }: any) => {
       let _array = [];
       for (let i of list) {
         let categoryPropertyName: string = i['categoryPropertyName'] || '';
-        let categoryPropertyValues = i['categoryPropertyValues'].filter(Boolean);
+        let categoryPropertyValues =
+          i['categoryPropertyValues'].filter(Boolean);
 
         if (!categoryPropertyName) {
           message.info('请选择规格并输入规格值');
           return;
         }
-        if (!(Array.isArray(categoryPropertyValues) && categoryPropertyValues.length > 0)) {
+        if (
+          !(
+            Array.isArray(categoryPropertyValues) &&
+            categoryPropertyValues.length > 0
+          )
+        ) {
           message.info('请选择规格并输入规格值');
           return;
         }
-        _array.push(categoryPropertyValues.map((item) => (categoryPropertyName || '') + ':' + item) as never);
+        _array.push(
+          categoryPropertyValues.map(
+            (item) => (categoryPropertyName || '') + ':' + item,
+          ) as never,
+        );
       }
       //重置表单数据
       form.resetFields(['skus']);
@@ -115,7 +135,7 @@ const SkuCpt: any = ({ form }: any) => {
       message.info('请选择规格并输入规格值');
     }
   };
-  React.useEffect(() => {
+  useEffect(() => {
     //添加key
 
     let _: any[] = [];
@@ -139,7 +159,9 @@ const SkuCpt: any = ({ form }: any) => {
   //遍历去除选中项
   function removeSelected(list, _) {
     let _enum = [..._].map((o) => {
-      let _ = list.filter((item) => o.categoryPropertyCode === item.categoryPropertyCode);
+      let _ = list.filter(
+        (item) => o.categoryPropertyCode === item.categoryPropertyCode,
+      );
 
       if (_.length > 0) {
         o.selected = true;
@@ -180,21 +202,7 @@ const SkuCpt: any = ({ form }: any) => {
       </Col>
 
       <Col span={19}>
-        <Button
-          onClick={handleAdd}
-          type="primary"
-          style={{
-            marginBottom: 16,
-          }}
-        >
-          新增一行
-        </Button>
-        <Button style={{ marginLeft: 20 }} onClick={handleCreateSku}>
-          生成SKU
-        </Button>
-
         <Table
-          // scroll={{ x: 700 }}
           rowKey={'key'}
           components={{
             body: {
@@ -205,7 +213,13 @@ const SkuCpt: any = ({ form }: any) => {
           dataSource={dataSource}
           pagination={false}
           columns={mergedColumns}
+          style={{ marginBottom: 16 }}
         />
+
+        <Space>
+          <Button onClick={handleAdd}>新增一行</Button>
+          <Button onClick={handleCreateSku}>生成SKU</Button>
+        </Space>
       </Col>
 
       <Col span={24} offset={3} style={{ marginTop: 20 }}>
@@ -230,7 +244,7 @@ const SkuCpt: any = ({ form }: any) => {
                     return Promise.reject('请输入参考销售价');
                   }
                   if (!value[i].estimateLivePrice) {
-                    // return Promise.reject('estimateLivePrice');
+                    return Promise.reject('请输入预计直播价');
                   }
                 }
                 return Promise.resolve();
@@ -261,42 +275,55 @@ const SkuCpt: any = ({ form }: any) => {
             <Input />
           </Form.Item>
           {record.skuId && (
-            <Form.Item name={['saleProperties', index, 'skuId']} initialValue={record.skuId} hidden={true}>
+            <Form.Item
+              name={['saleProperties', index, 'skuId']}
+              initialValue={record.skuId}
+              hidden={true}
+            >
               <Input />
             </Form.Item>
           )}
           {record.sysCode && (
-            <Form.Item name={['saleProperties', index, 'sysCode']} initialValue={record.sysCode} hidden={true}>
+            <Form.Item
+              name={['saleProperties', index, 'sysCode']}
+              initialValue={record.sysCode}
+              hidden={true}
+            >
               <Input />
             </Form.Item>
           )}
-          <Form.List name={['saleProperties', index, dataIndex]} initialValue={['']}>
+          <Form.List
+            name={['saleProperties', index, dataIndex]}
+            initialValue={['']}
+          >
             {(lv1, { add, remove }) => {
-              // console.log('lv1', lv1);
               return (
                 <>
                   <div className={`sku__list-main `}>
-                    {lv1.map((o) => {
-                      // console.log('lv1 item---', o);
+                    {lv1.map((o, index) => {
                       return (
-                        <Form.Item key={`plan_${o.key}_${index}`} wrapperCol={{ span: 16 }}>
-                          <Form.Item
-                            name={[o.name]}
-                            noStyle
-                            rules={rule}
-                            // initialValue={children2.length > 1 ? 1 : 2}
-                          >
-                            <Input style={{ width: '80%' }} placeholder="请输入规格分类～" />
-                          </Form.Item>
-                          {o.name !== 0 && (
-                            <DeleteOutlined
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                remove(o.name);
+                        <Form.Item
+                          key={`plan_${o.key}_${index}`}
+                          wrapperCol={{ span: 16 }}
+                        >
+                          <Space>
+                            <Form.Item name={[o.name]} noStyle rules={rule}>
+                              <Input
+                                style={{ width: 140 }}
+                                maxLength={10}
+                                placeholder="请输入规格分类～"
+                              />
+                            </Form.Item>
+                            <Typography.Link
+                              type="danger"
+                              disabled={lv1.length <= 1}
+                              onClick={() => {
+                                remove(index);
                               }}
-                              style={{ display: 'inline-block', marginLeft: 10, color: '#ff3029' }}
-                            />
-                          )}
+                            >
+                              <DeleteOutlined />
+                            </Typography.Link>
+                          </Space>
                         </Form.Item>
                       );
                     })}
@@ -309,14 +336,12 @@ const SkuCpt: any = ({ form }: any) => {
                       fontSize: '12px',
                     }}
                   >
-                    <span
-                      className="t-c__blue"
-                      onClick={() => {
-                        add();
-                      }}
+                    <Typography.Link
+                      disabled={lv1.length >= 10}
+                      onClick={() => add()}
                     >
                       <PlusOutlined /> 添加规格分类
-                    </span>
+                    </Typography.Link>
                   </div>
                 </>
               );
@@ -328,14 +353,20 @@ const SkuCpt: any = ({ form }: any) => {
       childNode =
         'categoryPropertyName' === dataIndex ? (
           <>
-            <Form.Item name={['saleProperties', index, 'categoryPropertyCode']} hidden={true}>
+            <Form.Item
+              name={['saleProperties', index, 'categoryPropertyCode']}
+              hidden={true}
+            >
               <Input />
             </Form.Item>
             <Form.Item name={['saleProperties', index, dataIndex]} rules={rule}>
               <Select
                 placeholder="请选择"
                 onChange={(val, option: any) => {
-                  form.setFieldValue(['saleProperties', index, 'categoryPropertyCode'], option?.key);
+                  form.setFieldValue(
+                    ['saleProperties', index, 'categoryPropertyCode'],
+                    option?.key,
+                  );
                   let list = form.getFieldValue('saleProperties');
                   removeSelected(list, enmu);
                 }}
@@ -380,7 +411,9 @@ const doComb = (arr) => {
         // comb0(arr, ++a)
       } else {
         let str = temp?.length > 0 ? temp?.join('；') : temp;
-        let item = JSON.parse(JSON.stringify({ skuId: results.length, properties: str }));
+        let item = JSON.parse(
+          JSON.stringify({ skuId: results.length, properties: str }),
+        );
         results.push(item); // 深度拷贝temp
       }
     });
