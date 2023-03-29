@@ -189,9 +189,9 @@ const BasicInfo: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => {
       },
     ] as TableProps<any>['columns'];
   };
-
+  console.log(selectDictMap,"selectDictMap.typeSeason")
   return (
-    <Form form={form} labelCol={{ style: { width: 100 } }}>
+    <Form form={form} labelCol={{ style: { width: 100 } }} disabled>
       <Descriptions labelStyle={{ width: 100, justifyContent: 'flex-end' }}>
         <Descriptions.Item label="款式来源" span={3}>
           {selectDictMap.typeSampleSource?.[sampleInfo.source] ?? '-'}
@@ -207,7 +207,7 @@ const BasicInfo: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => {
         </Descriptions.Item>
         <Descriptions.Item label="品类">服装鞋包 / 女装/女士精品 / POLO衫</Descriptions.Item>
         <Descriptions.Item label="设计师">{sampleInfo.designerName ?? '-'}</Descriptions.Item>
-        <Descriptions.Item label="供应商">供应商</Descriptions.Item>
+        <Descriptions.Item label="供应商">{sampleInfo.sampleClothesSupplierName??'-'}</Descriptions.Item>
         {/* <Descriptions.Item label="部门" span={2}>
           -
         </Descriptions.Item> */}

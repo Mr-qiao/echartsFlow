@@ -576,7 +576,7 @@ function QuotationEdit() {
 									key={index}
 									style={{marginLeft: index === 0 ? 0 : 20}}
 								>
-                    <Image src={item.src} width={100} height={100}/>
+                    <Image src={item.src.url} width={100} height={100}/>
                   </span>
 							);
 						})}

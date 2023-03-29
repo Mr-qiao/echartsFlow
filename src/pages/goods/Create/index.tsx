@@ -12,7 +12,6 @@ import {
   message,
   Row,
   Select,
-  Typography,
 } from 'antd';
 import { groupBy, omit } from 'lodash-es';
 import moment from 'moment';
@@ -265,7 +264,7 @@ const Index: React.FC = () => {
               />
             </Form.Item>
           </Col>
-          <Col span={12} pull={2}>
+          {/* <Col span={12} pull={2}>
             <Typography.Link
               style={{ marginLeft: '20px' }}
               onClick={handleLinkSample}
@@ -286,7 +285,7 @@ const Index: React.FC = () => {
                 </span>
               </>
             )}
-          </Col>
+          </Col> */}
 
           <Col span={12}>
             <Form.Item

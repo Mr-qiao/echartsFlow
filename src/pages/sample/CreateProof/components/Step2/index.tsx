@@ -49,6 +49,7 @@ const PatternAttachment: React.FC<IStepProps> = ({ proofInfo, onOk }) => {
         accessoryFiles: [],
         accessoryRemark: '',
       }}
+      disabled
     >
       <FormItem label="图片附件" name="accessoryImages">
         <Upload listType="picture-card" maxCount={6} />
