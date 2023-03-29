@@ -54,7 +54,7 @@ function Sample() {
 		},
 		{
 			title: '品类',
-			dataIndex: 'refCategoryName',
+			dataIndex: 'refCategoryId',
 			renderFormItem: (item: any, _: any, form: any) => {
 				return (
 					<SelectTree
@@ -70,6 +70,7 @@ function Sample() {
 			fieldProps: {
 				placeholder: '请选择',
 			},
+			render:(val,row)=>row.refCategoryNames
 		},
 		// {
 		// 	title: '品牌',
@@ -78,7 +79,7 @@ function Sample() {
 		// },
 		{
 			title: '商家款式编码',
-			dataIndex: 'sampleSupplierStyleCode',
+			dataIndex: 'refSupplierStyleCode',
 		},
 		{
 			title: '需求时间',
@@ -128,7 +129,7 @@ function Sample() {
 		},
 		{
 			title: '对接人',
-			dataIndex: 'creatorName',
+			dataIndex: 'creator',
 			search: false
 		},
 		{

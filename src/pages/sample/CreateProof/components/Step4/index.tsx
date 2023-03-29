@@ -203,12 +203,8 @@ const MaterialList: React.FC<IStepProps> = ({
         render: (_, record, index) => {
           const field = fields[index];
           return (
-            <FormItem
-              {...field}
-              className="mb-0"
-              name={[field.name, 'materialNo']}
-            >
-              {/* <Input placeholder="请输入" maxLength={100} /> */}
+            <FormItem {...field} className="mb-0" name={[field.name, 'materialNo']}>
+              <Input placeholder="请输入" maxLength={100} />
             </FormItem>
           );
         },
@@ -245,8 +241,13 @@ const MaterialList: React.FC<IStepProps> = ({
       {
         title: '物料名称',
         width: 100,
-        render: (_, record) => {
-          return record.materialName ?? '-';
+        render: (_, record,index) => {
+          const field = fields[index];
+          return (
+            <FormItem {...field} className="mb-0" name={[field.name, 'materialName']}>
+            <Input placeholder="请输入" maxLength={100} />
+          </FormItem>
+          )
         },
       },
       {
@@ -504,6 +505,7 @@ const MaterialList: React.FC<IStepProps> = ({
       initialValues={{
         materialDetailList: [],
       }}
+      disabled
     >
       <Space direction="vertical" className="w-full">
         <FormList name="materialDetailList">

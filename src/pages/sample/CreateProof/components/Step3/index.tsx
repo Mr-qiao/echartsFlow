@@ -165,7 +165,7 @@ const StandardSize: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => 
   };
 
   return (
-    <Form form={form}>
+    <Form form={form} disabled>
       <Row gutter={12}>
         <Col span={6}>
           <FormItem label="放码人" name="fangMaId">
