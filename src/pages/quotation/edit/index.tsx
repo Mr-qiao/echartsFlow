@@ -416,7 +416,7 @@ function QuotationEdit() {
 		const da = NewArr[index]
 		da.wlhz = (Number(da.dj || 0) * Number(da.skuyl || 0))
 		if (da.shl) {
-			da.wlhz = da.wlhz / (Number(da.shl || 0) / 100)
+			da.wlhz = da.wlhz / ((100 - Number(da.shl || 0)) / 100)
 		}
 		da.wlhz = _.ceil(da.wlhz)
 		const sumby = _.ceil(_.sumBy(NewArr, 'wlhz'), 2)

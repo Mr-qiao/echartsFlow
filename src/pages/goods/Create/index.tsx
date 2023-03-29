@@ -1,6 +1,6 @@
 import { useModel, useNavigate, useParams, useSearchParams } from '@umijs/max';
 import { InputNumberRange } from '@xlion/component';
-import { math } from '@xlion/utils';
+import { math, uuid } from '@xlion/utils';
 import {
   Button,
   Cascader,
@@ -106,6 +106,55 @@ const Index: React.FC = () => {
       setAttrEnum(info?.salePropertiesEnum);
       //sku值
       setSaleProperties(info?.saleProperties);
+
+      form.setFieldsValue({
+        ...info.item,
+        ...info,
+        saleProperties: info.saleProperties.map((item) => ({
+          uuid: uuid(),
+          categoryPropertyType: {
+            label: item.categoryPropertyName,
+            value: item.categoryPropertyCode,
+          },
+          categoryPropertyValues: item.categoryPropertyValues,
+        })),
+        baseProperties: info.baseProperties?.reduce(
+          (acc: Recordable<any>, cur) => {
+            let value: any;
+            if (Array.isArray(cur.categoryPropertyValues)) {
+              switch (cur.type) {
+                case AttrTypes.TEXT:
+                case AttrTypes.NUMBER:
+                case AttrTypes.SELECT:
+                case AttrTypes.TEXTAREA:
+                  value = cur.categoryPropertyValues[0];
+                  break;
+                case AttrTypes.DATE:
+                  value = moment(cur.categoryPropertyValues[0]);
+                  break;
+                case AttrTypes.DATE_RANGE:
+                  value = cur.categoryPropertyValues.map((item: string) =>
+                    moment(item),
+                  );
+                  break;
+                default:
+                  value = cur.categoryPropertyValues;
+              }
+            }
+            acc[cur.categoryPropertyCode] = value;
+            return acc;
+          },
+          {},
+        ),
+        categoryId: info.item.categoryIds,
+        skus: info.skus.map((sku: any) => ({
+          uuid: uuid(),
+          ...sku,
+          images: sku.images?.map((url: string) => ({ url })),
+          commissionRatio: math.div(sku.itemPrice.commissionRatio, 100),
+          ...transformFen2Yuan(sku.itemPrice, PriceKeys),
+        })),
+      });
     });
   }, []);
 
@@ -163,6 +212,9 @@ const Index: React.FC = () => {
         },
       })),
     };
+    if (id) {
+      data.itemId = id;
+    }
     Api.Goods.Add(data).then(({}) => {
       message.success('添加成功', 0.5, () => {
         navigate(-1);
