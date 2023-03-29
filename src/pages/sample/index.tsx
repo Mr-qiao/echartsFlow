@@ -161,9 +161,14 @@ function Sample() {
 									{status:'1', itemId: recode?.itemId}, {}
 								).then((res: any) => {
 									if (res.success) {
-										message.success('打样成功')
+										message.success({
+											content:'打样成功',
+											duration:2,
+											onClose:()=>{
+												actionRef.current.reload()
+											}
+										})
 										setOpen(false)
-										actionRef.current.reload()
 									}
 								})
 							}}>开始打样</a>:null
@@ -174,8 +179,13 @@ function Sample() {
 									{status: '2', itemId: recode?.itemId}, {}
 								).then((res: any) => {
 									if (res.success) {
-										message.success('交付完成')
-										actionRef.current.reload()
+										message.success({
+											content:'交付完成',
+											duration:2,
+											onClose:()=>{
+												actionRef.current.reload()
+											}
+										})
 									}
 								})
 							}}
