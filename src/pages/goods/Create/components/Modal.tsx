@@ -29,7 +29,11 @@ export const SampleListModal = React.forwardRef(({ onChange }: any, ref) => {
             <Image
               width={90}
               height={90}
-              src={Array.isArray(record.images) && record.images.length > 0 && record.images[0]}
+              src={
+                Array.isArray(record.images) &&
+                record.images.length > 0 &&
+                record.images[0]
+              }
             />
             <div className="u-ml10" style={{ width: 'calc(100% - 100px)' }}>
               <Tooltip title={record.title}>
@@ -50,7 +54,6 @@ export const SampleListModal = React.forwardRef(({ onChange }: any, ref) => {
       title: '样衣名称',
       key: 'title',
       dataIndex: 'title',
-      hideInSearch: true,
       render: (item, record) => {
         return (
           <Tooltip title={record.title}>
@@ -79,9 +82,13 @@ export const SampleListModal = React.forwardRef(({ onChange }: any, ref) => {
         );
       },
     },
-    { title: '样衣编号', key: 'sysCode', dataIndex: 'sysCode', hideInSearch: false },
+    {
+      title: '样衣编号',
+      key: 'sysCode',
+      dataIndex: 'sysCode',
+      hideInSearch: false,
+    },
 
-    { title: '样衣名称', hideInTable: true, dataIndex: 'itemId', key: 'itemId', order: 9 },
     {
       title: '商品类目',
       hideInTable: true,
@@ -135,7 +142,7 @@ export const SampleListModal = React.forwardRef(({ onChange }: any, ref) => {
   return (
     <CustomModal
       ref={formModalRef}
-      title={'更换管理员'}
+      title={'关联样衣'}
       className="dialog__menu-form u-pl20 u-pr20"
       width={900}
       onConfirm={() => {
@@ -165,7 +172,8 @@ export const SampleListModal = React.forwardRef(({ onChange }: any, ref) => {
         }}
         request={async (params: any, sorter) => {
           const { current, pageSize, ...reset } = params;
-          if (reset?.categoryId) reset.categoryId = reset.categoryId[reset.categoryId.length - 1];
+          if (reset?.categoryId)
+            reset.categoryId = reset.categoryId[reset.categoryId.length - 1];
 
           let searchData = {
             ...reset,

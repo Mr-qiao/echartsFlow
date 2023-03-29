@@ -39,6 +39,7 @@ const BrandSelectCpt = React.forwardRef(({ value, onChange, ...props }: any) => 
       onChange={handleChange}
       onSearch={handleSearch}
       onFocus={() => getList()}
+      {...props}
     >
       {list?.map((item, i) => (
         <Select.Option key={i} value={item.id} name={item.brandName}>

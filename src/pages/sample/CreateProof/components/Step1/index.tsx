@@ -55,6 +55,7 @@ const BasicInfo: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => {
     const data = pick(proofInfo, Object.keys(values));
     form.setFieldsValue({
       ...data,
+      sampleDesignerId:{ label: proofInfo.sampleDesignerName, proofInfo: data.sampleDesignerId },
       ...shouldDateTransformKeys.reduce((acc: Recordable<any>, cur) => {
         if (data[cur]) {
           acc[cur] = moment(data[cur]);
@@ -189,9 +190,8 @@ const BasicInfo: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => {
       },
     ] as TableProps<any>['columns'];
   };
-
   return (
-    <Form form={form} labelCol={{ style: { width: 100 } }}>
+    <Form form={form} labelCol={{ style: { width: 100 } }} disabled>
       <Descriptions labelStyle={{ width: 100, justifyContent: 'flex-end' }}>
         <Descriptions.Item label="款式来源" span={3}>
           {selectDictMap.typeSampleSource?.[sampleInfo.source] ?? '-'}
@@ -200,14 +200,14 @@ const BasicInfo: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => {
         <Descriptions.Item label="样衣名称">{sampleInfo.title}</Descriptions.Item>
         <Descriptions.Item label="品牌">{sampleInfo.brandName ?? '-'}</Descriptions.Item>
         <Descriptions.Item label="年份">{sampleInfo.yearStr ?? '-'}</Descriptions.Item>
-        <Descriptions.Item label="季节">{selectDictMap.typeSeason?.[sampleInfo.seasonStr] ?? '-'}</Descriptions.Item>
+        <Descriptions.Item label="季节">{{1:'春',2:'夏',3:'秋',4:'冬'}[sampleInfo.seasonStr] ?? '-'}</Descriptions.Item>
         <Descriptions.Item label="波段">{sampleInfo.stage ?? '-'}</Descriptions.Item>
         <Descriptions.Item label="适合人群">
           {selectDictMap.typeSampleSource?.[sampleInfo.forPeople] ?? '-'}
         </Descriptions.Item>
         <Descriptions.Item label="品类">服装鞋包 / 女装/女士精品 / POLO衫</Descriptions.Item>
         <Descriptions.Item label="设计师">{sampleInfo.designerName ?? '-'}</Descriptions.Item>
-        <Descriptions.Item label="供应商">供应商</Descriptions.Item>
+        <Descriptions.Item label="供应商">{proofInfo.sampleClothesSupplierName||'-'}</Descriptions.Item>
         {/* <Descriptions.Item label="部门" span={2}>
           -
         </Descriptions.Item> */}

@@ -122,6 +122,7 @@ const ProcessInstruct: React.FC<IStepProps> = ({ proofInfo, onOk }) => {
           workmanshipDetailList: [],
           workmanshipImages: [],
         }}
+        disabled
       >
         <FormItem label="裁剪要求" name="clippingRequest">
           <Input.TextArea rows={3} showCount maxLength={500} />
