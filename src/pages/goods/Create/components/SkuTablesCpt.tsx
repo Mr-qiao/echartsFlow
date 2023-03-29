@@ -58,7 +58,7 @@ const SkuTablesCpt: any = React.forwardRef(
       },
       {
         title: '货品图',
-        width: 300,
+        width: 400,
         dataIndex: 'images',
         key: 'images',
         editable: true,
@@ -91,6 +91,7 @@ const SkuTablesCpt: any = React.forwardRef(
         component: (record: any, idx: number) => {
           return (
             <Input
+              value={dataSource[idx][record.dataIndex]}
               placeholder="请输入sku商家编码"
               onChange={(e) => {
                 handleInputValue(e.target.value, record, idx);
@@ -108,6 +109,7 @@ const SkuTablesCpt: any = React.forwardRef(
         component: (record: any, idx: number) => {
           return (
             <Input
+              value={dataSource[idx][record.dataIndex]}
               placeholder="请输入渠道销售sku编码"
               onChange={(e) => {
                 handleInputValue(e.target.value, record, idx);
