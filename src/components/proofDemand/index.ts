@@ -5,7 +5,10 @@ import { request } from '@/utils/request';
  * @url http://yapi.xinc818.com/project/1025/interface/api/165192
  */
 export function getProofDemandPage(data: Recordable<any>) {
-  return request.post('/item/item/designer/sample/clothes/requirement/list', data);
+  return request.post(
+    '/item/item/designer/sample/clothes/requirement/list',
+    data,
+  );
 }
 
 /**
@@ -13,7 +16,10 @@ export function getProofDemandPage(data: Recordable<any>) {
  * @url http://yapi.xinc818.com/project/1025/interface/api/166067
  */
 export function addProofDemand(data: Recordable<any>) {
-  return request.post('/item/item/designer/sample/clothes/requirement/create', data);
+  return request.post(
+    '/item/item/designer/sample/clothes/requirement/create',
+    data,
+  );
 }
 
 /**
@@ -21,7 +27,10 @@ export function addProofDemand(data: Recordable<any>) {
  * @url http://yapi.xinc818.com/project/1025/interface/api/166027
  */
 export function getProofDemand(data: { itemId: number }) {
-  return request.post('/designweb/designer/sample/clothes/requirement/detail', data);
+  return request.post(
+    '/designweb/designer/sample/clothes/requirement/detail',
+    data,
+  );
 }
 
 /**
@@ -29,12 +38,15 @@ export function getProofDemand(data: { itemId: number }) {
  * @url http://yapi.xinc818.com/project/1025/interface/api/166068
  */
 export function updateProofDemand(data: Recordable<any>) {
-  return request.post('/item/item/designer/sample/clothes/requirement/update', data);
+  return request.post(
+    '/item/item/designer/sample/clothes/requirement/update',
+    data,
+  );
 }
 
 /**
  * 获取板师列表
  */
 export function getPlateDivisionList(data: { name: string }) {
-  return request.post('/usercenter-backend/employee/searchForSystem', data);
+  return request.post('/usercenter-backend/employee/search', data);
 }
