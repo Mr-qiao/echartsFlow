@@ -489,7 +489,7 @@ function TabList(props: any) {
 					request={async (params) => {
 						const arg0 = {
 							...filterPageName(params),
-							type: '2'
+							type: '1'
 						}
 						const res: any = await recordsList(arg0, {})
 						const data = res?.entry?.list;
