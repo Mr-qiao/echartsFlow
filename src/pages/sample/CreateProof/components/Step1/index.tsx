@@ -189,7 +189,7 @@ const BasicInfo: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => {
       },
     ] as TableProps<any>['columns'];
   };
-
+  console.log(selectDictMap,"selectDictMap.typeSeason")
   return (
     <Form form={form} labelCol={{ style: { width: 100 } }} disabled>
       <Descriptions labelStyle={{ width: 100, justifyContent: 'flex-end' }}>

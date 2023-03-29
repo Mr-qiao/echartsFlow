@@ -129,12 +129,12 @@ function Sample() {
 		},
 		{
 			title: '对接人',
-			dataIndex: 'creator',
+			dataIndex: 'creatorName',
 			search: false
 		},
 		{
 			title: '对接人',
-			dataIndex: 'contactPersonId',
+			dataIndex: 'creator',
 			hideInTable: true,
 			renderFormItem: (item: any, _: any, form: any) => {
 				return <SelectCpt/>;
