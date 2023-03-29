@@ -1,7 +1,19 @@
 import { useModel, useNavigate, useParams, useSearchParams } from '@umijs/max';
 import { InputNumberRange } from '@xlion/component';
 import { math } from '@xlion/utils';
-import { Button, Cascader, Col, DatePicker, Form, Input, InputNumber, message, Row, Select, Typography } from 'antd';
+import {
+  Button,
+  Cascader,
+  Col,
+  DatePicker,
+  Form,
+  Input,
+  InputNumber,
+  message,
+  Row,
+  Select,
+  Typography,
+} from 'antd';
 import { groupBy, omit } from 'lodash-es';
 import moment from 'moment';
 import React, { createContext, useEffect, useRef, useState } from 'react';
@@ -9,8 +21,8 @@ import React, { createContext, useEffect, useRef, useState } from 'react';
 import PicturesWall from '@/components/PicturesWall';
 import { transformFen2Yuan } from '@/utils';
 
-import BrandSelectCpt from './components/BrandSelectCpt';
 import Api from '../services';
+import BrandSelectCpt from './components/BrandSelectCpt';
 import { SampleListModal } from './components/Modal';
 import SkuCpt from './components/SkuCpt';
 import { AttrTypes } from './constant';
@@ -18,7 +30,12 @@ import styles from './index.less';
 
 export const CptContext = createContext<any>(null);
 
-const PriceKeys = ['estimateLivePrice', 'originPrice', 'salePrice', 'supplyPrice'];
+const PriceKeys = [
+  'estimateLivePrice',
+  'originPrice',
+  'salePrice',
+  'supplyPrice',
+];
 
 const Index: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -63,11 +80,16 @@ const Index: React.FC = () => {
   };
   const handleNoLinkSample = () => {
     form.setFieldValue('source', 1);
-    form.setFieldValue('refSampleClothesId', '');
+    // form.setFieldValue('refSampleClothesId', '');
+    form.setFieldValue(['extraMap', 'refSampleClothesId'], '');
     setSampleId('');
   };
   useEffect(() => {
-    let _: { itemId?: string | number; type: number; categoryId?: string | number } = { type: 3 };
+    let _: {
+      itemId?: string | number;
+      type: number;
+      categoryId?: string | number;
+    } = { type: 3 };
     if (id) {
       _ = { itemId: Number(id), type: 3 };
     }
@@ -90,39 +112,52 @@ const Index: React.FC = () => {
 
   //提交
   async function onFinish(values) {
-    const attrKeyTypeMap = Object.keys(dynProps).reduce((acc: any, cur: any) => {
-      dynProps[cur].forEach((item) => {
-        acc[item.categoryPropertyCode] = item.type;
-      });
-      return acc;
-    }, {});
+    const attrKeyTypeMap = Object.keys(dynProps).reduce(
+      (acc: any, cur: any) => {
+        dynProps[cur].forEach((item) => {
+          acc[item.categoryPropertyCode] = item.type;
+        });
+        return acc;
+      },
+      {},
+    );
     const data = {
       ...values,
-      images: values.images?.map((img: { url: string }) => (typeof img === 'object' ? img.url : img)) || [],
+      images:
+        values.images?.map((img: { url: string }) =>
+          typeof img === 'object' ? img.url : img,
+        ) || [],
       categoryId: [...values.categoryId].pop(),
-      baseProperties: Object.keys(values.baseProperties).reduce((acc: Recordable<any>, key: string) => {
-        if (values.baseProperties[key] !== undefined) {
-          const type = attrKeyTypeMap[key];
-          switch (type) {
-            case AttrTypes.DATE:
-              acc[key] = moment(values.baseProperties[key]).format('YYYY-MM-DD');
-              break;
-            case AttrTypes.DATE_RANGE:
-              acc[key] = [
-                moment(values.baseProperties[key][0]).format('YYYY-MM-DD'),
-                moment(values.baseProperties[key][1]).format('YYYY-MM-DD'),
-              ];
-              break;
-            default:
-              acc[key] = values.baseProperties[key];
-              break;
+      baseProperties: Object.keys(values.baseProperties).reduce(
+        (acc: Recordable<any>, key: string) => {
+          if (values.baseProperties[key] !== undefined) {
+            const type = attrKeyTypeMap[key];
+            switch (type) {
+              case AttrTypes.DATE:
+                acc[key] = moment(values.baseProperties[key]).format(
+                  'YYYY-MM-DD',
+                );
+                break;
+              case AttrTypes.DATE_RANGE:
+                acc[key] = [
+                  moment(values.baseProperties[key][0]).format('YYYY-MM-DD'),
+                  moment(values.baseProperties[key][1]).format('YYYY-MM-DD'),
+                ];
+                break;
+              default:
+                acc[key] = values.baseProperties[key];
+                break;
+            }
           }
-        }
-        return acc;
-      }, {}),
+          return acc;
+        },
+        {},
+      ),
       skus: values.skus.map((item: any) => ({
         ...omit(item, ['images', ...PriceKeys]),
-        images: item.images?.map((img: { url: string }) => (typeof img === 'object' ? img.url : img)),
+        images: item.images?.map((img: { url: string }) =>
+          typeof img === 'object' ? img.url : img,
+        ),
         itemPrice: {
           commissionRatio: math.mul(item.commissionRatio, 100),
           ...transformFen2Yuan(item, PriceKeys, true),
@@ -147,26 +182,49 @@ const Index: React.FC = () => {
       >
         返回
       </Button>
-      <Form labelCol={{ span: 6 }} wrapperCol={{ span: 14 }} form={form} onFinish={onFinish}>
+      <Form
+        labelCol={{ span: 6 }}
+        wrapperCol={{ span: 14 }}
+        form={form}
+        onFinish={onFinish}
+      >
         {/* 样衣 or 款式 */}
         <Form.Item label="类型" name="type" hidden={true} initialValue={3}>
           <Input />
         </Form.Item>
-        <Form.Item label="关联样衣 " name="refSampleClothesId" hidden={true}>
+        <Form.Item
+          label="关联样衣 "
+          name={['extraMap', 'refSampleClothesId']}
+          hidden={true}
+        >
           <Input />
         </Form.Item>
         {/* 1pc  2小程序*/}
-        <Form.Item label="商品类型" name="client" hidden={true} initialValue={1}>
+        <Form.Item
+          label="商品类型"
+          name={['extraMap', 'client']}
+          hidden={true}
+          initialValue={1}
+        >
           <Input />
         </Form.Item>
         {/* 1未关联  2关联*/}
-        <Form.Item label="关联样衣" name="source" hidden={true} initialValue={1}>
+        <Form.Item
+          label="关联样衣"
+          name="source"
+          hidden={true}
+          initialValue={1}
+        >
           <Input />
         </Form.Item>
         <h2>基本信息</h2>
         <Row className={styles.plr20}>
           <Col span={12}>
-            <Form.Item label="款式名称" name="title" rules={[{ required: true }]}>
+            <Form.Item
+              label="款式名称"
+              name="title"
+              rules={[{ required: true }]}
+            >
               <Input placeholder="请输入" maxLength={50} />
             </Form.Item>
           </Col>
@@ -176,7 +234,11 @@ const Index: React.FC = () => {
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item label="69码" name="snCode" rules={[{ message: '仅支持数字', pattern: /^[\d]+$/ }]}>
+            <Form.Item
+              label="69码"
+              name="snCode"
+              rules={[{ message: '仅支持数字', pattern: /^[\d]+$/ }]}
+            >
               <Input placeholder="请输入" maxLength={20} />
             </Form.Item>
           </Col>
@@ -186,7 +248,11 @@ const Index: React.FC = () => {
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item label="类目" name="categoryId" rules={[{ required: true, message: '请选择类目～' }]}>
+            <Form.Item
+              label="类目"
+              name="categoryId"
+              rules={[{ required: true, message: '请选择类目～' }]}
+            >
               <Cascader
                 options={category}
                 placeholder="请选择上架类目"
@@ -200,33 +266,63 @@ const Index: React.FC = () => {
             </Form.Item>
           </Col>
           <Col span={12} pull={2}>
-            <Typography.Link style={{ marginLeft: '20px' }} onClick={handleLinkSample}>
+            <Typography.Link
+              style={{ marginLeft: '20px' }}
+              onClick={handleLinkSample}
+            >
               关联样衣
             </Typography.Link>
 
             {refSampleClothesId && (
               <>
-                <Typography.Link style={{ marginLeft: '10px' }} onClick={handleNoLinkSample}>
+                <Typography.Link
+                  style={{ marginLeft: '10px' }}
+                  onClick={handleNoLinkSample}
+                >
                   取消关联
                 </Typography.Link>
-                <span className="u-ml10">已关联(样衣Id：{refSampleClothesId})</span>
+                <span className="u-ml10">
+                  已关联(样衣Id：{refSampleClothesId})
+                </span>
               </>
             )}
           </Col>
 
           <Col span={12}>
-            <Form.Item label="品牌" name="brandId" rules={[{ required: true, message: '请选择品牌～' }]}>
+            <Form.Item
+              label="品牌"
+              name="brandId"
+              rules={[{ required: true, message: '请选择品牌～' }]}
+            >
               <BrandSelectCpt />
             </Form.Item>
           </Col>
           {renderDynProps(true)}
 
           <Col span={24}>
-            <Form.Item label="商品图片" required labelCol={{ span: 3 }} wrapperCol={{ span: 20 }}>
-              <p style={{ fontSize: 12, color: '#999', marginTop: '5px', marginBottom: 5 }}>
-                支持jpg jpeg .png格式，小于10Mb图片不清晰将会被降低选中概率，故要求图片尺寸在 600*600以上
+            <Form.Item
+              label="商品图片"
+              required
+              labelCol={{ span: 3 }}
+              wrapperCol={{ span: 20 }}
+            >
+              <p
+                style={{
+                  fontSize: 12,
+                  color: '#999',
+                  marginTop: '5px',
+                  marginBottom: 5,
+                }}
+              >
+                支持jpg jpeg
+                .png格式，小于10Mb图片不清晰将会被降低选中概率，故要求图片尺寸在
+                600*600以上
               </p>
-              <Form.Item noStyle name="images" rules={[{ required: true, message: '请选择主图～' }]}>
+              <Form.Item
+                noStyle
+                name="images"
+                rules={[{ required: true, message: '请选择主图～' }]}
+              >
                 <PicturesWall maxCount={3} />
               </Form.Item>
             </Form.Item>
@@ -235,7 +331,9 @@ const Index: React.FC = () => {
         {renderDynProps()}
 
         <h2>sku信息</h2>
-        <CptContext.Provider value={{ saleProperties: saleProperties || [], attrEnum: attrEnum }}>
+        <CptContext.Provider
+          value={{ saleProperties: saleProperties || [], attrEnum: attrEnum }}
+        >
           <SkuCpt
             form={form}
             // info={{ saleProperties: saleProperties || [], attrEnum: attrEnum }}
@@ -243,7 +341,12 @@ const Index: React.FC = () => {
             // attrEnum={attrEnum}
           />
         </CptContext.Provider>
-        <Button type="primary" danger htmlType="submit" style={{ marginLeft: '12.5%', marginTop: 20 }}>
+        <Button
+          type="primary"
+          danger
+          htmlType="submit"
+          style={{ marginLeft: '12.5%', marginTop: 20 }}
+        >
           确认提交
         </Button>
       </Form>
@@ -251,7 +354,10 @@ const Index: React.FC = () => {
         ref={sampleListRef}
         onChange={(value) => {
           form.setFieldValue('source', 2);
-          form.setFieldValue('refSampleClothesId', value.toString());
+          form.setFieldValue(
+            ['extraMap', 'refSampleClothesId'],
+            value.toString(),
+          );
           setSampleId(value.toString());
         }}
       />
@@ -265,7 +371,9 @@ const Index: React.FC = () => {
     unit: string;
     propertySelectValues: any[];
   }) {
-    const propertySelectValues = Array.isArray(attr?.propertySelectValues) ? attr?.propertySelectValues : [];
+    const propertySelectValues = Array.isArray(attr?.propertySelectValues)
+      ? attr?.propertySelectValues
+      : [];
     const props = {
       label: attr.categoryPropertyName,
       rules: [{ required: attr.required === 1 ? true : false }],
@@ -286,7 +394,11 @@ const Index: React.FC = () => {
       case AttrTypes.NUMBER:
         return (
           <Form.Item {...props}>
-            <InputNumber className="w-full" placeholder="请输入" addonAfter={attr.unit} />
+            <InputNumber
+              className="w-full"
+              placeholder="请输入"
+              addonAfter={attr.unit}
+            />
           </Form.Item>
         );
       case AttrTypes.SELECT:
@@ -332,7 +444,8 @@ const Index: React.FC = () => {
             rules={[
               {
                 message: '请输入正确的链接',
-                pattern: /(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?/gi,
+                pattern:
+                  /(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?/gi,
               },
             ]}
           >
@@ -352,7 +465,9 @@ const Index: React.FC = () => {
         </Col>
       ));
     }
-    const attrGroupKeys = Object.keys(dynProps).filter((key) => key !== '基本信息');
+    const attrGroupKeys = Object.keys(dynProps).filter(
+      (key) => key !== '基本信息',
+    );
     if (attrGroupKeys.length === 0) return null;
 
     return attrGroupKeys.map((key) => {
