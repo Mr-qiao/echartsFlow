@@ -128,7 +128,7 @@ function Sample() {
 		},
 		{
 			title: '对接人',
-			dataIndex: 'contactPersonId',
+			dataIndex: 'creatorName',
 			search: false
 		},
 		{
