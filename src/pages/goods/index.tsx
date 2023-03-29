@@ -52,11 +52,11 @@ function Goods() {
     {
       title: '商品品牌',
       hideInTable: true,
-      dataIndex: 'brandId',
-      key: 'brandId',
+      dataIndex: 'brandIds',
+      key: 'brandIds',
       order: 6,
       renderFormItem: () => {
-        return <BrandSelectCpt />;
+        return <BrandSelectCpt  mode="multiple"/>;
       },
     },
     {
