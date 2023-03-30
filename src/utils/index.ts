@@ -240,3 +240,13 @@ export function transformFen2Yuan<T>(obj: T, keys: Array<keyof T>, reverse = fal
 	});
 	return newObj as Record<keyof T, number>;
 }
+
+/**
+ * 延迟一定时间
+ * @param {number} time - 延迟时间毫秒数
+ */
+export function sleep(delay: number = 1000) {
+	return new Promise((resolve) => {
+		setTimeout(resolve, delay);
+	});
+}

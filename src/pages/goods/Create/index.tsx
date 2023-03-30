@@ -1,6 +1,6 @@
-import {useModel, useNavigate, useParams, useSearchParams} from '@umijs/max';
+import {history, useModel, useParams, useSearchParams} from '@umijs/max';
 import {InputNumberRange} from '@xlion/component';
-import {math, uuid} from '@xlion/utils';
+import {math} from '@xlion/utils';
 import {
 	Button,
 	Cascader,
@@ -14,28 +14,22 @@ import {
 	Select,
 	Typography,
 } from 'antd';
-import {groupBy, omit} from 'lodash-es';
+import {groupBy, omit, pick} from 'lodash-es';
 import moment from 'moment';
-import React, {createContext, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
-import PicturesWall from '@/components/PicturesWall';
-import {transformFen2Yuan} from '@/utils';
+import Upload from '@/components/Upload';
+import {sleep, transformFen2Yuan, uuid} from '@/utils';
 
-import Api from '../services';
 import BrandSelectCpt from './components/BrandSelectCpt';
+import Api from '../services';
 import {SampleListModal} from './components/Modal';
 import SkuCpt from './components/SkuCpt';
+import SkuTablesCpt from './components/SkuTablesCpt';
 import {AttrTypes} from './constant';
 import styles from './index.less';
 
-export const CptContext = createContext<any>(null);
-
-const PriceKeys = [
-	'estimateLivePrice',
-	'originPrice',
-	'salePrice',
-	'supplyPrice',
-];
+const PriceKeys = ['estimateLivePrice', 'originPrice', 'salePrice', 'supplyPrice'];
 
 const Index: React.FC = () => {
 	const [searchParams] = useSearchParams();
@@ -48,17 +42,17 @@ const Index: React.FC = () => {
 	// const [brandList, setBrandList] = useState<any[]>();
 
 	const [dynProps, setDynProps] = useState<any[]>([]);
-	const [attrEnum, setAttrEnum] = useState<any[]>([]); // sku 属性枚举
-	const [saleProperties, setSaleProperties] = useState<any[]>([]); // sku 属性枚举
+	const [skuAttr, setSkuAttr] = useState<any[]>([]); // sku 属性枚举
+
+	// const [saleProperties, setSaleProperties] = useState<any[]>([]); // sku 属性枚举
 
 	const [form] = Form.useForm();
 
 	const sampleListRef = useRef<any>();
-	const navigate = useNavigate();
 
-	const handleChangeCate = (value) => {
-		let cateId = value[value.length - 1];
-		Api.Goods.Detail({categoryId: cateId, type: 3}).then(({entry}) => {
+	const handleChangeCate = (value?: any[]) => {
+		let cateId = value ? value[value.length - 1] : undefined;
+		return Api.Goods.Detail({categoryId: cateId, type: 3}).then(({entry}) => {
 			setDynProps(
 				groupBy(
 					entry?.baseProperties.sort((a, b) => a.order - b.order),
@@ -68,8 +62,15 @@ const Index: React.FC = () => {
 				),
 			);
 
-			setSaleProperties(entry?.saleProperties);
-			setAttrEnum(entry?.salePropertiesEnum);
+			// setSaleProperties(entry?.saleProperties);
+
+			//sku枚举
+			setSkuAttr(
+				entry?.salePropertiesEnum.map((item: any) => ({
+					label: item.categoryPropertyName,
+					value: item.categoryPropertyCode,
+				})),
+			);
 
 			form.setFieldValue('saleProperties', []);
 			form.setFieldValue('skus', []);
@@ -80,47 +81,49 @@ const Index: React.FC = () => {
 	};
 	const handleNoLinkSample = () => {
 		form.setFieldValue('source', 1);
-		// form.setFieldValue('refSampleClothesId', '');
 		form.setFieldValue(['extraMap', 'refSampleClothesId'], '');
 		setSampleId('');
 	};
+
 	useEffect(() => {
-		let _: {
-			itemId?: string | number;
-			type: number;
-			categoryId?: string | number;
-		} = {type: 3};
+		let _: { itemId?: string | number; type: number; categoryId?: string | number } = {type: 3};
 		if (id) {
 			_ = {itemId: Number(id), type: 3};
-		}
-		Promise.all([Api.Goods.Detail(_)]).then(([{entry: info}]) => {
-			//动态属性
-			setDynProps(
-				groupBy(
-					info?.baseProperties.sort((a, b) => a.order - b.order),
-					(item) => {
-						return item.bizGroupName;
-					},
-				),
-			);
-			//sku枚举
-			setAttrEnum(info?.salePropertiesEnum);
-			//sku值
-			setSaleProperties(info?.saleProperties);
 
-			form.setFieldsValue({
-				...info.item,
-				...info,
-				saleProperties: info.saleProperties.map((item) => ({
-					uuid: uuid(),
-					categoryPropertyType: {
+			Promise.all([Api.Goods.Detail(_)]).then(([{entry}]) => {
+				//动态属性
+				setDynProps(
+					groupBy(
+						entry?.baseProperties.sort((a, b) => a.order - b.order),
+						(item) => {
+							return item.bizGroupName;
+						},
+					),
+				);
+				//sku枚举
+				setSkuAttr(
+					entry?.salePropertiesEnum.map((item: any) => ({
 						label: item.categoryPropertyName,
 						value: item.categoryPropertyCode,
-					},
-					categoryPropertyValues: item.categoryPropertyValues,
-				})),
-				baseProperties: info.baseProperties?.reduce(
-					(acc: Recordable<any>, cur) => {
+					})),
+				);
+				//sku值
+				// setSaleProperties(entry?.saleProperties);
+
+				form.setFieldsValue({
+					...entry?.item,
+					...entry,
+					brandId: {label: entry?.item?.brandName, value: entry?.item?.brandId},
+
+					saleProperties: entry?.saleProperties.map((item) => ({
+						uuid: uuid(),
+						categoryPropertyType: {
+							label: item.categoryPropertyName,
+							value: item.categoryPropertyCode,
+						},
+						categoryPropertyValues: item.categoryPropertyValues,
+					})),
+					baseProperties: entry?.baseProperties?.reduce((acc: Recordable<any>, cur: any) => {
 						let value: any;
 						if (Array.isArray(cur.categoryPropertyValues)) {
 							switch (cur.type) {
@@ -134,9 +137,7 @@ const Index: React.FC = () => {
 									value = moment(cur.categoryPropertyValues[0]);
 									break;
 								case AttrTypes.DATE_RANGE:
-									value = cur.categoryPropertyValues.map((item: string) =>
-										moment(item),
-									);
+									value = cur.categoryPropertyValues.map((item: string) => moment(item));
 									break;
 								default:
 									value = cur.categoryPropertyValues;
@@ -144,48 +145,114 @@ const Index: React.FC = () => {
 						}
 						acc[cur.categoryPropertyCode] = value;
 						return acc;
-					},
-					{},
-				),
-				categoryId: info?.item?.categoryIds,
-				skus: info?.skus?.map((sku: any) => ({
-					uuid: uuid(),
-					...sku,
-					images: sku.images?.map((url: string) => ({url})),
-					commissionRatio: math.div(sku.itemPrice.commissionRatio, 100),
-					...transformFen2Yuan(sku.itemPrice, PriceKeys),
-				})),
+					}, {}),
+					categoryId: entry?.item?.categoryIds,
+					skus: entry?.skus?.map((sku: any) => ({
+						uuid: uuid(),
+						...sku,
+						images: sku.images?.map((url: string) => ({url})),
+						commissionRatio: math.div(sku.itemPrice.commissionRatio, 100),
+						...transformFen2Yuan(sku.itemPrice, PriceKeys),
+					})),
+				});
 			});
-		});
+		} else if (sampleId) {
+			autoCompleteWithSample(sampleId);
+		} else {
+			handleChangeCate();
+		}
 	}, []);
+
+	// useEffect(() => {
+
+	// }, [sampleId]);
+
+	// 自动填充样衣信息
+	async function autoCompleteWithSample(sampleId?: number) {
+		if (!sampleId) {
+			form.setFieldsValue({
+				refSampleClothesId: undefined,
+				source: 1,
+			});
+			setSampleId('');
+			return;
+		} else {
+			form.setFieldValue('source', 2);
+			form.setFieldValue(['extraMap', 'refSampleClothesId'], sampleId?.toString());
+			setSampleId(sampleId?.toString());
+		}
+		const {entry} = await Api.Sample.Detail({itemId: Number(sampleId)});
+		await handleChangeCate(entry.categoryIds);
+
+		form.setFieldsValue({
+			refSampleClothesId: entry.itemId,
+			title: entry.title,
+			supplierStyleCode: entry.supplierStyleCode,
+			categoryId: entry.categoryIds,
+			brandId: entry.brandId
+				? {
+					label: entry.brandName,
+					value: entry.brandId,
+				}
+				: undefined,
+			images: entry.images?.slice(0, 3) || [],
+			baseProperties: {
+				...pick(entry, [
+					'saleUrl',
+					'sellingAdvantage',
+					'shape',
+					'flowerBoard',
+					'style',
+					'stage',
+					'technologyDescription',
+					'structureDescription',
+					'weight',
+				]),
+			},
+			saleProperties: [
+				{
+					uuid: uuid(),
+					categoryPropertyType: {
+						label: '尺码',
+						value: 'size',
+					},
+					categoryPropertyValues: entry.sizeComb,
+				},
+				{
+					uuid: uuid(),
+					categoryPropertyType: {
+						label: '颜色',
+						value: 'color',
+					},
+					categoryPropertyValues: entry.colorComb,
+				},
+			],
+		});
+	}
 
 	//提交
 	async function onFinish(values) {
-		const attrKeyTypeMap = Object.keys(dynProps).reduce(
-			(acc: any, cur: any) => {
-				dynProps[cur].forEach((item) => {
-					acc[item.categoryPropertyCode] = item.type;
-				});
-				return acc;
-			},
-			{},
-		);
+		const attrKeyTypeMap = Object.keys(dynProps).reduce((acc: any, cur: any) => {
+			dynProps[cur].forEach((item) => {
+				acc[item.categoryPropertyCode] = item.type;
+			});
+			return acc;
+		}, {});
 		const data = {
 			...values,
 			images:
-				values.images?.map((img: { url: string }) =>
-					typeof img === 'object' ? img.url : img,
-				) || [],
+				values.images?.map((img: { url: string }) => (typeof img === 'object' ? img.url : img)) ||
+				[],
 			categoryId: [...values.categoryId].pop(),
+			brandId: typeof values.brandId === 'object' ? values.brandId.value : values.brandId,
+
 			baseProperties: Object.keys(values.baseProperties).reduce(
 				(acc: Recordable<any>, key: string) => {
 					if (values.baseProperties[key] !== undefined) {
 						const type = attrKeyTypeMap[key];
 						switch (type) {
 							case AttrTypes.DATE:
-								acc[key] = moment(values.baseProperties[key]).format(
-									'YYYY-MM-DD',
-								);
+								acc[key] = moment(values.baseProperties[key]).format('YYYY-MM-DD');
 								break;
 							case AttrTypes.DATE_RANGE:
 								acc[key] = [
@@ -213,76 +280,51 @@ const Index: React.FC = () => {
 				},
 			})),
 		};
-		if (id) {
-			data.itemId = id;
+		const res = await Api.Goods.Add(data);
+		if (res.success) {
+			message.success('添加成功');
+			await sleep(1500);
+			history.push('/goods/list')
 		}
-		Api.Goods.Add(data).then(({}) => {
-			message.success('添加成功', 0.5, () => {
-				navigate(-1);
-			});
-		});
 	}
 
 	return (
 		<div className={styles.goodsCreate}>
-			<Button
-				onClick={() => {
-					history.back();
-				}}
-				style={{color: '#666'}}
-				className="u-mr10 u-mb20"
-			>
-				返回
-			</Button>
-			<Form
-				labelCol={{span: 6}}
-				wrapperCol={{span: 14}}
-				form={form}
-				onFinish={onFinish}
-			>
+			{/* <Button
+        onClick={() => {
+          history.back();
+        }}
+        style={{ color: '#666' }}
+        className="u-mr10 u-mb20"
+      >
+        返回
+      </Button> */}
+			<Form labelCol={{span: 6}} wrapperCol={{span: 14}} form={form} onFinish={onFinish}>
 				{/* 样衣 or 款式 */}
 				<Form.Item label="类型" name="type" hidden={true} initialValue={3}>
 					<Input/>
 				</Form.Item>
-				<Form.Item
-					label="关联样衣 "
-					name={['extraMap', 'refSampleClothesId']}
-					hidden={true}
-				>
+				<Form.Item label="关联样衣 " name={['extraMap', 'refSampleClothesId']} hidden={true}>
 					<Input/>
 				</Form.Item>
 				{/* 1pc  2小程序*/}
-				<Form.Item
-					label="商品类型"
-					name={['extraMap', 'client']}
-					hidden={true}
-					initialValue={1}
-				>
+				<Form.Item label="商品类型" name={['extraMap', 'client']} hidden={true} initialValue={1}>
 					<Input/>
 				</Form.Item>
 				{/* 1未关联  2关联*/}
-				<Form.Item
-					label="关联样衣"
-					name="source"
-					hidden={true}
-					initialValue={1}
-				>
+				<Form.Item label="关联样衣" name="source" hidden={true} initialValue={5}>
 					<Input/>
 				</Form.Item>
 				<h2>基本信息</h2>
 				<Row className={styles.plr20}>
 					<Col span={12}>
-						<Form.Item
-							label="款式名称"
-							name="title"
-							rules={[{required: true}]}
-						>
+						<Form.Item label="款式名称" name="title" rules={[{required: true}]}>
 							<Input placeholder="请输入" maxLength={50}/>
 						</Form.Item>
 					</Col>
 					<Col span={12}>
 						<Form.Item label="商家款式编码" name="supplierStyleCode">
-							<Input/>
+							<Input maxLength={50}/>
 						</Form.Item>
 					</Col>
 					<Col span={12}>
@@ -318,27 +360,20 @@ const Index: React.FC = () => {
 						</Form.Item>
 					</Col>
 					{/*<Col span={12} pull={2}>*/}
-					{/*	<Typography.Link*/}
-					{/*		style={{marginLeft: '20px'}}*/}
-					{/*		onClick={handleLinkSample}*/}
-					{/*	>*/}
-					{/*		关联样衣*/}
-					{/*	</Typography.Link>*/}
+					{/*  <Typography.Link style={{ marginLeft: '20px' }} onClick={handleLinkSample}>*/}
+					{/*    关联样衣*/}
+					{/*  </Typography.Link>*/}
 
-					{/*	{refSampleClothesId && (*/}
-					{/*		<>*/}
-					{/*			<Typography.Link*/}
-					{/*				style={{marginLeft: '10px'}}*/}
-					{/*				onClick={handleNoLinkSample}*/}
-					{/*			>*/}
-					{/*				取消关联*/}
-					{/*			</Typography.Link>*/}
-					{/*			<span className="u-ml10">*/}
-          {/*        已关联(样衣Id：{refSampleClothesId})*/}
-          {/*      </span>*/}
-					{/*		</>*/}
-					{/*	)}*/}
+					{/*  {refSampleClothesId && (*/}
+					{/*    <>*/}
+					{/*      <Typography.Link style={{ marginLeft: '10px' }} onClick={handleNoLinkSample}>*/}
+					{/*        取消关联*/}
+					{/*      </Typography.Link>*/}
+					{/*      <span className="u-ml10">已关联(样衣Id：{refSampleClothesId})</span>*/}
+					{/*    </>*/}
+					{/*  )}*/}
 					{/*</Col>*/}
+
 					<Col span={12}>
 						<Form.Item
 							label="品牌"
@@ -353,45 +388,27 @@ const Index: React.FC = () => {
 					<Col span={24}>
 						<Form.Item
 							label="商品图片"
-							required
+							name="images"
+							rules={[{required: true, message: '请选择主图～'}]}
 							labelCol={{span: 3}}
 							wrapperCol={{span: 20}}
 						>
-							<p
-								style={{
-									fontSize: 12,
-									color: '#999',
-									marginTop: '5px',
-									marginBottom: 5,
-								}}
-							>
-								支持jpg jpeg
-								.png格式，小于10Mb图片不清晰将会被降低选中概率，故要求图片尺寸在
-								600*600以上
-							</p>
-							<Form.Item
-								noStyle
-								name="images"
-								rules={[{required: true, message: '请选择主图～'}]}
-							>
-								<PicturesWall maxCount={3}/>
-							</Form.Item>
+							<Upload
+								listType="picture-card"
+								maxCount={3}
+								size={10}
+								tip="支持jpg、jpeg、png格式，小于10Mb图片不清晰将会被降低选中概率，故要求图片尺寸在600*600以上"
+							/>
 						</Form.Item>
 					</Col>
 				</Row>
 				{renderDynProps()}
 
 				<h2>sku信息</h2>
-				<CptContext.Provider
-					value={{saleProperties: saleProperties || [], attrEnum: attrEnum}}
-				>
-					<SkuCpt
-						form={form}
-						// info={{ saleProperties: saleProperties || [], attrEnum: attrEnum }}
-						// saleProperties={saleProperties || []}
-						// attrEnum={attrEnum}
-					/>
-				</CptContext.Provider>
+
+				<SkuCpt form={form} skuAttrOptions={skuAttr}/>
+				<SkuTablesCpt form={form}/>
+
 				<Button
 					type="primary"
 					danger
@@ -404,12 +421,12 @@ const Index: React.FC = () => {
 			<SampleListModal
 				ref={sampleListRef}
 				onChange={(value) => {
-					form.setFieldValue('source', 2);
-					form.setFieldValue(
-						['extraMap', 'refSampleClothesId'],
-						value.toString(),
-					);
-					setSampleId(value.toString());
+					// form.setFieldValue('source', 2);
+					// form.setFieldValue(['extraMap', 'refSampleClothesId'], value.toString());
+
+					// // form.setFieldValue('refSampleClothesId', );
+					// // setSampleId(value.toString());
+					autoCompleteWithSample(value);
 				}}
 			/>
 		</div>
@@ -440,17 +457,13 @@ const Index: React.FC = () => {
 			case AttrTypes.TEXT:
 				return (
 					<Form.Item {...props}>
-						<Input placeholder="请输入"/>
+						<Input placeholder="请输入" maxLength={50}/>
 					</Form.Item>
 				);
 			case AttrTypes.NUMBER:
 				return (
 					<Form.Item {...props}>
-						<InputNumber
-							className="w-full"
-							placeholder="请输入"
-							addonAfter={attr.unit}
-						/>
+						<InputNumber className="w-full" placeholder="请输入" addonAfter={attr.unit}/>
 					</Form.Item>
 				);
 			case AttrTypes.SELECT:
@@ -474,19 +487,19 @@ const Index: React.FC = () => {
 			case AttrTypes.DATE:
 				return (
 					<Form.Item {...props}>
-						<DatePicker placeholder="请选择"/>
+						<DatePicker className="w-full" placeholder="请选择"/>
 					</Form.Item>
 				);
 			case AttrTypes.DATE_RANGE:
 				return (
 					<Form.Item {...props}>
-						<DatePicker.RangePicker/>
+						<DatePicker.RangePicker className="w-full"/>
 					</Form.Item>
 				);
 			case AttrTypes.TEXTAREA:
 				return (
 					<Form.Item {...props}>
-						<Input.TextArea placeholder="请输入"/>
+						<Input.TextArea placeholder="请输入" maxLength={500}/>
 					</Form.Item>
 				);
 			case AttrTypes.LINK:
@@ -496,12 +509,29 @@ const Index: React.FC = () => {
 						rules={[
 							{
 								message: '请输入正确的链接',
-								pattern:
-									/(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?/gi,
+								pattern: /(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?/gi,
 							},
 						]}
 					>
-						<Input placeholder="请输入"/>
+						<Input placeholder="请输入" maxLength={200}/>
+					</Form.Item>
+				);
+			case AttrTypes.IMAGE:
+				return (
+					<Form.Item {...props}>
+						<Upload listType="picture-card"/>
+					</Form.Item>
+				);
+			case AttrTypes.MULTIPLE_IMAGE:
+				return (
+					<Form.Item {...props}>
+						<Upload listType="picture-card" maxCount={6}/>
+					</Form.Item>
+				);
+			case AttrTypes.FILE:
+				return (
+					<Form.Item {...props}>
+						<Upload maxCount={6}/>
 					</Form.Item>
 				);
 			default:
@@ -517,12 +547,10 @@ const Index: React.FC = () => {
 				</Col>
 			));
 		}
-		const attrGroupKeys = Object.keys(dynProps).filter(
-			(key) => key !== '基本信息',
-		);
+		const attrGroupKeys = Object.keys(dynProps).filter((key) => key !== '基本信息');
 		if (attrGroupKeys.length === 0) return null;
 
-		return attrGroupKeys.map((key) => {
+		return attrGroupKeys.map((key, idx) => {
 			if (isBaseProps) {
 				return dynProps[key].map((item: any) => (
 					<Col key={item.categoryPropertyName} span={12}>
@@ -531,7 +559,7 @@ const Index: React.FC = () => {
 				));
 			}
 			return (
-				<>
+				<React.Fragment key={idx}>
 					<h2>{key}</h2>
 					<Row>
 						{dynProps[key].map((item: any) => (
@@ -540,7 +568,7 @@ const Index: React.FC = () => {
 							</Col>
 						))}
 					</Row>
-				</>
+				</React.Fragment>
 			);
 		});
 	}
