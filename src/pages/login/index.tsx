@@ -22,8 +22,10 @@ const Launch: any = () => {
 		position: 'relative',
 		overflow: 'hidden',
 		backgroundImage: `url(${bgUrl})`,
-		backgroundSize: '100% 100%',
-		backgroundAttachment: 'fixed'
+		backgroundSize: '100%',
+		backgroundRepeat: 'no-repeat',
+		backgroundAttachment: 'fixed',
+		backgroundColor:'#3d5acd'
 	};
 	const [showText, setShowText] = useState(false);
 	const [showWaiting, setShowWaiting] = useState(false);

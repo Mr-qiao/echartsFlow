@@ -95,7 +95,12 @@ export const errorConfig: RequestConfig = {
 	responseInterceptors: [
 		(response) => {
 			// 拦截响应数据，进行个性化处理
+			console.log(response,'response')
 			const {data} = response as unknown as ResponseStructure;
+			if (data.code === 401) {
+				message.error(data.message);
+			}
+
 			if (data.code === 1000010001) {
 				navigateToLogin();
 			}

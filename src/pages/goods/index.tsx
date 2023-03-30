@@ -143,13 +143,13 @@ function Goods() {
             >
               查看
             </a>
-            <a
-              onClick={() => {
-                history.push(`/goods/edit/${recode.itemId}`);
-              }}
-            >
-              编辑
-            </a>
+            {/*<a*/}
+            {/*  onClick={() => {*/}
+            {/*    history.push(`/goods/edit/${recode.itemId}`);*/}
+            {/*  }}*/}
+            {/*>*/}
+            {/*  编辑*/}
+            {/*</a>*/}
           </Space>
         );
       },
