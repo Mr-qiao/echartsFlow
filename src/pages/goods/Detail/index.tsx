@@ -97,11 +97,13 @@ const GoodsInfo = React.forwardRef(({isSupplier = true}: any, ref) => {
 			dataIndex: 'thirdId',
 			width: 180,
 			render: (item, record) => {
+				console.log(record, 'record')
 				return (
 					<div className="u-ml10">
 						<p className="u-fs12 u-mb5">
 							<span className="u-c888">预计佣金比例：</span>
-							{record.itemPrice.commissionRatio + '%' || '-'}
+
+							{(math.div(record.itemPrice.commissionRatio, 100)+ '%') || '-'}
 						</p>
 					</div>
 				);
