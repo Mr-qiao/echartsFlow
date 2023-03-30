@@ -225,16 +225,21 @@ function getDict(key: string, type: string, val: string, defaultValue: string) {
 	}
 }
 
-export function transformFen2Yuan<T>(obj: T, keys: Array<keyof T>, reverse = false) {
+export function transformFen2Yuan<T>(
+	obj: T,
+	keys: Array<keyof T>,
+	reverse = false,
+	precision = 1000,
+) {
 	const newObj: Partial<Record<keyof T, number>> = {};
 	keys.forEach((key) => {
 		if (obj[key]) {
 			if (reverse) {
 				// 乘以100
-				newObj[key] = math.mul(obj[key] as number, 1000);
+				newObj[key] = math.mul(obj[key] as number, precision);
 			} else {
 				// 除以100
-				newObj[key] = math.div(obj[key] as number, 1000);
+				newObj[key] = math.div(Math.floor(math.div(obj[key] as number, precision / 100)), 100);
 			}
 		}
 	});

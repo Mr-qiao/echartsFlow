@@ -1,7 +1,7 @@
 import {ProTable} from '@ant-design/pro-components';
 import {Select, Form, Image, Modal, Space, message} from 'antd';
 import {useEffect, useRef, useState} from 'react';
-import {delivery, mark, queryList} from '@/pages/sample/apis';
+import {delivery, mark, queryList, searchForSystem} from '@/pages/sample/apis';
 import moment from 'moment';
 import {filterPageName} from "@/utils";
 import {history} from "umi";
@@ -9,6 +9,7 @@ import {transformFen2Yuan} from "@/utils"
 import SelectTree from "@/components/selectTree";
 import {getCategoryTree} from "@/pages/goods/apis";
 import SelectCpt from "@/components/selectCpt";
+import SearchSelect from '@/components/SearchSelect';
 
 
 const {Option} = Select
@@ -136,9 +137,16 @@ function Sample() {
 			title: '对接人',
 			dataIndex: 'creator',
 			hideInTable: true,
-			renderFormItem: (item: any, _: any, form: any) => {
-				return <SelectCpt/>;
-			},
+			renderFormItem: () => (
+				<SearchSelect
+					ajaxRequest={searchForSystem}
+					params={{ page: 1, pageSize: 100 }}
+					optionFilterProp="empName"
+					filterOption={false}
+					searchKey="name"
+					fieldNames={{ label: 'empName', value: 'employeeId' }}
+				/>
+			),
 		},
 		{
 			title: '操作',
