@@ -1,400 +1,293 @@
-import { Button, Input, InputNumber, message, Popconfirm, Table } from 'antd';
-import React, { useMemo, useState } from 'react';
+import { Table } from '@xlion/component';
+import { isNullOrUnDef } from '@xlion/utils';
+import {
+  Button,
+  Col,
+  Form,
+  FormInstance,
+  FormListFieldData,
+  Input,
+  InputNumber,
+  Popconfirm,
+  Row,
+  TableProps,
+} from 'antd';
+import React, { useState } from 'react';
 
-import PicturesWall from '@/components/PicturesWall';
+import Upload from '@/components/Upload';
 
-interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
-  editable?: boolean;
-  dataIndex: string;
-  title: any;
-  inputType: 'number' | 'text';
-  record: any;
-  index: number;
-  children: React.ReactNode;
-  rules?: any;
-  component?: any;
-  titleType?: string;
-  onCell?: any;
-  onHeaderCell?: any;
+import ss from '../index.less';
+
+interface IProps {
+  form: FormInstance;
+  onChange?: (value: any) => void;
 }
-const EditableTdCell: React.FC<EditableCellProps> = ({
-  editable,
-  children,
-  index,
-  record,
-  rules,
-  component,
-  // dataIndex,
-  ...restProps
-}) => {
-  // let rule = rules?.(index);
-  let childNode: React.ReactNode = editable ? (
-    // <Form.Item name={['list', index, dataIndex]} rules={rule}>
-    component({ record, ...restProps }, index)
-  ) : (
-    // </Form.Item>
-    <div
-      style={{
-        marginBottom: 24,
-      }}
-    >
-      {children}
-    </div>
-  );
-  return <td {...restProps}>{childNode}</td>;
+
+const MIN_PRICE = 0.01;
+const MAX_PRICE = 9999999998.99;
+const commonPriceProps = {
+  className: 'w-full',
+  controls: false,
+  min: MIN_PRICE,
+  max: MAX_PRICE,
+  precision: 2,
 };
-const SkuTablesCpt: any = React.forwardRef(({ value, onChange }: any, ref): any => {
-  // let [inputValue, serInputValue] = useState(1);
-  let [dataSource, serDataSource] = useState<any>([]);
-  let [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
-  const columns = [
-    {
-      title: '规格',
-      width: 100,
-      dataIndex: 'properties',
-      key: 'properties',
-    },
-    {
-      title: '货品图',
-      width: 400,
-      dataIndex: 'images',
-      key: 'images',
-      editable: true,
-      component: (record: any, idx: number) => {
-        return (
-          <>
-            <PicturesWall
-              maxCount={3}
-              width={100}
-              uploadButton={'+'}
-              value={dataSource[idx][record.dataIndex]}
-              onChange={(value) => {
-                value = value.map((item) => item.url);
-                handleInputValue(value, record, idx);
-              }}
-            />
-            {!dataSource[idx][record.dataIndex] && <p style={{ color: '#ff4d4f' }}>请输入</p>}
-          </>
-        );
-      },
-    },
-    {
-      title: 'sku商家编码',
-      dataIndex: 'skuCode',
-      width: 120,
-      key: 'skuCode',
-      editable: true,
-      component: (record: any, idx: number) => {
-        return (
-          <Input
-            placeholder="请输入sku商家编码"
-            onChange={(e) => {
-              handleInputValue(e.target.value, record, idx);
-            }}
-          />
-        );
-      },
-    },
-    {
-      title: '渠道销售sku编码',
-      dataIndex: 'outsideSkuCode',
-      width: 130,
-      key: 'outsideSkuCode',
-      editable: true,
-      component: (record: any, idx: number) => {
-        return (
-          <Input
-            placeholder="请输入渠道销售sku编码"
-            onChange={(e) => {
-              handleInputValue(e.target.value, record, idx);
-            }}
-          />
-        );
-      },
-    },
-    {
-      title: '吊牌价批量填充',
-      titleType: 'input',
-      dataIndex: 'originPrice',
-      width: 120,
-      key: 'originPrice',
-      editable: true,
-      component: (record: any, idx: number) => {
-        return (
-          <InputNumber
-            placeholder="请输入吊牌价"
-            className="ant-input-required"
-            value={dataSource[idx][record.dataIndex]}
-            status={dataSource[idx][record.dataIndex] ? '' : 'error'}
-            onChange={(value) => {
-              handleInputValue(value, record, idx);
-            }}
-            controls={false}
-            min={0}
-            max={999999999.99}
-            precision={2}
-          />
-        );
-      },
-      rules: () => {
-        return [{ required: true }];
-      },
-    },
-    {
-      title: '参考销售价',
-      titleType: 'input',
-      dataIndex: 'salePrice',
-      width: 120,
-      key: 'salePrice',
-      editable: true,
-      component: (record: any, idx: number) => {
-        return (
-          <InputNumber
-            placeholder="请输入参考销售价"
-            className="ant-input-required"
-            value={dataSource[idx][record.dataIndex]}
-            status={dataSource[idx][record.dataIndex] ? '' : 'error'}
-            onChange={(value) => {
-              handleInputValue(value, record, idx);
-            }}
-            controls={false}
-            min={0}
-            max={999999999.99}
-            precision={2}
-          />
-        );
-      },
-      rules: () => {
-        return [{ required: true }];
-      },
-    },
-    {
-      title: '预计直播价',
-      titleType: 'input',
-      dataIndex: 'estimateLivePrice',
-      width: 120,
-      key: 'estimateLivePrice',
-      editable: true,
-      component: (record, idx) => {
-        return (
-          <InputNumber
-            placeholder="请输入预计直播价"
-            className="ant-input-required"
-            value={dataSource[idx][record.dataIndex]}
-            status={dataSource[idx][record.dataIndex] ? '' : 'error'}
-            onChange={(value) => {
-              handleInputValue(value, record, idx);
-            }}
-            controls={false}
-            min={0}
-            max={999999999.99}
-            precision={2}
-          />
-        );
-      },
-      rules: () => {
-        return [{ required: true }];
-      },
-    },
+const SkuTablesCpt: React.FC<IProps> = ({ form }) => {
+  let [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
 
-    {
-      title: '预计佣金比例',
-      titleType: 'input',
-      dataIndex: 'commissionRatio',
-      width: 120,
-      key: 'commissionRatio',
-      editable: true,
-      component: (record, idx) => {
-        return (
-          <InputNumber
-            placeholder="请输入预计佣金比例"
-            className="ant-input-required"
-            value={dataSource[idx][record.dataIndex]}
-            status={dataSource[idx][record.dataIndex] ? '' : 'error'}
-            onChange={(value) => {
-              handleInputValue(value, record, idx);
-            }}
-            controls={false}
-            min={0}
-            max={100}
-            precision={2}
-          />
-        );
-      },
-      rules: () => {
-        return [{ required: true }];
-      },
-    },
-    {
-      title: '参考供货价',
-      titleType: 'input',
-      dataIndex: 'supplyPrice',
-      width: 120,
-      key: 'supplyPrice',
-      editable: true,
-      component: (record, idx) => {
-        return (
-          <InputNumber
-            placeholder="请输入参考供货价"
-            className="ant-input-required"
-            value={dataSource[idx][record.dataIndex]}
-            status={dataSource[idx][record.dataIndex] ? '' : 'error'}
-            onChange={(value) => {
-              handleInputValue(value, record, idx);
-            }}
-            controls={false}
-            min={0}
-            max={999999999.99}
-            precision={2}
-          />
-        );
-      },
-      rules: () => {
-        return [{ required: true }];
-      },
-    },
-  ];
-  //table input change
-  const handleInputValue = (value, record, idx) => {
-    // console.log(record, idx, name);
-    let arr = [...dataSource];
-    arr[idx][record.dataIndex] = value;
-    console.log(value);
-    serDataSource(arr);
-    triggerChange(arr);
-  };
-  //批量删除
-  const handleBatchDel = () => {
-    if (selectedRowKeys.length <= 0) {
-      message.warning('请勾选后，在进行批量操作～');
-      return;
-    } else {
-      let _ = [...dataSource];
-      let arr = _.filter((item) => !selectedRowKeys.includes(item.key as never));
-      serDataSource(arr);
-      triggerChange(arr);
-    }
-  };
-  useMemo(() => {
-    if (value) {
-      //多维数组 数据格式化
-      let _ = [...value];
-      serDataSource(_);
-    }
-  }, [value]);
-
-  function triggerChange(data) {
-    let _ = JSON.parse(JSON.stringify(data));
-    onChange?.(_);
-  }
-
-  function onSelectChange(key) {
+  function onSelectChange(key: React.Key[]) {
     setSelectedRowKeys(key);
   }
 
-  const EditableThCell: React.FC<EditableCellProps> = ({
-    children,
-    title,
-    titleType,
-    dataIndex,
-    editable,
+  const handleBatchFill = (key: string, min: number, max: number) => (e) => {
+    let value = e.target.value;
+    // 过滤非数字
+    value = value.replace(/[^\d.]/g, '');
 
-    ...restProps
-  }) => {
-    let inputValue: any;
-    //input 失去焦点修改
-    const handleInputChange = (e) => {
-      e.stopPropagation();
-      inputValue = e.target.value;
-      if (inputValue === '') return;
-      let _arr = [...dataSource];
-      let _data: any = _arr.map((item: any) => {
-        item[dataIndex] = inputValue;
-        return item;
-      });
-      serDataSource(_data);
-      triggerChange(_data);
-    };
-    let { onCell, onHeaderCell, component, rules, ...props } = restProps;
-    return (
-      <th {...props}>
-        {titleType && titleType === 'input' ? (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            {restProps.rules && <span style={{ marginRight: 5, color: '#f00009' }}>*</span>}
-            <Input value={inputValue} placeholder={title ? title : '请输入'} onBlur={handleInputChange} />
-          </div>
-        ) : (
-          children
-        )}
-      </th>
-    );
+    if (value === '') return;
+    if (value < min) value = min.toFixed(2);
+    if (value > max) value = max.toFixed(2);
+    const skus = form.getFieldValue('skus');
+    skus.forEach((item: any) => {
+      item[key] = value;
+    });
+    form.setFieldValue('skus', skus);
   };
 
-  const mergedColumns = [...columns].map((col: any) => {
-    if (!col.editable) {
-      return col;
-    }
-
-    return {
-      ...col,
-      onCell: (record, index) => {
-        return {
-          record,
-          index,
-          editable: col.editable,
-          dataIndex: col.dataIndex,
-          title: col.title,
-          component: col.component,
-          rules: col.rules,
-        };
+  const getColumns = (fields: FormListFieldData[]) => {
+    return [
+      {
+        title: '规格',
+        width: 100,
+        render: (_, record, index) => {
+          const field = fields[index];
+          const properties = form.getFieldValue(['skus', field.name, 'properties']);
+          return properties;
+        },
       },
-      onHeaderCell: (columns: any) => columns,
-    };
-  });
+      {
+        title: (
+          <div className={ss.th}>
+            <span className={ss.required}>*</span>货品图
+          </div>
+        ),
+        width: 240,
+        render: (_, record: any, index: number) => {
+          const field = fields[index];
+          return (
+            <Form.Item name={[field.name, 'images']} noStyle>
+              <Upload listType="picture-card" maxCount={3} tip={false} />
+            </Form.Item>
+          );
+        },
+      },
+      {
+        title: 'SKU商家编码',
+        width: 120,
+        render: (_, record: any, index: number) => {
+          const field = fields[index];
+          return (
+            <Form.Item name={[field.name, 'skuCode']} noStyle>
+              <Input placeholder="SKU商家编码" maxLength={50} />
+            </Form.Item>
+          );
+        },
+      },
+      {
+        title: '渠道销售SKU编码',
+        width: 130,
+        render: (_, record: any, index: number) => {
+          const field = fields[index];
+          return (
+            <Form.Item name={[field.name, 'outsideSkuCode']} noStyle>
+              <Input placeholder="渠道销售SKU编码" maxLength={50} />
+            </Form.Item>
+          );
+        },
+      },
+      {
+        title: (
+          <div className={ss.th}>
+            <span className={ss.required}>*</span>
+            <InputNumber
+              placeholder="吊牌价批量填充"
+              {...commonPriceProps}
+              onBlur={handleBatchFill('originPrice', MIN_PRICE, MAX_PRICE)}
+            />
+          </div>
+        ),
+        width: 120,
+        render: (_, record: any, index: number) => {
+          const field = fields[index];
+          return (
+            <Form.Item name={[field.name, 'originPrice']} noStyle>
+              <InputNumber placeholder="吊牌价" {...commonPriceProps} />
+            </Form.Item>
+          );
+        },
+      },
+      {
+        title: (
+          <div className={ss.th}>
+            <span className={ss.required}>*</span>
+            <InputNumber
+              placeholder="参考销售价批量填充"
+              {...commonPriceProps}
+              onBlur={handleBatchFill('salePrice', MIN_PRICE, MAX_PRICE)}
+            />
+          </div>
+        ),
+        width: 120,
+        render: (_, record: any, index: number) => {
+          const field = fields[index];
+          return (
+            <Form.Item name={[field.name, 'salePrice']} noStyle>
+              <InputNumber placeholder="参考销售价" {...commonPriceProps} />
+            </Form.Item>
+          );
+        },
+      },
+      {
+        title: (
+          <div className={ss.th}>
+            <span className={ss.required}>*</span>
+            <InputNumber
+              placeholder="预计直播价批量填充"
+              {...commonPriceProps}
+              onBlur={handleBatchFill('estimateLivePrice', MIN_PRICE, MAX_PRICE)}
+            />
+          </div>
+        ),
+        width: 120,
+        render: (_, record: any, index: number) => {
+          const field = fields[index];
+          return (
+            <Form.Item name={[field.name, 'estimateLivePrice']} noStyle>
+              <InputNumber placeholder="预计直播价" {...commonPriceProps} />
+            </Form.Item>
+          );
+        },
+      },
+      {
+        title: (
+          <div className={ss.th}>
+            <span className={ss.required}>*</span>
+            <InputNumber
+              className="w-full"
+              placeholder="预计佣金比例批量填充"
+              controls={false}
+              min={0}
+              max={90}
+              precision={2}
+              onBlur={handleBatchFill('commissionRatio', 0, 90)}
+            />
+          </div>
+        ),
+        width: 120,
+        render: (_, record: any, index: number) => {
+          const field = fields[index];
+          return (
+            <Form.Item name={[field.name, 'commissionRatio']} noStyle>
+              <InputNumber
+                placeholder="预计佣金比例"
+                className="w-full"
+                controls={false}
+                min={0}
+                max={90}
+                precision={2}
+              />
+            </Form.Item>
+          );
+        },
+      },
+      // {
+      //   title: (
+      //     <div className={ss.th}>
+      //       <span className={ss.required}>*</span>
+      //       <InputNumber
+      //         placeholder="参考供货价批量填充"
+      //         {...commonPriceProps}
+      //         onBlur={handleBatchFill('supplyPrice', MIN_PRICE, MAX_PRICE)}
+      //       />
+      //     </div>
+      //   ),
+      //   width: 120,
+      //   render: (_, record: any, index: number) => {
+      //     const field = fields[index];
+      //     return (
+      //       <Form.Item name={[field.name, 'supplyPrice']} noStyle>
+      //         <InputNumber placeholder="参考供货价" {...commonPriceProps} />
+      //       </Form.Item>
+      //     );
+      //   },
+      // },
+    ] as TableProps<any>['columns'];
+  };
 
   return (
-    Array.isArray(dataSource) &&
-    dataSource.length > 0 && (
-      <>
-        <Popconfirm
-          onConfirm={handleBatchDel}
-          placement="left"
-          title="确认批量删除吗？"
-          okText="确认"
-          cancelText="取消"
-        >
-          <Button style={{ marginBottom: 10 }} type="primary">
-            批量删除
-          </Button>
-        </Popconfirm>
-        <Table
-          scroll={{ x: 1200 }}
-          rowKey={'skuId'}
-          rowSelection={{
-            selectedRowKeys,
-            onChange: onSelectChange,
-            // getCheckboxProps: (record) => ({
-            //   // disabled: !(10 === record.isPromotion || 30 === record.isPromotion), // Column configuration not to be checked
-            // }),
-          }}
-          components={{
-            header: {
-              cell: EditableThCell,
-            },
-            body: {
-              cell: EditableTdCell,
-            },
-          }}
-          rowClassName={() => 'editable-row'}
-          className="sku__table-wrapper"
-          dataSource={dataSource}
-          pagination={false}
-          columns={mergedColumns}
-        />
-      </>
-    )
+    <Form.List
+      name="skus"
+      rules={[
+        {
+          validator: (_, value) => {
+            if (!value || value.length === 0) {
+              return Promise.reject('至少生成一个SKU');
+            }
+            const hasEmptyKey = value.some((item) => {
+              return (
+                !item.images ||
+                item.images?.length === 0 ||
+                isNullOrUnDef(item.originPrice) ||
+                isNullOrUnDef(item.salePrice) ||
+                isNullOrUnDef(item.estimateLivePrice) ||
+                isNullOrUnDef(item.commissionRatio)
+                // ||isNullOrUnDef(item.supplyPrice)
+              );
+            });
+            if (hasEmptyKey) {
+              return Promise.reject('请填写完整SKU信息');
+            }
+
+            return Promise.resolve();
+          },
+        },
+      ]}
+      initialValue={[]}
+    >
+      {(skus, { remove }, { errors }) => (
+        <Row style={{ marginBottom: 16 }}>
+          <Col span={19} offset={3}>
+            <Popconfirm
+              onConfirm={() => {
+                remove(selectedRowKeys as number[]);
+                setSelectedRowKeys([]);
+              }}
+              placement="left"
+              title="确认批量删除吗？"
+              okText="确认"
+              cancelText="取消"
+            >
+              <Button style={{ marginBottom: 16 }}>批量删除</Button>
+            </Popconfirm>
+            <Table
+              scroll={{ x: 1500 }}
+              rowKey="name"
+              editable
+              rowSelection={{
+                selectedRowKeys,
+                onChange: onSelectChange,
+              }}
+              dataSource={skus}
+              pagination={false}
+              columns={getColumns(skus)}
+            />
+            <Form.ErrorList errors={errors} />
+          </Col>
+        </Row>
+      )}
+    </Form.List>
   );
-});
-SkuTablesCpt.defaultProps = {};
+};
+
 export default SkuTablesCpt;

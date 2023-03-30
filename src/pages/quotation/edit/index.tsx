@@ -74,7 +74,7 @@ function QuotationEdit() {
 	// 图样附图
 	const arr = data?.drawingMap?.accessoryImages?.length > 0 ? data?.drawingMap.accessoryImages.map((item: any) => ({src: item})) : []
 	// 其他附件
-	const qtarr = data?.drawingMap?.accessoryFiles?.length > 0 ? data?.drawingMap?.accessoryFiles.map((item: any) => ({src: item})) : []
+	const qtarr = data?.drawingMap?.accessoryFiles?.length > 0 ? data?.drawingMap?.accessoryFiles : []
 	// 尺寸附图
 	const ccftarr = data?.craftMap?.workmanshipImages?.length > 0 ? data?.craftMap?.workmanshipImages.map((item: any) => ({src: item})) : []
 	// 尺寸列表 Columns
@@ -110,7 +110,7 @@ function QuotationEdit() {
 		{
 			title: '物料类型',
 			align: 'center',
-			dataIndex: 'materialName',
+			dataIndex: 'materialType',
 		},
 		{
 			title: '供应商',
@@ -136,7 +136,7 @@ function QuotationEdit() {
 				return (
 					<InputNumber
 						precision={2}
-						value={recode.dj}
+						value={recode.dj || 0}
 						min={0}
 						onChange={(e) => {
 							const NewArr = [...dataSourcePp[tabKey]?.materialDetailList];
@@ -158,7 +158,7 @@ function QuotationEdit() {
 				return (
 					<InputNumber
 						min={0}
-						value={recode.skuyl}
+						value={recode.skuyl || 0}
 						onChange={(e) => {
 							const NewArr = [...dataSourcePp[tabKey]?.materialDetailList];
 							NewArr[index].skuyl = e;
@@ -181,7 +181,7 @@ function QuotationEdit() {
 						min={0}
 						max={100}
 						addonAfter={'%'}
-						value={recode.shl}
+						value={recode.shl || 0}
 						onChange={(e) => {
 							const NewArr = [...dataSourcePp[tabKey]?.materialDetailList];
 							NewArr[index].shl = e;
@@ -261,6 +261,7 @@ function QuotationEdit() {
 				return (
 					<Select
 						style={{width: 200}}
+						disabled={recode?.dis}
 						value={recode.bjsxgg}
 						onChange={(e) => {
 							const NewArr = [...dataSourceQt];
@@ -270,6 +271,7 @@ function QuotationEdit() {
 							const asd = NewArr.filter(item => item.bjsxgg === recode.bjsxgg)
 							const qthz = Number(info.jsdj || 0) * Number(info.sysl || 0)
 							info.qthz = qthz
+							info.dis = true
 							const sumby = _.sumBy(asd, 'qthz')
 							zongHz('qitahuizong', sumby, recode.bjsxgg)
 						}}>
@@ -361,6 +363,9 @@ function QuotationEdit() {
 							const qthz = Number(info.jsdj || 0) * Number(info.sysl || 0)
 							info.qthz = qthz
 							const sumby = _.sumBy(asd, 'qthz')
+							const minbyhuizong = _.ceil(_.minBy(NewArr, 'qthz')?.qthz, 2) || 0
+							const maxbyhuizong = _.ceil(_.maxBy(NewArr, 'qthz')?.qthz, 2) || 0
+							setQitaPirce(`${minbyhuizong}-${maxbyhuizong}`)
 							zongHz('qitahuizong', sumby, recode.bjsxgg)
 							setDataSourceQt(NewArr);
 						}}
@@ -409,22 +414,27 @@ function QuotationEdit() {
 	const wuL = (index: any) => {
 		const NewArr = [...dataSourcePp[tabKey]?.materialDetailList];
 		const da = NewArr[index]
-		da.wlhz = _.ceil((Number(da.dj || 0) * Number(da.skuyl || 0)) / (Number(da.shl || 0) / 100), 2)
+		da.wlhz = (Number(da.dj || 0) * Number(da.skuyl || 0))
+		if (da.shl) {
+			da.wlhz = da.wlhz / ((100 - Number(da.shl || 0)) / 100)
+		}
+		da.wlhz = _.floor(da.wlhz,2)
 		const sumby = _.ceil(_.sumBy(NewArr, 'wlhz'), 2)
 		const datas = [...dataSourcePp]
-		datas[tabKey].materialDetailList = NewArr
 		datas[tabKey].hz = sumby
-		const minby = _.ceil(_.minBy(datas, 'hz').hz, 2)
-		const maxby = _.ceil(_.maxBy(datas, 'hz').hz, 2)
+		console.log(datas, '_.minBy(datas, \'hz\')')
+		const minby = _.ceil(_.minBy(datas, 'hz')?.hz, 2) || 0
+		const maxby = _.ceil(_.maxBy(datas, 'hz')?.hz, 2) || 0
 		datas[tabKey].minby = minby
 		datas[tabKey].maxby = maxby
+		datas[tabKey].materialDetailList = NewArr
 		setWlbjz(`${minby}-${maxby}`)
 		zongHz('wuliaohuizong', sumby,)
 		setDataSourcePp(datas);
 	}
 	const queryListAll = async () => {
 		const res = await queryById({id: params.id})
-		const entry = res.entry
+		const entry = res?.entry || {}
 		const gy = _.cloneDeep(entry?.craftMap?.workmanshipDetailList)
 		const wll = _.cloneDeep(entry?.materialMap?.skuMaterialList)
 		const wl = _.cloneDeep(entry?.materialMap?.skuMaterialList)
@@ -432,7 +442,7 @@ function QuotationEdit() {
 		entry.itemSkuList = entry?.goodsInfoMap?.goodsInfoList
 		setGybjz(entry.craftPrice)
 		setWlbjz(entry.materialPrice)
-		setDataSourcePp(wl)
+		setDataSourcePp(wl || [])
 		setDataSourceGy(gy)
 		setData(entry)
 		setDataSourceQt(qt)
@@ -441,7 +451,7 @@ function QuotationEdit() {
 	const gongY = (index: any) => {
 		const NewArr = [...dataSourceGy];
 		const da = NewArr[index]
-		da.gyhz = _.ceil(Number(da.gydj || 0),2)
+		da.gyhz = _.floor(Number(da.gydj || 0), 2)
 		const sumby = _.sumBy(NewArr, 'gyhz')
 		setGybjz(`${sumby}`)
 		setDataSourceGy(NewArr);
@@ -451,10 +461,10 @@ function QuotationEdit() {
 		const NewArr = [...dataSourceQt];
 		const da: any = NewArr[index]
 		const asd = NewArr.filter(item => item.bjsxgg === da.bjsxgg)
-		const qthz = _.ceil(Number(da.jsdj || 0) * Number(da.sysl || 0),2)
+		const qthz = _.floor(Number(da.jsdj || 0) * Number(da.sysl || 0), 2)
 		da.qthz = qthz
-		const minbyhuizong = _.ceil(_.minBy(NewArr, 'qthz')?.qthz,2)
-		const maxbyhuizong = _.ceil(_.maxBy(NewArr, 'qthz')?.qthz,2)
+		const minbyhuizong = _.ceil(_.minBy(NewArr, 'qthz')?.qthz, 2)
+		const maxbyhuizong = _.ceil(_.maxBy(NewArr, 'qthz')?.qthz, 2)
 		setQitaPirce(`${minbyhuizong}-${maxbyhuizong}`)
 		const sumby = _.sumBy(asd, 'qthz')
 		zongHz('qitahuizong', sumby, da?.bjsxgg,)
@@ -562,12 +572,12 @@ function QuotationEdit() {
 					<Descriptions.Item label={'其他附件'}>
 						{qtarr.map((item: any, index: any) => {
 							return (
-								<span
+								<div
 									key={index}
-									style={{marginLeft: index === 0 ? 0 : 20}}
+									// style={}
 								>
-                    <Image src={item.src} width={100} height={100}/>
-                  </span>
+									<a href={item.url}>{item.name}</a>
+								</div>
 							);
 						})}
 					</Descriptions.Item>

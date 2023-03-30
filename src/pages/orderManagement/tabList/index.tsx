@@ -489,7 +489,7 @@ function TabList(props: any) {
 					request={async (params) => {
 						const arg0 = {
 							...filterPageName(params),
-							type: '2'
+							type: '1'
 						}
 						const res: any = await recordsList(arg0, {})
 						const data = res?.entry?.list;
@@ -595,20 +595,20 @@ function TabList(props: any) {
 					columns={columnsDelivery}
 					dataSource={[queryIdList]}
 				/>
-				<Form form={form}>
+				<Form form={form} preserve={false}>
 					<Form.Item
 						label={'快递公司'}
 						name="companyName"
-						rules={[{required: true, message: '请输入快递公司'}]}
+						rules={[{required: true, message: '请输入快递公司'}, {min: 3, message: '长度3-50个字符'}]}
 					>
-						<Input placeholder={'请输入快递公司'}/>
+						<Input max={50} placeholder={'请输入快递公司'}/>
 					</Form.Item>
 					<Form.Item
 						label={'快递单号'}
 						name="companyCode"
-						rules={[{required: true, message: '请输入快递单号'}]}
+						rules={[{required: true, message: '请输入快递单号'}, {min: 3, message: '长度3-50个字符'}]}
 					>
-						<Input placeholder={'请输入快递单号'}/>
+						<Input max={50}  placeholder={'请输入快递单号'}/>
 					</Form.Item>
 				</Form>
 			</Modal>

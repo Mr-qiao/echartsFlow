@@ -5,6 +5,7 @@ import React, { useImperativeHandle, useRef, useState } from 'react';
 
 import CustomModal from '@/components/CustomModal';
 
+import BrandSelectCpt from './BrandSelectCpt';
 import Api from '../../services';
 
 export const SampleListModal = React.forwardRef(({ onChange }: any, ref) => {
@@ -17,31 +18,21 @@ export const SampleListModal = React.forwardRef(({ onChange }: any, ref) => {
 
   const formModalRef = useRef<any>();
   const columns = [
+    { title: '样衣编号', key: 'sysItemCode', dataIndex: 'sysItemCode', hideInSearch: false },
+
     {
       title: '款式信息',
       hideInSearch: true,
       dataIndex: 'code',
       key: 'code',
-      width: 300,
+      width: 120,
       render: (item, record) => {
         return (
-          <div className="u-f__center" style={{ justifyContent: 'flex-start' }}>
-            <Image
-              width={90}
-              height={90}
-              src={Array.isArray(record.images) && record.images.length > 0 && record.images[0]}
-            />
-            <div className="u-ml10" style={{ width: 'calc(100% - 100px)' }}>
-              <Tooltip title={record.title}>
-                <p className="u-els u-mb10">{record.title}</p>
-              </Tooltip>
-
-              <p className="u-fs12 ">
-                <span className="u-c888">商品品牌：</span>
-                {record.brandName}
-              </p>
-            </div>
-          </div>
+          <Image
+            width={90}
+            height={90}
+            src={Array.isArray(record.images) && record.images.length > 0 && record.images[0]}
+          />
         );
       },
     },
@@ -50,7 +41,6 @@ export const SampleListModal = React.forwardRef(({ onChange }: any, ref) => {
       title: '样衣名称',
       key: 'title',
       dataIndex: 'title',
-      hideInSearch: true,
       render: (item, record) => {
         return (
           <Tooltip title={record.title}>
@@ -66,11 +56,11 @@ export const SampleListModal = React.forwardRef(({ onChange }: any, ref) => {
       hideInSearch: true,
       render: (item, record) => {
         return (
-          <p className="u-fs12 u-mb5">
+          <p className="u-fs12 u-mb5 u-flex">
             {/* <span className="u-c888">商品类目：</span> */}
             {Array.isArray(record.categoryNames) ? (
               <Tooltip title={record.categoryNames?.join(' / ')}>
-                <p className="u-els">{record.categoryNames?.join(' / ')}</p>
+                <span className="u-els">{record.categoryNames?.join(' / ')}</span>
               </Tooltip>
             ) : (
               '-'
@@ -79,9 +69,17 @@ export const SampleListModal = React.forwardRef(({ onChange }: any, ref) => {
         );
       },
     },
-    { title: '样衣编号', key: 'sysCode', dataIndex: 'sysCode', hideInSearch: false },
-
-    { title: '样衣名称', hideInTable: true, dataIndex: 'itemId', key: 'itemId', order: 9 },
+    { title: '商品品牌', key: 'brandName', dataIndex: 'brandName', hideInSearch: true },
+    {
+      title: '商品品牌',
+      hideInTable: true,
+      dataIndex: 'brandIds',
+      key: 'brandIds',
+      order: 6,
+      renderFormItem: () => {
+        return <BrandSelectCpt mode="tags" />;
+      },
+    },
     {
       title: '商品类目',
       hideInTable: true,
@@ -135,7 +133,7 @@ export const SampleListModal = React.forwardRef(({ onChange }: any, ref) => {
   return (
     <CustomModal
       ref={formModalRef}
-      title={'更换管理员'}
+      title={'关联样衣'}
       className="dialog__menu-form u-pl20 u-pr20"
       width={900}
       onConfirm={() => {
@@ -183,7 +181,7 @@ export const SampleListModal = React.forwardRef(({ onChange }: any, ref) => {
         search={{
           // collapseRender: () => null,
           defaultCollapsed: true,
-          span: { xs: 24, sm: 24, md: 24, lg: 12, xl: 8, xxl: 6 },
+          // span: { xs: 24, sm: 24, md: 24, lg: 12, xl: 8, xxl: 6 },
 
           labelWidth: 'auto',
           className: 'search-form',
