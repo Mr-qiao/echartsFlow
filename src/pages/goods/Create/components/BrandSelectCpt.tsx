@@ -50,6 +50,6 @@ const BrandSelectCpt = React.forwardRef(({ value, onChange, ...props }: any) => 
   );
 });
 BrandSelectCpt.defaultProps = {
-  mode: 'tags',
+  // mode: 'tags',
 };
 export default BrandSelectCpt;
