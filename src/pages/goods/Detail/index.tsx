@@ -97,11 +97,12 @@ const GoodsInfo = React.forwardRef(({isSupplier = true}: any, ref) => {
 			dataIndex: 'thirdId',
 			width: 180,
 			render: (item, record) => {
+				console.log(record, 'record')
 				return (
 					<div className="u-ml10">
 						<p className="u-fs12 u-mb5">
 							<span className="u-c888">预计佣金比例：</span>
-							{record?.itemPrice?.commissionRatio ? record?.itemPrice?.commissionRatio + '%' : '-'}
+							{`${record?.itemPrice?.commissionRatio === 0 ? 0 : record?.itemPrice?.commissionRatio}%` || '-'}
 						</p>
 					</div>
 				);
@@ -207,6 +208,8 @@ const GoodsInfo = React.forwardRef(({isSupplier = true}: any, ref) => {
 					itemPrice: {
 						...transformFen2Yuan(sku.itemPrice, ['originPrice', 'salePrice', 'estimateLivePrice', 'supplyPrice']),
 						commissionRatio: math.div(sku?.itemPrice?.commissionRatio, 100),
+						purchaseCostPrice: math.div(sku?.itemPrice?.purchaseCostPrice, 1000
+						),
 					},
 				})),
 			);
@@ -286,12 +289,12 @@ const GoodsInfo = React.forwardRef(({isSupplier = true}: any, ref) => {
 									{detail.snCode}
 								</p>
 							</Col>
-							<Col span={12}>
-								<p>
-									<span className="u-c888">参考供货价：</span>
-									{detail.supplyPriceRange}
-								</p>
-							</Col>
+							{/*<Col span={12}>*/}
+							{/*	<p>*/}
+							{/*		<span className="u-c888">参考供货价：</span>*/}
+							{/*		{detail.supplyPriceRange}*/}
+							{/*	</p>*/}
+							{/*</Col>*/}
 							<Col span={12}>
 								<p>
 									<span className="u-c888">来源：</span>
