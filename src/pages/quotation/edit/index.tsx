@@ -418,7 +418,7 @@ function QuotationEdit() {
 		if (da.shl) {
 			da.wlhz = da.wlhz / ((100 - Number(da.shl || 0)) / 100)
 		}
-		da.wlhz = _.ceil(da.wlhz)
+		da.wlhz = _.floor(da.wlhz,2)
 		const sumby = _.ceil(_.sumBy(NewArr, 'wlhz'), 2)
 		const datas = [...dataSourcePp]
 		datas[tabKey].hz = sumby
@@ -451,7 +451,7 @@ function QuotationEdit() {
 	const gongY = (index: any) => {
 		const NewArr = [...dataSourceGy];
 		const da = NewArr[index]
-		da.gyhz = _.ceil(Number(da.gydj || 0), 2)
+		da.gyhz = _.floor(Number(da.gydj || 0), 2)
 		const sumby = _.sumBy(NewArr, 'gyhz')
 		setGybjz(`${sumby}`)
 		setDataSourceGy(NewArr);
@@ -461,7 +461,7 @@ function QuotationEdit() {
 		const NewArr = [...dataSourceQt];
 		const da: any = NewArr[index]
 		const asd = NewArr.filter(item => item.bjsxgg === da.bjsxgg)
-		const qthz = _.ceil(Number(da.jsdj || 0) * Number(da.sysl || 0), 2)
+		const qthz = _.floor(Number(da.jsdj || 0) * Number(da.sysl || 0), 2)
 		da.qthz = qthz
 		const minbyhuizong = _.ceil(_.minBy(NewArr, 'qthz')?.qthz, 2)
 		const maxbyhuizong = _.ceil(_.maxBy(NewArr, 'qthz')?.qthz, 2)
