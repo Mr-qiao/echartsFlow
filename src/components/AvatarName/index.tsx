@@ -36,7 +36,7 @@ export default function () {
 					{/*  // className={styles.user_img}*/}
 					{/*/>*/}
 					<span style={{color: '#4E5969', cursor: 'pointer', fontWeight: 600, marginLeft: 10, fontSize: 18}}>
-            {JSONInfo.supplierName}
+            {JSONInfo.supplierName||'重新登陆'}
           </span>
 				</div>
 			</Dropdown>
