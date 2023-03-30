@@ -237,9 +237,12 @@ const SkuTablesCpt: React.FC<IProps> = ({form}) => {
 								item.images?.length === 0 ||
 								item.originPrice === null ||
 								item.salePrice === null ||
-								item.estimateLivePrice === null
+								item.estimateLivePrice === null ||
+								item.commissionRatio === null
 							);
 						});
+						console.log(value,'value')
+						console.log(hasEmptyKey, 'hasEmptyKey')
 						if (hasEmptyKey) {
 							return Promise.reject('请填写完整SKU信息');
 						}
