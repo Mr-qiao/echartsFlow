@@ -47,7 +47,7 @@ const DICT_CONST = {
   ],
   ONLINE_OR_OFFLINE: [
     {
-      key: null,
+      key: '',
       value: '待上架',
       color: 'default',
     },
@@ -93,12 +93,17 @@ const DICT_CONST = {
     {
       key: '1',
       value: '快手',
-      color: '#f50',
+      color: '#FF3D13',
     },
     {
       key: '2',
       value: '抖音',
       color: 'black',
+    },
+    {
+      key: '3',
+      value: '淘宝',
+      color: '#FF0030',
     },
   ],
   ANSWER_TYPE: [
@@ -139,6 +144,18 @@ const DICT_CONST = {
     //   value: '已采用',
     //   color: 'default',
     // },
+  ],
+  COLLECT_REL_TYPE: [
+    {
+      key: '1',
+      value: '图稿',
+      color: 'cyan',
+    },
+    {
+      key: '2',
+      value: '成衣',
+      color: 'yellow',
+    },
   ],
 };
 export default DICT_CONST;

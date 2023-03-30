@@ -3,7 +3,7 @@ import {getOssFileUrl} from '@/services/common';
 import {message, Modal} from 'antd';
 import DICT_CONST from '@/common/constants';
 import {history} from "umi";
-import { math } from '@xlion/utils';
+import {math} from '@xlion/utils';
 
 export function navigateToLogin() {
 	console.log('登录失效')
@@ -216,7 +216,9 @@ export const dictColor = function (val: string, type: string, defaultValue = '#e
 function getDict(key: string, type: string, val: string, defaultValue: string) {
 	let dictList = DICT_CONST[type];
 	try {
+		console.log(dictList,'dictList')
 		let [item] = dictList.filter((dict) => dict['key'].toString() === key.toString());
+		console.log([item], 'item')
 		return item ? item[val] : defaultValue;
 	} catch (e) {
 		console.log(e);
