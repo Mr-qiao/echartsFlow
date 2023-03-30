@@ -146,8 +146,8 @@ const Index: React.FC = () => {
           },
           {},
         ),
-        categoryId: info.item.categoryIds,
-        skus: info.skus.map((sku: any) => ({
+        categoryId: info?.item?.categoryIds,
+        skus: info?.skus?.map((sku: any) => ({
           uuid: uuid(),
           ...sku,
           images: sku.images?.map((url: string) => ({ url })),

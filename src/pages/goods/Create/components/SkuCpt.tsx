@@ -1,16 +1,5 @@
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
-import {
-  Button,
-  Col,
-  Form,
-  Input,
-  message,
-  Row,
-  Select,
-  Space,
-  Table,
-  Typography,
-} from 'antd';
+import { Button, Col, Form, Input, message, Row, Select, Space, Table, Typography } from 'antd';
 import React, { useContext, useEffect, useState } from 'react';
 
 import { CptContext } from '../index';
@@ -66,7 +55,7 @@ const SkuCpt: any = ({ form }: any) => {
       fixed: 'right',
       align: 'center',
       key: 3,
-      render: (_, record, idx) => (
+      render: (_, record) => (
         <Typography.Link
           type="danger"
           disabled={dataSource.length <= 1}
@@ -106,27 +95,20 @@ const SkuCpt: any = ({ form }: any) => {
       let _array = [];
       for (let i of list) {
         let categoryPropertyName: string = i['categoryPropertyName'] || '';
-        let categoryPropertyValues =
-          i['categoryPropertyValues'].filter(Boolean);
-
+        let categoryPropertyValues = i['categoryPropertyValues'].filter(Boolean);
+        if (Array.from(new Set(categoryPropertyValues)).length !== categoryPropertyValues.length) {
+          message.info('规格分类不允许重名');
+          return;
+        }
         if (!categoryPropertyName) {
           message.info('请选择规格并输入规格值');
           return;
         }
-        if (
-          !(
-            Array.isArray(categoryPropertyValues) &&
-            categoryPropertyValues.length > 0
-          )
-        ) {
+        if (!(Array.isArray(categoryPropertyValues) && categoryPropertyValues.length > 0)) {
           message.info('请选择规格并输入规格值');
           return;
         }
-        _array.push(
-          categoryPropertyValues.map(
-            (item) => (categoryPropertyName || '') + ':' + item,
-          ) as never,
-        );
+        _array.push(categoryPropertyValues.map((item) => (categoryPropertyName || '') + ':' + item) as never);
       }
       //重置表单数据
       form.resetFields(['skus']);
@@ -159,9 +141,7 @@ const SkuCpt: any = ({ form }: any) => {
   //遍历去除选中项
   function removeSelected(list, _) {
     let _enum = [..._].map((o) => {
-      let _ = list.filter(
-        (item) => o.categoryPropertyCode === item.categoryPropertyCode,
-      );
+      let _ = list.filter((item) => o.categoryPropertyCode === item.categoryPropertyCode);
 
       if (_.length > 0) {
         o.selected = true;
@@ -222,8 +202,10 @@ const SkuCpt: any = ({ form }: any) => {
         </Space>
       </Col>
 
-      <Col span={24} offset={3} style={{ marginTop: 20 }}>
-        <Form.Item
+      <Col span={24} offset={0} style={{ marginTop: 20 }}>
+        <SkuTablesCpt form={form}></SkuTablesCpt>
+
+        {/* <Form.Item
           label=""
           name="skus"
           wrapperCol={{ span: 19 }}
@@ -252,20 +234,19 @@ const SkuCpt: any = ({ form }: any) => {
             }),
           ]}
         >
-          <SkuTablesCpt></SkuTablesCpt>
-        </Form.Item>
+        </Form.Item> */}
       </Col>
     </Row>
   );
   function EditableCell({
-    children,
-    dataIndex,
-    index,
-    record,
-    rules,
-    // component,
-    ...restProps
-  }: EditableCellProps) {
+                          children,
+                          dataIndex,
+                          index,
+                          record,
+                          rules,
+                          // component,
+                          ...restProps
+                        }: EditableCellProps) {
     let rule = rules?.(index);
     let childNode: React.ReactNode;
     if ('categoryPropertyValues' === dataIndex) {
@@ -275,44 +256,26 @@ const SkuCpt: any = ({ form }: any) => {
             <Input />
           </Form.Item>
           {record.skuId && (
-            <Form.Item
-              name={['saleProperties', index, 'skuId']}
-              initialValue={record.skuId}
-              hidden={true}
-            >
+            <Form.Item name={['saleProperties', index, 'skuId']} initialValue={record.skuId} hidden={true}>
               <Input />
             </Form.Item>
           )}
           {record.sysCode && (
-            <Form.Item
-              name={['saleProperties', index, 'sysCode']}
-              initialValue={record.sysCode}
-              hidden={true}
-            >
+            <Form.Item name={['saleProperties', index, 'sysCode']} initialValue={record.sysCode} hidden={true}>
               <Input />
             </Form.Item>
           )}
-          <Form.List
-            name={['saleProperties', index, dataIndex]}
-            initialValue={['']}
-          >
+          <Form.List name={['saleProperties', index, dataIndex]} initialValue={['']}>
             {(lv1, { add, remove }) => {
               return (
                 <>
                   <div className={`sku__list-main `}>
                     {lv1.map((o, index) => {
                       return (
-                        <Form.Item
-                          key={`plan_${o.key}_${index}`}
-                          wrapperCol={{ span: 16 }}
-                        >
+                        <Form.Item key={`plan_${o.key}_${index}`} wrapperCol={{ span: 16 }}>
                           <Space>
                             <Form.Item name={[o.name]} noStyle rules={rule}>
-                              <Input
-                                style={{ width: 140 }}
-                                maxLength={10}
-                                placeholder="请输入规格分类～"
-                              />
+                              <Input style={{ width: 140 }} maxLength={10} placeholder="请输入规格分类～" />
                             </Form.Item>
                             <Typography.Link
                               type="danger"
@@ -336,10 +299,7 @@ const SkuCpt: any = ({ form }: any) => {
                       fontSize: '12px',
                     }}
                   >
-                    <Typography.Link
-                      disabled={lv1.length >= 10}
-                      onClick={() => add()}
-                    >
+                    <Typography.Link disabled={lv1.length >= 10} onClick={() => add()}>
                       <PlusOutlined /> 添加规格分类
                     </Typography.Link>
                   </div>
@@ -353,20 +313,14 @@ const SkuCpt: any = ({ form }: any) => {
       childNode =
         'categoryPropertyName' === dataIndex ? (
           <>
-            <Form.Item
-              name={['saleProperties', index, 'categoryPropertyCode']}
-              hidden={true}
-            >
+            <Form.Item name={['saleProperties', index, 'categoryPropertyCode']} hidden={true}>
               <Input />
             </Form.Item>
             <Form.Item name={['saleProperties', index, dataIndex]} rules={rule}>
               <Select
                 placeholder="请选择"
                 onChange={(val, option: any) => {
-                  form.setFieldValue(
-                    ['saleProperties', index, 'categoryPropertyCode'],
-                    option?.key,
-                  );
+                  form.setFieldValue(['saleProperties', index, 'categoryPropertyCode'], option?.key);
                   let list = form.getFieldValue('saleProperties');
                   removeSelected(list, enmu);
                 }}
@@ -411,9 +365,7 @@ const doComb = (arr) => {
         // comb0(arr, ++a)
       } else {
         let str = temp?.length > 0 ? temp?.join('；') : temp;
-        let item = JSON.parse(
-          JSON.stringify({ skuId: results.length, properties: str }),
-        );
+        let item = JSON.parse(JSON.stringify({ skuId: results.length, properties: str }));
         results.push(item); // 深度拷贝temp
       }
     });
