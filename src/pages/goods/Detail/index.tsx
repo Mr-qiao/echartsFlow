@@ -11,7 +11,7 @@ import {dict, dictColor, transformFen2Yuan} from '@/utils';
 
 import {AttrTypes} from '../Create/constant';
 import Api from '../services';
-import {useParams} from "@umijs/max";
+import {useParams} from '@umijs/max';
 
 const GoodsInfo = React.forwardRef(({isSupplier = true}: any, ref) => {
 	const {id} = useParams();
@@ -97,13 +97,11 @@ const GoodsInfo = React.forwardRef(({isSupplier = true}: any, ref) => {
 			dataIndex: 'thirdId',
 			width: 180,
 			render: (item, record) => {
-				console.log(record, 'record')
 				return (
 					<div className="u-ml10">
 						<p className="u-fs12 u-mb5">
 							<span className="u-c888">预计佣金比例：</span>
-
-							{(math.div(record.itemPrice.commissionRatio, 100)+ '%') || '-'}
+							{record?.itemPrice?.commissionRatio ? record?.itemPrice?.commissionRatio + '%' : '-'}
 						</p>
 					</div>
 				);
