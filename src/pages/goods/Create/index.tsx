@@ -380,7 +380,7 @@ const Index: React.FC = () => {
 							name="brandId"
 							rules={[{required: true, message: '请选择品牌～'}]}
 						>
-							<BrandSelectCpt/>
+							<BrandSelectCpt isCreate/>
 						</Form.Item>
 					</Col>
 					{renderDynProps(true)}
