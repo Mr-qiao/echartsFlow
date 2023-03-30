@@ -74,7 +74,7 @@ function QuotationEdit() {
 	// 图样附图
 	const arr = data?.drawingMap?.accessoryImages?.length > 0 ? data?.drawingMap.accessoryImages.map((item: any) => ({src: item})) : []
 	// 其他附件
-	const qtarr = data?.drawingMap?.accessoryFiles?.length > 0 ? data?.drawingMap?.accessoryFiles.map((item: any) => ({src: item})) : []
+	const qtarr = data?.drawingMap?.accessoryFiles?.length > 0 ? data?.drawingMap?.accessoryFiles : []
 	// 尺寸附图
 	const ccftarr = data?.craftMap?.workmanshipImages?.length > 0 ? data?.craftMap?.workmanshipImages.map((item: any) => ({src: item})) : []
 	// 尺寸列表 Columns
@@ -572,12 +572,12 @@ function QuotationEdit() {
 					<Descriptions.Item label={'其他附件'}>
 						{qtarr.map((item: any, index: any) => {
 							return (
-								<span
+								<div
 									key={index}
-									style={{marginLeft: index === 0 ? 0 : 20}}
+									// style={}
 								>
-                    <Image src={item.src.url} width={100} height={100}/>
-                  </span>
+									<a href={item.url}>{item.name}</a>
+								</div>
 							);
 						})}
 					</Descriptions.Item>
