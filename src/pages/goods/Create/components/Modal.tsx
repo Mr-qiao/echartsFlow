@@ -5,8 +5,8 @@ import React, { useImperativeHandle, useRef, useState } from 'react';
 
 import CustomModal from '@/components/CustomModal';
 
-import BrandSelectCpt from './BrandSelectCpt';
 import Api from '../../services';
+import BrandSelectCpt from './BrandSelectCpt';
 
 export const SampleListModal = React.forwardRef(({ onChange }: any, ref) => {
   const { category } = useModel('category');
@@ -18,7 +18,12 @@ export const SampleListModal = React.forwardRef(({ onChange }: any, ref) => {
 
   const formModalRef = useRef<any>();
   const columns = [
-    { title: '样衣编号', key: 'sysItemCode', dataIndex: 'sysItemCode', hideInSearch: false },
+    {
+      title: '样衣编号',
+      key: 'sysItemCode',
+      dataIndex: 'sysItemCode',
+      hideInSearch: false,
+    },
 
     {
       title: '款式信息',
@@ -31,7 +36,11 @@ export const SampleListModal = React.forwardRef(({ onChange }: any, ref) => {
           <Image
             width={90}
             height={90}
-            src={Array.isArray(record.images) && record.images.length > 0 && record.images[0]}
+            src={
+              Array.isArray(record.images) &&
+              record.images.length > 0 &&
+              record.images[0]
+            }
           />
         );
       },
@@ -60,7 +69,9 @@ export const SampleListModal = React.forwardRef(({ onChange }: any, ref) => {
             {/* <span className="u-c888">商品类目：</span> */}
             {Array.isArray(record.categoryNames) ? (
               <Tooltip title={record.categoryNames?.join(' / ')}>
-                <span className="u-els">{record.categoryNames?.join(' / ')}</span>
+                <span className="u-els">
+                  {record.categoryNames?.join(' / ')}
+                </span>
               </Tooltip>
             ) : (
               '-'
@@ -69,7 +80,12 @@ export const SampleListModal = React.forwardRef(({ onChange }: any, ref) => {
         );
       },
     },
-    { title: '商品品牌', key: 'brandName', dataIndex: 'brandName', hideInSearch: true },
+    {
+      title: '商品品牌',
+      key: 'brandName',
+      dataIndex: 'brandName',
+      hideInSearch: true,
+    },
     {
       title: '商品品牌',
       hideInTable: true,
@@ -163,7 +179,8 @@ export const SampleListModal = React.forwardRef(({ onChange }: any, ref) => {
         }}
         request={async (params: any, sorter) => {
           const { current, pageSize, ...reset } = params;
-          if (reset?.categoryId) reset.categoryId = reset.categoryId[reset.categoryId.length - 1];
+          if (reset?.categoryId)
+            reset.categoryId = reset.categoryId[reset.categoryId.length - 1];
 
           let searchData = {
             ...reset,

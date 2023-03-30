@@ -67,3 +67,11 @@ export function getAreaList() {
   });
 }
 
+// 品牌管理-新增或编辑品牌
+export function doBrandCreateOrUpdate(data: Recordable<any>) {
+  return request('/itemcenter/gaea/foundation/brand/createOrUpdate', {
+    method: 'post',
+    data: data,
+  });
+}
+
