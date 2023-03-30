@@ -74,7 +74,7 @@ const columns = [
           </p>
           <p className="u-fs12 ">
             <span className="u-c888">采购成本价：</span>
-            {record?.itemPrice?.supplyPrice || '-'}
+            {record?.itemPrice?.purchaseCostPrice || '-'}
           </p>
         </div>
       );
