@@ -7,6 +7,7 @@ import React, {useEffect, useState} from 'react';
 
 import {dict, dictColor, transformFen2Yuan} from '@/utils';
 
+import {useParams} from '@umijs/max';
 import {AttrTypes} from '../Create/constant';
 import Api from '../services';
 import {useParams} from '@umijs/max';
@@ -25,7 +26,11 @@ const columns = [
 					<Image
 						width={90}
 						height={90}
-						src={Array.isArray(record?.images) && record?.images.length > 0 && record?.images[0]}
+						src={
+							Array.isArray(record?.images) &&
+							record?.images.length > 0 &&
+							record?.images[0]
+						}
 					/>
 					<div className="u-ml10" style={{width: 'calc(100% - 100px)'}}>
 						<p className="u-fs12 u-mb5">
@@ -69,8 +74,23 @@ const columns = [
 						{record.itemPrice.estimateLivePrice || '-'}
 					</p>
 					<p className="u-fs12 ">
-						<span className="u-c888">供货价：</span>
+						<span className="u-c888">采购成本价：</span>
 						{record?.itemPrice?.purchaseCostPrice || '-'}
+					</p>
+				</div>
+			);
+		},
+	},
+	{
+		title: '佣金',
+		dataIndex: 'thirdId',
+		width: 180,
+		render: (item, record) => {
+			return (
+				<div className="u-ml10">
+					<p className="u-fs12 u-mb5">
+						<span className="u-c888">预计佣金比例：</span>
+						{record?.itemPrice?.commissionRatio || '-' + '%' || '-'}
 					</p>
 				</div>
 			);
@@ -104,7 +124,10 @@ const columns = [
 	},
 ];
 
-const formatPriceRange = (priceRange: { left: number; right: number }, skuCount: number) => {
+const formatPriceRange = (
+	priceRange: { left: number; right: number },
+	skuCount: number,
+) => {
 	const {left, right} = transformFen2Yuan(priceRange, ['left', 'right']);
 	if (skuCount === 1) {
 		return `${left}元`;
@@ -131,18 +154,41 @@ const GoodsInfo = React.forwardRef((props: any, ref) => {
 	//获取商品信息
 	async function getGoodsDetail(itemId: any) {
 		return Api.Goods.Detail({itemId}).then(({entry}) => {
-			const {item: baseInfo, baseProperties, otherViewProperties, skus = []} = entry;
+			const {
+				item: baseInfo,
+				baseProperties,
+				otherViewProperties,
+				skus = [],
+			} = entry;
 			const skuCount = skus.length;
 			let data: any = {
 				...baseInfo,
 				mainImg: baseInfo.images?.[0] || '',
-				estimateLivePriceRange: formatPriceRange(otherViewProperties.refEstimateLivePrice, skuCount),
-				originPriceRange: formatPriceRange(otherViewProperties.refOriginPrice, skuCount),
-				salePriceRange: formatPriceRange(otherViewProperties.refSalePrice, skuCount),
-				supplyPriceRange: formatPriceRange(otherViewProperties.refSupplyPrice, skuCount),
+				estimateLivePriceRange: formatPriceRange(
+					otherViewProperties.refEstimateLivePrice,
+					skuCount,
+				),
+				originPriceRange: formatPriceRange(
+					otherViewProperties.refOriginPrice,
+					skuCount,
+				),
+				salePriceRange: formatPriceRange(
+					otherViewProperties.refSalePrice,
+					skuCount,
+				),
+				supplyPriceRange: formatPriceRange(
+					otherViewProperties.refSupplyPrice,
+					skuCount,
+				),
 				commissionRatioRange: (() => {
-					const left = math.div(otherViewProperties.refCommissionRatio.left, 100);
-					const right = math.div(otherViewProperties.refCommissionRatio.right, 100);
+					const left = math.div(
+						otherViewProperties.refCommissionRatio.left,
+						100,
+					);
+					const right = math.div(
+						otherViewProperties.refCommissionRatio.right,
+						100,
+					);
 					if (skuCount === 1) {
 						return `${left}%`;
 					}
@@ -174,7 +220,11 @@ const GoodsInfo = React.forwardRef((props: any, ref) => {
 							case AttrTypes.MULTIPLE_SELECT:
 								value =
 									cur.propertySelectValues
-										.map((itm: any) => (cur.categoryPropertyValues.includes(`${itm.valueId}`) ? itm.value : false))
+										.map((itm: any) =>
+											cur.categoryPropertyValues.includes(`${itm.valueId}`)
+												? itm.value
+												: false,
+										)
 										.filter(Boolean)
 										.join('；') || '-';
 								break;
@@ -195,7 +245,15 @@ const GoodsInfo = React.forwardRef((props: any, ref) => {
 			setSkus(() =>
 				skus.map((sku) => ({
 					...sku,
-					itemPrice: transformFen2Yuan(sku.itemPrice, ['originPrice', 'salePrice', 'estimateLivePrice', 'supplyPrice', 'purchaseCostPrice']),
+					itemPrice: {
+						...transformFen2Yuan(sku.itemPrice, [
+							'originPrice',
+							'salePrice',
+							'estimateLivePrice',
+							'supplyPrice',
+						]),
+						commissionRatio: math.div(sku?.itemPrice?.commissionRatio, 100),
+					},
 				})),
 			);
 		});
@@ -205,24 +263,43 @@ const GoodsInfo = React.forwardRef((props: any, ref) => {
 		<div className="goods__detail-wrap">
 			<Row className="u-w100">
 				<Col>
-					{detail?.mainImg &&
-              <Image width={200} height={200} src={detail?.mainImg} fallback={fallback} style={{borderRadius: 10}}/>}
+					{detail?.mainImg && (
+						<Image
+							width={200}
+							height={200}
+							src={detail?.mainImg}
+							fallback={fallback}
+							style={{borderRadius: 10}}
+						/>
+					)}
 					<div className="u-flex u-mt10">
-						{detail?.images?.map((item: any, i: any) => {
-							if (i !== 0) {
+						{detail.images
+							?.filter((item, i) => i !== 0 && i <= 3)
+							?.map((item, i) => {
 								return (
-									<Image key={i} width={60} height={60} src={item} fallback={fallback} style={{borderRadius: 10}}/>
+									<Image
+										key={i}
+										width={60}
+										height={60}
+										src={item}
+										fallback={fallback}
+										style={{borderRadius: 10}}
+									/>
 								);
-							}
-						})}
+							})}
 					</div>
 				</Col>
 				<Col span={18}>
 					<div className="u-ml20">
 						<div className="u-f__start u-els u-w70">
-							<p className="u-els u-fs16 u-fw700 u-mt10 u-mb10">{detail.title}</p>
-							{detail.online && (
-								<Tag color={dictColor(detail.online, 'ONLINE_OR_OFFLINE')} className="u-ml10">
+							<p className="u-els u-fs16 u-fw700 u-mt10 u-mb10">
+								{detail.title}
+							</p>
+							{detail.online && detail.online !== -1 && (
+								<Tag
+									color={dictColor(detail.online, 'ONLINE_OR_OFFLINE')}
+									className="u-ml10"
+								>
 									{dict(detail.online, 'ONLINE_OR_OFFLINE')}
 								</Tag>
 							)}
@@ -253,25 +330,34 @@ const GoodsInfo = React.forwardRef((props: any, ref) => {
 								</p>
 							</Col>
 							<Col span={12}>
-								<p>
+								<p className="u-flex ">
 									<span className="u-c888">类目：</span>
-									{detail?.categoryNames?.join('/') || '-'}
+									{Array.isArray(detail.categoryNames) ? (
+										<p className="u-els" style={{flex: 1, marginBottom: 0}}>
+											{detail.categoryNames?.join(' / ')}
+										</p>
+									) : (
+										'-'
+									)}
 								</p>
 							</Col>
 
 							<Col span={12}>
 								<p>
-									<span className="u-c888">采购价：</span>
+									<span className="u-c888">参考销售价：</span>
 									{detail.salePriceRange || '-'}
 								</p>
 							</Col>
 							<Col span={12}>
-								<p>{detail.snCode || '-'}</p>
+								<p>
+									<span className="u-c888">69码：</span>
+									{detail.snCode || '-'}
+								</p>
 							</Col>
 							<Col span={12}>
 								<p>
-									<span className="u-c888">供货参考价：</span>
-									{detail?.supplyPriceRange || '-'}
+									<span className="u-c888">参考供货价：</span>
+									{detail.supplyPriceRange || '-'}
 								</p>
 							</Col>
 							<Col span={12}>
@@ -282,8 +368,8 @@ const GoodsInfo = React.forwardRef((props: any, ref) => {
 							</Col>
 							<Col span={12}>
 								<p>
-									<span className="u-c888">参考佣金比例：</span>
-									{detail?.commissionRatioRange || '-'}
+									<span className="u-c888">预计佣金比例：</span>
+									{detail.commissionRatioRange || '-'}
 								</p>
 							</Col>
 							<Col span={12}>
@@ -307,14 +393,7 @@ const GoodsInfo = React.forwardRef((props: any, ref) => {
                 </p>
               </Col> */}
 
-							{detail.sellPoint && (
-								<Col span={24}>
-									<p>
-										<span className="u-c888">卖点信息：</span>
-										{detail.sellPoint || '-'}
-									</p>
-								</Col>
-							)}
+							{renderDynProps(true)}
 						</Row>
 					</div>
 				</Col>
@@ -363,7 +442,9 @@ const GoodsInfo = React.forwardRef((props: any, ref) => {
 				</Col>
 			));
 		}
-		const attrGroupKeys = Object.keys(dynProps).filter((key) => key !== '基本信息');
+		const attrGroupKeys = Object.keys(dynProps).filter(
+			(key) => key !== '基本信息',
+		);
 		if (attrGroupKeys.length === 0) return null;
 
 		return attrGroupKeys.map((key) => {
