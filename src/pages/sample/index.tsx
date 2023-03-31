@@ -71,7 +71,7 @@ function Sample() {
 			fieldProps: {
 				placeholder: '请选择',
 			},
-			render:(val,row)=>row.refCategoryNames
+			render: (val, row) => row?.refCategoryNames?.join('/')
 		},
 		// {
 		// 	title: '品牌',
@@ -111,7 +111,7 @@ function Sample() {
 			title: '吊牌价',
 			search: false,
 			dataIndex: 'tagPrice',
-			render: (_: any, recode: any)=>transformFen2Yuan(recode,['tagPrice']).tagPrice
+			render: (_: any, recode: any) => transformFen2Yuan(recode, ['tagPrice']).tagPrice
 		},
 		{
 			title: '预计交付时间',
@@ -122,10 +122,10 @@ function Sample() {
 			title: '需求状态',
 			search: false,
 			dataIndex: 'status',
-			render: (val: any, recode: any)=>{
-				return recode.status?{
+			render: (val: any, recode: any) => {
+				return recode.status ? {
 					0: '待开始', 1: '打样中', 2: '已交付'
-				}[val]:'待开始'
+				}[val] : '待开始'
 			}
 		},
 		{
@@ -140,11 +140,11 @@ function Sample() {
 			renderFormItem: () => (
 				<SearchSelect
 					ajaxRequest={searchForSystem}
-					params={{ page: 1, pageSize: 100 }}
+					params={{page: 1, pageSize: 100}}
 					optionFilterProp="empName"
 					filterOption={false}
 					searchKey="name"
-					fieldNames={{ label: 'empName', value: 'employeeId' }}
+					fieldNames={{label: 'empName', value: 'employeeId'}}
 				/>
 			),
 		},
@@ -162,42 +162,42 @@ function Sample() {
 							history.push(`/goods/sample/detail?id=${recode.itemId}`)
 						}}>查看</a>
 						{
-							[0].includes(status) || !status?<a onClick={() => {
+							[0].includes(status) || !status ? <a onClick={() => {
 								setbyId(recode)
 								// setOpen(true)
 								mark(
-									{status:'1', itemId: recode?.itemId}, {}
+									{status: '1', itemId: recode?.itemId}, {}
 								).then((res: any) => {
 									if (res.success) {
 										message.success({
-											content:'打样成功',
-											duration:2,
-											onClose:()=>{
+											content: '打样成功',
+											duration: 2,
+											onClose: () => {
 												actionRef.current.reload()
 											}
 										})
 										setOpen(false)
 									}
 								})
-							}}>开始打样</a>:null
+							}}>开始打样</a> : null
 						}
 						{
-							[1].includes(status)?<a onClick={() => {
+							[1].includes(status) ? <a onClick={() => {
 								delivery(
 									{status: '2', itemId: recode?.itemId}, {}
 								).then((res: any) => {
 									if (res.success) {
 										message.success({
-											content:'交付完成',
-											duration:2,
-											onClose:()=>{
+											content: '交付完成',
+											duration: 2,
+											onClose: () => {
 												actionRef.current.reload()
 											}
 										})
 									}
 								})
 							}}
-							>交付样衣</a>:null
+							>交付样衣</a> : null
 						}
 					</Space>
 				);
@@ -220,7 +220,7 @@ function Sample() {
 				request={async (params, sort, filter) => {
 					const arg0 = {
 						...filterPageName(params),
-						status: activeKey==='99' ? undefined : activeKey
+						status: activeKey === '99' ? undefined : activeKey
 					};
 					const res: any = await queryList(arg0, {});
 					const data = res.entry.list;
@@ -287,7 +287,7 @@ function Sample() {
 					setOpen(false)
 				}}
 			>
-				<Form form={form} >
+				<Form form={form}>
 					<Form.Item label={'修改状态'} name={'status'} initialValue={'1'}>
 						<Select>
 							{arrOptions.map((item, index) => (
