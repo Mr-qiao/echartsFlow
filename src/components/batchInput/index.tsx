@@ -80,7 +80,7 @@ const BatchInput = (props) => {
 					trigger="click"
 					placement="bottomRight"
 				>
-					<div style={{ cursor: 'pointer', color: '#F5222d' }}>
+					<div style={{ cursor: 'pointer', color: '#4970FF' }}>
 						批量添加
 					</div>
 				</Popover>
