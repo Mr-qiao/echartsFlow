@@ -53,7 +53,7 @@ export const layout = () => {
 			<div className="u-f__center">
 				<img
 					src={logo}
-					style={{width: '200px', height: '80px',marginLeft:'-12px'}}
+					style={{width: '200px', height: '80px'}}
 				/>
 				{/*{!collapsed && (*/}
 				{/*	// <img*/}
