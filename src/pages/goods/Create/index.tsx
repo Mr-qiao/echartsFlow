@@ -469,13 +469,13 @@ const Index: React.FC = () => {
 			case AttrTypes.SELECT:
 				return (
 					<Form.Item {...props}>
-						<Select options={options} placeholder="请选择"/>
+						<Select allowClear options={options} placeholder="请选择"/>
 					</Form.Item>
 				);
 			case AttrTypes.MULTIPLE_SELECT:
 				return (
 					<Form.Item {...props}>
-						<Select mode="tags" options={options} placeholder="请选择"/>
+						<Select allowClear mode="tags" options={options} placeholder="请选择"/>
 					</Form.Item>
 				);
 			case AttrTypes.NUMBER_RANGE:

@@ -68,6 +68,7 @@ const SkuCpt: React.FC<IProps> = ({ form, skuAttrOptions = [] }) => {
                 return (
                   <Form.Item name={[field.name, 'categoryPropertyType']} noStyle>
                     <Select
+                      allowClear
                       options={fakeSkuAttrOptions}
                       placeholder="请选择"
                       labelInValue
