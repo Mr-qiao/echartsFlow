@@ -233,62 +233,68 @@ const Index: React.FC = () => {
 	//提交
 	async function onFinish() {
 		try {
-		const values = await form.validateFields();
-		const attrKeyTypeMap = Object.keys(dynProps).reduce((acc: any, cur: any) => {
-			dynProps[cur].forEach((item) => {
-				acc[item.categoryPropertyCode] = item.type;
-			});
-			return acc;
-		}, {});
-		console.log(values, 'values')
-		const data = {
-			...values,
-			images:
-				values.images?.map((img: { url: string }) => (typeof img === 'object' ? img.url : img)) ||
-				[],
-			categoryId: [...values?.categoryId].pop(),
-			brandId: typeof values.brandId === 'object' ? values.brandId.value : values.brandId,
+			const values = await form.validateFields();
+			// setPending(true);
 
-			baseProperties: Object.keys(values.baseProperties).reduce(
-				(acc: Recordable<any>, key: string) => {
-					if (values.baseProperties[key] !== undefined) {
-						const type = attrKeyTypeMap[key];
-						switch (type) {
-							case AttrTypes.DATE:
-								acc[key] = moment(values.baseProperties[key]).format('YYYY-MM-DD');
-								break;
-							case AttrTypes.DATE_RANGE:
-								acc[key] = [
-									moment(values.baseProperties[key][0]).format('YYYY-MM-DD'),
-									moment(values.baseProperties[key][1]).format('YYYY-MM-DD'),
-								];
-								break;
-							default:
-								acc[key] = values.baseProperties[key];
-								break;
+			const attrKeyTypeMap = Object.keys(dynProps).reduce((acc: any, cur: any) => {
+				dynProps[cur].forEach((item) => {
+					acc[item.categoryPropertyCode] = item.type;
+				});
+				return acc;
+			}, {});
+			const data = {
+				...values,
+				images:
+					values.images?.map((img: { url: string }) => (typeof img === 'object' ? img.url : img)) ||
+					[],
+				brandId: typeof values.brandId === 'object' ? values.brandId.value : values.brandId,
+				supplierId:
+					typeof values.supplierId === 'object' ? values.supplierId.value : values.supplierId,
+				categoryId: [...values.categoryId].pop(),
+
+				saleProperties: values.saleProperties?.map((item: any) => ({
+					categoryPropertyCode: item.categoryPropertyType.value,
+					categoryPropertyName: item.categoryPropertyType.label,
+					categoryPropertyValues: item.categoryPropertyValues,
+				})),
+				baseProperties: Object.keys(values.baseProperties).reduce(
+					(acc: Recordable<any>, key: string) => {
+						if (values.baseProperties[key] !== undefined) {
+							const type = attrKeyTypeMap[key];
+							switch (type) {
+								case AttrTypes.DATE:
+									acc[key] = moment(values.baseProperties[key]).format('YYYY-MM-DD');
+									break;
+								case AttrTypes.DATE_RANGE:
+									acc[key] = [
+										moment(values.baseProperties[key][0]).format('YYYY-MM-DD'),
+										moment(values.baseProperties[key][1]).format('YYYY-MM-DD'),
+									];
+									break;
+								default:
+									acc[key] = values.baseProperties[key];
+									break;
+							}
 						}
-					}
-					return acc;
-				},
-				{},
-			),
-			skus: values.skus.map((item: any) => ({
-				...omit(item, ['images', ...PriceKeys]),
-				images: item.images?.map((img: { url: string }) =>
-					typeof img === 'object' ? img.url : img,
+						return acc;
+					},
+					{},
 				),
-				itemPrice: {
-					commissionRatio: math.mul(item.commissionRatio, 100),
-					...transformFen2Yuan(item, PriceKeys, true),
-				},
-			})),
-		};
-		const res = await Api.Goods.Add(data);
-		if (res.success) {
+				skus: values.skus.map((item: any) => ({
+					...omit(item, ['images', ...PriceKeys]),
+					images: item.images?.map((img: { url: string }) =>
+						typeof img === 'object' ? img.url : img,
+					),
+					itemPrice: {
+						commissionRatio: math.mul(item.commissionRatio, 100),
+						...transformFen2Yuan(item, PriceKeys, true),
+					},
+				})),
+			};
+			await Api.Goods.Add(data);
 			message.success('添加成功');
 			await sleep(1500);
 			history.push('/goods/list')
-		}
 		} catch (error) {
 			console.log(error);
 		}
