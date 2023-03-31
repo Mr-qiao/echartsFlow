@@ -3,7 +3,6 @@ import { camelCase } from 'lodash-es';
 
 //合作商服务概况
 
-
 /** 获取当前系统登录者 用户信息 */
 
 export async function getUserInfo() {
@@ -54,7 +53,10 @@ export function getSelectDict(params: Recordable<any>) {
       });
       data[camelCase(key)] =
         itemEnum.length > 1
-          ? [...itemEnum.filter((item: any) => !item.disabled), ...itemEnum.filter((item: any) => item.disabled)]
+          ? [
+              ...itemEnum.filter((item: any) => !item.disabled),
+              ...itemEnum.filter((item: any) => item.disabled),
+            ]
           : itemEnum;
     });
     return data;
@@ -69,9 +71,8 @@ export function getAreaList() {
 
 // 品牌管理-新增或编辑品牌
 export function doBrandCreateOrUpdate(data: Recordable<any>) {
-  return request('/itemcenter/gaea/foundation/brand/createOrUpdate', {
+  return request('/item/item/factory/saveOrUpdateBrand', {
     method: 'post',
     data: data,
   });
 }
-

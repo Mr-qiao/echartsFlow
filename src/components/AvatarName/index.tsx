@@ -14,7 +14,7 @@ export default function () {
 					<Menu
 						items={[
 							{
-								label: '退出登陆',
+								label: '退出登录',
 								key: 'logout',
 								onClick: () => {
 									Cookies.remove('token')
