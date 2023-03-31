@@ -231,13 +231,16 @@ const Index: React.FC = () => {
 	}
 
 	//提交
-	async function onFinish(values) {
+	async function onFinish() {
+		try {
+		const values = await form.validateFields();
 		const attrKeyTypeMap = Object.keys(dynProps).reduce((acc: any, cur: any) => {
 			dynProps[cur].forEach((item) => {
 				acc[item.categoryPropertyCode] = item.type;
 			});
 			return acc;
 		}, {});
+		console.log(values, 'values')
 		const data = {
 			...values,
 			images:
@@ -285,6 +288,9 @@ const Index: React.FC = () => {
 			message.success('添加成功');
 			await sleep(1500);
 			history.push('/goods/list')
+		}
+		} catch (error) {
+			console.log(error);
 		}
 	}
 
