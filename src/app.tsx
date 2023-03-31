@@ -3,6 +3,7 @@
 import {MenuFoldOutlined, MenuUnfoldOutlined} from '@ant-design/icons';
 import {useLocation} from '@umijs/max';
 import {useState} from 'react';
+import logo from '../public/imglogo.png'
 import {errorConfig} from './requestErrorConfig';
 import AvatarName from '@/components/AvatarName';
 import Breadcrumb from '@/components/Breadcrumb';
@@ -28,41 +29,41 @@ export const layout = () => {
 		headerTheme: 'light',
 		token: {
 			sider: {
-				colorMenuBackground: '#211D29',
+				colorMenuBackground: '#4970FF',
 				colorTextMenuTitle: 'rgba(255,255,255,0.95)',
-				colorMenuItemDivider: 'transparent',
+				// colorMenuItemDivider: 'transparent',
 				colorTextMenu: 'rgba(255,255,255,0.75)',
-				colorTextMenuSecondary: 'rgba(255,255,255,0.65)',
+				// colorTextMenuSecondary: 'rgba(255,255,255,0.65)',
 				colorTextMenuSelected: '#fff',
-				colorBgMenuItemSelected: '#e91a00',
-				colorBgMenuItemCollapsedHover: 'rgba(0,0,0,0.06)',
-				colorBgMenuItemCollapsedSelected: 'rgba(0,0,0,0.15)',
-				colorTextCollapsedButtonHover: 'rgba(0,0,0,0.65)',
-				colorTextCollapsedButton: 'rgba(0,0,0,0.45)',
-				colorTextMenuActive: 'rgba(255,255,255,0.95)',
+				// colorBgMenuItemSelected: '#e91a00',
+				// colorBgMenuItemCollapsedHover: 'rgba(0,0,0,0.06)',
+				// colorBgMenuItemCollapsedSelected: 'rgba(0,0,0,0.15)',
+				// colorTextCollapsedButtonHover: 'rgba(0,0,0,0.65)',
+				// colorTextCollapsedButton: 'rgba(0,0,0,0.45)',
+				// colorTextMenuActive: 'rgba(255,255,255,0.95)',
 			},
 			header: {
-				colorBgHeader: '#211D29',
+				colorBgHeader: '#fff',
 			},
 			pageContainer: {
-				colorBgPageContainer: 'rgb(240, 242, 245)',
+				colorBgPageContainer: '#fff',
 			},
 		},
 		menuHeaderRender: () => (
 			<div className="u-f__center">
 				<img
-					src="https://s.xinc818.com/files/webcil9xn91qkpaokns/logo_icon@2x.png"
-					style={{width: '32px', height: '32px'}}
+					src={logo}
+					style={{width: '200px', height: '80px',marginLeft:'-12px'}}
 				/>
-				{!collapsed && (
-					// <img
-					// 	alt="合作商监管平台"
-					// 	className="u-ml6"
-					// 	style={{width: '128px', height: '31px'}}
-					// 	src="https://s.xinc818.com/files/webcil9xmqi0aolow2y/logo_name@2x.png"
-					// />
-					<h1 style={{color: '#fff', marginTop: 6, marginLeft: 6}}>设计师中台-工厂端</h1>
-				)}
+				{/*{!collapsed && (*/}
+				{/*	// <img*/}
+				{/*	// 	alt="合作商监管平台"*/}
+				{/*	// 	className="u-ml6"*/}
+				{/*	// 	style={{width: '128px', height: '31px'}}*/}
+				{/*	// 	src="https://s.xinc818.com/files/webcil9xmqi0aolow2y/logo_name@2x.png"*/}
+				{/*	// />*/}
+				{/*	<h1 style={{color: '#fff', marginTop: 6, marginLeft: 6}}>飓风中台工厂端</h1>*/}
+				{/*)}*/}
 			</div>
 		),
 		menu: {
@@ -87,7 +88,7 @@ export const layout = () => {
 				)}
 			</div>
 		),
-		siderWidth: 230,
+		siderWidth: 200,
 		disableMobile: true, //禁止自动切换到移动页面
 		contentStyle: {
 			minHeight: '100vh',
@@ -113,7 +114,7 @@ export const layout = () => {
 						<ConfigProvider
 							theme={{
 								token: {
-									colorPrimary: '#f5222d',
+									colorPrimary: '#4970FF',
 								},
 							}}
 						>

@@ -243,7 +243,7 @@ const Index: React.FC = () => {
 			images:
 				values.images?.map((img: { url: string }) => (typeof img === 'object' ? img.url : img)) ||
 				[],
-			categoryId: [...values.categoryId].pop(),
+			categoryId: [...values?.categoryId].pop(),
 			brandId: typeof values.brandId === 'object' ? values.brandId.value : values.brandId,
 
 			baseProperties: Object.keys(values.baseProperties).reduce(
@@ -299,7 +299,7 @@ const Index: React.FC = () => {
       >
         返回
       </Button> */}
-			<Form labelCol={{span: 6}} wrapperCol={{span: 14}} form={form} onFinish={onFinish}>
+			<Form labelCol={{span: 6}} wrapperCol={{span: 14}} form={form}>
 				{/* 样衣 or 款式 */}
 				<Form.Item label="类型" name="type" hidden={true} initialValue={3}>
 					<Input/>
@@ -412,8 +412,8 @@ const Index: React.FC = () => {
 				<Button
 					type="primary"
 					danger
-					htmlType="submit"
 					style={{marginLeft: '12.5%', marginTop: 20}}
+					onClick={onFinish.bind(null, false)}
 				>
 					确认提交
 				</Button>

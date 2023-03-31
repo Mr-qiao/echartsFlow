@@ -158,7 +158,7 @@ const Launch: any = () => {
 			<div className={styles.icon}>
 				<img src={imgURL}></img>
 			</div>
-			<div className={styles.jf}>设计师平台-工厂端</div>
+			<div className={styles.jf}>设计师管理平台-工厂端</div>
 			<div className={styles.content}>
 				<div className={styles.login}>登录</div>
 				<Form
