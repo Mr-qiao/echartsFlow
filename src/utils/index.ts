@@ -3,7 +3,7 @@ import {getOssFileUrl} from '@/services/common';
 import {message, Modal} from 'antd';
 import DICT_CONST from '@/common/constants';
 import {history} from "umi";
-import {math} from '@xlion/utils';
+import {math,isNullOrUnDef} from '@xlion/utils';
 
 export function navigateToLogin() {
 	console.log('登录失效')
@@ -233,7 +233,7 @@ export function transformFen2Yuan<T>(
 ) {
 	const newObj: Partial<Record<keyof T, number>> = {};
 	keys.forEach((key) => {
-		if (obj[key]) {
+		if (!isNullOrUnDef(obj[key])) {
 			if (reverse) {
 				// 乘以100
 				newObj[key] = math.mul(obj[key] as number, precision);
