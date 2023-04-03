@@ -140,7 +140,7 @@ function Sample() {
 			renderFormItem: () => (
 				<SearchSelect
 					ajaxRequest={searchForSystem}
-					params={{page: 1, pageSize: 100}}
+					params={{appCode:'SUPPLY'}}
 					optionFilterProp="empName"
 					filterOption={false}
 					searchKey="name"

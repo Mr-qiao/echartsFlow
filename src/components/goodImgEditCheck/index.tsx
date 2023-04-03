@@ -1,5 +1,6 @@
 import {Col, Row, Image, Descriptions} from 'antd';
 import './index.less';
+import dayjs from "dayjs";
 
 const {Item} = Descriptions;
 
@@ -42,11 +43,17 @@ function GoodImgEditCheck(props) {
 							}
 						})}
 					</Descriptions>
-					{/*<Descriptions column={1}>*/}
-					{/*	<Item label={'卖点信息'}>*/}
-					{/*		啊实打实大师大师大师大苏打手打三打哈开机啊合法抗打击沙发哈师大会计法哈卡随机发干哈刷卡机代发哈索拉卡登记*/}
-					{/*	</Item>*/}
-					{/*</Descriptions>*/}
+					<Descriptions column={1}>
+						<Item label={'询价开始时间'}>
+							{dayjs(data.askStartTime).format('YYYY-MM-DD HH:mm:ss')}
+						</Item>
+						<Item label={'询价结束时间'}>
+							{dayjs(data.askEndTime).format('YYYY-MM-DD HH:mm:ss')}
+						</Item>
+						<Item label={'预计采购数量'}>
+							{data.number}
+						</Item>
+					</Descriptions>
 				</Col>
 			</Image.PreviewGroup>
 		</Row>

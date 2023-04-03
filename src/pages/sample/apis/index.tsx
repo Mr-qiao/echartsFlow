@@ -11,13 +11,14 @@ export function queryList(body: object, options: any) {
 		}),
 	});
 }
-
+// /usercenter-backend/employee/search
 export async function searchForSystem(body) {
-	return request(`/usercenter-backend/employee/search`, {
-		method: 'POST',
-		data: { ...body, staffStatus: 1 },
+	return request(`/usercenter-backend/employee/getAppOrgEmployee`, {
+		method: 'GET',
+		params: {...body, filterBoardFlag: 'true'},
 	});
 }
+
 export function mark(body: object, options: any) {
 	return request('/item/item/factory/sample/demand/mark', {
 		method: 'POST',
@@ -41,6 +42,7 @@ export function delivery(body: object, options: any) {
 		}),
 	});
 }
+
 export function detail(body: object) {
 	return request('/item/item/designer/sample/clothes/requirement/detail', {
 		method: 'POST',
