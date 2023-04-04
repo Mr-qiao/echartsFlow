@@ -205,7 +205,7 @@ function QuotationEdit() {
 		{
 			title: '工艺类型',
 			align: 'center',
-			dataIndex: 'processType',
+			dataIndex: 'processTypeDesc',
 		},
 		{
 			title: '做法',
