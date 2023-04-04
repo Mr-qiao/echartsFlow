@@ -15,6 +15,7 @@ import {queryById, updateById} from '@/pages/quotation/apis';
 import {useParams} from '@umijs/max';
 import {history} from "umi";
 import _ from "lodash";
+import dayjs from "dayjs";
 
 const DescriptionsItem = Descriptions.Item;
 
@@ -212,11 +213,17 @@ function EditBoom() {
 									}
 								})}
 							</Descriptions>
-							{/*<Descriptions column={1}>*/}
-							{/*	<DescriptionsItem label={'卖点信息'}>*/}
-							{/*		啊实打实大师大师大师大苏打手打三打哈开机啊合法抗打击沙发哈师大会计法哈卡随机发干哈刷卡机代发哈索拉卡登记*/}
-							{/*	</DescriptionsItem>*/}
-							{/*</Descriptions>*/}
+							<Descriptions column={1}>
+								<Descriptions.Item label={'询价开始时间'}>
+									{dayjs(dataObj.askStartTime).format('YYYY-MM-DD HH:mm:ss')}
+								</Descriptions.Item>
+								<Descriptions.Item label={'询价结束时间'}>
+									{dayjs(dataObj.askEndTime).format('YYYY-MM-DD HH:mm:ss')}
+								</Descriptions.Item>
+								<Descriptions.Item label={'预计采购数量'}>
+									{dataObj.number}
+								</Descriptions.Item>
+							</Descriptions>
 						</Col>
 					</Image.PreviewGroup>
 				</Row>
