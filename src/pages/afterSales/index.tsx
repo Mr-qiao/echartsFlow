@@ -94,6 +94,7 @@ function AfterSales() {
 						overflow: 'hidden',
 						textOverflow: 'ellipsis',
 						whiteSpace: 'nowrap',
+						width:'140px'
 					}}
 				>
 					<Option value={1} key={1}>
@@ -101,6 +102,9 @@ function AfterSales() {
 					</Option>
 					<Option value={2} key={2}>
 						发货日期
+					</Option>
+					<Option value={3} key={3}>
+						售后申请时间
 					</Option>
 				</Select>
 			),
@@ -339,7 +343,7 @@ function AfterSales() {
 					};
 				}}
 				search={{
-					labelWidth: 120,
+					labelWidth: 140,
 					defaultCollapsed: false,
 				}}
 				form={{
