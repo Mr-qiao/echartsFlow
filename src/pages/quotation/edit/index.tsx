@@ -418,7 +418,7 @@ function QuotationEdit() {
 		if (da.shl) {
 			da.wlhz = da.wlhz / ((100 - Number(da.shl || 0)) / 100)
 		}
-		da.wlhz = _.floor(da.wlhz,2)
+		da.wlhz = _.floor(da.wlhz, 2)
 		const sumby = _.ceil(_.sumBy(NewArr, 'wlhz'), 2)
 		const datas = [...dataSourcePp]
 		datas[tabKey].hz = sumby
@@ -545,6 +545,8 @@ function QuotationEdit() {
 			if (res.success) {
 				message.success('成功')
 				history.push('/quotation/list')
+			} else {
+				message.error(res.message)
 			}
 		})
 	};
