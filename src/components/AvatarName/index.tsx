@@ -7,13 +7,13 @@ import {useEffect} from "react";
 export default function () {
 	const info: any = window.localStorage.getItem('info') || '';
 	const JSONInfo = JSON.parse(info || '{}');
-	const clearAllCookie = () => {
-		var keys = document.cookie.match(/[^ =;]+(?=\=)/g);
-		if (keys) {
-			for (var i = keys.length; i--;)
-				document.cookie = keys[i] + '=0;expires=' + new Date(0).toUTCString()
-		}
-	}
+	// const clearAllCookie = () => {
+	// 	var keys = document.cookie.match(/[^ =;]+(?=\=)/g);
+	// 	if (keys) {
+	// 		for (var i = keys.length; i--;)
+	// 			document.cookie = keys[i] + '=0;expires=' + new Date(0).toUTCString()
+	// 	}
+	// }
 	useEffect(() => {
 		console.log(history)
 		if (!info) {
@@ -31,10 +31,9 @@ export default function () {
 								label: '退出登录',
 								key: 'logout',
 								onClick: () => {
-									// Cookies.remove('token')
-									// Cookies.remove('local_token')
-									clearAllCookie()
-									localStorage.clear()
+									Cookies.remove('supplier-token')
+									// clearAllCookie()
+									localStorage.removeItem('supplier-token')
 									history.replace('/login');
 									console.log('已经退出！！！');
 								},
