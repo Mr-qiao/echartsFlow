@@ -234,9 +234,9 @@ const GoodsInfo = React.forwardRef(({isSupplier = true}: any, ref) => {
 						<div className="u-f__start u-els u-w70">
 							<p className="u-els u-fs16 u-fw700 u-mt10 u-mb10">{detail.title}</p>
 							{/* {detail.online && ( */}
-							<Tag color={dictColor(detail.online, 'ONLINE_OR_OFFLINE')} className="u-ml10">
-								{dict(detail.online, 'ONLINE_OR_OFFLINE')}
-							</Tag>
+							{/*<Tag color={dictColor(detail.online, 'ONLINE_OR_OFFLINE')} className="u-ml10">*/}
+							{/*	{dict(detail.online, 'ONLINE_OR_OFFLINE')}*/}
+							{/*</Tag>*/}
 							{/* )} */}
 						</div>
 						<Row className="goods__info-wrap" gutter={[16, 8]}>
