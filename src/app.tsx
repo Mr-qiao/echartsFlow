@@ -29,7 +29,7 @@ export const layout = () => {
 		headerTheme: 'light',
 		token: {
 			sider: {
-				colorMenuBackground: '#4970FF',
+				colorMenuBackground: '#3D54CC',
 				colorTextMenuTitle: 'rgba(255,255,255,0.95)',
 				// colorMenuItemDivider: 'transparent',
 				colorTextMenu: 'rgba(255,255,255,0.75)',
@@ -114,7 +114,7 @@ export const layout = () => {
 						<ConfigProvider
 							theme={{
 								token: {
-									colorPrimary: '#4970FF',
+									colorPrimary: '#3D54CC',
 								},
 							}}
 						>
