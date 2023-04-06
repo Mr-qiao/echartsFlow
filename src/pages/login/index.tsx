@@ -22,9 +22,9 @@ const Launch: any = () => {
 		position: 'relative',
 		overflow: 'hidden',
 		backgroundImage: `url(${bgUrl})`,
-		backgroundSize: '100%',
+		backgroundSize: 'cover',
 		backgroundRepeat: 'no-repeat',
-		backgroundAttachment: 'fixed',
+		// backgroundAttachment: 'fixed',
 		backgroundColor:'#3d5acd'
 	};
 	const [showText, setShowText] = useState(false);
