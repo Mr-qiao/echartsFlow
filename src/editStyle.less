@@ -3,6 +3,14 @@ body {
   .ant-menu-sub.ant-menu-inline > .ant-menu-item,
   .ant-menu-sub.ant-menu-inline > .ant-menu-submenu > .ant-menu-submenu-title {
     padding-left: 54px !important;
+    border-radius: 0px;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+  }
+
+  .ant-menu-item-selected {
+    background: rgba(255, 255, 255, 0.2) !important;
   }
 
   //input、select等颜色改变
@@ -22,18 +30,19 @@ body {
   .ant-cascader-menu-item-active:not(.ant-cascader-menu-item-disabled):hover {
     background-color: #e8f3ff;
   }
+
   //时间选择器_精确到秒
   .ant-picker-time-panel-cell.ant-picker-time-panel-cell-selected,
   .ant-picker-time-panel-column
-    > li.ant-picker-time-panel-cell-selected
-    > .ant-picker-time-panel-cell-inner {
+  > li.ant-picker-time-panel-cell-selected
+  > .ant-picker-time-panel-cell-inner {
     background: #3D54CC;
     color: #fff;
   }
 
   .ant-picker-time-panel-column
-    > li.ant-picker-time-panel-cell-selected
-    > .ant-picker-time-panel-cell-inner:hover {
+  > li.ant-picker-time-panel-cell-selected
+  > .ant-picker-time-panel-cell-inner:hover {
     background: #3D54CC;
   }
 
@@ -46,10 +55,12 @@ body {
       box-shadow: none;
     }
   }
+
   //表格排序背景色
   td.ant-table-column-sort {
     background-color: #fff;
   }
+
   //时间选择器
   .ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner,
   .ant-picker-cell-in-view.ant-picker-cell-range-start .ant-picker-cell-inner,
@@ -71,11 +82,11 @@ body {
   }
 
   .ant-picker-date-panel
-    .ant-picker-cell-in-view.ant-picker-cell-in-range.ant-picker-cell-range-hover-start
-    .ant-picker-cell-inner::after,
+  .ant-picker-cell-in-view.ant-picker-cell-in-range.ant-picker-cell-range-hover-start
+  .ant-picker-cell-inner::after,
   .ant-picker-date-panel
-    .ant-picker-cell-in-view.ant-picker-cell-in-range.ant-picker-cell-range-hover-end
-    .ant-picker-cell-inner::after {
+  .ant-picker-cell-in-view.ant-picker-cell-in-range.ant-picker-cell-range-hover-end
+  .ant-picker-cell-inner::after {
     background: #3D54CC;
   }
 
@@ -89,11 +100,11 @@ body {
       .ant-picker-cell-range-end-single
     ).ant-picker-cell-range-hover-end::before,
   .ant-picker-panel
-    > :not(.ant-picker-date-panel)
-    .ant-picker-cell-in-view.ant-picker-cell-in-range.ant-picker-cell-range-hover-start::before,
+  > :not(.ant-picker-date-panel)
+  .ant-picker-cell-in-view.ant-picker-cell-in-range.ant-picker-cell-range-hover-start::before,
   .ant-picker-panel
-    > :not(.ant-picker-date-panel)
-    .ant-picker-cell-in-view.ant-picker-cell-in-range.ant-picker-cell-range-hover-end::before {
+  > :not(.ant-picker-date-panel)
+  .ant-picker-cell-in-view.ant-picker-cell-in-range.ant-picker-cell-range-hover-end::before {
     background-color: #e8f3ff;
   }
 
@@ -151,6 +162,7 @@ body {
   .ant-dropdown-menu-submenu-title.ant-dropdown-menu-submenu-title-active {
     background-color: #e8f3ff;
   }
+
   ////按钮
   //.ant-btn:hover,
   //.ant-btn:focus {
@@ -246,6 +258,7 @@ body {
   .ant-tabs-ink-bar-animated {
     background: #ff3029;
   }
+
   //
   //
   //
@@ -265,6 +278,7 @@ body {
     .ant-input-affix-wrapper {
       height: 28px;
     }
+
     //选择框
     .ant-select:not(.ant-select-customize-input) .ant-select-selector {
       height: 28px;
@@ -276,8 +290,8 @@ body {
     }
 
     .ant-select-single:not(.ant-select-customize-input)
-      .ant-select-selector
-      .ant-select-selection-search-input {
+    .ant-select-selector
+    .ant-select-selection-search-input {
       height: 26px;
     }
 
@@ -326,6 +340,7 @@ body {
         background: #fff;
       }
     }
+
     //选择框
     .ant-select:not(.ant-select-customize-input) .ant-select-selector {
       border: 1px solid transparent;
@@ -335,7 +350,7 @@ body {
     .ant-select-focused:not(.ant-select-disabled).ant-select:not(
         .ant-select-customize-input
       )
-      .ant-select-selector {
+    .ant-select-selector {
       background: #fff;
       box-shadow: none;
       border: 1px solid #c9cdd4;
@@ -344,6 +359,7 @@ body {
     .ant-select-arrow {
       color: #1d2129;
     }
+
     //数组输入框
     .ant-input-number-affix-wrapper {
       border: 1px solid transparent;
