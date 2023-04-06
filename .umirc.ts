@@ -15,8 +15,12 @@ export default defineConfig({
 	},
 	layout: {
 		title: '设计师中台-工厂端',
-		logo: 'https://s.xinc818.com/assets/images/favicon.ico'
+		logo: ''
 	},
+	links: [
+		// href的图片你可以放在public里面，直接./图片名.png 就可以了，也可以是cdn链接
+		{ rel: 'icon', href: 'https://s.xinc818.com/assets/images/favicon.ico' },
+	],
 	history: {type: 'hash'},
 	routes,
 	npmClient: 'yarn',
