@@ -91,10 +91,9 @@ const Launch: any = () => {
 						}
 					}
 				});
-				window.localStorage.setItem('token', res.entry.token);
+				window.localStorage.setItem('supplier-token', res.entry.token);
 				window.localStorage.setItem('info', JSON.stringify(res.entry));
-				setCookie('token', res.entry.token);
-				setCookie('local_token', res.entry.token);
+				setCookie('supplier-token', res.entry.token);
 				// history.push('/goods/list');
 			}
 			if (!res || (res && !res.status)) {

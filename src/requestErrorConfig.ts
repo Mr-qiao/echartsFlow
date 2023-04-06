@@ -86,7 +86,7 @@ export const errorConfig: RequestConfig = {
 			// 拦截请求配置，进行个性化处理。
 			// const url = config?.url?.concat('?token = 123');
 			const url = config?.url;
-			config.headers['token'] = Cookies.get('token') || localStorage.getItem('token');
+			config.headers['token'] = Cookies.get('supplier-token') || localStorage.getItem('supplier-token');
 			return {...config, url};
 		},
 	],
