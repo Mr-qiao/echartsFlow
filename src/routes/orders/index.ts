@@ -27,7 +27,7 @@ export default [
         path: 'purchase-detail/:id',
         name: '采购订单详情',
         title: '采购订单详情',
-        component: './Orders/Purchase/detail',
+        component: './Orders/Purchase/Detail',
         hideInMenu: true,
       },
     ],

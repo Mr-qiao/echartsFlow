@@ -50,10 +50,23 @@ let Api = {
       return request.post(`/item/category/getCategoryTree`, body);
     },
   },
+  ProofDemand: {
+    // 打样需求详情
+    Detail: (body: { itemId: number }) => {
+      return request.post(
+        '/item/item/designer/sample/clothes/requirement/detail',
+        body,
+      );
+    },
+  },
   Sample: {
     //样衣列表
     List: async (body: any) => {
       return request.post(`/item/item/platform/sample/list`, body);
+    },
+    // 样衣详情
+    Detail: (body: { itemId: number }) => {
+      return request.post('/designweb/designer/sample/clothes/detail', body);
     },
   },
   Supplier: {

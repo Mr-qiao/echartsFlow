@@ -47,7 +47,7 @@ function Purchase(props: any) {
         return (
           <a
             onClick={() => {
-              history.push(`/order/purchase-detail/${recode.id}`);
+              history.push(`/orders/purchase-detail/${recode.id}`);
             }}
           >
             {_}
@@ -123,7 +123,7 @@ function Purchase(props: any) {
         return (
           <a
             onClick={() => {
-              history.push(`/order/purchase-detail/${recode.id}`);
+              history.push(`/orders/purchase-detail/${recode.id}`);
             }}
           >
             查看

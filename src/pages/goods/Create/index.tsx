@@ -271,6 +271,10 @@ const Index: React.FC = () => {
           values.images?.map((img: { url: string }) =>
             typeof img === 'object' ? img.url : img,
           ) || [],
+        contents:
+          values.contents?.map((img: { url: string }) =>
+            typeof img === 'object' ? img.url : img,
+          ) || [],
         brandId:
           typeof values.brandId === 'object'
             ? values.brandId.value
@@ -456,7 +460,24 @@ const Index: React.FC = () => {
             >
               <Upload
                 listType="picture-card"
-                maxCount={3}
+                maxCount={5}
+                size={10}
+                tip="支持jpg、jpeg、png格式，小于10Mb图片不清晰将会被降低选中概率，故要求图片尺寸在600*600以上"
+              />
+            </Form.Item>
+          </Col>
+
+          <Col span={24}>
+            <Form.Item
+              label="商品详情"
+              name="contents"
+              rules={[{ required: true, message: '请选择主图～' }]}
+              labelCol={{ span: 3 }}
+              wrapperCol={{ span: 20 }}
+            >
+              <Upload
+                listType="picture-card"
+                maxCount={20}
                 size={10}
                 tip="支持jpg、jpeg、png格式，小于10Mb图片不清晰将会被降低选中概率，故要求图片尺寸在600*600以上"
               />
