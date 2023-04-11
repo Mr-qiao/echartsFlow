@@ -1,11 +1,11 @@
-import { Button, Col, Input, message, Modal, Popover, Row } from 'antd';
-import './index.less';
-import { useEffect, useState } from 'react';
-import { getCategoryTree, queryList } from '@/pages/goods/apis';
-import SelectTree from '@/components/selectTree';
 import GoodsTableCol from '@/components/goodsTableCol';
-import { ProTable } from '@ant-design/pro-components';
+import SelectTree from '@/components/selectTree';
+import { getCategoryTree, queryList } from '@/pages/Goods/apis';
 import { filterPageName } from '@/utils';
+import { ProTable } from '@ant-design/pro-components';
+import { Col, Input, message, Modal, Row } from 'antd';
+import { useEffect, useState } from 'react';
+import './index.less';
 
 function GoodsSearch(props: any) {
   const { onChange, value } = props;

@@ -1,6 +1,6 @@
+import Purchase from '@/pages/Orders/Purchase/index';
 import { Tabs } from 'antd';
 import { useState } from 'react';
-import Purchase from '@/pages/purchase/index';
 
 function TabList() {
   const [tabKey, setTabKey] = useState('2') as any;
@@ -35,7 +35,7 @@ function TabList() {
       <Tabs
         // type="card"
         tabBarGutter={30}
-        tabBarStyle={{padding:'0 20px'}}
+        tabBarStyle={{ padding: '0 20px' }}
         size={'large'}
         defaultActiveKey={tabKey}
         onChange={onChange}

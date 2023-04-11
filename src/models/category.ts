@@ -1,27 +1,25 @@
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 
-import Api from '@/pages/goods/services';
-import Cookies from "js-cookie";
+import Api from '@/pages/Goods/services';
 
-
-const cookie = localStorage.getItem('token')
+const cookie = localStorage.getItem('token');
 export default () => {
-	const [category, setCategory] = useState<any[]>([]);
+  const [category, setCategory] = useState<any[]>([]);
 
-	useEffect(() => {
-		getCategoryList();
-	}, []);
+  useEffect(() => {
+    getCategoryList();
+  }, []);
 
-	const getCategoryList = () => {
-		if (cookie) {
-			Api.Goods.Category({}).then((res) => {
-				setCategory(res.entry || []);
-			});
-		}
-	};
+  const getCategoryList = () => {
+    if (cookie) {
+      Api.Goods.Category({}).then((res) => {
+        setCategory(res.entry || []);
+      });
+    }
+  };
 
-	return {
-		category,
-		getCategoryList,
-	};
+  return {
+    category,
+    getCategoryList,
+  };
 };

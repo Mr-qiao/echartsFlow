@@ -1,12 +1,12 @@
 import SearchSelect from '@/components/SearchSelect';
 import SelectTree from '@/components/selectTree';
-import { getCategoryTree } from '@/pages/goods/apis';
+import { getCategoryTree } from '@/pages/Goods/apis';
 import {
   delivery,
   mark,
   queryList,
   searchForSystem,
-} from '@/pages/sample/apis';
+} from '@/pages/Goods/Sample/apis';
 import { filterPageName, transformFen2Yuan } from '@/utils';
 import { ProTable } from '@ant-design/pro-components';
 import { Form, Image, message, Modal, Select, Space } from 'antd';
