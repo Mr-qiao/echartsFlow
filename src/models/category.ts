@@ -6,10 +6,6 @@ const cookie = localStorage.getItem('token');
 export default () => {
   const [category, setCategory] = useState<any[]>([]);
 
-  useEffect(() => {
-    getCategoryList();
-  }, []);
-
   const getCategoryList = () => {
     if (cookie) {
       Api.Goods.Category({}).then((res) => {
@@ -17,6 +13,10 @@ export default () => {
       });
     }
   };
+
+  useEffect(() => {
+    getCategoryList();
+  }, []);
 
   return {
     category,
