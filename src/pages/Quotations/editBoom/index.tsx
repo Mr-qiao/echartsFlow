@@ -1,5 +1,5 @@
 import BottomButton from '@/components/bottomButton';
-import { queryById, updateById } from '@/pages/Quotation/apis';
+import { queryById, updateById } from '@/pages/Quotations/apis';
 import { ProCard } from '@ant-design/pro-components';
 import { useParams } from '@umijs/max';
 import {

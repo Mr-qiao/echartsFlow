@@ -1,6 +1,6 @@
 import goods from './goods';
 import orders from './orders';
-import quotation from './quotation';
+import quotations from './quotations';
 const GlobalRouters = [
   {
     path: '/',
@@ -31,7 +31,7 @@ const GlobalRouters = [
   },
 
   ...goods,
-  ...quotation,
+  ...quotations,
   ...orders,
 ];
 
