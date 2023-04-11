@@ -1,105 +1,69 @@
-import { request } from '@umijs/max';
+import { request } from '@/utils/request';
 
-export async function getList(body: any) {
-  return request('', { method: 'get', params: body });
-}
+// export async function getList(body: any) {
+//   return request.post('', { method: 'get', params: body });
+// }
 
 let Api = {
   Goods: {
     //款式列表
     List: async (body: any) => {
-      return request(`/item/item/platform/style/list`, {
-        method: 'POST',
-        data: body,
-      });
+      return request.post(`/item/item/platform/style/list`, body);
     },
     //商品详情
     Detail: async (body?: any) => {
-      return request(`/item/item/viewById`, {
-        method: 'POST',
-        data: body,
-      });
+      return request.post(`/item/item/viewById`, body);
     },
     //商品详情
     DetailSimple: async (body: { itemId: string }) => {
-      return request(`/item/item/queryById`, {
-        method: 'POST',
-        data: body,
-      });
+      return request.post(`/item/item/queryById`, body);
     },
     //商品-新增
     Add: async (body: { itemId: string }) => {
-      return request(`/item/item/saveItem/v3/forSupplier`, {
-        method: 'POST',
-        data: body,
-      });
+      return request.post(`/item/item/saveItem/v3/forSupplier`, body);
     },
     //商品--修改
     // Update: async (body: { itemId: string }) => {
-    //   return request(`/item/item/platform/deleteItem`, {
+    //   return request.post(`/item/item/platform/deleteItem`, {
     //     method: 'POST',
     //     data: body,
     //   });
     // },
     //上架
     OnLine: async (body: { itemId: number; facadeCategoryId: number }) => {
-      return request(`/item/item/selectItemOnline`, {
-        method: 'POST',
-        data: body,
-      });
+      return request.post(`/item/item/selectItemOnline`, body);
     },
     // 下架
     OffLine: async (body: { itemId: number }) => {
-      return request(`/item/item/itemOffline`, {
-        method: 'POST',
-        data: body,
-      });
+      return request.post(`/item/item/itemOffline`, body);
     },
     // 设计师列表
     DesignerList: async (body?: any) => {
-      return request(`/iam/designer/queryByPage`, {
-        method: 'POST',
-        data: body,
-      });
+      return request.post(`/iam/designer/queryByPage`, body);
     },
     // 品牌
-    BrandList: async (body:any) => {
-      return request(`/itemcenter/gaea/foundation/brand/dropdown`, {
-        method: 'POST',
-        data: body,
-      });
+    BrandList: async (body: any) => {
+      return request.post(`/itemcenter/gaea/foundation/brand/dropdown`, body);
     },
-    // 类目
-    Category: async (body:any) => {
-      return request(`/item/category/getCategoryTree`, {
-        method: 'POST',
-        data: body,
-      });
+    // 前台类目
+    Category: async (body: any) => {
+      return request.post(`/item/category/getCategoryTree`, body);
     },
   },
   Sample: {
     //样衣列表
     List: async (body: any) => {
-      return request(`/item/item/platform/sample/list`, {
-        method: 'POST',
-        data: body,
-      });
+      return request.post(`/item/item/platform/sample/list`, body);
     },
   },
   Supplier: {
     //供应商列表
     List: async (params?: { companyName: string }) => {
-      return request(`/investment-center/design/supplierlist`, {
-        method: 'GET',
-        params: params,
-      });
+      return request.get(`/investment-center/design/supplierlist`, params);
     },
     //供应商 商品列表
     Goods: async (body: any) => {
-      return request(`/item/item/platform/supplierItem/list`, {
-        method: 'POST',
-        data: body,
-      });
+      return request.post(`/item/item/platform/supplierItem/list`, body);
     },
   },
 };
