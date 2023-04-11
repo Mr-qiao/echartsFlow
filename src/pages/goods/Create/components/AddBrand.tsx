@@ -25,7 +25,7 @@ const AddBrand: React.FC<PageProps> = ({ children, onSuccess }) => {
         .then((res: any) => {
           if (res.entry) {
             message.success('品牌创建成功');
-            addRef.current.hide();
+            addRef.current?.hide();
             if (onSuccess) {
               onSuccess({ ...values, id: res.entry });
             }

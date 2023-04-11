@@ -29,7 +29,9 @@ const doComb = (data: any[]) => {
         comb0(arr, depth + 1);
       } else {
         let str = temp?.length > 0 ? temp?.join('；') : temp;
-        let item = JSON.parse(JSON.stringify({ skuId: results.length, properties: str }));
+        let item = JSON.parse(
+          JSON.stringify({ skuId: results.length, properties: str }),
+        );
         results.push(item); // 深度拷贝temp
       }
     });
@@ -63,10 +65,15 @@ const SkuCpt: React.FC<IProps> = ({ form, skuAttrOptions = [] }) => {
                 const row = getFieldValue(['saleProperties']);
                 const fakeSkuAttrOptions = skuAttrOptions.map((item) => ({
                   ...item,
-                  disabled: row.some((r: any) => r.categoryPropertyType?.value === item.value),
+                  disabled: row.some(
+                    (r: any) => r.categoryPropertyType?.value === item.value,
+                  ),
                 }));
                 return (
-                  <Form.Item name={[field.name, 'categoryPropertyType']} noStyle>
+                  <Form.Item
+                    name={[field.name, 'categoryPropertyType']}
+                    noStyle
+                  >
                     <Select
                       allowClear
                       options={fakeSkuAttrOptions}
@@ -86,13 +93,20 @@ const SkuCpt: React.FC<IProps> = ({ form, skuAttrOptions = [] }) => {
         render: (_, record, index) => {
           const field = fields[index];
           return (
-            <Form.List name={[field.name, 'categoryPropertyValues']} initialValue={['']}>
+            <Form.List
+              name={[field.name, 'categoryPropertyValues']}
+              initialValue={['']}
+            >
               {(attrValues, { add: addValue, remove: removeValue }) => (
                 <Space wrap>
                   {attrValues.map((attrField, attrIndex) => (
                     <Space key={attrIndex}>
                       <Form.Item noStyle name={[attrField.name]}>
-                        <Input maxLength={10} placeholder="请输入" style={{ width: 100 }} />
+                        <Input
+                          maxLength={10}
+                          placeholder="请输入"
+                          style={{ width: 100 }}
+                        />
                       </Form.Item>
                       <Typography.Link
                         disabled={attrValues.length === 1}
@@ -145,20 +159,28 @@ const SkuCpt: React.FC<IProps> = ({ form, skuAttrOptions = [] }) => {
       let _array = [];
       for (let i of saleProperties) {
         const categoryPropertyValues = i.categoryPropertyValues.filter(Boolean);
-        if (Array.from(new Set(categoryPropertyValues)).length !== categoryPropertyValues.length) {
+        if (
+          Array.from(new Set(categoryPropertyValues)).length !==
+          categoryPropertyValues.length
+        ) {
           message.info('规格分类不允许重名');
           return;
         }
         if (
           !i.categoryPropertyType?.value ||
-          !(Array.isArray(categoryPropertyValues) && categoryPropertyValues.length > 0)
+          !(
+            Array.isArray(categoryPropertyValues) &&
+            categoryPropertyValues.length > 0
+          )
         ) {
           message.info('请选择规格并输入规格值');
           return;
         }
 
         _array.push(
-          categoryPropertyValues.map((item) => `${i.categoryPropertyType.label}：${item}`),
+          categoryPropertyValues.map(
+            (item) => `${i.categoryPropertyType.label}：${item}`,
+          ),
         );
       }
 
@@ -181,7 +203,12 @@ const SkuCpt: React.FC<IProps> = ({ form, skuAttrOptions = [] }) => {
       ]}
     >
       {(skuAttrs, { add, remove }) => (
-        <Form.Item label="生成SKU" required labelCol={{ span: 3 }} wrapperCol={{ span: 19 }}>
+        <Form.Item
+          label="生成SKU"
+          required
+          labelCol={{ span: 3 }}
+          wrapperCol={{ span: 19 }}
+        >
           <Table
             className={ss.skuAttrTable}
             rowKey="name"
@@ -203,7 +230,11 @@ const SkuCpt: React.FC<IProps> = ({ form, skuAttrOptions = [] }) => {
             )}
           />
 
-          <Button type="primary" style={{ marginTop: 16 }} onClick={handleCreateSku}>
+          <Button
+            type="primary"
+            style={{ marginTop: 16 }}
+            onClick={handleCreateSku}
+          >
             生成SKU
           </Button>
         </Form.Item>
