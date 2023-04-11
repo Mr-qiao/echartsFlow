@@ -56,7 +56,7 @@ function Goods() {
       key: 'brandIds',
       order: 6,
       renderFormItem: () => {
-        return <BrandSelectCpt  mode="multiple"/>;
+        return <BrandSelectCpt mode="multiple" />;
       },
     },
     {
@@ -157,6 +157,7 @@ function Goods() {
   ];
   return (
     <ProTable
+      rowKey={'itemId'}
       columns={columns}
       search={{
         labelWidth: 120,
