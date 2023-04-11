@@ -471,7 +471,6 @@ const Index: React.FC = () => {
             <Form.Item
               label="商品详情"
               name="contents"
-              rules={[{ required: true, message: '请选择主图～' }]}
               labelCol={{ span: 3 }}
               wrapperCol={{ span: 20 }}
             >
