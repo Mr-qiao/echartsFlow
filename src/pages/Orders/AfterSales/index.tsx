@@ -1,6 +1,6 @@
 import BatchInput from '@/components/batchInput';
 import GoodsTableCol from '@/components/goodsTableCol';
-import { exprotList, queryList } from '@/pages/Orders/AfterSales/apis';
+import { afterSalesExprotList, afterSalesqueryList } from '@/pages/Orders/apis';
 import { filterPageName } from '@/utils';
 import { ProTable } from '@ant-design/pro-components';
 import { Button, DatePicker, Modal, Select } from 'antd';
@@ -289,22 +289,22 @@ function AfterSales() {
         endCreateTime:
           res.time?.length > 0 ? moment(res.time[1]).valueOf() : undefined,
       };
-      exprotList(arg0, { responseType: 'blob', getResponse: true }).then(
-        (res: any) => {
-          let blob = new Blob([res.data]);
-          let downloadElement = document.createElement('a');
-          let href = window.URL.createObjectURL(blob); //创建下载的链接
-          downloadElement.href = href;
-          downloadElement.download =
-            decodeURI(
-              res.headers['content-disposition'].split('filename=')[1],
-            ) || ''; //下载后文件名
-          document.body.appendChild(downloadElement);
-          downloadElement.click(); //点击下载
-          document.body.removeChild(downloadElement); //下载完成移除元素
-          window.URL.revokeObjectURL(href); //释放掉blob对象
-        },
-      );
+      afterSalesExprotList(arg0, {
+        responseType: 'blob',
+        getResponse: true,
+      }).then((res: any) => {
+        let blob = new Blob([res.data]);
+        let downloadElement = document.createElement('a');
+        let href = window.URL.createObjectURL(blob); //创建下载的链接
+        downloadElement.href = href;
+        downloadElement.download =
+          decodeURI(res.headers['content-disposition'].split('filename=')[1]) ||
+          ''; //下载后文件名
+        document.body.appendChild(downloadElement);
+        downloadElement.click(); //点击下载
+        document.body.removeChild(downloadElement); //下载完成移除元素
+        window.URL.revokeObjectURL(href); //释放掉blob对象
+      });
     });
   };
   const onSelectChange = (newSelectedRowKeys: any) => {
@@ -338,7 +338,7 @@ function AfterSales() {
                 : undefined,
             timeType: timeSelect,
           };
-          const res: any = await queryList(arg0, {});
+          const res: any = await afterSalesqueryList(arg0, {});
           const data = res?.entry.list;
           return {
             data: data,

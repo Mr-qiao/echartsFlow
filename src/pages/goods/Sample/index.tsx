@@ -1,12 +1,12 @@
 import SearchSelect from '@/components/SearchSelect';
 import SelectTree from '@/components/selectTree';
-import { getCategoryTree } from '@/pages/Goods/apis';
 import {
   delivery,
+  getCategoryTree,
   mark,
-  queryList,
+  sampleQueryList,
   searchForSystem,
-} from '@/pages/Goods/Sample/apis';
+} from '@/pages/Goods/apis';
 import { filterPageName, transformFen2Yuan } from '@/utils';
 import { ProTable } from '@ant-design/pro-components';
 import { Form, Image, message, Modal, Select, Space } from 'antd';
@@ -246,7 +246,7 @@ function Sample() {
             ...filterPageName(params),
             status: activeKey === '99' ? undefined : activeKey,
           };
-          const res: any = await queryList(arg0, {});
+          const res: any = await sampleQueryList(arg0, {});
           const data = res.entry.list;
           return {
             data: data,

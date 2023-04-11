@@ -1,6 +1,6 @@
 import BatchInput from '@/components/batchInput';
 import SelectCpt from '@/components/selectCpt';
-import { exportList, queryList } from '@/pages/Orders/Purchase/apis';
+import { purchaseExportList, purchaseQueryList } from '@/pages/Orders/apis';
 import { filterPageName } from '@/utils';
 import { ProTable } from '@ant-design/pro-components';
 import { Button, DatePicker, Modal } from 'antd';
@@ -161,28 +161,28 @@ function Purchase(props: any) {
       },
     },
   ];
-  const exportListClick = () => {
+  const purchaseExportListClick = () => {
     ref?.current?.validateFields().then((res: any) => {
       const arg0 = {
         ...res,
         status: tabKey === '0' ? res.status : Number(tabKey),
       };
-      exportList(arg0, { responseType: 'blob', getResponse: true }).then(
-        (res: any) => {
-          let blob = new Blob([res.data]);
-          let downloadElement = document.createElement('a');
-          let href = window.URL.createObjectURL(blob); //创建下载的链接
-          downloadElement.href = href;
-          downloadElement.download =
-            decodeURI(
-              res.headers['content-disposition'].split('filename=')[1],
-            ) || ''; //下载后文件名
-          document.body.appendChild(downloadElement);
-          downloadElement.click(); //点击下载
-          document.body.removeChild(downloadElement); //下载完成移除元素
-          window.URL.revokeObjectURL(href); //释放掉blob对象
-        },
-      );
+      purchaseExportList(arg0, {
+        responseType: 'blob',
+        getResponse: true,
+      }).then((res: any) => {
+        let blob = new Blob([res.data]);
+        let downloadElement = document.createElement('a');
+        let href = window.URL.createObjectURL(blob); //创建下载的链接
+        downloadElement.href = href;
+        downloadElement.download =
+          decodeURI(res.headers['content-disposition'].split('filename=')[1]) ||
+          ''; //下载后文件名
+        document.body.appendChild(downloadElement);
+        downloadElement.click(); //点击下载
+        document.body.removeChild(downloadElement); //下载完成移除元素
+        window.URL.revokeObjectURL(href); //释放掉blob对象
+      });
     });
   };
   const onSelectChange = (newSelectedRowKeys: any) => {
@@ -215,7 +215,7 @@ function Purchase(props: any) {
               ? params.purNoList?.split(',')
               : undefined,
           };
-          const res: any = await queryList(arg0, {});
+          const res: any = await purchaseQueryList(arg0, {});
           const data = res.entry.list.map((item: any, index: any) => ({
             ...item,
             index: index + 1,
@@ -243,7 +243,11 @@ function Purchase(props: any) {
           // }}>
           // 	导入记录
           // </Button>,
-          <Button type="primary" key="primary" onClick={exportListClick}>
+          <Button
+            type="primary"
+            key="primary"
+            onClick={purchaseExportListClick}
+          >
             导出
           </Button>,
         ]}

@@ -1,9 +1,9 @@
 import GoodsTableCol from '@/components/goodsTableCol';
 import {
-  queryById,
-  queryByIdLogList,
-  updateStatus,
-} from '@/pages/Orders/Purchase/apis';
+  purchaseQueryById,
+  purchaseQueryByIdLogList,
+  purchaseUpdateStatus,
+} from '@/pages/Orders/apis';
 import { useParams } from '@umijs/max';
 import {
   Button,
@@ -31,7 +31,7 @@ function PurchaseDetail() {
   const [logList, setLogList] = useState([]) as any;
   const [dataSource, setDataSource] = useState([]) as any;
   useEffect(() => {
-    queryById({ id: urlParams.id }, {}).then((res) => {
+    purchaseQueryById({ id: urlParams.id }, {}).then((res) => {
       if (res.success) {
         if (res.entry.status === 2) {
           setActionBtnShow(true);
@@ -44,7 +44,7 @@ function PurchaseDetail() {
         );
         setData(res.entry);
         setDataSource(res.entry.detailVOList);
-        queryByIdLogList({ purNo: res.entry.purNo }, {}).then((res) => {
+        purchaseQueryByIdLogList({ purNo: res.entry.purNo }, {}).then((res) => {
           if (res.success) {
             setLogList(res.entry);
           }
@@ -144,7 +144,7 @@ function PurchaseDetail() {
           : undefined,
       rejectReason: action === 4 ? value.rejectReason : undefined,
     };
-    updateStatus(arg0, {}).then((res: any) => {
+    purchaseUpdateStatus(arg0, {}).then((res: any) => {
       if (res.success) {
         message.success(`${action === 3 ? '确认' : '驳回'}成功`);
         history.push('/order/purchase');
