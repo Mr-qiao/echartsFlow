@@ -273,7 +273,9 @@ const Index: React.FC = () => {
           ) || [],
         contents:
           values.contents?.map((img: { url: string }) =>
-            typeof img === 'object' ? img.url : img,
+            typeof img === 'object'
+              ? { image: img.url, jumpUrl: '' }
+              : { image: img, jumpUrl: '' },
           ) || [],
         brandId:
           typeof values.brandId === 'object'
