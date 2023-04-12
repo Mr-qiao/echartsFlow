@@ -62,7 +62,11 @@ const SkuTablesCpt: React.FC<IProps> = ({ form }) => {
         width: 100,
         render: (_, record, index) => {
           const field = fields[index];
-          const properties = form.getFieldValue(['skus', field.name, 'properties']);
+          const properties = form.getFieldValue([
+            'skus',
+            field.name,
+            'properties',
+          ]);
           return properties;
         },
       },
@@ -155,7 +159,11 @@ const SkuTablesCpt: React.FC<IProps> = ({ form }) => {
             <InputNumber
               placeholder="预计直播价批量填充"
               {...commonPriceProps}
-              onBlur={handleBatchFill('estimateLivePrice', MIN_PRICE, MAX_PRICE)}
+              onBlur={handleBatchFill(
+                'estimateLivePrice',
+                MIN_PRICE,
+                MAX_PRICE,
+              )}
             />
           </div>
         ),

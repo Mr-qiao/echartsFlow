@@ -1,6 +1,6 @@
 import GoodsTableCol from '@/components/goodsTableCol';
 import SelectTree from '@/components/selectTree';
-import { getCategoryTree, queryList } from '@/pages/goods/apis';
+import { getCategoryTree, queryList } from '@/pages/Goods/apis';
 import { filterPageName } from '@/utils';
 import { ProTable } from '@ant-design/pro-components';
 import { history } from '@umijs/max';
@@ -56,7 +56,7 @@ function Goods() {
       key: 'brandIds',
       order: 6,
       renderFormItem: () => {
-        return <BrandSelectCpt  mode="multiple"/>;
+        return <BrandSelectCpt mode="multiple" />;
       },
     },
     {
@@ -157,6 +157,7 @@ function Goods() {
   ];
   return (
     <ProTable
+      rowKey={'itemId'}
       columns={columns}
       search={{
         labelWidth: 120,
