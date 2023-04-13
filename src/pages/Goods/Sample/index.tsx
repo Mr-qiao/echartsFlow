@@ -6,7 +6,7 @@ import {
   mark,
   sampleQueryList,
   searchForSystem,
-} from '@/pages/Goods1/apis';
+} from '@/pages/Goods/apis';
 import { filterPageName, transformFen2Yuan } from '@/utils';
 import { ProTable } from '@ant-design/pro-components';
 import { Form, Image, message, Modal, Select, Space } from 'antd';

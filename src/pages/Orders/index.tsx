@@ -1,4 +1,4 @@
-import TabList from '@/pages/Orders1/tabList';
+import TabList from '@/pages/Orders/tabList';
 import { Tabs } from 'antd';
 import { useState } from 'react';
 

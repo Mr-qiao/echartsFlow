@@ -3,7 +3,7 @@ import {
   purchaseQueryById,
   purchaseQueryByIdLogList,
   purchaseUpdateStatus,
-} from '@/pages/Orders1/apis';
+} from '@/pages/Orders/apis';
 import { useParams } from '@umijs/max';
 import {
   Button,
