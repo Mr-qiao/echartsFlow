@@ -10,7 +10,7 @@ const GlobalRouters = [
     name: '登录',
     path: '/login',
     layout: false,
-    component: './Login',
+    component: './login',
   },
   {
     name: '注册',
