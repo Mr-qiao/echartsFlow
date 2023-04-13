@@ -1,4 +1,4 @@
-import { history, useModel, useParams, useSearchParams } from '@umijs/max';
+import { history, useParams, useSearchParams } from '@umijs/max';
 import { InputNumberRange } from '@xlion/component';
 import { math } from '@xlion/utils';
 import {
@@ -18,8 +18,8 @@ import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 
 import Upload from '@/components/Upload';
+import { useCategory } from '@/hooks';
 import { sleep, transformFen2Yuan, uuid } from '@/utils';
-
 import Api from '../services';
 import BrandSelectCpt from './components/BrandSelectCpt';
 import SkuCpt from './components/SkuCpt';
@@ -39,7 +39,9 @@ const Index: React.FC = () => {
   const sampleId = searchParams.get('sampleId');
 
   const { id } = useParams();
-  const { category } = useModel('category');
+  // const { category } = useModel('category');
+  const [category] = useCategory();
+  // console.log(category, '-----');
   // const [detail, setDetail] = useState<any>({});
   const [refSampleClothesId, setSampleId] = useState<any>();
   // const [brandList, setBrandList] = useState<any[]>();

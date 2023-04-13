@@ -1,15 +1,16 @@
 import { ProFormInstance, ProTable } from '@ant-design/pro-components';
-import { useModel } from '@umijs/max';
 import { Image, message, Tooltip } from 'antd';
 import React, { useImperativeHandle, useRef, useState } from 'react';
 
 import CustomModal from '@/components/CustomModal';
+import { useCategory } from '@/hooks';
 
 import Api from '../../services';
 import BrandSelectCpt from './BrandSelectCpt';
 
 export const SampleListModal = React.forwardRef(({ onChange }: any, ref) => {
-  const { category } = useModel('category');
+  // const { category } = useModel('category');
+  const [category] = useCategory();
 
   const [params, setParams] = useState({});
   let [selectedRowKeys, setSelectedRowKeys] = useState([]);
