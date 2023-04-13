@@ -25,6 +25,27 @@ export default defineConfig({
   history: { type: 'hash' },
   routes,
   npmClient: 'yarn',
+  chainWebpack: function (config, { env, webpack }) {
+    config.merge({
+      optimization: {
+        splitChunks: {
+          chunks: 'all',
+          minSize: 30000,
+          minChunks: 3,
+          automaticNameDelimiter: '.',
+          cacheGroups: {
+            vendor: {
+              name: 'vendors',
+              test({ resource }) {
+                return /[\\/]node_modules[\\/]/.test(resource);
+              },
+              priority: 10,
+            },
+          },
+        },
+      },
+    });
+  },
   // proxy: {
   //   '/api': {
   //     'target': 'http://192.168.12.124:8080',
