@@ -9,7 +9,7 @@ import React, { useState } from 'react';
 
 import { addProofDemand, updateProofDemand } from '@/services/proofDemand';
 
-import Api from '@/pages/Goods/services';
+import Api from '@/pages/goods/services';
 import Step1 from './components/Step1';
 import Step2 from './components/Step2';
 import Step3 from './components/Step3';

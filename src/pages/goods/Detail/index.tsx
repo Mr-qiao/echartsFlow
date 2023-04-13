@@ -6,7 +6,7 @@ import { groupBy } from 'lodash-es';
 import React, { useEffect, useState } from 'react';
 
 import Image from '@/components/Image';
-import { formatPriceRange, formatRatioRange } from '@/pages/Goods/Info/utils';
+import { formatPriceRange, formatRatioRange } from '@/pages/goods/Info/utils';
 import { transformFen2Yuan } from '@/utils';
 
 import { useParams } from '@umijs/max';

@@ -1,5 +1,5 @@
 import GoodsTableCol from '@/components/goodsTableCol';
-import { queryList } from '@/pages/Quotations/apis';
+import { queryList } from '@/pages/quotations/apis';
 import { filterPageName } from '@/utils';
 import { ProTable } from '@ant-design/pro-components';
 import { DatePicker } from 'antd';
