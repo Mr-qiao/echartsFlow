@@ -224,7 +224,7 @@ const GoodsInfo = React.forwardRef(({ isSupplier = true }: any, ref) => {
 
       //sku值
       setSkus(() =>
-        skus.map((sku) => ({
+        skus.map((sku: any) => ({
           ...sku,
           itemPrice: {
             ...transformFen2Yuan(sku.itemPrice, [
@@ -256,8 +256,8 @@ const GoodsInfo = React.forwardRef(({ isSupplier = true }: any, ref) => {
           />
           <div className="u-flex u-mt10">
             {detail.images
-              ?.filter((item, i) => i !== 0 && i <= 3)
-              ?.map((item, i) => {
+              ?.filter((item: any, i: number) => i !== 0 && i <= 3)
+              ?.map((item: any, i: number) => {
                 return (
                   <Image
                     key={i}
@@ -356,6 +356,26 @@ const GoodsInfo = React.forwardRef(({ isSupplier = true }: any, ref) => {
                   {detail.outsideItemCode}
                 </p>
               </Col>
+              {/* <Col span={12}>
+                <p>
+                  <span className="u-c888">商品详情：</span>
+                  <div className="u-flex u-mt10">
+                    {detail.contents
+                      ?.filter((item: any, i: number) => i !== 0 && i <= 3)
+                      ?.map((item: any, i: number) => {
+                        return (
+                          <Image
+                            key={i}
+                            width={60}
+                            height={60}
+                            src={item.image}
+                            style={{ borderRadius: 10 }}
+                          />
+                        );
+                      })}
+                  </div>
+                </p>
+              </Col> */}
 
               {/* <Col span={12}>
                 <p>
@@ -370,6 +390,7 @@ const GoodsInfo = React.forwardRef(({ isSupplier = true }: any, ref) => {
                   <a href={detail.supplierStyleCode}>{detail.supplierStyleCode}</a>
                 </p>
               </Col> */}
+
               {renderDynProps(true)}
               {/* {detail.sellPoint && ( */}
 
@@ -377,6 +398,31 @@ const GoodsInfo = React.forwardRef(({ isSupplier = true }: any, ref) => {
             </Row>
           </div>
         </Col>
+
+        <React.Fragment>
+          <Col span={24}>
+            <h1>商品详情：</h1>
+          </Col>
+          <Row gutter={[16, 10]} className="u-w100">
+            <Col span={24}>
+              <div className="u-flex u-mt10">
+                {detail.contents?.map((item: any, i: number) => {
+                  return (
+                    <div className="u-ml10" key={i}>
+                      <Image
+                        width={60}
+                        height={60}
+                        src={item?.image}
+                        style={{ borderRadius: 10 }}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            </Col>
+          </Row>
+        </React.Fragment>
+
         {renderDynProps()}
 
         <Col span={24}>
@@ -438,7 +484,7 @@ const GoodsInfo = React.forwardRef(({ isSupplier = true }: any, ref) => {
       return (
         <React.Fragment key={idx}>
           <Col span={24}>
-            <h1>商品属性</h1>
+            <h1>{key}</h1>
           </Col>
           <Row gutter={[16, 10]} className="u-w100">
             {dynProps[key].map((item: any) => (
