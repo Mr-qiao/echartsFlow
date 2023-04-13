@@ -1,4 +1,4 @@
-import ImgUpload from '@/pages/register/imgUpload';
+import ImgUpload from '@/pages/Register1/imgUpload';
 import {
   applyName,
   checkCompanyName,

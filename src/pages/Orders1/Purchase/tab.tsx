@@ -1,4 +1,4 @@
-import Purchase from '@/pages/orders/Purchase/index';
+import Purchase from '@/pages/Orders1/Purchase/index';
 import { Tabs } from 'antd';
 import { useState } from 'react';
 

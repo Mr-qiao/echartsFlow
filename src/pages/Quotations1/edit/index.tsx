@@ -1,7 +1,7 @@
 import BottomButton from '@/components/bottomButton';
 import GoodImgEditCheck from '@/components/goodImgEditCheck';
-import { queryById, updateById } from '@/pages/quotations/apis';
-import RepeatTable from '@/pages/quotations/components/repeatTable';
+import { queryById, updateById } from '@/pages/Quotations1/apis';
+import RepeatTable from '@/pages/Quotations1/components/repeatTable';
 import { useParams } from '@@/exports';
 import { ProCard } from '@ant-design/pro-components';
 import {

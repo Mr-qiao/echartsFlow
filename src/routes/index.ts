@@ -10,24 +10,24 @@ const GlobalRouters = [
     name: '登录',
     path: '/login',
     layout: false,
-    component: './login',
+    component: './Login1',
   },
   {
     name: '注册',
     path: '/register/:id',
     layout: false,
-    component: './register',
+    component: './Register1',
   },
   {
     name: '修改密码',
     path: '/reset-password',
     layout: false,
-    component: './register/resetPassword',
+    component: './Register1/resetPassword',
   },
   {
     path: '/help/:id',
     layout: false,
-    component: './register/help',
+    component: './Register1/help',
   },
 
   ...goods,

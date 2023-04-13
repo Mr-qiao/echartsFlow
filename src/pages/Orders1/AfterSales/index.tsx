@@ -1,6 +1,9 @@
 import BatchInput from '@/components/batchInput';
 import GoodsTableCol from '@/components/goodsTableCol';
-import { afterSalesExprotList, afterSalesqueryList } from '@/pages/orders/apis';
+import {
+  afterSalesExprotList,
+  afterSalesqueryList,
+} from '@/pages/Orders1/apis';
 import { filterPageName } from '@/utils';
 import { ProTable } from '@ant-design/pro-components';
 import { Button, DatePicker, Modal, Select } from 'antd';

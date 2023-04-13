@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import Api from '@/pages/goods/services';
+import Api from '@/pages/Goods1/services';
 
 const cookie = localStorage.getItem('supplier-token');
 export default () => {
