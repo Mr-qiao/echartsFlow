@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import Api from '@/pages/Goods/services';
 
-const cookie = localStorage.getItem('token');
+const cookie = localStorage.getItem('supplier-token');
 export default () => {
   const [category, setCategory] = useState<any[]>([]);
 
