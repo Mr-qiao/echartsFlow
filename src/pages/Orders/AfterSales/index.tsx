@@ -90,6 +90,7 @@ function AfterSales() {
           onChange={(e) => {
             setTimeSelect(e);
           }}
+          dropdownMatchSelectWidth={false}
           style={{
             overflow: 'hidden',
             textOverflow: 'ellipsis',
@@ -348,7 +349,9 @@ function AfterSales() {
           };
         }}
         search={{
-          labelWidth: 140,
+          // labelWidth: 140,
+          labelWidth: 100,
+          span: 6,
           defaultCollapsed: false,
         }}
         form={{

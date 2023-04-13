@@ -454,7 +454,9 @@ function TabList(props: any) {
           };
         }}
         search={{
-          labelWidth: 120,
+          // labelWidth: 120,
+          labelWidth: 100,
+          span: 6,
           defaultCollapsed: false,
         }}
         form={{

@@ -160,7 +160,8 @@ function Goods() {
       rowKey={'itemId'}
       columns={columns}
       search={{
-        labelWidth: 120,
+        labelWidth: 100,
+        span: 6,
         defaultCollapsed: false,
       }}
       scroll={{

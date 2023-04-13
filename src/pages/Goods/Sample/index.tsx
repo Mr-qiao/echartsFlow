@@ -237,7 +237,9 @@ function Sample() {
         }}
         rowKey={'itemId'}
         search={{
-          labelWidth: 120,
+          // labelWidth: 120,
+          labelWidth: 100,
+          span: 6,
           defaultCollapsed: false,
         }}
         actionRef={actionRef}
