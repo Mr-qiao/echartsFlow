@@ -85,7 +85,7 @@ function QuotationEdit() {
     data?.craftMap?.workmanshipImages?.length > 0
       ? data?.craftMap?.workmanshipImages.map((item: any) => ({ src: item }))
       : [];
-  // 尺寸列表 Columns
+  // 尺寸列表 Columns1
   const columns: any = [
     {
       title: '名称',
