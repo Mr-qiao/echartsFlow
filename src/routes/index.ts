@@ -16,18 +16,18 @@ const GlobalRouters = [
     name: '注册',
     path: '/register/:id',
     layout: false,
-    component: './Register',
+    component: './Register1',
   },
   {
     name: '修改密码',
     path: '/reset-password',
     layout: false,
-    component: './Register/resetPassword',
+    component: './Register1/resetPassword',
   },
   {
     path: '/help/:id',
     layout: false,
-    component: './Register/help',
+    component: './Register1/help',
   },
 
   ...goods,
