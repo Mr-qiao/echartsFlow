@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { categoryTree } from '@/pages/Goods/apis';
+import { categoryTree } from '@/services/goods';
 
 const cookie = localStorage.getItem('supplier-token');
 export const useCategory = () => {

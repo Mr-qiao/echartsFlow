@@ -9,7 +9,7 @@ import React, { useState } from 'react';
 
 import { addProofDemand, updateProofDemand } from '@/services/proofDemand';
 
-import { proofDemandDetail, sampleDetail } from '@/pages/Goods/apis';
+import { proofDemandDetail, sampleDetail } from '@/services/goods';
 import Step1 from './components/Step1';
 import Step2 from './components/Step2';
 import Step3 from './components/Step3';

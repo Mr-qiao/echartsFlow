@@ -12,7 +12,7 @@ import { transformFen2Yuan } from '@/utils';
 import { useParams } from '@umijs/max';
 import { AttrTypes } from '../Create/constant';
 // import Api from '../services';
-import { goodsDetail } from '@/pages/Goods/apis';
+import { goodsDetail } from '@/services/goods';
 
 const GoodsInfo = React.forwardRef(({ isSupplier = true }: any, ref) => {
   const { id } = useParams();

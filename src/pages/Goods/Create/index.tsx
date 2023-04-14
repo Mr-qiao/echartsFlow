@@ -21,7 +21,7 @@ import Upload from '@/components/Upload';
 import { useCategory } from '@/hooks';
 import { sleep, transformFen2Yuan, uuid } from '@/utils';
 // import Api from '../services';
-import { goodsAdd, goodsDetail, sampleDetail } from '@/pages/Goods/apis';
+import { goodsAdd, goodsDetail, sampleDetail } from '@/services/goods';
 import BrandSelectCpt from './components/BrandSelectCpt';
 import SkuCpt from './components/SkuCpt';
 import SkuTablesCpt from './components/SkuTablesCpt';

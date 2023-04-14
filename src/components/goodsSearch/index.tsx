@@ -1,6 +1,6 @@
 import GoodsTableCol from '@/components/goodsTableCol';
 import SelectTree from '@/components/selectTree';
-import { categoryTree, supplierItemList } from '@/pages/Goods/apis';
+import { categoryTree, supplierItemList } from '@/services/goods';
 import { filterPageName } from '@/utils';
 import { ProTable } from '@ant-design/pro-components';
 import { Col, Input, message, Modal, Row } from 'antd';
