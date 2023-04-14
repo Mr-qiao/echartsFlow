@@ -1,6 +1,6 @@
 import GoodsTableCol from '@/components/goodsTableCol';
 import SelectTree from '@/components/selectTree';
-import { getCategoryTree, queryList } from '@/pages/Goods/apis';
+import { categoryTree, supplierItemList } from '@/pages/Goods/apis';
 import { filterPageName } from '@/utils';
 import { ProTable } from '@ant-design/pro-components';
 import { Col, Input, message, Modal, Row } from 'antd';
@@ -13,7 +13,7 @@ function GoodsSearch(props: any) {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   useEffect(() => {
-    getCategoryTree({}, {}).then((res) => {
+    categoryTree({}, {}).then((res) => {
       if (res.success) {
         setOptionsTree(res.entry);
       } else {
@@ -206,7 +206,7 @@ function GoodsSearch(props: any) {
               // startTime: params.time?.length > 0 ? moment(params.time[0]).valueOf() : undefined,
               // endTime: params.time?.length > 0 ? moment(params.time[1]).valueOf() : undefined,
             };
-            const res = await queryList(arg0, {});
+            const res = await supplierItemList(arg0);
             const data = res.entry.data;
             return {
               data: data,

@@ -11,7 +11,8 @@ import { transformFen2Yuan } from '@/utils';
 
 import { useParams } from '@umijs/max';
 import { AttrTypes } from '../Create/constant';
-import Api from '../services';
+// import Api from '../services';
+import { goodsDetail } from '@/pages/Goods/apis';
 
 const GoodsInfo = React.forwardRef(({ isSupplier = true }: any, ref) => {
   const { id } = useParams();
@@ -156,7 +157,7 @@ const GoodsInfo = React.forwardRef(({ isSupplier = true }: any, ref) => {
 
   //获取商品信息
   async function getGoodsDetail(itemId: any) {
-    return Api.Goods.Detail({ itemId }).then(({ entry }) => {
+    return goodsDetail({ itemId }).then(({ entry }) => {
       const {
         item: baseInfo,
         baseProperties,

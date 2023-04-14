@@ -20,7 +20,8 @@ import React, { useEffect, useState } from 'react';
 import Upload from '@/components/Upload';
 import { useCategory } from '@/hooks';
 import { sleep, transformFen2Yuan, uuid } from '@/utils';
-import Api from '../services';
+// import Api from '../services';
+import { goodsAdd, goodsDetail, sampleDetail } from '@/pages/Goods/apis';
 import BrandSelectCpt from './components/BrandSelectCpt';
 import SkuCpt from './components/SkuCpt';
 import SkuTablesCpt from './components/SkuTablesCpt';
@@ -57,31 +58,29 @@ const Index: React.FC = () => {
 
   const handleChangeCate = (value?: any[]) => {
     let cateId = value ? value[value.length - 1] : undefined;
-    return Api.Goods.Detail({ categoryId: cateId, type: 3 }).then(
-      ({ entry }) => {
-        setDynProps(
-          groupBy(
-            entry?.baseProperties.sort((a, b) => a.order - b.order),
-            (item) => {
-              return item.bizGroupName;
-            },
-          ),
-        );
+    return goodsDetail({ categoryId: cateId, type: 3 }).then(({ entry }) => {
+      setDynProps(
+        groupBy(
+          entry?.baseProperties.sort((a, b) => a.order - b.order),
+          (item) => {
+            return item.bizGroupName;
+          },
+        ),
+      );
 
-        // setSaleProperties(entry?.saleProperties);
+      // setSaleProperties(entry?.saleProperties);
 
-        //sku枚举
-        setSkuAttr(
-          entry?.salePropertiesEnum.map((item: any) => ({
-            label: item.categoryPropertyName,
-            value: item.categoryPropertyCode,
-          })),
-        );
+      //sku枚举
+      setSkuAttr(
+        entry?.salePropertiesEnum.map((item: any) => ({
+          label: item.categoryPropertyName,
+          value: item.categoryPropertyCode,
+        })),
+      );
 
-        form.setFieldValue('saleProperties', []);
-        form.setFieldValue('skus', []);
-      },
-    );
+      form.setFieldValue('saleProperties', []);
+      form.setFieldValue('skus', []);
+    });
   };
   const handleLinkSample = () => {
     // sampleListRef.current?.show();
@@ -101,7 +100,7 @@ const Index: React.FC = () => {
     if (id) {
       _ = { itemId: Number(id), type: 3 };
 
-      Promise.all([Api.Goods.Detail(_)]).then(([{ entry }]) => {
+      Promise.all([goodsDetail(_)]).then(([{ entry }]) => {
         //动态属性
         setDynProps(
           groupBy(
@@ -203,7 +202,7 @@ const Index: React.FC = () => {
       );
       setSampleId(sampleId?.toString());
     }
-    const { entry } = await Api.Sample.Detail({ itemId: Number(sampleId) });
+    const { entry } = await sampleDetail({ itemId: Number(sampleId) });
     await handleChangeCate(entry.categoryIds);
 
     form.setFieldsValue({
@@ -330,7 +329,7 @@ const Index: React.FC = () => {
           },
         })),
       };
-      await Api.Goods.Add(data);
+      await goodsAdd(data);
       message.success('添加成功');
       await sleep(1500);
       history.push('/goods/list');

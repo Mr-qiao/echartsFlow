@@ -5,7 +5,8 @@ import React, { useImperativeHandle, useRef, useState } from 'react';
 import CustomModal from '@/components/CustomModal';
 import { useCategory } from '@/hooks';
 
-import Api from '../../services';
+// import Api from '../../services';
+import { sampleList } from '@/pages/Goods/apis';
 import BrandSelectCpt from './BrandSelectCpt';
 
 export const SampleListModal = React.forwardRef(({ onChange }: any, ref) => {
@@ -189,7 +190,7 @@ export const SampleListModal = React.forwardRef(({ onChange }: any, ref) => {
             pageNum: current,
             pageSize: pageSize,
           };
-          const { entry }: any = await Api.Sample.List(searchData);
+          const { entry }: any = await sampleList(searchData);
           return {
             data: entry?.list || [],
             success: true,

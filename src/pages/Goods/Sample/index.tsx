@@ -1,8 +1,8 @@
 import SearchSelect from '@/components/SearchSelect';
 import SelectTree from '@/components/selectTree';
 import {
+  categoryTree,
   delivery,
-  getCategoryTree,
   mark,
   sampleQueryList,
   searchForSystem,
@@ -19,7 +19,7 @@ const { Option } = Select;
 function Sample() {
   const [optionsTree, setOptionsTree] = useState([]);
   useEffect(() => {
-    getCategoryTree({}, {}).then((res) => {
+    categoryTree({}, {}).then((res) => {
       if (res.success) {
         setOptionsTree(res.entry);
       } else {

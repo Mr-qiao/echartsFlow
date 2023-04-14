@@ -9,7 +9,7 @@ import React, { useState } from 'react';
 
 import { addProofDemand, updateProofDemand } from '@/services/proofDemand';
 
-import Api from '@/pages/Goods/services';
+import { proofDemandDetail, sampleDetail } from '@/pages/Goods/apis';
 import Step1 from './components/Step1';
 import Step2 from './components/Step2';
 import Step3 from './components/Step3';
@@ -39,7 +39,7 @@ const Confirm = () => {
   const navigate = useNavigate();
   const fetchProofDemand = async () => {
     if (itemId) {
-      const { entry, success } = await Api.ProofDemand.Detail({
+      const { entry, success } = await proofDemandDetail({
         itemId: Number(itemId),
       });
       if (success) {
@@ -73,7 +73,7 @@ const Confirm = () => {
     fetchProofDemand();
 
     if (sampleId) {
-      const { entry } = await Api.Sample.Detail({ itemId: Number(sampleId) });
+      const { entry } = await sampleDetail({ itemId: Number(sampleId) });
       setSampleInfo(entry);
     }
   });

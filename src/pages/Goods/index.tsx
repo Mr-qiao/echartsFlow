@@ -1,6 +1,6 @@
 import GoodsTableCol from '@/components/goodsTableCol';
 import SelectTree from '@/components/selectTree';
-import { getCategoryTree, queryList } from '@/pages/Goods/apis';
+import { categoryTree, supplierItemList } from '@/pages/Goods/apis';
 import { filterPageName } from '@/utils';
 import { ProTable } from '@ant-design/pro-components';
 import { history } from '@umijs/max';
@@ -11,7 +11,7 @@ import BrandSelectCpt from './Create/components/BrandSelectCpt';
 function Goods() {
   const [optionsTree, setOptionsTree] = useState([]);
   useEffect(() => {
-    getCategoryTree({}, {}).then((res) => {
+    categoryTree({}, {}).then((res) => {
       if (res.success) {
         setOptionsTree(res.entry);
       } else {
@@ -184,7 +184,7 @@ function Goods() {
           // startTime: params.time?.length > 0 ? moment(params.time[0]).valueOf() : undefined,
           // endTime: params.time?.length > 0 ? moment(params.time[1]).valueOf() : undefined,
         };
-        const res = await queryList(arg0, {});
+        const res = await supplierItemList(arg0);
         const data = res.entry.list;
         return {
           data: data || [],
