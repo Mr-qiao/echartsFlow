@@ -163,10 +163,10 @@ function Quotation() {
           <a
             onClick={() => {
               if (recode.answerType === 1) {
-                history.push(`/quotation/editBoom/${recode.id}`);
+                history.push(`/quotations/editBoom/${recode.id}`);
                 return;
               }
-              history.push(`/quotation/edit/${recode.id}`);
+              history.push(`/quotations/edit/${recode.id}`);
             }}
           >
             {recode.status === 3 ? '修改报价' : '填写报价'}
