@@ -215,7 +215,7 @@
     "@babel/runtime" "^7.18.0"
     use-media-antd-query "^1.1.0"
 
-"@ant-design/pro-table@^3.5.2", "@ant-design/pro-table@^3.6.1":
+"@ant-design/pro-table@^3.6.1":
   version "3.6.1"
   resolved "http://npm.xinc818.com/@ant-design%2fpro-table/-/pro-table-3.6.1.tgz#751f1e5a856847d19ba3994a68e8c83a06b385eb"
   integrity sha512-t6B2al8HoX8WDVaPqmbtjYIRV1LG8Eo/WaWvFUlhWUaQ9h2rh+GxtFRe2pA3XBVB5TEYiBEu0fqPvjglNEox6g==
