@@ -33,7 +33,7 @@ export const SampleListModal = React.forwardRef(({ onChange }: any, ref) => {
       dataIndex: 'code',
       key: 'code',
       width: 120,
-      render: (item, record) => {
+      render: (_: any, record: any) => {
         return (
           <Image
             width={90}
@@ -52,7 +52,7 @@ export const SampleListModal = React.forwardRef(({ onChange }: any, ref) => {
       title: '样衣名称',
       key: 'title',
       dataIndex: 'title',
-      render: (item, record) => {
+      render: (_: any, record: any) => {
         return (
           <Tooltip title={record.title}>
             <p className="u-els u-mb10">{record.title}</p>
@@ -65,7 +65,7 @@ export const SampleListModal = React.forwardRef(({ onChange }: any, ref) => {
       key: 'categoryNames',
       dataIndex: 'categoryNames',
       hideInSearch: true,
-      render: (item, record) => {
+      render: (_: any, record: any) => {
         return (
           <p className="u-fs12 u-mb5 u-flex">
             {/* <span className="u-c888">商品类目：</span> */}
@@ -144,7 +144,7 @@ export const SampleListModal = React.forwardRef(({ onChange }: any, ref) => {
   //   const form = formModalRef.current.form;
   //   form.setFieldsValue({ userIdsName: selectedRows?.[0]?.userName, userIds: selectedRows?.[0]?.userId });
   // }
-  function onSelectChange(selectedRowKeys) {
+  function onSelectChange(selectedRowKeys: any) {
     console.log(selectedRowKeys);
     setSelectedRowKeys(selectedRowKeys);
   }

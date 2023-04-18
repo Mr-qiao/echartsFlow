@@ -13,7 +13,7 @@ const BrandSelectCpt = React.forwardRef(
 
     const [inputVal, setInputVal] = useState<any[]>();
 
-    const handleChange = (val) => {
+    const handleChange = (val: React.SetStateAction<any[] | undefined>) => {
       setInputVal(val);
       onChange?.(val);
     };
@@ -32,7 +32,7 @@ const BrandSelectCpt = React.forwardRef(
       return brandList({ key: value, limit: 10, status: 1 }).then(
         ({ entry }) => {
           setList(
-            entry?.map((item) => ({
+            entry?.map((item: { brandName: any; brandNameEn: any }) => ({
               ...item,
               names: `${item.brandName || '--'}/${item.brandNameEn || '--'}`,
             })),
@@ -41,7 +41,11 @@ const BrandSelectCpt = React.forwardRef(
       );
     }
 
-    const onCreateSuccess = (data) => {
+    const onCreateSuccess = (data: {
+      brandName: any;
+      brandNameEn: any;
+      id: any;
+    }) => {
       setList((o) => [
         ...o,
         {
