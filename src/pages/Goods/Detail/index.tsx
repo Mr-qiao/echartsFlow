@@ -26,7 +26,7 @@ const GoodsInfo = React.forwardRef(({ isSupplier = true }: any, ref) => {
       title: '规格信息',
       dataIndex: 'name',
       width: 300,
-      render: (item, record) => {
+      render: (_: any, record: any) => {
         return (
           <div className="u-f__center" style={{ justifyContent: 'flex-start' }}>
             <Image
@@ -64,7 +64,7 @@ const GoodsInfo = React.forwardRef(({ isSupplier = true }: any, ref) => {
       title: '价格（元）',
       dataIndex: 'thirdId',
       width: 180,
-      render: (item, record) => {
+      render: (_: any, record: any) => {
         return (
           <div className="u-ml10">
             <p className="u-fs12 u-mb5">
@@ -101,7 +101,7 @@ const GoodsInfo = React.forwardRef(({ isSupplier = true }: any, ref) => {
       title: '佣金',
       dataIndex: 'thirdId',
       width: 180,
-      render: (item, record) => {
+      render: (_: any, record: any) => {
         console.log(record, 'record');
         return (
           <div className="u-ml10">
@@ -121,7 +121,7 @@ const GoodsInfo = React.forwardRef(({ isSupplier = true }: any, ref) => {
       title: '库存',
       dataIndex: 'thirdId',
       width: 180,
-      render: (item, record) => {
+      render: (_: any, record: any) => {
         let stock = record?.invSku?.stock || 0;
         let lockStock = record?.invSku?.lockStock || 0;
         let val = stock - lockStock;

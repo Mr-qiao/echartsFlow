@@ -128,7 +128,7 @@ const Index: React.FC = () => {
             value: entry?.item?.brandId,
           },
 
-          saleProperties: entry?.saleProperties.map((item) => ({
+          saleProperties: entry?.saleProperties.map((item: any) => ({
             uuid: uuid(),
             categoryPropertyType: {
               label: item.categoryPropertyName,
