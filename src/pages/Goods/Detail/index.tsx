@@ -257,7 +257,7 @@ const GoodsInfo = React.forwardRef(({ isSupplier = true }: any, ref) => {
           />
           <div className="u-flex u-mt10">
             {detail.images
-              ?.filter((item: any, i: number) => i !== 0 && i <= 3)
+              ?.filter((_item: any, i: number) => i !== 0 && i <= 3)
               ?.map((item: any, i: number) => {
                 return (
                   <Image
