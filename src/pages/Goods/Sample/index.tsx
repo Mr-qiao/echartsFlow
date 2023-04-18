@@ -1,7 +1,7 @@
 import SearchSelect from '@/components/SearchSelect';
 import SelectTree from '@/components/selectTree';
+import { useCategory } from '@/hooks';
 import {
-  categoryTree,
   delivery,
   mark,
   sampleQueryList,
@@ -11,22 +11,13 @@ import { filterPageName, transformFen2Yuan } from '@/utils';
 import { ProTable } from '@ant-design/pro-components';
 import { Form, Image, message, Modal, Select, Space } from 'antd';
 import moment from 'moment';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { history } from 'umi';
 
 const { Option } = Select;
 
 function Sample() {
-  const [optionsTree, setOptionsTree] = useState([]);
-  useEffect(() => {
-    categoryTree({}, {}).then((res) => {
-      if (res.success) {
-        setOptionsTree(res.entry);
-      } else {
-        message.error('类目树获取失败，请稍后再试');
-      }
-    });
-  }, []);
+  const [category] = useCategory();
   const [form] = Form.useForm();
   const [activeKey, setActiveKey] = useState('99');
   const actionRef = useRef() as any;
@@ -67,7 +58,7 @@ function Sample() {
       renderFormItem: (item: any, _: any, form: any) => {
         return (
           <SelectTree
-            options={optionsTree}
+            options={category}
             fieldNames={{
               label: 'name',
               value: 'categoryId',

@@ -1,26 +1,18 @@
 import GoodsTableCol from '@/components/goodsTableCol';
 import SelectTree from '@/components/selectTree';
-import { categoryTree, supplierItemList } from '@/services/goods';
+import { useCategory } from '@/hooks';
+import { supplierItemList } from '@/services/goods';
 import { filterPageName } from '@/utils';
 import { ProTable } from '@ant-design/pro-components';
-import { Col, Input, message, Modal, Row } from 'antd';
-import { useEffect, useState } from 'react';
+import { Col, Input, Modal, Row } from 'antd';
+import { useState } from 'react';
 import './index.less';
 
 function GoodsSearch(props: any) {
   const { onChange, value } = props;
-  const [optionsTree, setOptionsTree] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  useEffect(() => {
-    categoryTree({}, {}).then((res) => {
-      if (res.success) {
-        setOptionsTree(res.entry);
-      } else {
-        message.error('类目树获取失败，请稍后再试');
-      }
-    });
-  }, []);
+  const [category] = useCategory();
   const columns: any = [
     {
       title: '商品类目',
@@ -28,7 +20,7 @@ function GoodsSearch(props: any) {
       renderFormItem: (item: any, _: any, form: any) => {
         return (
           <SelectTree
-            options={optionsTree}
+            options={category}
             fieldNames={{
               label: 'name',
               value: 'categoryId',
