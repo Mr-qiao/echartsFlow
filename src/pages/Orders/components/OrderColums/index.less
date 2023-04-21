@@ -1,0 +1,32 @@
+.tabColumns {
+  .imageBox {
+    display: flex;
+    align-items: center;
+
+    .imageStyle {
+      margin-right: 5px;
+    }
+
+    .imageTitle {
+      display: flex;
+      flex-direction: column;
+
+      .f {
+        display: flex;
+        align-items: center;
+
+        .v {
+          color: #315ff5;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  :global {
+    .ant-descriptions-row > th,
+    .ant-descriptions-row > td {
+      padding-bottom: 6px;
+    }
+  }
+}

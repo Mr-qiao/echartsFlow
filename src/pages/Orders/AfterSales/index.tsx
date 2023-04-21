@@ -59,9 +59,9 @@ function AfterSales() {
       render: (_: any, recode: any) => {
         return (
           <GoodsTableCol
-            footerImg={false}
-            imgs={[{ src: recode.imgUrl }]}
-            nameArr={[
+            isFooterImg={false}
+            imgList={[{ src: recode.imgUrl }]}
+            infoList={[
               {
                 title: '商品ID',
                 key: recode?.itemId4RE,
@@ -139,8 +139,8 @@ function AfterSales() {
       render: (_: any, recode: any) => {
         return (
           <GoodsTableCol
-            showImg={false}
-            nameArr={[
+            isMainImg={false}
+            infoList={[
               {
                 title: '单号',
                 key: recode.orderCode,
@@ -169,8 +169,8 @@ function AfterSales() {
       render: (_: any, recode: any) => {
         return (
           <GoodsTableCol
-            showImg={false}
-            nameArr={[
+            isMainImg={false}
+            infoList={[
               {
                 title: '单号',
                 key: recode.fundCode,
@@ -204,8 +204,8 @@ function AfterSales() {
       render: (_: any, recode: any) => {
         return (
           <GoodsTableCol
-            showImg={false}
-            nameArr={[
+            isMainImg={false}
+            infoList={[
               {
                 title: '快递',
                 key: recode.companyName4OD,
@@ -230,8 +230,8 @@ function AfterSales() {
       render: (_: any, recode: any) => {
         return (
           <GoodsTableCol
-            showImg={false}
-            nameArr={[
+            isMainImg={false}
+            infoList={[
               {
                 title: '快递',
                 key: recode.companyName4RE,

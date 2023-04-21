@@ -67,7 +67,7 @@ function GoodsSearch(props: any) {
       render: (_: any, recode: any) => {
         return (
           <GoodsTableCol
-            nameArr={[
+            infoList={[
               {
                 title: '款式名称',
                 key: recode.name,
@@ -85,7 +85,7 @@ function GoodsSearch(props: any) {
                 key: recode.categoryName,
               },
             ]}
-            imgs={recode.images.map((item: any) => {
+            imgList={recode.images.map((item: any) => {
               return {
                 src: item,
               };
@@ -102,7 +102,7 @@ function GoodsSearch(props: any) {
       render: (_: any, recode: any) => {
         return (
           <GoodsTableCol
-            nameArr={[
+            infoList={[
               {
                 title: '款式编码',
                 key: recode.name,
@@ -116,7 +116,7 @@ function GoodsSearch(props: any) {
                 key: recode.categoryName,
               },
             ]}
-            imgs={recode.images.map((item: any) => {
+            imgList={recode.images.map((item: any) => {
               return {
                 src: item,
               };
