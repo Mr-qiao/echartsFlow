@@ -9,7 +9,7 @@ export default [
         path: 'sales',
         name: '销售订单列表',
         title: '销售订单列表',
-        component: './Orders',
+        component: './Orders/SalesOrder',
       },
       {
         path: 'after-sales',

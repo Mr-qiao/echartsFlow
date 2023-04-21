@@ -34,8 +34,8 @@ function Quotation() {
       render: (_: any, recode: any) => {
         return (
           <GoodsTableCol
-            imgs={recode?.imgUrlList?.map((item: any) => ({ src: item }))}
-            nameArr={[
+            imgList={recode?.imgUrlList?.map((item: any) => ({ src: item }))}
+            infoList={[
               {
                 title: '商品名称',
                 key: recode?.itemTitle,

@@ -70,7 +70,7 @@ function Goods() {
       render: (_: any, recode: any) => {
         return (
           <GoodsTableCol
-            nameArr={[
+            infoList={[
               {
                 title: '款式名称',
                 key: recode.title,
@@ -92,7 +92,7 @@ function Goods() {
                 key: recode.clothSize,
               },
             ]}
-            imgs={
+            imgList={
               recode?.images?.length > 0
                 ? recode?.images?.map((item: any) => {
                     return {
