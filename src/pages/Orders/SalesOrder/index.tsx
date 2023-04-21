@@ -3,14 +3,14 @@ import GoodsTableCol from '@/components/goodsTableCol';
 import { DAYFORMAT_MINUTE, DAYFORMAT_YEAR } from '@/constants';
 import {
   AFATER_IS_CANCEL,
-  ORDER_STATUS_1,
   ORDER_STATUS_1_TYPE,
   ORDER_TIME_TYPE,
+  PlATFORM_ORDER,
   PlATFORM_ORDER_TYPE,
 } from '@/constants/orders';
 import { exportList, queryList } from '@/services/orders';
-import { ProTable } from '@ant-design/pro-components';
-import { Button, DatePicker, Image, Popover, Select } from 'antd';
+import { ProColumns, ProTable } from '@ant-design/pro-components';
+import { Button, DatePicker, Image, Popover, Select, Tabs } from 'antd';
 
 import dayjs from 'dayjs';
 import { useRef, useState } from 'react';
@@ -21,10 +21,11 @@ const { Option } = Select;
 const { RangePicker } = DatePicker;
 
 function TabList(props: any) {
-  const { tabKey } = props;
+  // const { tabKey } = props;
   const [timeSelect, setTimeSelect] = useState<string>('1');
   const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
-
+  const [tabData, setTabData] = useState<any>({});
+  const [tableTab, setTableTab] = useState<string>('1');
   const [platFormType, setPlatFormType] = useState(
     PlATFORM_ORDER_TYPE[0].value,
   );
@@ -34,7 +35,19 @@ function TabList(props: any) {
   const actionRef = useRef() as any;
   const ref: any = useRef();
 
-  const columnsSearch: any = [
+  const renderLabel = (name: string, val: any) => {
+    // if (!val) {
+    //   return `${name}(0)`;
+    // }
+    return `${name}`;
+  };
+
+  const handleTabChange = (key: string) => {
+    setTableTab(key);
+    actionRef?.current?.reset();
+  };
+
+  const searchColumns: ProColumns<Record<string, any>, 'text'>[] | undefined = [
     {
       title: (
         <Select
@@ -54,55 +67,42 @@ function TabList(props: any) {
           }}
         />
       ),
-      dataIndex: 'platformOrder',
-      hideInTable: true,
-      renderFormItem: (item: any, _: any, form: any) => {
-        return <BatchInput />;
+      formItemProps: {
+        htmlFor: '',
       },
+      dataIndex: 'platformNumberList',
+      hideInTable: true,
+      // valueType: 'dateRange',
+      valueEnum: PlATFORM_ORDER,
+      renderFormItem: () => <BatchInput></BatchInput>,
     },
     {
       title: '商品编码',
-      dataIndex: 'skuCodes',
+      dataIndex: 'itemCodeList',
       hideInTable: true,
-      renderFormItem: (item: any, _: any, form: any) => {
-        return <BatchInput />;
-      },
+      renderFormItem: () => <BatchInput></BatchInput>,
     },
     {
       title: '款式名称',
-      dataIndex: 'ksName',
+      dataIndex: 'title',
+      hideInTable: true,
+    },
+    {
+      title: '工厂名称',
+      dataIndex: 'deliveryFactory',
       hideInTable: true,
     },
     {
       title: '商品ID',
-      dataIndex: 'itemIds',
+      dataIndex: 'itemIdList',
       hideInTable: true,
-      renderFormItem: (item: any, _: any, form: any) => {
-        return <BatchInput />;
-      },
-    },
-    {
-      title: '快递公司',
-      dataIndex: 'ksName',
-      hideInTable: true,
-    },
-    {
-      title: '主播名称',
-      dataIndex: 'ksName',
-      hideInTable: true,
-    },
-    {
-      title: '店铺名称',
-      dataIndex: 'ksName',
-      hideInTable: true,
+      renderFormItem: () => <BatchInput></BatchInput>,
     },
     {
       title: '快递单号',
-      dataIndex: 'companyCodes',
+      dataIndex: 'expressOrderNumberList',
       hideInTable: true,
-      renderFormItem: (item: any, _: any, form: any) => {
-        return <BatchInput />;
-      },
+      renderFormItem: () => <BatchInput></BatchInput>,
     },
     {
       title: (
@@ -123,12 +123,26 @@ function TabList(props: any) {
           }}
         />
       ),
-      dataIndex: 'orderStatus',
-      hideInTable: true,
-      valueEnum: ORDER_STATUS_1,
       formItemProps: {
         htmlFor: '',
       },
+      dataIndex: 'orderStatus',
+      hideInTable: true,
+    },
+    {
+      title: '快递公司',
+      dataIndex: 'expressName',
+      hideInTable: true,
+    },
+    {
+      title: '主播名称',
+      dataIndex: 'anchorNickname',
+      hideInTable: true,
+    },
+    {
+      title: '店铺名称',
+      dataIndex: 'shopName',
+      hideInTable: true,
     },
     {
       title: (
@@ -138,9 +152,8 @@ function TabList(props: any) {
           defaultValue={timeType}
           dropdownMatchSelectWidth={135}
           onChange={(val) => {
-            // console.log(val, 'kk');
             setTimeType(val);
-            // formRef.current.resetFields(['time']);
+            formRef.current.resetFields(['time']);
           }}
           style={{
             overflow: 'hidden',
@@ -161,7 +174,7 @@ function TabList(props: any) {
   ];
 
   const columns: any = [
-    ...columnsSearch,
+    ...searchColumns,
     {
       title: '序号',
       dataIndex: 'index',
@@ -389,7 +402,7 @@ function TabList(props: any) {
       const sTime: any = timeSelect === '1' ? 'beginCreateTime' : 'startTime';
       const eTime: any = timeSelect === '1' ? 'endCreateTime' : 'endTime';
       let arg0: any = {
-        status: tabKey === '3' ? undefined : tabKey,
+        status: tableTab === '3' ? undefined : tableTab,
         ids: selectedRowKeys,
         timeType: timeSelect,
         ...res,
@@ -425,6 +438,34 @@ function TabList(props: any) {
   };
   return (
     <div>
+      <Tabs
+        defaultActiveKey={tableTab}
+        tabBarStyle={{ paddingLeft: 20 }}
+        onChange={handleTabChange}
+      >
+        <Tabs.TabPane
+          tab={renderLabel('待指派工厂', tabData['noSendCount'])}
+          key="1"
+        />
+        <Tabs.TabPane
+          tab={renderLabel('发货中', tabData['noSendCount'])}
+          key="2"
+        />
+        <Tabs.TabPane
+          tab={renderLabel('已发货', tabData['sendCount'])}
+          key="3"
+        />
+        <Tabs.TabPane
+          tab={renderLabel('异常', tabData['errorCount'])}
+          key="4"
+        />
+        <Tabs.TabPane
+          tab={renderLabel('已取消', tabData['noSendCount'])}
+          key="5"
+        />
+        <Tabs.TabPane tab={renderLabel('全部', tabData['count'])} key="0" />
+      </Tabs>
+
       <ProTable
         columns={columns}
         formRef={ref}
@@ -439,7 +480,7 @@ function TabList(props: any) {
             timeSelect === '1' ? 'beginCreateTime' : 'startTime';
           const eTime: any = timeSelect === '1' ? 'endCreateTime' : 'endTime';
           let arg0: any = {
-            status: tabKey === '3' ? undefined : tabKey,
+            status: tableTab === '3' ? undefined : tableTab,
             timeType: timeSelect,
             ...params,
           };
