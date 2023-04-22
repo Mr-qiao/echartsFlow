@@ -7,11 +7,13 @@ import {
   ORDER_TIME_TYPE,
   PlATFORM_ORDER,
   PlATFORM_ORDER_TYPE,
+  SALES_ORDER_TABLIST,
 } from '@/constants/orders';
 import { exportList, queryList } from '@/services/orders';
 import { ProColumns, ProTable } from '@ant-design/pro-components';
-import { Button, DatePicker, Image, Popover, Select, Tabs } from 'antd';
+import { Button, DatePicker, Image, Popover, Select } from 'antd';
 
+import TabPane from '@/components/TabPane';
 import dayjs from 'dayjs';
 import { useRef, useState } from 'react';
 import OrderColumns from '../components/OrderColums';
@@ -20,11 +22,10 @@ import styles from './index.less';
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
-function TabList(props: any) {
+function SalesOrder(props: any) {
   // const { tabKey } = props;
   const [timeSelect, setTimeSelect] = useState<string>('1');
   const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
-  const [tabData, setTabData] = useState<any>({});
   const [tableTab, setTableTab] = useState<string>('1');
   const [platFormType, setPlatFormType] = useState(
     PlATFORM_ORDER_TYPE[0].value,
@@ -34,13 +35,6 @@ function TabList(props: any) {
 
   const actionRef = useRef() as any;
   const ref: any = useRef();
-
-  const renderLabel = (name: string, val: any) => {
-    // if (!val) {
-    //   return `${name}(0)`;
-    // }
-    return `${name}`;
-  };
 
   const handleTabChange = (key: string) => {
     setTableTab(key);
@@ -438,33 +432,11 @@ function TabList(props: any) {
   };
   return (
     <div>
-      <Tabs
+      <TabPane
+        tabList={SALES_ORDER_TABLIST}
         defaultActiveKey={tableTab}
-        tabBarStyle={{ paddingLeft: 20 }}
         onChange={handleTabChange}
-      >
-        <Tabs.TabPane
-          tab={renderLabel('待指派工厂', tabData['noSendCount'])}
-          key="1"
-        />
-        <Tabs.TabPane
-          tab={renderLabel('发货中', tabData['noSendCount'])}
-          key="2"
-        />
-        <Tabs.TabPane
-          tab={renderLabel('已发货', tabData['sendCount'])}
-          key="3"
-        />
-        <Tabs.TabPane
-          tab={renderLabel('异常', tabData['errorCount'])}
-          key="4"
-        />
-        <Tabs.TabPane
-          tab={renderLabel('已取消', tabData['noSendCount'])}
-          key="5"
-        />
-        <Tabs.TabPane tab={renderLabel('全部', tabData['count'])} key="0" />
-      </Tabs>
+      />
 
       <ProTable
         columns={columns}
@@ -582,4 +554,4 @@ function TabList(props: any) {
   );
 }
 
-export default TabList;
+export default SalesOrder;
