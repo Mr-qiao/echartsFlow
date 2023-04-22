@@ -19,7 +19,7 @@ const TabPane: React.FC<propsType> = ({
   tabList,
   ...rest
 }) => {
-  const renderLabel = (name: string, val: any) => {
+  const renderLabel = (name: string, val: undefined | number) => {
     return val ? `${name}(${val || 0})` : `${name}`;
   };
 
