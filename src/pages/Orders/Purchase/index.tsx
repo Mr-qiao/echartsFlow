@@ -1,5 +1,7 @@
 import BatchInput from '@/components/batchInput';
 import SelectCpt from '@/components/selectCpt';
+import TabPane from '@/components/TabPane';
+import { PURCHASE_ORDER_TABLIST } from '@/constants/orders';
 import { purchaseExportList, purchaseQueryList } from '@/services/orders';
 import { filterPageName } from '@/utils';
 import { ProTable } from '@ant-design/pro-components';
@@ -11,10 +13,11 @@ import { history } from 'umi';
 const { RangePicker } = DatePicker;
 
 function Purchase(props: any) {
-  const { tabKey } = props;
+  // const { tabKey } = props;
   const actionRef = useRef() as any;
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [tabKey, setTabKey] = useState('2') as any;
   const ref: any = useRef();
   const columns: any = [
     {
@@ -161,6 +164,11 @@ function Purchase(props: any) {
       },
     },
   ];
+
+  const handleTabChange = (key: string) => {
+    setTabKey(key);
+    actionRef?.current?.reset();
+  };
   const purchaseExportListClick = () => {
     ref?.current?.validateFields().then((res: any) => {
       const arg0 = {
@@ -194,6 +202,11 @@ function Purchase(props: any) {
   };
   return (
     <div>
+      <TabPane
+        tabList={PURCHASE_ORDER_TABLIST}
+        defaultActiveKey={tabKey}
+        onChange={handleTabChange}
+      />
       <ProTable
         columns={columns}
         defaultSize={'small'}
