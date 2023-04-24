@@ -243,7 +243,6 @@ const GoodsInfo = React.forwardRef(({ isSupplier = true }: any, ref) => {
   }));
 
   useEffect(() => {
-    // console.log(id);
     getGoodsDetail(id);
   }, [id]);
 
