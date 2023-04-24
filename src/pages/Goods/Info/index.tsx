@@ -23,7 +23,7 @@ function Goods() {
     {
       title: '商品类目',
       dataIndex: 'categoryId',
-      renderFormItem: (item: any, _: any, form: any) => {
+      renderFormItem: () => {
         return (
           <SelectTree
             options={category}
