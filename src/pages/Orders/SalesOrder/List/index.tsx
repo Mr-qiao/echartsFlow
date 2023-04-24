@@ -88,6 +88,8 @@ const List: React.FC<propsType> = ({ tableTab, actionRef }) => {
         let arg0: any = {
           status: tableTab === '3' ? undefined : tableTab,
           timeType: timeSelect,
+          platFormType,
+          orderType,
           ...params,
         };
         arg0[sTime] =
