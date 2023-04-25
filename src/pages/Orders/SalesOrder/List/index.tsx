@@ -86,8 +86,8 @@ const List: React.FC<propsType> = ({ tableTab, actionRef }) => {
         const sTime: any = timeSelect === '1' ? 'beginCreateTime' : 'startTime';
         const eTime: any = timeSelect === '1' ? 'endCreateTime' : 'endTime';
         let arg0: any = {
-          status: tableTab === '3' ? undefined : tableTab,
-          timeType: timeSelect,
+          status: tableTab,
+          timeType,
           platFormType,
           orderType,
           ...params,

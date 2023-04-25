@@ -119,16 +119,16 @@ export const getColumns: React.FC<PropsType> = ({
       dataIndex: 'expressName',
       hideInTable: true,
     },
-    {
-      title: '主播名称',
-      dataIndex: 'anchorNickname',
-      hideInTable: true,
-    },
-    {
-      title: '店铺名称',
-      dataIndex: 'shopName',
-      hideInTable: true,
-    },
+    // {
+    //   title: '主播名称',
+    //   dataIndex: 'anchorNickname',
+    //   hideInTable: true,
+    // },
+    // {
+    //   title: '店铺名称',
+    //   dataIndex: 'shopName',
+    //   hideInTable: true,
+    // },
     {
       title: (
         <Select
@@ -211,14 +211,14 @@ export const getColumns: React.FC<PropsType> = ({
                 title: '单号',
                 key: record.ksOrderNumber,
               },
-              {
-                title: '主播',
-                key: record.anchorNickname,
-              },
-              {
-                title: '店铺',
-                key: record.shopName,
-              },
+              // {
+              //   title: '主播',
+              //   key: record.anchorNickname,
+              // },
+              // {
+              //   title: '店铺',
+              //   key: record.shopName,
+              // },
               {
                 title: '来源',
                 key: record.source,
