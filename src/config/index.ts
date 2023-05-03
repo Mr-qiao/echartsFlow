@@ -3,8 +3,8 @@ const host = location.host;
 let env = 'production';
 
 if (host.includes('dev') || host.includes('localhost')) {
-  // env = 'development';
-  env = 'daily';
+  env = 'development';
+  // env = 'daily';
 } else if (host.includes('daily')) {
   env = 'daily';
 } else if (host.includes('gray')) {
@@ -18,6 +18,13 @@ const ajaxBaseUrl = {
   production: 'https://api.xinc818.com',
 }[env];
 
+const ajaxBaseUrlKI = {
+  development: 'https://kunlun-api-dev.xinc818.com',
+  daily: 'https://kunlun-api-daily.xinc818.com',
+  gray: 'https://kunlun-api-gray.xinc818.com',
+  production: 'https://kunlun-api-prod.xinc818.com',
+}[env];
+
 const loginUrl: any = {
   development: 'https://dev.xinc818.net/sso-system/',
   daily: 'https://daily.xinc818.net/sso-system/',
@@ -27,6 +34,7 @@ const loginUrl: any = {
 
 export default {
   ajaxBaseUrl,
+  ajaxBaseUrlKI,
   loginUrl,
   env,
 };
