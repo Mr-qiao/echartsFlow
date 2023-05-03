@@ -17,6 +17,7 @@
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@ant-design/pro-components": "^2.0.1",
+    "@fingerprintjs/fingerprintjs": "^3.4.1",
     "@umijs/max": "^4.0.52",
     "@xc/react-hooks": "^1.0.3",
     "@xc/web-cmpt": "^1.0.18",

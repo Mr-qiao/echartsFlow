@@ -3,7 +3,7 @@ import {
   ORDER_TIME_TYPE,
   PlATFORM_ORDER_TYPE,
 } from '@/constants/orders';
-import { exportList, queryList } from '@/services/orders';
+import { exportList, getSaleOrderList } from '@/services/orders';
 import { ProTable } from '@ant-design/pro-components';
 import { Button } from 'antd';
 import dayjs from 'dayjs';
@@ -23,7 +23,10 @@ const List: React.FC<propsType> = ({ tableTab, actionRef }) => {
   );
   const [orderType, setOrderType] = useState(ORDER_STATUS_1_TYPE[0].value);
   const [timeType, setTimeType] = useState(ORDER_TIME_TYPE[0].value);
-  const ref: any = useRef();
+  const [shopStatus, setShopStatus] = useState<string>('');
+  const [orderStatus, setOrderStatus] = useState<string>('');
+  // const ref: any = useRef();
+  const formRef: any = useRef();
 
   const exportListClick = () => {
     ref?.current?.validateFields().then((res: any) => {
@@ -69,13 +72,18 @@ const List: React.FC<propsType> = ({ tableTab, actionRef }) => {
     <ProTable
       columns={getColumns({
         platFormType,
+        formRef,
         orderType,
         timeType,
+        shopStatus,
+        orderStatus,
+        setShopStatus,
+        setOrderStatus,
         setPlatFormType,
         setOrderType,
         setTimeType,
       })}
-      formRef={ref}
+      formRef={formRef}
       defaultSize={'small'}
       scroll={{
         x: 'max-content',
@@ -83,24 +91,32 @@ const List: React.FC<propsType> = ({ tableTab, actionRef }) => {
       rowKey={'id'}
       actionRef={actionRef}
       request={async (params = {}, sort, filter) => {
-        const sTime: any = timeSelect === '1' ? 'beginCreateTime' : 'startTime';
-        const eTime: any = timeSelect === '1' ? 'endCreateTime' : 'endTime';
+        const { pageSize, current, time, ...par } = params;
         let arg0: any = {
-          status: tableTab,
-          timeType,
+          pageSize,
+          pageNum: current,
           platFormType,
-          orderType,
-          ...params,
+          shopStatus,
+          orderStatus,
+          status: tableTab,
+          ...par,
         };
-        arg0[sTime] =
-          params.sendTime?.length > 0
-            ? dayjs(params.sendTime[0]).valueOf()
-            : undefined;
-        arg0[eTime] =
-          params.sendTime?.length > 0
-            ? dayjs(params.sendTime[1]).valueOf()
-            : undefined;
-        const res: any = await queryList(arg0, {});
+
+        if (time) {
+          arg0.beginTime = Date.parse(time[0]);
+          arg0.endTime = Date.parse(time[1]);
+          arg0.timeType = timeType;
+        }
+        let param = {};
+        Object.keys(arg0 || {}).forEach((key) => {
+          if (arg0[key]) {
+            param[key] = arg0[key];
+          }
+        });
+
+        if (param?.status === '0') param.status = '';
+
+        const res: any = await getSaleOrderList(param, {});
         const data = res?.entry?.list;
 
         const mockList = [
@@ -171,8 +187,8 @@ const List: React.FC<propsType> = ({ tableTab, actionRef }) => {
         };
       }}
       search={{
-        labelWidth: 100,
-        span: 6,
+        // labelWidth: 100,
+        // span: 6,
         defaultCollapsed: false,
       }}
       form={{
