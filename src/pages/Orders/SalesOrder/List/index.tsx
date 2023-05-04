@@ -14,7 +14,6 @@ interface propsType {
 }
 
 const List: React.FC<propsType> = ({ tableTab, actionRef }) => {
-  // const [timeSelect, setTimeSelect] = useState<string>('1');
   const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
   const [platFormType, setPlatFormType] = useState(
     PlATFORM_ORDER_TYPE[0].value,
