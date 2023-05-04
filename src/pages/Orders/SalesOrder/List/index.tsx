@@ -3,20 +3,18 @@ import {
   ORDER_TIME_TYPE,
   PlATFORM_ORDER_TYPE,
 } from '@/constants/orders';
-import { exportList, getSaleOrderList } from '@/services/orders';
+import { exportSaleOrderList, getSaleOrderList } from '@/services/orders';
 import { ProTable } from '@ant-design/pro-components';
 import { Button } from 'antd';
-import dayjs from 'dayjs';
 import React, { useRef, useState } from 'react';
 import { getColumns } from './columns';
-
 interface propsType {
   tableTab: string;
   actionRef: any;
 }
 
 const List: React.FC<propsType> = ({ tableTab, actionRef }) => {
-  const [timeSelect, setTimeSelect] = useState<string>('1');
+  // const [timeSelect, setTimeSelect] = useState<string>('1');
   const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
   const [platFormType, setPlatFormType] = useState(
     PlATFORM_ORDER_TYPE[0].value,
@@ -25,41 +23,25 @@ const List: React.FC<propsType> = ({ tableTab, actionRef }) => {
   const [timeType, setTimeType] = useState(ORDER_TIME_TYPE[0].value);
   const [shopStatus, setShopStatus] = useState<string>('');
   const [orderStatus, setOrderStatus] = useState<string>('');
-  // const ref: any = useRef();
   const formRef: any = useRef();
+  const [exportParams, setExportParams] = useState<any>({}); //导出参数
 
-  const exportListClick = () => {
-    ref?.current?.validateFields().then((res: any) => {
-      const sTime: any = timeSelect === '1' ? 'beginCreateTime' : 'startTime';
-      const eTime: any = timeSelect === '1' ? 'endCreateTime' : 'endTime';
-      let arg0: any = {
-        status: tableTab === '3' ? undefined : tableTab,
-        ids: selectedRowKeys,
-        timeType: timeSelect,
-        ...res,
-      };
-      arg0[sTime] =
-        res.sendTime?.length > 0 ? dayjs(res.sendTime[0]).valueOf() : undefined;
-      arg0[eTime] =
-        res.sendTime?.length > 0 ? dayjs(res.sendTime[1]).valueOf() : undefined;
-      exportList(arg0, { responseType: 'blob', getResponse: true }).then(
-        (res: any) => {
-          let blob = new Blob([res.data]);
-          let downloadElement = document.createElement('a');
-          let href = window.URL.createObjectURL(blob); //创建下载的链接
-          downloadElement.href = href;
-          downloadElement.download =
-            decodeURI(
-              res.headers['content-disposition'].split('filename=')[1],
-            ) || ''; //下载后文件名
-          document.body.appendChild(downloadElement);
-          downloadElement.click(); //点击下载
-          document.body.removeChild(downloadElement); //下载完成移除元素
-          window.URL.revokeObjectURL(href); //释放掉blob对象
-        },
-      );
-    });
-  };
+  // const exportListClick = async () => {
+  // formRef?.current?.validateFields().then((res: any) => {
+  //   let arg0: any = {
+  //     status: tableTab,
+  //     ids: selectedRowKeys,
+  //     timeType,
+  //     ...res,
+  //   };
+  //   arg0.startTime =
+  //     res.time?.length > 0 ? dayjs(res.time[0]).valueOf() : undefined;
+  //   arg0.endTime =
+  //     res.time?.length > 0 ? dayjs(res.time[1]).valueOf() : undefined;
+  //   console.log(arg0, '导出');
+  //   // exportSaleOrderList(arg0, {});
+  // });
+  // };
   const onSelectChange = (newSelectedRowKeys: any) => {
     setSelectedRowKeys(newSelectedRowKeys);
   };
@@ -115,75 +97,15 @@ const List: React.FC<propsType> = ({ tableTab, actionRef }) => {
         });
 
         if (param?.status === '0') param.status = '';
-
-        const res: any = await getSaleOrderList(param, {});
-        const data = res?.entry?.list;
-
-        const mockList = [
-          {
-            systemInfo: {
-              jstOrderNumber: '112121',
-              payAmount: 212,
-              deliveryFactory: '张三工厂',
-              orderStatus: '已付款待审核',
-              problemTypes: '等待订单合并 ',
-            },
-            platformInfo: {
-              anchorNickname: 'pgl',
-              ksOrderNumber: '1212',
-              platformStatus: '等待卖家发货',
-              shopName: 'xxx',
-              source: 'xxx',
-            },
-            itemInfo: [
-              {
-                anchorNickname: 'pgl',
-                itemCode: '12121',
-                itemId: '1212',
-                itemImage: '',
-                money: 121,
-                number: 121,
-                orderNumber: 11,
-                specification: '喝死/ss',
-                title: 'nnnn',
-              },
-              {
-                anchorNickname: 'pgl',
-                itemCode: '12121',
-                itemId: '1212',
-                itemImage: '',
-                money: 121,
-                number: 121,
-                orderNumber: 11,
-                specification: '喝死/ss',
-                title: 'nnnn',
-              },
-            ],
-            dateInfo: {
-              orderTime: 1682057434000,
-              payTime: 1682057434000,
-              planDeliverTime: 1682057434000,
-              updateTime: 1682057434000,
-            },
-            receiveInfo: {
-              name: 'sss',
-              address: '浙江省杭州市萧山区盈丰街道博地中心C座 1401A',
-              phone: '156xxxxxxxx',
-            },
-            deliveryInfo: {
-              deliverTime: 1682057434000,
-              deliveryRepository: 'xxxxx仓库',
-              expressName: '快递公司',
-              expressOrderNumber: 121212121,
-            },
-          },
-        ];
+        console.log(param, '-------');
+        setExportParams(param);
+        const { entry } = await getSaleOrderList(param, {});
 
         return {
-          data: mockList,
-          success: res.success,
+          data: entry.list,
+          success: entry.success,
           // 不传会使用 data 的长度，如果是分页一定要传
-          total: res?.entry.totalRecord,
+          total: entry.totalRecord,
         };
       }}
       search={{
@@ -197,7 +119,14 @@ const List: React.FC<propsType> = ({ tableTab, actionRef }) => {
       options={false}
       rowSelection={{ ...rowSelection }}
       toolBarRender={() => [
-        <Button type="primary" key="primary" onClick={exportListClick}>
+        <Button
+          type="primary"
+          key="primary"
+          onClick={async () => {
+            console.log(exportParams, '导出---');
+            await exportSaleOrderList(exportParams, {});
+          }}
+        >
           导出
         </Button>,
       ]}

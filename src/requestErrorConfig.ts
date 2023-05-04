@@ -110,6 +110,7 @@ export const errorConfig: RequestConfig = {
             kl_display_type: 1, // 展示类型：0、空缺(默认：客户端未填，当作0) 1、Native 2、H5
             kl_device_id: visitorId, // 设备UUID
             kl_trace_id: uuid(32).toLowerCase(), // 字符串，链路跟踪ID，使用UUID 算法生成
+            kl_server_url: '10.100.0.174:20881',
           },
         });
         config.data = {
@@ -129,8 +130,30 @@ export const errorConfig: RequestConfig = {
 
   // 响应拦截器
   responseInterceptors: [
-    (response) => {
+    (response: any) => {
       // 拦截响应数据，进行个性化处理
+      if (
+        'isDownload' in response.config &&
+        response.headers['content-disposition']
+      ) {
+        const fileName = response.headers['content-disposition']
+          .split(';')[1]
+          .split('=')[1]; // 根据接口返回情况拿到文件名
+        const blob: Blob = new Blob([response.data as Blob]); // 通过返回的流数据 手动构建blob 流
+        const reader = new FileReader();
+        reader.readAsDataURL(blob); // 转换为base64，可以直接放入a标签的href （转换base64还可用 window.atob ，未实验过）
+        reader.onload = (e) => {
+          // 转换完成，创建一个a标签用于下载
+          const a = document.createElement('a');
+          console.log(decodeURIComponent(fileName));
+          a.download = decodeURIComponent(fileName); // 构建 下载的文件名称以及下载的文件格式（可通过传值输入）
+          if (typeof e.target?.result === 'string') {
+            a.href = e.target.result;
+          }
+          a.click();
+        };
+        return false;
+      }
       const { data } = response as unknown as ResponseStructure;
       if (data.code === 401) {
         message.error(data.message);

@@ -46,7 +46,7 @@ export const getColumns: React.FC<PropsType> = ({
           defaultValue={platFormType}
           dropdownMatchSelectWidth={135}
           onChange={(val) => {
-            formRef.current.resetFields(['platformNumberList', 'orderStatus']);
+            formRef.current.resetFields(['orderStatus']);
             setPlatFormType(val);
           }}
           style={{
@@ -192,7 +192,7 @@ export const getColumns: React.FC<PropsType> = ({
               },
               {
                 title: '发货工厂',
-                key: record.payAmount,
+                key: record.deliveryFactory,
               },
               {
                 title: '订单状态',
@@ -252,7 +252,11 @@ export const getColumns: React.FC<PropsType> = ({
                     >
                       <div className={styles.imageStyle}>
                         <Image
-                          src={item.itemImageList[0]}
+                          src={
+                            Array.isArray(item.itemImageList) &&
+                            item.itemImageList.length > 0 &&
+                            item.itemImageList[0]
+                          }
                           preview={false}
                           width={40}
                           height={40}
