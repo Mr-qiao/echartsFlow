@@ -53,7 +53,7 @@ const List: React.FC<propsType> = ({ tableTab, actionRef }) => {
       scroll={{
         x: 'max-content',
       }}
-      rowKey={'id'}
+      rowKey={'orderId'}
       actionRef={actionRef}
       request={async (params = {}, sort, filter) => {
         const { pageSize, current, time, ...par } = params;
@@ -104,7 +104,12 @@ const List: React.FC<propsType> = ({ tableTab, actionRef }) => {
           type="primary"
           key="primary"
           onClick={async () => {
-            await exportSaleOrderList(exportParams, {});
+            let query = {
+              ...exportParams,
+            };
+            if (selectedRowKeys.length) query.ids = selectedRowKeys;
+
+            await exportSaleOrderList(query, {});
           }}
         >
           导出

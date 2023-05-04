@@ -103,7 +103,7 @@ const OrderColumns: React.FC<propsType> = ({ dataSource }) => {
         {
           title: '',
           dataIndex: 'itemInfoVOList',
-          width: 200,
+          width: 220,
           render: (_: any, info: any) => {
             return (
               <Descriptions column={1}>
