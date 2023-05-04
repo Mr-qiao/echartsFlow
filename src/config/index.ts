@@ -4,6 +4,7 @@ let env = 'production';
 
 if (host.includes('dev') || host.includes('localhost')) {
   env = 'development';
+  // env = 'daily';
 } else if (host.includes('daily')) {
   env = 'daily';
 } else if (host.includes('gray')) {
