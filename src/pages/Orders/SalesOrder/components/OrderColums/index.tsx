@@ -51,16 +51,14 @@ const OrderColumns: React.FC<propsType> = ({ dataSource }) => {
                     <span>商品编码：</span>
                     <span
                       className={styless.v}
-                      onClick={() =>
-                        winOpen(`/goods/info?type=2&id=${info.itemCode}`)
-                      }
+                      onClick={() => winOpen(`/goods/detail/${info.itemId}`)}
                     >
-                      {info.itemCode}
+                      {info.ksItemCode}
                     </span>
                   </div>
                   <div className={styless.f}>
                     <span>商品ID：</span>
-                    <span>{info.itemId}</span>
+                    <span>{info.ksItemId}</span>
                   </div>
                   <div className={styless.f}>
                     <span>平台单号：</span>

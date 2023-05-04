@@ -58,12 +58,24 @@ export const ORDER_ERR_TYPE = {
 
 export const ORDER_TIME_TYPE = [
   {
-    label: '创建日期',
-    value: 1,
+    label: '付款日期',
+    value: '1',
+  },
+  {
+    label: '下单日期',
+    value: '2',
+  },
+  {
+    label: '计划发货日期',
+    value: '3',
+  },
+  {
+    label: '更新日期选择',
+    value: '4',
   },
   {
     label: '发货日期',
-    value: 2,
+    value: '5',
   },
 ];
 export const AFATER_TIME_TYPE = [
