@@ -5,7 +5,7 @@ import { useRef, useState } from 'react';
 import List from './List';
 
 function SalesOrder() {
-  const [tableTab, setTableTab] = useState<string>('1');
+  const [tableTab, setTableTab] = useState<string>('0');
   const actionRef = useRef() as any;
 
   const handleTabChange = (key: string) => {
