@@ -15,7 +15,7 @@ interface propsType {
 
 const List: React.FC<propsType> = ({ tableTab, actionRef }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
-  const [platFormType, setPlatFormType] = useState(
+  const [platformType, setplatformType] = useState(
     PlATFORM_ORDER_TYPE[0].value,
   );
   const [orderType, setOrderType] = useState(ORDER_STATUS_1_TYPE[0].value);
@@ -36,7 +36,7 @@ const List: React.FC<propsType> = ({ tableTab, actionRef }) => {
   return (
     <ProTable
       columns={getColumns({
-        platFormType,
+        platformType,
         formRef,
         orderType,
         timeType,
@@ -44,7 +44,7 @@ const List: React.FC<propsType> = ({ tableTab, actionRef }) => {
         orderStatus,
         setShopStatus,
         setOrderStatus,
-        setPlatFormType,
+        setplatformType,
         setOrderType,
         setTimeType,
       })}
@@ -60,7 +60,7 @@ const List: React.FC<propsType> = ({ tableTab, actionRef }) => {
         let arg0: any = {
           pageSize,
           pageNum: current,
-          platFormType,
+          platformType,
           shopStatus,
           orderStatus,
           status: tableTab,

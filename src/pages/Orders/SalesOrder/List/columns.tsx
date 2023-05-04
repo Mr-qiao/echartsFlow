@@ -17,10 +17,10 @@ import OrderColumns from '../components/OrderColums';
 import styles from './index.less';
 
 interface PropsType {
-  platFormType: string;
+  platformType: string;
   orderType: string;
   timeType: number;
-  setPlatFormType: any;
+  setplatformType: any;
   setOrderType: any;
   setTimeType: any;
   setOrderStatus: any;
@@ -29,10 +29,10 @@ interface PropsType {
 }
 
 export const getColumns: React.FC<PropsType> = ({
-  platFormType,
+  platformType,
   formRef,
   timeType,
-  setPlatFormType,
+  setplatformType,
   setTimeType,
   setOrderStatus,
   setShopStatus,
@@ -43,11 +43,11 @@ export const getColumns: React.FC<PropsType> = ({
         <Select
           placeholder="请选择"
           options={PLATFORM_ORDERSTATUS}
-          defaultValue={platFormType}
+          defaultValue={platformType}
           dropdownMatchSelectWidth={135}
           onChange={(val) => {
             formRef.current.resetFields(['orderStatus']);
-            setPlatFormType(val);
+            setplatformType(val);
           }}
           style={{
             overflow: 'hidden',
@@ -98,7 +98,7 @@ export const getColumns: React.FC<PropsType> = ({
         <Select
           placeholder="请选择"
           options={PLATFORM_ORDERSTATUS}
-          value={platFormType}
+          value={platformType}
           dropdownMatchSelectWidth={135}
           style={{
             overflow: 'hidden',
@@ -117,11 +117,11 @@ export const getColumns: React.FC<PropsType> = ({
             placeholder="请选择"
             allowClear
             options={
-              platFormType === '2' ? PlATFORM_ORDER_TYPE : ORDER_STATUS_1_TYPE
+              platformType === '2' ? PlATFORM_ORDER_TYPE : ORDER_STATUS_1_TYPE
             }
             dropdownMatchSelectWidth={135}
             onChange={(val) => {
-              if (platFormType === '2') {
+              if (platformType === '2') {
                 setShopStatus(val);
               } else {
                 setOrderStatus(val);
