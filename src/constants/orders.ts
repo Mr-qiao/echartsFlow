@@ -153,12 +153,12 @@ export const GOODS_STATUS = {
 };
 
 export const SALES_ORDER_TABLIST = [
-  {
-    key: '1',
-    label: '待指派工厂',
-    value: undefined,
-    count: undefined,
-  },
+  // {
+  //   key: '1',
+  //   label: '待指派工厂',
+  //   value: undefined,
+  //   count: undefined,
+  // },
   {
     key: '2',
     label: '发货中',

@@ -26,22 +26,6 @@ const List: React.FC<propsType> = ({ tableTab, actionRef }) => {
   const formRef: any = useRef();
   const [exportParams, setExportParams] = useState<any>({}); //导出参数
 
-  // const exportListClick = async () => {
-  // formRef?.current?.validateFields().then((res: any) => {
-  //   let arg0: any = {
-  //     status: tableTab,
-  //     ids: selectedRowKeys,
-  //     timeType,
-  //     ...res,
-  //   };
-  //   arg0.startTime =
-  //     res.time?.length > 0 ? dayjs(res.time[0]).valueOf() : undefined;
-  //   arg0.endTime =
-  //     res.time?.length > 0 ? dayjs(res.time[1]).valueOf() : undefined;
-  //   console.log(arg0, '导出');
-  //   // exportSaleOrderList(arg0, {});
-  // });
-  // };
   const onSelectChange = (newSelectedRowKeys: any) => {
     setSelectedRowKeys(newSelectedRowKeys);
   };
@@ -97,7 +81,6 @@ const List: React.FC<propsType> = ({ tableTab, actionRef }) => {
         });
 
         if (param?.status === '0') param.status = '';
-        console.log(param, '-------');
         setExportParams(param);
         const { entry } = await getSaleOrderList(param, {});
 
@@ -109,13 +92,12 @@ const List: React.FC<propsType> = ({ tableTab, actionRef }) => {
         };
       }}
       search={{
-        // labelWidth: 100,
-        // span: 6,
         defaultCollapsed: false,
+        span: 8,
+        labelWidth: 'auto',
+        className: 'search-form',
       }}
-      form={{
-        size: 'small',
-      }}
+      form={{ labelCol: { span: 6 } }}
       options={false}
       rowSelection={{ ...rowSelection }}
       toolBarRender={() => [
@@ -123,7 +105,6 @@ const List: React.FC<propsType> = ({ tableTab, actionRef }) => {
           type="primary"
           key="primary"
           onClick={async () => {
-            console.log(exportParams, '导出---');
             await exportSaleOrderList(exportParams, {});
           }}
         >
