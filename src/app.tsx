@@ -107,7 +107,6 @@ export const layout = () => {
             }}
           >
             <ConfigProvider
-              // locale={zhCN}
               theme={{
                 token: {
                   colorPrimary: '#3D54CC',
