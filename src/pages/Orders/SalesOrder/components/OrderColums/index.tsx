@@ -109,7 +109,7 @@ const OrderColumns: React.FC<propsType> = ({ dataSource }) => {
               <Descriptions column={1}>
                 {itemDescriptions('规格', info.specification)}
                 {itemDescriptions('数量', info.number)}
-                {itemDescriptions('金额', info.money)}
+                {/* {itemDescriptions('金额', info.money)} */}
               </Descriptions>
             );
           },

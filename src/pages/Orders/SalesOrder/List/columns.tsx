@@ -340,6 +340,7 @@ export const getColumns: React.FC<PropsType> = ({
       title: '收货信息',
       dataIndex: 'receiveInfoVO',
       search: false,
+      width: 300,
       render: (record: any) => {
         return (
           <GoodsTableCol
