@@ -110,7 +110,7 @@ export const errorConfig: RequestConfig = {
             kl_display_type: 1, // 展示类型：0、空缺(默认：客户端未填，当作0) 1、Native 2、H5
             kl_device_id: visitorId, // 设备UUID
             kl_trace_id: uuid(32).toLowerCase(), // 字符串，链路跟踪ID，使用UUID 算法生成
-            kl_server_url: '10.100.0.174:20881',
+            kl_server_url: '10.100.0.183:20881',
           },
         });
         config.data = {
