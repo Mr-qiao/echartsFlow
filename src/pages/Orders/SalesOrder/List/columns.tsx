@@ -281,7 +281,7 @@ export const getColumns: React.FC<PropsType> = ({
                           </div>
 
                           <div className="u-fs13">
-                            <span>商品编码：{item.itemCode}</span>
+                            <span>商品编码：{item.ksItemCode}</span>
                           </div>
                         </div>
                       </Popover>

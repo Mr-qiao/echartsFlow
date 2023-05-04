@@ -76,7 +76,7 @@ const OrderColumns: React.FC<propsType> = ({ dataSource }) => {
           render: (_: any, info: any) => {
             return (
               <Descriptions column={1}>
-                {itemDescriptions('主播', info.anchorNickname)}
+                {/* {itemDescriptions('主播', info.anchorNickname)} */}
                 {itemDescriptions(
                   '名称',
                   <span>
