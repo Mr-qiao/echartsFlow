@@ -196,11 +196,11 @@ export const PLATFORM_ORDERSTATUS = [
   //   value: '',
   // },
   {
-    label: '订单状态',
+    label: '系统订单',
     value: '1',
   },
   {
-    label: '平台状态',
+    label: '平台订单',
     value: '2',
   },
 ];
