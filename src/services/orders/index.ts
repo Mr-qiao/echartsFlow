@@ -8,7 +8,7 @@ export function getSaleOrderList(body: object, options: any) {
   return request.KLAPI.post(
     '/designweb/supplier/order/sale/getFactorySaleOrderList',
     {
-      data: body,
+      ...body,
       ...options,
     },
   );
