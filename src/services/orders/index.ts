@@ -1,5 +1,3 @@
-// import { request } from '@umijs/max';
-
 import { request } from '@/utils/request';
 /**
  * 销售订单 --- 查询销售订单
@@ -7,8 +5,8 @@ import { request } from '@/utils/request';
 export function getSaleOrderList(body: object, options: any) {
   return request.KLAPI.post(
     '/designweb/supplier/order/sale/getFactorySaleOrderList',
+    body,
     {
-      ...body,
       ...options,
     },
   );
