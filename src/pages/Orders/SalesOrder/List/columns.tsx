@@ -94,20 +94,21 @@ export const getColumns: React.FC<PropsType> = ({
       renderFormItem: () => <BatchInput></BatchInput>,
     },
     {
-      title: (
-        <Select
-          placeholder="请选择"
-          options={PLATFORM_ORDERSTATUS}
-          value={platformType}
-          dropdownMatchSelectWidth={135}
-          style={{
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
-            height: 28,
-          }}
-        />
-      ),
+      // title: (
+      //   <Select
+      //     placeholder="请选择"
+      //     options={PLATFORM_ORDERSTATUS}
+      //     value={platformType}
+      //     dropdownMatchSelectWidth={135}
+      //     style={{
+      //       overflow: 'hidden',
+      //       textOverflow: 'ellipsis',
+      //       whiteSpace: 'nowrap',
+      //       height: 28,
+      //     }}
+      //   />
+      // ),
+      title: '1' === platformType ? '订单状态' : '平台状态',
       formItemProps: {
         htmlFor: '',
       },
