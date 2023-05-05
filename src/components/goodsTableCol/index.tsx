@@ -6,7 +6,7 @@ import React from 'react';
 import './index.less';
 
 interface propsType {
-  infoList?: Array<{ title: string; key: string }>;
+  infoList?: Array<{ title: string; key: any }>;
   isMainImg?: boolean; // 是否可展示主图
   isFooterImg?: boolean; // 是否可展示底部小图
   imgList?: any;
