@@ -1,7 +1,7 @@
 /**
  * 商品信息
  */
-import { Col, Image, Row } from 'antd';
+import { Col, Image, Row, Typography } from 'antd';
 import React from 'react';
 import './index.less';
 
@@ -46,7 +46,17 @@ const GoodsTableCol: React.FC<propsType> = ({
       <Col>
         {infoList.map((item: any, index: number) => (
           <div key={index} className={'content-name'}>
-            <span>{item.title}</span>: {item.key}
+            <label>{item.title}：</label>
+            <Typography.Paragraph
+              style={{
+                color: 'rgb(0 0 0 / 45%)',
+                fontSize: 8,
+                marginBottom: 0,
+              }}
+              ellipsis={{ tooltip: item.key }}
+            >
+              {item.key || '-'}
+            </Typography.Paragraph>
           </div>
         ))}
       </Col>

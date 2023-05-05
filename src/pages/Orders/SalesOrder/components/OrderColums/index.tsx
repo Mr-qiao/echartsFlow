@@ -1,8 +1,8 @@
-import { Descriptions, Table, Typography } from 'antd';
-import React from 'react';
-
+import GoodsTableCol from '@/components/goodsTableCol';
 import Images from '@/components/Image';
 import { winOpen } from '@/utils/index';
+import { Table } from 'antd';
+import React from 'react';
 
 import styless from './index.less';
 
@@ -11,19 +11,10 @@ interface propsType {
 }
 
 const OrderColumns: React.FC<propsType> = ({ dataSource }) => {
-  const itemDescriptions = (key: string, val: any) => (
-    <Descriptions.Item label={key} labelStyle={{ fontSize: 13 }}>
-      <Typography.Paragraph
-        ellipsis={{ rows: 1, tooltip: true }}
-        style={{ margin: 0, fontSize: 13 }}
-      >
-        {val || '-'}
-      </Typography.Paragraph>
-    </Descriptions.Item>
-  );
-
   return (
     <Table
+      scroll={{ x: 'max-content', y: '300px' }}
+      rowKey="itemId"
       columns={[
         {
           title: '',
@@ -46,25 +37,33 @@ const OrderColumns: React.FC<propsType> = ({ dataSource }) => {
                   />
                 </div>
 
-                <div className={`u-fs13 ${styless.imageTitle}`}>
-                  <div className={styless.f}>
-                    <span>商品编码：</span>
-                    <span
-                      className={styless.v}
-                      onClick={() => winOpen(`/goods/detail/${info.itemId}`)}
-                    >
-                      {info.ksItemCode}
-                    </span>
-                  </div>
-                  <div className={styless.f}>
-                    <span>商品ID：</span>
-                    <span>{info.ksItemId}</span>
-                  </div>
-                  <div className={styless.f}>
-                    <span>平台单号：</span>
-                    <span>{info.orderNumber}</span>
-                  </div>
-                </div>
+                <GoodsTableCol
+                  isMainImg={false}
+                  isFooterImg={false}
+                  infoList={[
+                    {
+                      title: '商品编码',
+                      key: (
+                        <span
+                          className={styless.v}
+                          onClick={() =>
+                            winOpen(`/goods/detail/${info.itemId}`)
+                          }
+                        >
+                          {info.ksItemCode}
+                        </span>
+                      ),
+                    },
+                    {
+                      title: '商品ID',
+                      key: info.ksItemId,
+                    },
+                    {
+                      title: '平台单号',
+                      key: info.orderNumber,
+                    },
+                  ]}
+                />
               </div>
             );
           },
@@ -75,28 +74,33 @@ const OrderColumns: React.FC<propsType> = ({ dataSource }) => {
           width: 200,
           render: (_: any, info: any) => {
             return (
-              <Descriptions column={1}>
-                {/* {itemDescriptions('主播', info.anchorNickname)} */}
-                {itemDescriptions(
-                  '名称',
-                  <span>
-                    {info.gift && (
-                      <span
-                        style={{
-                          color: '#dd3648',
-                          marginRight: 5,
-                          fontSize: 12,
-                          fontWeight: 'bold',
-                        }}
-                      >
-                        赠
-                      </span>
-                    )}
+              <GoodsTableCol
+                isMainImg={false}
+                isFooterImg={false}
+                infoList={[
+                  {
+                    title: '名称',
+                    key: (
+                      <span>
+                        {info.gift && (
+                          <span
+                            style={{
+                              color: '#dd3648',
+                              marginRight: 5,
+                              fontSize: 12,
+                              fontWeight: 'bold',
+                            }}
+                          >
+                            赠
+                          </span>
+                        )}
 
-                    {info.title}
-                  </span>,
-                )}
-              </Descriptions>
+                        {info.title}
+                      </span>
+                    ),
+                  },
+                ]}
+              />
             );
           },
         },
@@ -106,11 +110,20 @@ const OrderColumns: React.FC<propsType> = ({ dataSource }) => {
           width: 220,
           render: (_: any, info: any) => {
             return (
-              <Descriptions column={1}>
-                {itemDescriptions('规格', info.specification)}
-                {itemDescriptions('数量', info.number)}
-                {/* {itemDescriptions('金额', info.money)} */}
-              </Descriptions>
+              <GoodsTableCol
+                isMainImg={false}
+                isFooterImg={false}
+                infoList={[
+                  {
+                    title: '规格',
+                    key: info.specification,
+                  },
+                  {
+                    title: '数量',
+                    key: info.number,
+                  },
+                ]}
+              />
             );
           },
         },
