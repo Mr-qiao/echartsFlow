@@ -53,7 +53,7 @@ const List: React.FC<propsType> = ({ tableTab, actionRef }) => {
       scroll={{
         x: 'max-content',
       }}
-      rowKey={'orderId'}
+      rowKey={'id'}
       actionRef={actionRef}
       request={async (params = {}, sort, filter) => {
         const { pageSize, current, time, ...par } = params;
