@@ -1,5 +1,5 @@
-import { request } from '@umijs/max';
 import { getQueryStr } from '@/utils/utils';
+import { request } from '@umijs/max';
 
 export async function registerSlide(params?: any) {
   return request(getQueryStr('/iam/gt/register?platForm=IAM', params), {
@@ -105,22 +105,20 @@ export async function uploadPicture(params: any, options?: any) {
 }
 
 export async function checkCompanyName(params: any, options?: any) {
-  return request(
-    '/investment-center/supplierplatformDesign/checkCompanyName',
-    {
-      method: 'POST',
-      data: params,
-      ...(options || {
-        headers: {
-          'content-type': 'application/json',
-        },
-      }),
-    },
-  );
+  return request('/investment-center/supplierplatformDesign/checkCompanyName', {
+    method: 'POST',
+    data: params,
+    ...(options || {
+      headers: {
+        'content-type': 'application/json',
+      },
+    }),
+  });
 }
 
 export async function checkUnifyCreditCodeOld(params: any, options?: any) {
-  return request('/investment-center/supplierplatformDesign/checkUnifyCreditCodeOld',
+  return request(
+    '/investment-center/supplierplatformDesign/checkUnifyCreditCodeOld',
     {
       method: 'POST',
       data: params,

@@ -208,6 +208,8 @@ const Launch: any = () => {
       companyName: value,
       // unifyCreditCode: val.unifyCreditCode
     };
+    console.log(Cookies.get('token'));
+
     const res: any = await checkCompanyName(arg0, {
       headers: {
         token: Cookies.get('token'),

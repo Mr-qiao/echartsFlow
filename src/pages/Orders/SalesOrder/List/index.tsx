@@ -63,7 +63,7 @@ const List: React.FC<propsType> = ({ tableTab, actionRef }) => {
           platformType,
           shopStatus,
           orderStatus,
-          status: tableTab,
+          tabType: tableTab,
           ...par,
         };
 
@@ -79,12 +79,12 @@ const List: React.FC<propsType> = ({ tableTab, actionRef }) => {
           }
         });
 
-        if (param?.status === '0') param.status = '';
+        if (param?.tabType === '0') param.tabType = '';
         setExportParams(param);
         const { entry } = await getSaleOrderList(param, {});
-
+        console.log(entry, '------');
         return {
-          data: entry.list,
+          data: entry.list || [],
           success: entry.success,
           // 不传会使用 data 的长度，如果是分页一定要传
           total: entry.totalRecord,

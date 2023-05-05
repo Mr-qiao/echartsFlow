@@ -172,7 +172,7 @@ export function purchaseExportList(body: object, options: any) {
 }
 
 export function purchaseQueryById(body: object, options: any) {
-  return request.get('/designweb/supplier/purchase/order/get', {
+  return request.post('/designweb/supplier/purchase/order/get', {
     params: {
       ...body,
     },
