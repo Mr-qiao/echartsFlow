@@ -43,12 +43,12 @@ subject 是 commit 目的的简短描述
 
 ### 常用的 type 类别
 
-# 主要 type
+### 主要 type
 
 - feat: 增加新功能
 - fix: 修复 bug
 
-# 特殊 type
+### 特殊 type
 
 - docs: 只改动了文档相关的内容
 - style: 不影响代码含义的改动，例如去掉空格、改变缩进、增删分号
