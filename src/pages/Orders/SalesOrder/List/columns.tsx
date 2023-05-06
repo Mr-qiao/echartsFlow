@@ -98,40 +98,6 @@ export const getColumns: React.FC<PropsType> = ({
       dataIndex: '1' === platformType ? 'orderStatus' : 'shopStatus',
       hideInTable: true,
     },
-    // {
-    //   title: '1' === platformType ? '订单状态' : '平台状态',
-    //   formItemProps: {
-    //     htmlFor: '',
-    //   },
-    //   renderFormItem: () => {
-    //     return (
-    //       <Select
-    //         placeholder="请选择"
-    //         allowClear
-    //         options={
-    //           platformType === '2' ? PlATFORM_ORDER_TYPE : ORDER_STATUS_1_TYPE
-    //         }
-    //         dropdownMatchSelectWidth={135}
-    //         onChange={(val) => {
-    //           if (platformType === '2') {
-    //             setShopStatus(val);
-    //           } else {
-    //             setOrderStatus(val);
-    //           }
-    //           formRef.current.resetFields('orderStatus');
-    //         }}
-    //         style={{
-    //           overflow: 'hidden',
-    //           textOverflow: 'ellipsis',
-    //           whiteSpace: 'nowrap',
-    //           height: 28,
-    //         }}
-    //       />
-    //     );
-    //   },
-    //   dataIndex: 'orderStatus',
-    //   hideInTable: true,
-    // },
     {
       title: (
         <Select
