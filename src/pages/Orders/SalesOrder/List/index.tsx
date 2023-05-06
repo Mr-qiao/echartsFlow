@@ -1,8 +1,4 @@
-import {
-  ORDER_STATUS_1_TYPE,
-  ORDER_TIME_TYPE,
-  PlATFORM_ORDER_TYPE,
-} from '@/constants/orders';
+import { ORDER_TIME_TYPE, PLATFORM_ORDERSTATUS } from '@/constants/orders';
 import { exportSaleOrderList, getSaleOrderList } from '@/services/orders';
 import { ProTable } from '@ant-design/pro-components';
 import { Button } from 'antd';
@@ -16,12 +12,9 @@ interface propsType {
 const List: React.FC<propsType> = ({ tableTab, actionRef }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
   const [platformType, setPlatformType] = useState(
-    PlATFORM_ORDER_TYPE[0].value,
+    PLATFORM_ORDERSTATUS[0].value,
   );
-  const [orderType, setOrderType] = useState(ORDER_STATUS_1_TYPE[0].value);
   const [timeType, setTimeType] = useState(ORDER_TIME_TYPE[0].value);
-  const [shopStatus, setShopStatus] = useState<string>('');
-  const [orderStatus, setOrderStatus] = useState<string>('');
   const formRef: any = useRef();
   const [exportParams, setExportParams] = useState<any>({}); //导出参数
 
@@ -38,14 +31,8 @@ const List: React.FC<propsType> = ({ tableTab, actionRef }) => {
       columns={getColumns({
         platformType,
         formRef,
-        orderType,
         timeType,
-        shopStatus,
-        orderStatus,
-        setShopStatus,
-        setOrderStatus,
         setPlatformType,
-        setOrderType,
         setTimeType,
       })}
       formRef={formRef}
@@ -61,8 +48,6 @@ const List: React.FC<propsType> = ({ tableTab, actionRef }) => {
           pageSize,
           pageNum: current,
           platformType,
-          shopStatus,
-          orderStatus,
           tabType: tableTab,
           ...par,
         };
@@ -78,7 +63,6 @@ const List: React.FC<propsType> = ({ tableTab, actionRef }) => {
             param[key] = arg0[key];
           }
         });
-
         if (param?.tabType === '0') param.tabType = '';
         setExportParams(param);
         const { entry } = await getSaleOrderList(param, {});

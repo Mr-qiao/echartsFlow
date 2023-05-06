@@ -18,13 +18,9 @@ import styles from './index.less';
 
 interface PropsType {
   platformType: string;
-  orderType: string;
-  timeType: number;
+  timeType: string;
   setPlatformType: any;
-  setOrderType: any;
   setTimeType: any;
-  setOrderStatus: any;
-  setShopStatus: any;
   formRef: any;
 }
 
@@ -34,8 +30,6 @@ export const getColumns: React.FC<PropsType> = ({
   timeType,
   setPlatformType,
   setTimeType,
-  setOrderStatus,
-  setShopStatus,
 }) => {
   const searchColumns: ProColumns<Record<string, any>, 'text'>[] | undefined = [
     {
@@ -46,8 +40,9 @@ export const getColumns: React.FC<PropsType> = ({
           defaultValue={platformType}
           dropdownMatchSelectWidth={135}
           onChange={(val) => {
-            formRef.current.resetFields(['orderStatus']);
+            // formRef.current.resetFields(['orderStatus']);
             setPlatformType(val);
+            formRef.current.resetFields(['orderStatus', 'shopStatus']);
           }}
           style={{
             overflow: 'hidden',
@@ -98,34 +93,45 @@ export const getColumns: React.FC<PropsType> = ({
       formItemProps: {
         htmlFor: '',
       },
-      renderFormItem: () => {
-        return (
-          <Select
-            placeholder="请选择"
-            allowClear
-            options={
-              platformType === '2' ? PlATFORM_ORDER_TYPE : ORDER_STATUS_1_TYPE
-            }
-            dropdownMatchSelectWidth={135}
-            onChange={(val) => {
-              if (platformType === '2') {
-                setShopStatus(val);
-              } else {
-                setOrderStatus(val);
-              }
-            }}
-            style={{
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
-              height: 28,
-            }}
-          />
-        );
-      },
-      dataIndex: 'orderStatus',
+      valueEnum:
+        '1' === platformType ? ORDER_STATUS_1_TYPE : PlATFORM_ORDER_TYPE,
+      dataIndex: '1' === platformType ? 'orderStatus' : 'shopStatus',
       hideInTable: true,
     },
+    // {
+    //   title: '1' === platformType ? '订单状态' : '平台状态',
+    //   formItemProps: {
+    //     htmlFor: '',
+    //   },
+    //   renderFormItem: () => {
+    //     return (
+    //       <Select
+    //         placeholder="请选择"
+    //         allowClear
+    //         options={
+    //           platformType === '2' ? PlATFORM_ORDER_TYPE : ORDER_STATUS_1_TYPE
+    //         }
+    //         dropdownMatchSelectWidth={135}
+    //         onChange={(val) => {
+    //           if (platformType === '2') {
+    //             setShopStatus(val);
+    //           } else {
+    //             setOrderStatus(val);
+    //           }
+    //           formRef.current.resetFields('orderStatus');
+    //         }}
+    //         style={{
+    //           overflow: 'hidden',
+    //           textOverflow: 'ellipsis',
+    //           whiteSpace: 'nowrap',
+    //           height: 28,
+    //         }}
+    //       />
+    //     );
+    //   },
+    //   dataIndex: 'orderStatus',
+    //   hideInTable: true,
+    // },
     {
       title: (
         <Select

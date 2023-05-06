@@ -92,55 +92,24 @@ export const AFATER_TIME_TYPE = [
     value: '3',
   },
 ];
-export const PlATFORM_ORDER_TYPE = [
-  {
-    label: '等待买家付款',
-    value: '1',
-  },
-  {
-    label: '等待卖家发货',
-    value: '2',
-  },
-  {
-    label: '等待买家确认收货',
-    value: '3',
-  },
-  {
-    label: '交易成功',
-    value: '4',
-  },
-  {
-    label: '付款后交易关闭',
-    value: '5',
-  },
-  {
-    label: '付款前交易关闭',
-    value: '6',
-  },
-];
 
-export const ORDER_STATUS_1_TYPE = [
-  {
-    label: '已付款待审核',
-    value: '1',
-  },
-  {
-    label: '发货中',
-    value: '2',
-  },
-  {
-    label: '已发货',
-    value: '3',
-  },
-  {
-    label: '异常',
-    value: '4',
-  },
-  {
-    label: '已取消',
-    value: '5',
-  },
-];
+export const PlATFORM_ORDER_TYPE = {
+  1: '等待买家付款',
+  2: '等待卖家发货',
+  3: '等待买家确认收货',
+  4: '交易成功',
+  5: '付款后交易关闭',
+  6: '付款前交易关闭',
+};
+
+export const ORDER_STATUS_1_TYPE = {
+  1: '已付款待审核',
+  2: '已客审待财审',
+  3: '发货中',
+  4: '已发货',
+  5: '异常',
+  6: '已取消',
+};
 export const GOODS_STATUS = {
   1: '图稿',
   2: '样衣',
