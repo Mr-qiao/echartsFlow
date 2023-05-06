@@ -4,7 +4,7 @@
 
 - `顾孝标`：商品、报价、订单管理
 
-### 项目规范
+### 项目配置
 
 - 新开发模块需要到 对应环境[[dev](https://dev.xinc818.net/hrm/#/staff/manage?appCode=SCM&appName=%E8%AE%BE%E8%AE%A1%E5%B8%88%E7%B3%BB%E7%BB%9F),[daily](https://daily.xinc818.net/hrm/#/staff/manage?appCode=SCM&appName=%E8%AE%BE%E8%AE%A1%E5%B8%88%E7%B3%BB%E7%BB%9F),[gray](https://gray.xinc818.net/hrm/#/staff/manage?appCode=SCM&appName=%E8%AE%BE%E8%AE%A1%E5%B8%88%E7%B3%BB%E7%BB%9F)] 的盖亚系统 配置 `权限管理`与`角色管理`
 
