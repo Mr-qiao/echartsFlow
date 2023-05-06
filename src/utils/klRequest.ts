@@ -1,5 +1,6 @@
 import { uuid } from '@/utils';
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
+import Cookies from 'js-cookie';
 
 let visitorId: string;
 
@@ -26,7 +27,7 @@ interface propsType {
 }
 
 const klRequest = (
-  config: any,
+  config: any, // 拦截请求配置，进行个性化处理
   {
     kl_token,
     kl_os_type,
@@ -38,7 +39,7 @@ const klRequest = (
 ) => {
   Object.assign(config, {
     headers: {
-      kl_token: window.localStorage.getItem(kl_token),
+      kl_token: window.localStorage.getItem(kl_token) || Cookies.get(kl_token),
       kl_t: new Date().getTime(),
       kl_os_type,
       kl_platform,
