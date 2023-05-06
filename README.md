@@ -4,7 +4,7 @@
 
 - `顾孝标`：商品、报价、订单管理
 
-### 项目配置
+### 权限配置
 
 - 新开发模块需要到 对应环境[[dev](https://dev.xinc818.net/hrm/#/staff/manage?appCode=SCM&appName=%E8%AE%BE%E8%AE%A1%E5%B8%88%E7%B3%BB%E7%BB%9F),[daily](https://daily.xinc818.net/hrm/#/staff/manage?appCode=SCM&appName=%E8%AE%BE%E8%AE%A1%E5%B8%88%E7%B3%BB%E7%BB%9F),[gray](https://gray.xinc818.net/hrm/#/staff/manage?appCode=SCM&appName=%E8%AE%BE%E8%AE%A1%E5%B8%88%E7%B3%BB%E7%BB%9F)] 的盖亚系统 配置 `权限管理`与`角色管理`
 
@@ -31,3 +31,39 @@
 | daily | [https://jf-daily.xinxuan818.com/workshop/](https://jf-daily.xinxuan818.com/workshop/) |
 | gray | [https://jf-gray.xinxuan818.com/workshop/](https://jf-gray.xinxuan818.com/workshop/) |
 | prod | [https://jf-prod.xinxuan818.com/workshop/](https://jf-prod.xinxuan818.com/workshop/) |
+
+### 最简单的提交格式（注意冒号后面有空格）
+
+```
+    <type>: <subject>
+```
+
+type 是提交类型  
+subject 是 commit 目的的简短描述
+
+### 常用的 type 类别
+
+# 主要 type
+
+- feat: 增加新功能
+- fix: 修复 bug
+
+# 特殊 type
+
+- docs: 只改动了文档相关的内容
+- style: 不影响代码含义的改动，例如去掉空格、改变缩进、增删分号
+- build: 构造工具的或者外部依赖的改动，例如 webpack，npm
+- refactor: 代码重构时使用
+- revert: 执行 git revert 打印的 message
+
+- test: 添加测试或者修改现有测试
+- perf: 提高性能的改动
+- ci: 与 CI（持续集成服务）有关的改动
+- chore: 不修改 src 或者 test 的其余修改，例如构建过程或辅助工具的变动
+
+例子：
+
+```
+git commit -m 'feat: 增加 xxx 功能'
+git commit -m 'bug: 修复 xxx 功能'
+```
