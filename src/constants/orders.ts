@@ -93,16 +93,12 @@ export const AFATER_TIME_TYPE = [
   },
 ];
 export const PlATFORM_ORDER_TYPE = [
-  // {
-  //   label: '平台订单',
-  //   value: '0',
-  // },
   {
-    label: '等待卖家发货',
+    label: '等待买家付款',
     value: '1',
   },
   {
-    label: '卖家部分发货',
+    label: '等待卖家发货',
     value: '2',
   },
   {
@@ -117,13 +113,13 @@ export const PlATFORM_ORDER_TYPE = [
     label: '付款后交易关闭',
     value: '5',
   },
+  {
+    label: '付款前交易关闭',
+    value: '6',
+  },
 ];
 
 export const ORDER_STATUS_1_TYPE = [
-  // {
-  //   label: '订单状态',
-  //   value: '0',
-  // },
   {
     label: '已付款待审核',
     value: '1',
@@ -153,12 +149,6 @@ export const GOODS_STATUS = {
 };
 
 export const SALES_ORDER_TABLIST = [
-  // {
-  //   key: '1',
-  //   label: '待指派工厂',
-  //   value: undefined,
-  //   count: undefined,
-  // },
   {
     key: '2',
     label: '发货中',
@@ -191,10 +181,6 @@ export const SALES_ORDER_TABLIST = [
   },
 ];
 export const PLATFORM_ORDERSTATUS = [
-  // {
-  //   label: '平台订单',
-  //   value: '',
-  // },
   {
     label: '系统订单',
     value: '1',
