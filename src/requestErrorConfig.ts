@@ -1,9 +1,24 @@
 ﻿import config from '@/config';
-import { navigateToLogin, uuid } from '@/utils';
-import FingerprintJS from '@fingerprintjs/fingerprintjs';
+import { navigateToLogin } from '@/utils';
+// import FingerprintJS from '@fingerprintjs/fingerprintjs';
+import klRequest from '@/utils/klRequest';
+// import FingerprintJS from '@fingerprintjs/fingerprintjs';
 import type { RequestConfig } from '@umijs/max';
 import { message, notification } from 'antd';
 import Cookies from 'js-cookie';
+
+// let visitorId: string;
+
+// async function getVisitorId() {
+//   const fpPromise = FingerprintJS.load();
+
+//   const fp = await fpPromise;
+//   const result = await fp.get();
+
+//   visitorId = result.visitorId || '';
+// }
+
+// getVisitorId();
 
 const { ajaxBaseUrl, ajaxBaseUrlKI } = config;
 
@@ -38,18 +53,18 @@ const codeMessage: any = {
   504: '网关超时。',
 };
 
-let visitorId: string;
+// let visitorId: string;
 
-async function getVisitorId() {
-  const fpPromise = FingerprintJS.load();
+// async function getVisitorId() {
+//   const fpPromise = FingerprintJS.load();
 
-  const fp = await fpPromise;
-  const result = await fp.get();
+//   const fp = await fpPromise;
+//   const result = await fp.get();
 
-  visitorId = result.visitorId || '';
-}
+//   visitorId = result.visitorId || '';
+// }
 
-getVisitorId();
+// getVisitorId();
 
 /**
  * @name 错误处理
@@ -104,21 +119,12 @@ export const errorConfig: RequestConfig = {
         localStorage.getItem('token');
       // TODO：目前兼容老API，并后期会依次介入新API
       if (config.kl) {
-        Object.assign(config, {
-          headers: {
-            kl_token: token, // 用户token
-            kl_t: Date.parse(new Date()) / 1000, // 请求时间戳，秒
-            kl_os_type: 3, // 操作系统类型：0、空缺（默认：客户端未填，当做0）1、Android 2、iOS 3、PC
-            kl_platform: 3, // 平台：0、空缺（默认：客户端未填，当做0）1、APP 2、微信小程序XCX 3、浏览器Browser
-            kl_display_type: 1, // 展示类型：0、空缺(默认：客户端未填，当作0) 1、Native 2、H5
-            kl_device_id: visitorId, // 设备UUID
-            kl_trace_id: uuid(32).toLowerCase(), // 字符串，链路跟踪ID，使用UUID 算法生成
-            // kl_server_url: '10.100.0.183:20881', // 联调使用
-          },
+        klRequest(config, {
+          kl_token: 'supplier-token', // 用户token
+          kl_os_type: 3, // 操作系统类型：0、空缺（默认：客户端未填，当做0）1、Android 2、iOS 3、PC
+          kl_platform: 3, // 平台：0、空缺（默认：客户端未填，当做0）1、APP 2、微信小程序XCX 3、浏览器Browser
+          kl_display_type: 1, // 展示类型：0、空缺(默认：客户端未填，当作0) 1、Native 2、H5
         });
-        config.data = {
-          kl_data: JSON.stringify(config.data),
-        };
       } else {
         config.headers = {
           ...config.headers,
