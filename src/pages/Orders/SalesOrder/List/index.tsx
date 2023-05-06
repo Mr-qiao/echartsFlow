@@ -15,7 +15,7 @@ interface propsType {
 
 const List: React.FC<propsType> = ({ tableTab, actionRef }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
-  const [platformType, setplatformType] = useState(
+  const [platformType, setPlatformType] = useState(
     PlATFORM_ORDER_TYPE[0].value,
   );
   const [orderType, setOrderType] = useState(ORDER_STATUS_1_TYPE[0].value);
@@ -44,7 +44,7 @@ const List: React.FC<propsType> = ({ tableTab, actionRef }) => {
         orderStatus,
         setShopStatus,
         setOrderStatus,
-        setplatformType,
+        setPlatformType,
         setOrderType,
         setTimeType,
       })}
@@ -92,7 +92,7 @@ const List: React.FC<propsType> = ({ tableTab, actionRef }) => {
       search={{
         defaultCollapsed: false,
         span: 8,
-        labelWidth: 'auto',
+        labelWidth: 150,
         className: 'search-form',
       }}
       form={{ labelCol: { span: 6 } }}

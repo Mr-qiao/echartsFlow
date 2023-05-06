@@ -20,7 +20,7 @@ interface PropsType {
   platformType: string;
   orderType: string;
   timeType: number;
-  setplatformType: any;
+  setPlatformType: any;
   setOrderType: any;
   setTimeType: any;
   setOrderStatus: any;
@@ -32,7 +32,7 @@ export const getColumns: React.FC<PropsType> = ({
   platformType,
   formRef,
   timeType,
-  setplatformType,
+  setPlatformType,
   setTimeType,
   setOrderStatus,
   setShopStatus,
@@ -47,7 +47,7 @@ export const getColumns: React.FC<PropsType> = ({
           dropdownMatchSelectWidth={135}
           onChange={(val) => {
             formRef.current.resetFields(['orderStatus']);
-            setplatformType(val);
+            setPlatformType(val);
           }}
           style={{
             overflow: 'hidden',
@@ -225,10 +225,11 @@ export const getColumns: React.FC<PropsType> = ({
       title: '商品信息',
       dataIndex: 'itemInfoVOList',
       search: false,
+      width: 300,
       render: (record: any, col: any) => {
         return (
           <>
-            <div className={styles.itemInfoList}>
+            <div className={`flex-col ${styles.itemInfoList}`}>
               {Array.isArray(record) &&
                 record.length > 0 &&
                 record.slice(0, 2).map((item, index) => (
