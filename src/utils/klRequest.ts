@@ -2,18 +2,18 @@ import { uuid } from '@/utils';
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
 import Cookies from 'js-cookie';
 
-let visitorId: string;
-
-async function getVisitorId() {
+let deviceId: string;
+/**
+ * 获取不到h5的机器码，或者mac地址，所以只能获取浏览器唯一标识
+ */
+(async function () {
   const fpPromise = FingerprintJS.load();
 
   const fp = await fpPromise;
   const result = await fp.get();
 
-  visitorId = result.visitorId || '';
-}
-
-getVisitorId();
+  deviceId = result.visitorId || '';
+})();
 
 interface propsType {
   kl_token: string; // 用户token
@@ -39,12 +39,12 @@ const klRequest = (
 ) => {
   Object.assign(config, {
     headers: {
-      kl_token: window.localStorage.getItem(kl_token) || Cookies.get(kl_token),
+      kl_token: Cookies.get(kl_token) || window.localStorage.getItem(kl_token),
       kl_t: new Date().getTime(),
       kl_os_type,
       kl_platform,
       kl_display_type,
-      kl_device_id: visitorId,
+      kl_device_id: deviceId,
       kl_trace_id: uuid(32).toLowerCase(),
       kl_server_url,
       rest,
