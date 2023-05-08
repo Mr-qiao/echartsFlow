@@ -1,13 +1,12 @@
 import './index.less';
 
 import { math } from '@xlion/utils';
-import { Col, Row, Table } from 'antd';
+import { Col, Row, Spin, Table } from 'antd';
 import { groupBy } from 'lodash-es';
 import React, { useEffect, useState } from 'react';
 
 import Image from '@/components/Image';
-import { formatPriceRange, formatRatioRange } from '@/pages/Goods/Info/utils';
-import { transformFen2Yuan } from '@/utils';
+import { formatPriceRange, formatRatioRange, transformFen2Yuan } from '@/utils';
 
 import { useParams } from '@umijs/max';
 import { AttrTypes } from '../Create/constant';
@@ -20,13 +19,14 @@ const GoodsInfo = React.forwardRef(({ isSupplier = true }: any, ref) => {
   const [detail, setDetail] = useState<any>({});
   const [dynProps, setDynProps] = useState<any[]>([]);
   const [skus, setSkus] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const columns = [
     {
       title: '规格信息',
       dataIndex: 'name',
       width: 300,
-      render: (item, record) => {
+      render: (_: any, record: any) => {
         return (
           <div className="u-f__center" style={{ justifyContent: 'flex-start' }}>
             <Image
@@ -64,7 +64,7 @@ const GoodsInfo = React.forwardRef(({ isSupplier = true }: any, ref) => {
       title: '价格（元）',
       dataIndex: 'thirdId',
       width: 180,
-      render: (item, record) => {
+      render: (_: any, record: any) => {
         return (
           <div className="u-ml10">
             <p className="u-fs12 u-mb5">
@@ -101,7 +101,7 @@ const GoodsInfo = React.forwardRef(({ isSupplier = true }: any, ref) => {
       title: '佣金',
       dataIndex: 'thirdId',
       width: 180,
-      render: (item, record) => {
+      render: (_: any, record: any) => {
         console.log(record, 'record');
         return (
           <div className="u-ml10">
@@ -121,7 +121,7 @@ const GoodsInfo = React.forwardRef(({ isSupplier = true }: any, ref) => {
       title: '库存',
       dataIndex: 'thirdId',
       width: 180,
-      render: (item, record) => {
+      render: (_: any, record: any) => {
         let stock = record?.invSku?.stock || 0;
         let lockStock = record?.invSku?.lockStock || 0;
         let val = stock - lockStock;
@@ -144,19 +144,10 @@ const GoodsInfo = React.forwardRef(({ isSupplier = true }: any, ref) => {
       },
     },
   ];
-  React.useImperativeHandle(ref, () => ({
-    reload: () => {
-      getGoodsDetail(id);
-    },
-  }));
-
-  useEffect(() => {
-    // console.log(id);
-    getGoodsDetail(id);
-  }, [id]);
 
   //获取商品信息
   async function getGoodsDetail(itemId: any) {
+    setLoading(true);
     return goodsDetail({ itemId }).then(({ entry }) => {
       const {
         item: baseInfo,
@@ -177,6 +168,7 @@ const GoodsInfo = React.forwardRef(({ isSupplier = true }: any, ref) => {
           otherViewProperties.refCommissionRatio,
         ),
       };
+      setLoading(false);
       //动态属性
       setDynProps(
         groupBy(
@@ -244,120 +236,130 @@ const GoodsInfo = React.forwardRef(({ isSupplier = true }: any, ref) => {
       );
     });
   }
+  React.useImperativeHandle(ref, () => ({
+    reload: () => {
+      getGoodsDetail(id);
+    },
+  }));
+
+  useEffect(() => {
+    getGoodsDetail(id);
+  }, [id]);
 
   return (
-    <div className="goods__detail-wrap">
-      <Row className="u-w100">
-        <Col>
-          <Image
-            width={200}
-            height={200}
-            src={detail?.mainImg}
-            style={{ borderRadius: 10 }}
-          />
-          <div className="u-flex u-mt10">
-            {detail.images
-              ?.filter((item: any, i: number) => i !== 0 && i <= 3)
-              ?.map((item: any, i: number) => {
-                return (
-                  <Image
-                    key={i}
-                    width={60}
-                    height={60}
-                    src={item}
-                    style={{ borderRadius: 10 }}
-                  />
-                );
-              })}
-          </div>
-        </Col>
-        <Col span={18}>
-          <div className="u-ml20">
-            <div className="u-f__start u-els u-w70">
-              <p className="u-els u-fs16 u-fw700 u-mt10 u-mb10">
-                {detail.title}
-              </p>
-              {/* {detail.online && ( */}
-              {/*<Tag color={dictColor(detail.online, 'ONLINE_OR_OFFLINE')} className="u-ml10">*/}
-              {/*	{dict(detail.online, 'ONLINE_OR_OFFLINE')}*/}
-              {/*</Tag>*/}
-              {/* )} */}
+    <Spin spinning={loading}>
+      <div className="goods__detail-wrap">
+        <Row className="u-w100">
+          <Col>
+            <Image
+              width={200}
+              height={200}
+              src={detail?.mainImg}
+              style={{ borderRadius: 10 }}
+            />
+            <div className="u-flex u-mt10">
+              {detail.images
+                ?.filter((_item: any, i: number) => i !== 0 && i <= 3)
+                ?.map((item: any, i: number) => {
+                  return (
+                    <Image
+                      key={i}
+                      width={60}
+                      height={60}
+                      src={item}
+                      style={{ borderRadius: 10 }}
+                    />
+                  );
+                })}
             </div>
-            <Row className="goods__info-wrap" gutter={[16, 8]}>
-              <Col span={12}>
-                <p>
-                  <span className="u-c888">款式编码：</span>
-                  {detail.sysItemCode}
+          </Col>
+          <Col span={18}>
+            <div className="u-ml20">
+              <div className="u-f__start u-els u-w70">
+                <p className="u-els u-fs16 u-fw700 u-mt10 u-mb10">
+                  {detail.title}
                 </p>
-              </Col>
-              <Col span={12}>
-                <p>
-                  <span className="u-c888">品牌信息（中文）：</span>
-                  {detail.brandName}
-                </p>
-              </Col>
-              <Col span={12}>
-                <p>
-                  <span className="u-c888">商家款式编码：</span>
-                  {detail.supplierStyleCode || '-'}
-                </p>
-              </Col>
-              <Col span={12}>
-                <p>
-                  <span className="u-c888">品牌信息（英文）：</span>
-                  {detail.brandNameEn || '-'}
-                </p>
-              </Col>
-              <Col span={12}>
-                <p className="u-flex ">
-                  <span className="u-c888">类目：</span>
-                  {Array.isArray(detail.categoryNames) ? (
-                    <span className="u-els" style={{ flex: 1 }}>
-                      {detail.categoryNames?.join(' / ')}
-                    </span>
-                  ) : (
-                    '-'
-                  )}
-                </p>
-              </Col>
+                {/* {detail.online && ( */}
+                {/*<Tag color={dictColor(detail.online, 'ONLINE_OR_OFFLINE')} className="u-ml10">*/}
+                {/*	{dict(detail.online, 'ONLINE_OR_OFFLINE')}*/}
+                {/*</Tag>*/}
+                {/* )} */}
+              </div>
+              <Row className="goods__info-wrap" gutter={[16, 8]}>
+                <Col span={12}>
+                  <p>
+                    <span className="u-c888">款式编码：</span>
+                    {detail.sysItemCode}
+                  </p>
+                </Col>
+                <Col span={12}>
+                  <p>
+                    <span className="u-c888">品牌信息（中文）：</span>
+                    {detail.brandName}
+                  </p>
+                </Col>
+                <Col span={12}>
+                  <p>
+                    <span className="u-c888">商家款式编码：</span>
+                    {detail.supplierStyleCode || '-'}
+                  </p>
+                </Col>
+                <Col span={12}>
+                  <p>
+                    <span className="u-c888">品牌信息（英文）：</span>
+                    {detail.brandNameEn || '-'}
+                  </p>
+                </Col>
+                <Col span={12}>
+                  <p className="u-flex ">
+                    <span className="u-c888">类目：</span>
+                    {Array.isArray(detail.categoryNames) ? (
+                      <span className="u-els" style={{ flex: 1 }}>
+                        {detail.categoryNames?.join(' / ')}
+                      </span>
+                    ) : (
+                      '-'
+                    )}
+                  </p>
+                </Col>
 
-              <Col span={12}>
-                <p>
-                  <span className="u-c888">参考销售价：</span>
-                  {detail.salePriceRange}
-                </p>
-              </Col>
-              <Col span={12}>
-                <p>
-                  <span className="u-c888">69码：</span>
-                  {detail.snCode}
-                </p>
-              </Col>
-              {/*<Col span={12}>*/}
-              {/*	<p>*/}
-              {/*		<span className="u-c888">参考供货价：</span>*/}
-              {/*		{detail.supplyPriceRange}*/}
-              {/*	</p>*/}
-              {/*</Col>*/}
-              <Col span={12}>
-                <p>
-                  <span className="u-c888">来源：</span>
-                  成衣款
-                </p>
-              </Col>
-              <Col span={12}>
-                <p>
-                  <span className="u-c888">预计佣金比例：</span>
-                  {detail.commissionRatioRange}
-                </p>
-              </Col>
-              <Col span={12}>
-                <p>
-                  <span className="u-c888">渠道商品编码：</span>
-                  {detail.outsideItemCode}
-                </p>
-              </Col>
-              {/* <Col span={12}>
+                <Col span={12}>
+                  <p>
+                    <span className="u-c888">参考销售价：</span>
+                    {detail.salePriceRange}
+                  </p>
+                </Col>
+                <Col span={12}>
+                  <p>
+                    <span className="u-c888">69码：</span>
+                    {detail.snCode}
+                  </p>
+                </Col>
+                {/*<Col span={12}>*/}
+                {/*	<p>*/}
+                {/*		<span className="u-c888">参考供货价：</span>*/}
+                {/*		{detail.supplyPriceRange}*/}
+                {/*	</p>*/}
+                {/*</Col>*/}
+                <Col span={12}>
+                  <p>
+                    <span className="u-c888">来源：</span>
+                    成衣款
+                  </p>
+                </Col>
+                <Col span={12}>
+                  <p>
+                    <span className="u-c888">预计佣金比例：</span>
+                    {detail.commissionRatioRange}
+                  </p>
+                </Col>
+                <Col span={12}>
+                  <p>
+                    <span className="u-c888">渠道商品编码：</span>
+                    {detail.outsideItemCode}
+                  </p>
+                </Col>
+                {/* <Col span={12}>
                 <p>
                   <span className="u-c888">商品详情：</span>
                   <div className="u-flex u-mt10">
@@ -378,62 +380,63 @@ const GoodsInfo = React.forwardRef(({ isSupplier = true }: any, ref) => {
                 </p>
               </Col> */}
 
-              {/* <Col span={12}>
+                {/* <Col span={12}>
                 <p>
                   <span className="u-c888">销售平台渠道：</span>
                   {dict(detail.supplierStyleCode, 'LIVE_PLATFORM_TYPE')}
                 </p>
               </Col> */}
 
-              {/* <Col span={12}>
+                {/* <Col span={12}>
                 <p className="u-els">
                   <span className="u-c888">在售链接：</span>
                   <a href={detail.supplierStyleCode}>{detail.supplierStyleCode}</a>
                 </p>
               </Col> */}
 
-              {renderDynProps(true)}
-              {/* {detail.sellPoint && ( */}
+                {renderDynProps(true)}
+                {/* {detail.sellPoint && ( */}
 
-              {/* )} */}
-            </Row>
-          </div>
-        </Col>
-
-        <React.Fragment>
-          <Col span={24}>
-            <h1>商品详情：</h1>
+                {/* )} */}
+              </Row>
+            </div>
           </Col>
-          <Row gutter={[16, 10]} className="u-w100">
+
+          <React.Fragment>
             <Col span={24}>
-              <div className="u-flex u-mt10">
-                {detail.contents?.map((item: any, i: number) => {
-                  return (
-                    <div className="u-ml10" key={i}>
-                      <Image
-                        width={60}
-                        height={60}
-                        src={item?.image}
-                        style={{ borderRadius: 10 }}
-                      />
-                    </div>
-                  );
-                })}
-              </div>
+              <h1>商品详情：</h1>
             </Col>
-          </Row>
-        </React.Fragment>
+            <Row gutter={[16, 10]} className="u-w100">
+              <Col span={24}>
+                <div className="u-flex u-mt10">
+                  {detail.contents?.map((item: any, i: number) => {
+                    return (
+                      <div className="u-ml10" key={i}>
+                        <Image
+                          width={60}
+                          height={60}
+                          src={item?.image}
+                          style={{ borderRadius: 10 }}
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              </Col>
+            </Row>
+          </React.Fragment>
 
-        {renderDynProps()}
+          {renderDynProps()}
 
-        <Col span={24}>
-          <h1>SKU信息</h1>
-        </Col>
-        <Col span={24}>
-          <Table columns={columns} dataSource={skus} rowKey={'skuId'}></Table>
-        </Col>
-      </Row>
-    </div>
+          <Col span={24}>
+            <h1>SKU信息</h1>
+          </Col>
+          <Col span={24}>
+            <Table columns={columns} dataSource={skus} rowKey={'skuId'}></Table>
+          </Col>
+        </Row>
+      </div>
+    </Spin>
   );
 
   function renderAttrItem(attr: {

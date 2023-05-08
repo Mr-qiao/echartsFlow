@@ -9,7 +9,7 @@ export default [
         path: 'sales',
         name: '销售订单列表',
         title: '销售订单列表',
-        component: './Orders',
+        component: './Orders/SalesOrder',
       },
       {
         path: 'after-sales',
@@ -21,7 +21,7 @@ export default [
         path: 'purchase',
         name: '采购订单列表',
         title: '采购订单列表',
-        component: './Orders/Purchase/tab',
+        component: './Orders/Purchase',
       },
       {
         path: 'purchase-detail/:id',

@@ -128,7 +128,7 @@ const Index: React.FC = () => {
             value: entry?.item?.brandId,
           },
 
-          saleProperties: entry?.saleProperties.map((item) => ({
+          saleProperties: entry?.saleProperties.map((item: any) => ({
             uuid: uuid(),
             categoryPropertyType: {
               label: item.categoryPropertyName,
@@ -427,6 +427,7 @@ const Index: React.FC = () => {
               />
             </Form.Item>
           </Col>
+
           {/*<Col span={12} pull={2}>*/}
           {/*  <Typography.Link style={{ marginLeft: '20px' }} onClick={handleLinkSample}>*/}
           {/*    关联样衣*/}
@@ -441,7 +442,6 @@ const Index: React.FC = () => {
           {/*    </>*/}
           {/*  )}*/}
           {/*</Col>*/}
-
           <Col span={12}>
             <Form.Item
               label="品牌"
@@ -449,6 +449,11 @@ const Index: React.FC = () => {
               rules={[{ required: true, message: '请选择品牌～' }]}
             >
               <BrandSelectCpt isCreate />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item label="库存" name="invSkuViewParam">
+              <InputNumber placeholder="请输入" min={0} />
             </Form.Item>
           </Col>
           {renderDynProps(true)}

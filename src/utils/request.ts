@@ -16,4 +16,15 @@ export const request = {
       method: 'POST',
     });
   },
+
+  KLAPI: {
+    post(url: string, data?: Recordable<any>, options?: RequestOptions) {
+      return axios(url, {
+        ...options,
+        data,
+        method: 'POST',
+        kl: true,
+      });
+    },
+  },
 };

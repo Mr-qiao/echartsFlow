@@ -1,6 +1,6 @@
 import BatchInput from '@/components/batchInput';
 import GoodsTableCol from '@/components/goodsTableCol';
-import { afterSalesExprotList, afterSalesqueryList } from '@/services/orders';
+import { afterSalesqueryList } from '@/services/orders';
 import { filterPageName } from '@/utils';
 import { ProTable } from '@ant-design/pro-components';
 import { Button, DatePicker, Modal, Select } from 'antd';
@@ -59,9 +59,9 @@ function AfterSales() {
       render: (_: any, recode: any) => {
         return (
           <GoodsTableCol
-            footerImg={false}
-            imgs={[{ src: recode.imgUrl }]}
-            nameArr={[
+            isFooterImg={false}
+            imgList={[{ src: recode.imgUrl }]}
+            infoList={[
               {
                 title: '商品ID',
                 key: recode?.itemId4RE,
@@ -139,8 +139,8 @@ function AfterSales() {
       render: (_: any, recode: any) => {
         return (
           <GoodsTableCol
-            showImg={false}
-            nameArr={[
+            isMainImg={false}
+            infoList={[
               {
                 title: '单号',
                 key: recode.orderCode,
@@ -169,8 +169,8 @@ function AfterSales() {
       render: (_: any, recode: any) => {
         return (
           <GoodsTableCol
-            showImg={false}
-            nameArr={[
+            isMainImg={false}
+            infoList={[
               {
                 title: '单号',
                 key: recode.fundCode,
@@ -204,8 +204,8 @@ function AfterSales() {
       render: (_: any, recode: any) => {
         return (
           <GoodsTableCol
-            showImg={false}
-            nameArr={[
+            isMainImg={false}
+            infoList={[
               {
                 title: '快递',
                 key: recode.companyName4OD,
@@ -230,8 +230,8 @@ function AfterSales() {
       render: (_: any, recode: any) => {
         return (
           <GoodsTableCol
-            showImg={false}
-            nameArr={[
+            isMainImg={false}
+            infoList={[
               {
                 title: '快递',
                 key: recode.companyName4RE,
@@ -290,22 +290,24 @@ function AfterSales() {
         endCreateTime:
           res.time?.length > 0 ? moment(res.time[1]).valueOf() : undefined,
       };
-      afterSalesExprotList(arg0, {
-        responseType: 'blob',
-        getResponse: true,
-      }).then((res: any) => {
-        let blob = new Blob([res.data]);
-        let downloadElement = document.createElement('a');
-        let href = window.URL.createObjectURL(blob); //创建下载的链接
-        downloadElement.href = href;
-        downloadElement.download =
-          decodeURI(res.headers['content-disposition'].split('filename=')[1]) ||
-          ''; //下载后文件名
-        document.body.appendChild(downloadElement);
-        downloadElement.click(); //点击下载
-        document.body.removeChild(downloadElement); //下载完成移除元素
-        window.URL.revokeObjectURL(href); //释放掉blob对象
-      });
+      console.log(arg0, ' asdnakjsdnksa');
+      // afterSalesExprotList(
+      //   arg0,
+      //   {},
+      // );
+      // .then((res: any) => {
+      //   let blob = new Blob([res.data]);
+      //   let downloadElement = document.createElement('a');
+      //   let href = window.URL.createObjectURL(blob); //创建下载的链接
+      //   downloadElement.href = href;
+      //   downloadElement.download =
+      //     decodeURI(res.headers['content-disposition'].split('filename=')[1]) ||
+      //     ''; //下载后文件名
+      //   document.body.appendChild(downloadElement);
+      //   downloadElement.click(); //点击下载
+      //   document.body.removeChild(downloadElement); //下载完成移除元素
+      //   window.URL.revokeObjectURL(href); //释放掉blob对象
+      // });
     });
   };
   const onSelectChange = (newSelectedRowKeys: any) => {

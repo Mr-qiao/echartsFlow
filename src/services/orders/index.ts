@@ -1,8 +1,32 @@
-import { request } from '@umijs/max';
+import { request } from '@/utils/request';
+/**
+ * 销售订单 --- 查询销售订单
+ */
+export function getSaleOrderList(body: object, options: any) {
+  return request.KLAPI.post(
+    '/designweb/supplier/order/sale/getFactorySaleOrderList',
+    body,
+    {
+      ...options,
+    },
+  );
+}
+/**
+ * 销售订单 --- 导出销售订单
+ */
+export function exportSaleOrderList(body: any, options: any) {
+  return request.post(
+    'designweb/supplier/order/sale/exportSaleOrderList',
+    body,
+    {
+      responseType: 'blob',
+      isDownload: true,
+    },
+  );
+}
 
 export function queryList(body: object, options: any) {
-  return request('designweb/supplier/order/pageOrderByCondition', {
-    method: 'POST',
+  return request.post('designweb/supplier/order/pageOrderByCondition', {
     data: body,
     ...(options || {
       headers: {
@@ -12,8 +36,7 @@ export function queryList(body: object, options: any) {
   });
 }
 export function statistics(body: object, options: any) {
-  return request('/designweb/supplier/order/statistics', {
-    method: 'POST',
+  return request.post('/designweb/supplier/order/statistics', {
     data: body,
     ...(options || {
       headers: {
@@ -24,8 +47,7 @@ export function statistics(body: object, options: any) {
 }
 
 export function exportList(body: object, options: any) {
-  return request('designweb/supplier/order/exportOrderList/fc', {
-    method: 'POST',
+  return request.post('designweb/supplier/order/exportOrderList/fc', {
     data: body,
     ...(options || {
       headers: {
@@ -36,8 +58,7 @@ export function exportList(body: object, options: any) {
 }
 
 export function importList(body: object, options: any) {
-  return request('designweb/supplier/order/importOrderFile', {
-    method: 'POST',
+  return request.post('designweb/supplier/order/importOrderFile', {
     data: body,
     headers: {
       'content-type': 'multipart/form-data',
@@ -47,8 +68,7 @@ export function importList(body: object, options: any) {
 
 // 发货
 export function deliverItem(body: object, options: any) {
-  return request('designweb/supplier/order/deliverItem', {
-    method: 'POST',
+  return request.post('designweb/supplier/order/deliverItem', {
     data: body,
     ...(options || {
       headers: {
@@ -59,8 +79,7 @@ export function deliverItem(body: object, options: any) {
 }
 
 export function recordsList(body: object, options: any) {
-  return request('designweb/supplier/importtask/records', {
-    method: 'POST',
+  return request.post('designweb/supplier/importtask/records', {
     data: body,
     ...(options || {
       headers: {
@@ -71,8 +90,7 @@ export function recordsList(body: object, options: any) {
 }
 
 export function exportFailList(body: object, options: any) {
-  return request('designweb/supplier/importtask/exportFailList', {
-    method: 'POST',
+  return request.post('designweb/supplier/importtask/exportFailList', {
     data: body,
     ...(options || {
       headers: {
@@ -82,8 +100,7 @@ export function exportFailList(body: object, options: any) {
   });
 }
 export function exportOrderTemplate(body: object, options: any) {
-  return request('/designweb/supplier/order/exportOrderTemplate', {
-    method: 'POST',
+  return request.post('/designweb/supplier/order/exportOrderTemplate', {
     data: body,
     ...(options || {
       headers: {
@@ -93,10 +110,9 @@ export function exportOrderTemplate(body: object, options: any) {
   });
 }
 
-/** 售后订单 */
+// /** 售后订单 */
 export function afterSalesqueryList(body: object, options: any) {
-  return request('designweb/supplier/refund/pageRefundByCondition', {
-    method: 'POST',
+  return request.post('designweb/supplier/refund/pageRefundByCondition', {
     data: body,
     ...(options || {
       headers: {
@@ -107,20 +123,26 @@ export function afterSalesqueryList(body: object, options: any) {
 }
 
 export function afterSalesExprotList(body: object, options: any) {
-  return request('designweb/supplier/refund/exportRefundList/fc', {
-    method: 'POST',
-    data: body,
-    ...(options || {
-      headers: {
-        'content-type': 'application/json',
-      },
-    }),
-  });
+  return request.post(
+    'designweb/supplier/refund/exportRefundList/fc',
+    // {
+    //   data: body,
+    //   ...(options || {
+    //     headers: {
+    //       'content-type': 'application/json',
+    //     },
+    //   }),
+    // }
+    body,
+    {
+      responseType: 'blob',
+      isDownload: true,
+    },
+  );
 }
 /** 采购订单列表 */
 export function purchaseQueryList(body: object, options: any) {
-  return request('/designweb/supplier/purchase/order/page', {
-    method: 'POST',
+  return request.post('/designweb/supplier/purchase/order/page', {
     data: body,
     ...(options || {
       headers: {
@@ -131,28 +153,33 @@ export function purchaseQueryList(body: object, options: any) {
 }
 
 export function purchaseExportList(body: object, options: any) {
-  return request('/designweb/supplier/purchase/order/export', {
-    method: 'POST',
-    data: body,
-    ...(options || {
-      headers: {
-        'content-type': 'application/json',
-      },
-    }),
-  });
+  return request.post(
+    '/designweb/supplier/purchase/order/export',
+    // {
+    //   data: body,
+    //   ...(options || {
+    //     headers: {
+    //       'content-type': 'application/json',
+    //     },
+    //   }),
+    // }
+    body,
+    {
+      responseType: 'blob',
+      isDownload: true,
+    },
+  );
 }
 
 export function purchaseQueryById(body: object, options: any) {
-  return request('/designweb/supplier/purchase/order/get', {
-    method: 'GET',
+  return request.post('/designweb/supplier/purchase/order/get', {
     params: {
       ...body,
     },
   });
 }
 export function purchaseQueryByIdLogList(body: object, options: any) {
-  return request('/designweb/supplier/purchase/order/log/list', {
-    method: 'GET',
+  return request.get('/designweb/supplier/purchase/order/log/list', {
     params: {
       ...body,
     },
@@ -160,8 +187,7 @@ export function purchaseQueryByIdLogList(body: object, options: any) {
 }
 
 export function purchaseUpdateStatus(body: object, options: any) {
-  return request('/designweb/supplier/purchase/order/updateStatus', {
-    method: 'POST',
+  return request.post('/designweb/supplier/purchase/order/updateStatus', {
     data: body,
     ...(options || {
       headers: {

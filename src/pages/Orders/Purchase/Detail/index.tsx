@@ -67,11 +67,11 @@ function PurchaseDetail() {
       render: (_: any, recode: any) => {
         return (
           <GoodsTableCol
-            footerImg={false}
-            imgs={recode.imgUrlList.map((item: any) => ({
+            isFooterImg={false}
+            imgList={recode.imgUrlList.map((item: any) => ({
               src: item,
             }))}
-            nameArr={[
+            infoList={[
               {
                 title: '款式名称',
                 key: recode.itemTitle,
@@ -159,11 +159,11 @@ function PurchaseDetail() {
       render: (_: any, recode: any, index: number) => {
         return (
           <GoodsTableCol
-            footerImg={false}
-            imgs={recode.imgUrlList.map((item: any) => ({
+            isFooterImg={false}
+            imgList={recode.imgUrlList.map((item: any) => ({
               src: item,
             }))}
-            nameArr={[
+            infoList={[
               { title: '款式名称', key: recode.itemTitle },
               { title: '货品编码', key: recode.skuSysCode },
               { title: '规格', key: recode.specification },
@@ -178,8 +178,8 @@ function PurchaseDetail() {
       render: (_: any, recode: any, index: number) => {
         return (
           <GoodsTableCol
-            showImg={false}
-            nameArr={[
+            isMainImg={false}
+            infoList={[
               { title: '采购单价', key: recode.price },
               { title: '采购数量', key: recode.number },
               { title: '采购金额', key: recode.amount },
@@ -193,8 +193,8 @@ function PurchaseDetail() {
       render: (_: any, recode: any, index: number) => {
         return (
           <GoodsTableCol
-            showImg={false}
-            nameArr={[
+            isMainImg={false}
+            infoList={[
               { title: '最近采购单价', key: recode.latelyPrice },
               { title: '最近询货单价', key: recode.askPrice },
             ]}

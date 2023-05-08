@@ -1,24 +1,15 @@
 import GoodsTableCol from '@/components/goodsTableCol';
 import SelectTree from '@/components/selectTree';
-import { categoryTree, supplierItemList } from '@/services/goods';
+import { useCategory } from '@/hooks';
+import { supplierItemList } from '@/services/goods';
 import { filterPageName } from '@/utils';
 import { ProTable } from '@ant-design/pro-components';
 import { history } from '@umijs/max';
-import { Button, message, Space } from 'antd';
-import { useEffect, useState } from 'react';
+import { Button, Space } from 'antd';
 import BrandSelectCpt from './Create/components/BrandSelectCpt';
 
 function Goods() {
-  const [optionsTree, setOptionsTree] = useState([]);
-  useEffect(() => {
-    categoryTree({}, {}).then((res) => {
-      if (res.success) {
-        setOptionsTree(res.entry);
-      } else {
-        message.error('类目树获取失败，请稍后再试');
-      }
-    });
-  }, []);
+  const [category] = useCategory();
   const columns: any = [
     {
       title: '款式编码',
@@ -32,10 +23,10 @@ function Goods() {
     {
       title: '商品类目',
       dataIndex: 'categoryId',
-      renderFormItem: (item: any, _: any, form: any) => {
+      renderFormItem: () => {
         return (
           <SelectTree
-            options={optionsTree}
+            options={category}
             fieldNames={{
               label: 'name',
               value: 'categoryId',
@@ -79,7 +70,7 @@ function Goods() {
       render: (_: any, recode: any) => {
         return (
           <GoodsTableCol
-            nameArr={[
+            infoList={[
               {
                 title: '款式名称',
                 key: recode.title,
@@ -101,7 +92,7 @@ function Goods() {
                 key: recode.clothSize,
               },
             ]}
-            imgs={
+            imgList={
               recode?.images?.length > 0
                 ? recode?.images?.map((item: any) => {
                     return {

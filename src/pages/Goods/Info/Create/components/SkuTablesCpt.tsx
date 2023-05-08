@@ -40,20 +40,22 @@ const SkuTablesCpt: React.FC<IProps> = ({ form }) => {
     setSelectedRowKeys(key);
   }
 
-  const handleBatchFill = (key: string, min: number, max: number) => (e) => {
-    let value = e.target.value;
-    // 过滤非数字
-    value = value.replace(/[^\d.]/g, '');
+  const handleBatchFill =
+    (key: string, min: number, max: number) =>
+    (e: { target: { value: any } }) => {
+      let value = e.target.value;
+      // 过滤非数字
+      value = value.replace(/[^\d.]/g, '');
 
-    if (value === '') return;
-    if (value < min) value = min.toFixed(2);
-    if (value > max) value = max.toFixed(2);
-    const skus = form.getFieldValue('skus');
-    skus.forEach((item: any) => {
-      item[key] = value;
-    });
-    form.setFieldValue('skus', skus);
-  };
+      if (value === '') return;
+      if (value < min) value = min.toFixed(2);
+      if (value > max) value = max.toFixed(2);
+      const skus = form.getFieldValue('skus');
+      skus.forEach((item: any) => {
+        item[key] = value;
+      });
+      form.setFieldValue('skus', skus);
+    };
 
   const getColumns = (fields: FormListFieldData[]) => {
     return [

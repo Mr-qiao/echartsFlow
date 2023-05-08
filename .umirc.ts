@@ -1,5 +1,6 @@
 import { defineConfig } from '@umijs/max';
 // import {routes} from './src/routes';
+import zhCN from 'antd/lib/locale/zh_CN';
 import routes from './src/routes';
 
 export default defineConfig({
@@ -13,6 +14,11 @@ export default defineConfig({
     antd: true,
     // 默认为true。为true时，会使用`navigator.language`覆盖默认。为false时，则使用默认语言
     baseNavigator: false,
+  },
+  antd: {
+    configProvider: {
+      locale: zhCN,
+    },
   },
   layout: {
     title: '设计师中台-工厂端',

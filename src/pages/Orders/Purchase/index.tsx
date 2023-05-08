@@ -1,5 +1,7 @@
 import BatchInput from '@/components/batchInput';
 import SelectCpt from '@/components/selectCpt';
+import TabPane from '@/components/TabPane';
+import { PURCHASE_ORDER_TABLIST } from '@/constants/orders';
 import { purchaseExportList, purchaseQueryList } from '@/services/orders';
 import { filterPageName } from '@/utils';
 import { ProTable } from '@ant-design/pro-components';
@@ -11,10 +13,11 @@ import { history } from 'umi';
 const { RangePicker } = DatePicker;
 
 function Purchase(props: any) {
-  const { tabKey } = props;
+  // const { tabKey } = props;
   const actionRef = useRef() as any;
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [tabKey, setTabKey] = useState('2') as any;
   const ref: any = useRef();
   const columns: any = [
     {
@@ -161,28 +164,38 @@ function Purchase(props: any) {
       },
     },
   ];
+
+  const handleTabChange = (key: string) => {
+    setTabKey(key);
+    actionRef?.current?.reset();
+  };
   const purchaseExportListClick = () => {
     ref?.current?.validateFields().then((res: any) => {
       const arg0 = {
         ...res,
         status: tabKey === '0' ? res.status : Number(tabKey),
       };
-      purchaseExportList(arg0, {
-        responseType: 'blob',
-        getResponse: true,
-      }).then((res: any) => {
-        let blob = new Blob([res.data]);
-        let downloadElement = document.createElement('a');
-        let href = window.URL.createObjectURL(blob); //创建下载的链接
-        downloadElement.href = href;
-        downloadElement.download =
-          decodeURI(res.headers['content-disposition'].split('filename=')[1]) ||
-          ''; //下载后文件名
-        document.body.appendChild(downloadElement);
-        downloadElement.click(); //点击下载
-        document.body.removeChild(downloadElement); //下载完成移除元素
-        window.URL.revokeObjectURL(href); //释放掉blob对象
-      });
+      purchaseExportList(
+        arg0,
+        //   {
+        //   responseType: 'blob',
+        //   getResponse: true,
+        // }
+        {},
+      );
+      // .then((res: any) => {
+      //   let blob = new Blob([res.data]);
+      //   let downloadElement = document.createElement('a');
+      //   let href = window.URL.createObjectURL(blob); //创建下载的链接
+      //   downloadElement.href = href;
+      //   downloadElement.download =
+      //     decodeURI(res.headers['content-disposition'].split('filename=')[1]) ||
+      //     ''; //下载后文件名
+      //   document.body.appendChild(downloadElement);
+      //   downloadElement.click(); //点击下载
+      //   document.body.removeChild(downloadElement); //下载完成移除元素
+      //   window.URL.revokeObjectURL(href); //释放掉blob对象
+      // });
     });
   };
   const onSelectChange = (newSelectedRowKeys: any) => {
@@ -194,6 +207,11 @@ function Purchase(props: any) {
   };
   return (
     <div>
+      <TabPane
+        tabList={PURCHASE_ORDER_TABLIST}
+        defaultActiveKey={tabKey}
+        onChange={handleTabChange}
+      />
       <ProTable
         columns={columns}
         defaultSize={'small'}

@@ -12,6 +12,7 @@ import { useState } from 'react';
 import logo from '../public/imglogo.png';
 import './global.less';
 import { errorConfig } from './requestErrorConfig';
+import './style/base.less';
 
 dayjs.locale('zh-cn');
 

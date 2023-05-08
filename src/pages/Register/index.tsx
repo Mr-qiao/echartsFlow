@@ -114,7 +114,7 @@ const Launch: any = () => {
           },
           {
             headers: {
-              token: Cookies.get('token'),
+              token: Cookies.get('token') || Cookies.get('supplier-token'),
             },
           },
         ).then((params: any) => {
@@ -208,9 +208,10 @@ const Launch: any = () => {
       companyName: value,
       // unifyCreditCode: val.unifyCreditCode
     };
+
     const res: any = await checkCompanyName(arg0, {
       headers: {
-        token: Cookies.get('token'),
+        token: Cookies.get('token') || Cookies.get('supplier-token'),
       },
     });
     if (res?.entry?.status == 'error') {
@@ -226,7 +227,7 @@ const Launch: any = () => {
     };
     const res: any = await checkUnifyCreditCodeOld(arg0, {
       headers: {
-        token: Cookies.get('token'),
+        token: Cookies.get('token') || Cookies.get('supplier-token'),
       },
     });
     if (res?.entry?.status == 'error') {
