@@ -30,9 +30,9 @@ const klRequest = (
   config: any, // 拦截请求配置，进行个性化处理
   {
     kl_token,
-    kl_os_type,
-    kl_platform,
-    kl_display_type,
+    kl_os_type = 3,
+    kl_platform = 3,
+    kl_display_type = 1,
     kl_server_url = '',
     ...rest
   }: propsType,
