@@ -131,7 +131,7 @@ const OrderColumns: React.FC<propsType> = ({ dataSource }) => {
       showHeader={false}
       footer={undefined}
       dataSource={dataSource || []}
-      rowKey="itemId"
+      rowKey="ksItemId"
       pagination={false}
       className={styless.tabColumns}
     />

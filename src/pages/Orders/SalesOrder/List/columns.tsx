@@ -226,6 +226,8 @@ export const getColumns: React.FC<PropsType> = ({
                                 Array.isArray(item.itemImageList) &&
                                 item.itemImageList.length > 0 &&
                                 item.itemImageList[0]
+                                  ? item.itemImageList[0]
+                                  : ''
                               }
                               preview={false}
                               width={40}
