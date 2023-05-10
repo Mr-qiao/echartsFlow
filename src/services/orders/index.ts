@@ -27,7 +27,7 @@ export function exportSaleOrderList(body: any, options: any) {
 
 export function queryList(body: object, options: any) {
   return request.post('designweb/supplier/order/pageOrderByCondition', {
-    data: body,
+    ...body,
     ...(options || {
       headers: {
         'content-type': 'application/json',
@@ -37,7 +37,7 @@ export function queryList(body: object, options: any) {
 }
 export function statistics(body: object, options: any) {
   return request.post('/designweb/supplier/order/statistics', {
-    data: body,
+    ...body,
     ...(options || {
       headers: {
         'content-type': 'application/json',
@@ -48,7 +48,7 @@ export function statistics(body: object, options: any) {
 
 export function exportList(body: object, options: any) {
   return request.post('designweb/supplier/order/exportOrderList/fc', {
-    data: body,
+    ...body,
     ...(options || {
       headers: {
         'content-type': 'application/json',
@@ -59,7 +59,7 @@ export function exportList(body: object, options: any) {
 
 export function importList(body: object, options: any) {
   return request.post('designweb/supplier/order/importOrderFile', {
-    data: body,
+    ...body,
     headers: {
       'content-type': 'multipart/form-data',
     },
@@ -69,7 +69,7 @@ export function importList(body: object, options: any) {
 // 发货
 export function deliverItem(body: object, options: any) {
   return request.post('designweb/supplier/order/deliverItem', {
-    data: body,
+    ...body,
     ...(options || {
       headers: {
         'content-type': 'application/json',
@@ -80,7 +80,7 @@ export function deliverItem(body: object, options: any) {
 
 export function recordsList(body: object, options: any) {
   return request.post('designweb/supplier/importtask/records', {
-    data: body,
+    ...body,
     ...(options || {
       headers: {
         'content-type': 'application/json',
@@ -91,7 +91,7 @@ export function recordsList(body: object, options: any) {
 
 export function exportFailList(body: object, options: any) {
   return request.post('designweb/supplier/importtask/exportFailList', {
-    data: body,
+    ...body,
     ...(options || {
       headers: {
         'content-type': 'application/json',
@@ -101,7 +101,7 @@ export function exportFailList(body: object, options: any) {
 }
 export function exportOrderTemplate(body: object, options: any) {
   return request.post('/designweb/supplier/order/exportOrderTemplate', {
-    data: body,
+    ...body,
     ...(options || {
       headers: {
         'content-type': 'application/json',
@@ -113,7 +113,7 @@ export function exportOrderTemplate(body: object, options: any) {
 // /** 售后订单 */
 export function afterSalesqueryList(body: object, options: any) {
   return request.post('designweb/supplier/refund/pageRefundByCondition', {
-    data: body,
+    ...body,
     ...(options || {
       headers: {
         'content-type': 'application/json',
@@ -143,7 +143,7 @@ export function afterSalesExprotList(body: object, options: any) {
 /** 采购订单列表 */
 export function purchaseQueryList(body: object, options: any) {
   return request.post('/designweb/supplier/purchase/order/page', {
-    data: body,
+    ...body,
     ...(options || {
       headers: {
         'content-type': 'application/json',
@@ -184,7 +184,7 @@ export function purchaseQueryByIdLogList(body: object, options: any) {
 
 export function purchaseUpdateStatus(body: object, options: any) {
   return request.post('/designweb/supplier/purchase/order/updateStatus', {
-    data: body,
+    ...body,
     ...(options || {
       headers: {
         'content-type': 'application/json',

@@ -1,6 +1,6 @@
 import BatchInput from '@/components/batchInput';
 import GoodsTableCol from '@/components/goodsTableCol';
-import { afterSalesqueryList } from '@/services/orders';
+import { afterSalesExprotList, afterSalesqueryList } from '@/services/orders';
 import { filterPageName } from '@/utils';
 import { ProTable } from '@ant-design/pro-components';
 import { Button, DatePicker, Modal, Select } from 'antd';
@@ -290,12 +290,8 @@ function AfterSales() {
         endCreateTime:
           res.time?.length > 0 ? moment(res.time[1]).valueOf() : undefined,
       };
-      console.log(arg0, ' asdnakjsdnksa');
-      // afterSalesExprotList(
-      //   arg0,
-      //   {},
-      // );
-      // .then((res: any) => {
+      afterSalesExprotList(arg0, {});
+      // afterSalesExprotList(arg0, {}).then((res: any) => {
       //   let blob = new Blob([res.data]);
       //   let downloadElement = document.createElement('a');
       //   let href = window.URL.createObjectURL(blob); //创建下载的链接
