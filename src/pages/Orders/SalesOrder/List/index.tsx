@@ -63,7 +63,6 @@ const List: React.FC<propsType> = ({ tableTab, actionRef }) => {
             param[key] = arg0[key];
           }
         });
-        if (param?.tabType === '0') param.tabType = '';
         setExportParams(param);
         const { entry } = await getSaleOrderList(param, {});
         return {
