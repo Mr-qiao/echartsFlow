@@ -113,10 +113,11 @@ export const errorConfig: RequestConfig = {
       // 拦截请求配置，进行个性化处理。
       config.baseURL = config.kl ? ajaxBaseUrlKI : ajaxBaseUrl;
       const token =
-        Cookies.get('supplier-token') ||
-        localStorage.getItem('supplier-token') ||
         Cookies.get('token') ||
-        localStorage.getItem('token');
+        localStorage.getItem('token') ||
+        Cookies.get('supplier-token') ||
+        localStorage.getItem('supplier-token');
+
       // TODO：目前兼容老API，并后期会依次介入新API
       if (config.kl) {
         klRequest(config, {

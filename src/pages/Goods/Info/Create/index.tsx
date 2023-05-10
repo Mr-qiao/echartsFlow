@@ -24,6 +24,8 @@ import { sleep, transformFen2Yuan, uuid } from '@/utils';
 import { goodsAdd, goodsDetail, sampleDetail } from '@/services/goods';
 import BrandSelectCpt from './components/BrandSelectCpt';
 import SkuCpt from './components/SkuCpt';
+
+import type { DefaultOptionType } from 'antd/es/cascader';
 import SkuTablesCpt from './components/SkuTablesCpt';
 import { AttrTypes } from './constant';
 import styles from './index.less';
@@ -338,6 +340,15 @@ const Index: React.FC = () => {
     }
   }
 
+  // 检索
+  const filter = (inputValue: string, path: DefaultOptionType[]) =>
+    path.some(
+      (option) =>
+        (option.name as string)
+          .toLowerCase()
+          .indexOf(inputValue.toLowerCase()) > -1,
+    );
+
   return (
     <div className={styles.goodsCreate}>
       {/* <Button
@@ -419,6 +430,7 @@ const Index: React.FC = () => {
                 options={category}
                 placeholder="请选择上架类目"
                 onChange={handleChangeCate}
+                showSearch={{ filter }}
                 fieldNames={{
                   children: 'children',
                   label: 'name',
