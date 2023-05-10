@@ -172,17 +172,13 @@ export function purchaseExportList(body: object, options: any) {
 }
 
 export function purchaseQueryById(body: object, options: any) {
-  return request.post('/designweb/supplier/purchase/order/get', {
-    params: {
-      ...body,
-    },
+  return request.get('/designweb/supplier/purchase/order/get', {
+    ...body,
   });
 }
 export function purchaseQueryByIdLogList(body: object, options: any) {
   return request.get('/designweb/supplier/purchase/order/log/list', {
-    params: {
-      ...body,
-    },
+    ...body,
   });
 }
 
