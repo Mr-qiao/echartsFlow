@@ -78,7 +78,12 @@ const Index = () => {
         }}
         toolbar={{
           actions: [
-            <Button key="export" className="u-mr8" onClick={handleExport}>
+            <Button
+              key="export"
+              className="u-mr8"
+              type="primary"
+              onClick={handleExport}
+            >
               导出
             </Button>,
           ].filter(Boolean),
