@@ -22,7 +22,7 @@ const Index = () => {
   const actionRef = useRef<ActionType>();
   const [, searchDateDictMap] = useSelectDict(AFTER_SALES_TIME_TYPE_DICT);
 
-  const [columnItems, reloadItem] = useColumns();
+  const [columnItems, reloadItem] = useColumns({ formRef });
 
   const handleExport = async () => {
     let values = formRef.current?.getFieldsValue();

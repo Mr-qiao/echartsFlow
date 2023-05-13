@@ -1,16 +1,19 @@
 import { useEffect, useState } from 'react';
 
-import { ProColumnType } from '@ant-design/pro-components';
+import { ProColumnType, ProFormInstance } from '@ant-design/pro-components';
 import { Select } from 'antd';
 import { omit } from 'lodash';
 
 interface IProps extends ProColumnType {
   options: Array<{ label: string; value: number | string }>;
   onLabelChange?: (value: string) => void; //label
+  formRef: React.MutableRefObject<ProFormInstance | undefined>;
 }
 export const useSearchColumns = ({
   options,
   onLabelChange,
+  formRef,
+
   ...props
 }: IProps): [ProColumnType, () => void] => {
   let [inputVal, setInputVal] = useState<any>(options?.[0].value);
@@ -30,6 +33,7 @@ export const useSearchColumns = ({
           onChange: (val) => {
             // setTimeType(val);
             // onSearchParams?.({ [name]: val });
+            formRef?.current?.resetFields([inputVal]);
             setInputVal(val);
             onLabelChange?.(val);
           },

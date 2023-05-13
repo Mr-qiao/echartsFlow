@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { ProColumns } from '@ant-design/pro-components';
+import { ProColumns, ProFormInstance } from '@ant-design/pro-components';
 import { Badge, Popover, Select } from 'antd';
 import Tag from 'antd/lib/tag';
 import moment from 'moment';
@@ -8,7 +8,6 @@ import moment from 'moment';
 import BatchInput from '@/components/batchInput';
 import Image from '@/components/Image';
 
-import { AFTER_ORDER_REFUND_STATUS } from '.';
 import {
   AFTER_SALES_DICT,
   AFTER_SALES_TYPE,
@@ -21,7 +20,6 @@ import { DataType } from './types';
 
 import ItemContainer from './components/ItemContainer';
 import PropoverTable from './components/PropoverTable';
-
 enum SELECT_TYPE {
   TYPE = 'type',
   SHOP_STATUS = 'shopStatus',
@@ -58,9 +56,9 @@ const afterSalesKeys = [
 //平台状态 枚举keys
 const platformKeys = [PLATFORM_STATUS.WAIT_SELLER_AGREE];
 interface IProps {
-  activeKey: AFTER_ORDER_REFUND_STATUS;
+  formRef: React.MutableRefObject<ProFormInstance | undefined>;
 }
-function useColumns(): [ProColumns<DataType>[], () => void] {
+function useColumns({ formRef }: IProps): [ProColumns<DataType>[], () => void] {
   const [salesType, setSalesType] = useState<string>(SELECT_TYPE.TYPE);
   const [timeType, setTimeType] = useState<string>(
     AFTER_SALES_TIME_TYPE_DICT[0].value,
@@ -76,11 +74,13 @@ function useColumns(): [ProColumns<DataType>[], () => void] {
     useSelectDict(ORDER_STATUS_DICT);
   //订单 搜索
   const [item_01, resetItem_01] = useSearchColumns({
+    formRef,
     renderFormItem: () => <BatchInput />,
     options: ORDER_TYPE_DICT,
   });
   //类型 搜索
   const [item_02, resetItem_02] = useSearchColumns({
+    formRef,
     renderFormItem: () => {
       const props = {
         [SELECT_TYPE.TYPE]: {
@@ -102,6 +102,7 @@ function useColumns(): [ProColumns<DataType>[], () => void] {
   });
   //日期 搜索
   const [item_03, resetItem_03] = useSearchColumns({
+    formRef,
     valueType: 'dateRange',
     options: AFTER_SALES_TIME_TYPE_DICT,
     onLabelChange: (value: string) => {
