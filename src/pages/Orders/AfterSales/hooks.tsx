@@ -78,7 +78,13 @@ export const useSelectDict = (
       let obj: DictType = [];
       if (Object.prototype.toString.call(_dataSource) === '[object Object]') {
         Object.keys(_dataSource).forEach((key) => {
-          obj.push({ value: key, label: _dataSource[key][fieldNames.label] });
+          obj.push({
+            value: key,
+            label:
+              typeof _dataSource[key] === 'string'
+                ? _dataSource[key]
+                : _dataSource[key][fieldNames.label],
+          });
         });
         setSelectDict(obj);
         setSelectDictMap(_dataSource);
