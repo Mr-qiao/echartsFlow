@@ -35,9 +35,10 @@ const Index = () => {
       const _ = searchDateDictMap[item];
       if (_ && o[item]) {
         const [startTime, endTime] = [
-          moment(o[item][0]).valueOf(),
-          moment(o[item][1]).valueOf(),
+          moment(o[item][0]).format('YYYY-MM-DD 00:00:00'),
+          moment(o[item][1]).format('YYYY-MM-DD 23:59:59'),
         ];
+
         o.dateType = item;
         o.startTime = startTime;
         o.endTime = endTime;

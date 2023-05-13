@@ -110,8 +110,8 @@ function useColumns(): [ProColumns<DataType>[], () => void] {
     search: {
       transform: (value) => {
         const [startTime, endTime] = [
-          moment(value[0]).valueOf(),
-          moment(value[1]).valueOf(),
+          moment(value[0]).format('YYYY-MM-DD 00:00:00'),
+          moment(value[1]).format('YYYY-MM-DD 23:59:59'),
         ];
         return {
           dateType: timeType,

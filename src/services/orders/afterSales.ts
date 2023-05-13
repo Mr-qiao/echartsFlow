@@ -6,50 +6,20 @@ export default {
   AfterSales: {
     /**
      * 查询列表
-     * @url https://yapi.xinc818.com/project/1025/interface/api/167762
+     * @url https://yapi.xinc818.com/project/1025/interface/api/167917
      */
     List: async (body: Recordable<any>) => {
-      return requestApi.post(`/designweb/operator/jst/refund/selectList`, body);
+      return requestApi.post(`/designweb/supplier/jst/refund/selectList`, body);
     },
     /**
      * 导出
-     * @url https://yapi.xinc818.com/project/1025/interface/api/167767
+     * @url https://yapi.xinc818.com/project/1025/interface/api/167922
      */
     Export: async (body: Recordable<any>, options: any) => {
       return requestApi.post(
-        `/designweb/operator/jst/refund/exportRefund`,
+        `/designweb/supplier/jst/refund/exportRefund`,
         body,
         options,
-      );
-    },
-    /**
-     * 审批
-     * @url https://yapi.xinc818.com/project/1025/interface/api/167772
-     */
-    Audit: async (body: Recordable<any>) => {
-      return requestApi.post(
-        `/designweb/operator/jst/refund/auditRefund`,
-        body,
-      );
-    },
-    /**
-     * 审批-获取售后拒绝原因列表
-     * @url https://yapi.xinc818.com/project/1025/interface/api/167777
-     */
-    RejectCode: async (body: { id: number; outerAsId: string }) => {
-      return requestApi.post(
-        `/designweb/operator/jst/refund/getRejectCode`,
-        body,
-      );
-    },
-    /**
-     * 审批-获取工厂
-     * @url https://yapi.xinc818.com/project/1025/interface/api/167897
-     */
-    FactoryList: async (body: { id: number }) => {
-      return requestApi.post(
-        `/designweb/operator/jst/refund/getAddressIdNameList`,
-        body,
       );
     },
   },
