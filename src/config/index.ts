@@ -21,7 +21,7 @@ const ajaxBaseUrlKI = {
   development: 'https://kunlun-api-dev.xinc818.com',
   daily: 'https://kunlun-api-daily.xinc818.com',
   gray: 'https://kunlun-api-gray.xinc818.com',
-  production: 'https://kunlun-api-prod.xinc818.com',
+  production: 'https://kunlun-api.xinc818.com',
 }[env];
 
 const loginUrl: any = {
