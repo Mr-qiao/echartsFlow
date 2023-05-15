@@ -34,14 +34,13 @@ const Index = () => {
     Object.keys(o)?.forEach((item) => {
       const _ = searchDateDictMap[item];
       if (_ && o[item]) {
-        const [startTime, endTime] = [
+        const [dateStart, dateEnd] = [
           moment(o[item][0]).format('YYYY-MM-DD 00:00:00'),
           moment(o[item][1]).format('YYYY-MM-DD 23:59:59'),
         ];
-
         o.dateType = item;
-        o.startTime = startTime;
-        o.endTime = endTime;
+        o.dateStart = dateStart;
+        o.dateEnd = dateEnd;
         delete o[item];
       }
     });
