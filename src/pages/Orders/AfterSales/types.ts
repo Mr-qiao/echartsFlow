@@ -1,8 +1,12 @@
-import { AFTER_SALES_TYPE, ORDER_STATUS, PLATFORM_STATUS } from './constants';
+import {
+  AFTER_SALES_TYPE,
+  ORDER_SHOP_STATUS,
+  ORDER_STATUS,
+  PLATFORM_STATUS,
+} from './constants';
 
 enum QUESTION_TYPE {}
 enum ORDER_QUESTION_TYPE {}
-enum ORDER_SHOP_STATUS {}
 
 export type DictType = Array<{ label: string; value: number | string }>;
 

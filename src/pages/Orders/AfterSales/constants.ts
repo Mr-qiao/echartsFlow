@@ -81,3 +81,35 @@ export const ORDER_STATUS_DICT = {
   [ORDER_STATUS.WAITFCONFIRM]: { text: '已客审待财审', color: 'magenta' },
   [ORDER_STATUS.CANCELED]: { text: '已取消', color: 'default' },
 };
+
+export enum ORDER_SHOP_STATUS {
+  WAIT_BUYER_PAY = 'WAIT_BUYER_PAY',
+  WAIT_SELLER_SEND_GOODS = 'WAIT_SELLER_SEND_GOODS',
+  WAIT_BUYER_CONFIRM_GOODS = 'WAIT_BUYER_CONFIRM_GOODS',
+  TRADE_FINISHED = 'TRADE_FINISHED',
+  TRADE_CLOSED = 'TRADE_CLOSED',
+  TRADE_CLOSED_BY_TAOBAO = 'TRADE_CLOSED_BY_TAOBAO',
+}
+export const ORDER_SHOP_STATUS_DICT = {
+  [ORDER_SHOP_STATUS.WAIT_BUYER_PAY]: {
+    text: '等待买家付款',
+    color: 'warning',
+  },
+  [ORDER_SHOP_STATUS.WAIT_SELLER_SEND_GOODS]: {
+    text: '等待卖家发货',
+    color: 'volcano',
+  },
+  [ORDER_SHOP_STATUS.WAIT_BUYER_CONFIRM_GOODS]: {
+    text: '等待买家确认收货',
+    color: 'processing',
+  },
+  [ORDER_SHOP_STATUS.TRADE_FINISHED]: { text: '交易成功', color: 'green' },
+  [ORDER_SHOP_STATUS.TRADE_CLOSED]: {
+    text: '付款后交易关闭',
+    color: 'default',
+  },
+  [ORDER_SHOP_STATUS.TRADE_CLOSED_BY_TAOBAO]: {
+    text: '付款前交易关闭',
+    color: 'default',
+  },
+};
