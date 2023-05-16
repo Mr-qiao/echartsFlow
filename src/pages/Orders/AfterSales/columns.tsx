@@ -11,6 +11,7 @@ import Image from '@/components/Image';
 import {
   AFTER_SALES_DICT,
   AFTER_SALES_TYPE,
+  ORDER_SHOP_STATUS_DICT,
   ORDER_STATUS_DICT,
   PLATFORM_DICT,
   PLATFORM_STATUS,
@@ -165,7 +166,7 @@ function useColumns({ formRef }: IProps): [ProColumns<DataType>[], () => void] {
     {
       title: '售后信息',
       dataIndex: 'asId',
-      width: 240,
+      width: 260,
       render: (item, record) => {
         return (
           <ItemContainer
@@ -253,9 +254,13 @@ function useColumns({ formRef }: IProps): [ProColumns<DataType>[], () => void] {
               { label: '来源', value: record.orderFrom },
               {
                 label: '平台状态',
-                value: platformDictMap[record.orderShopStatus] ? (
-                  <Tag color={platformDictMap[record.orderShopStatus]?.color}>
-                    {platformDictMap[record.orderShopStatus]?.text}
+                value: ORDER_SHOP_STATUS_DICT[record.orderShopStatus] ? (
+                  <Tag
+                    color={
+                      ORDER_SHOP_STATUS_DICT[record.orderShopStatus]?.color
+                    }
+                  >
+                    {ORDER_SHOP_STATUS_DICT[record.orderShopStatus]?.text}
                   </Tag>
                 ) : (
                   '-'
