@@ -46,7 +46,7 @@ const PropoverTable = ({ dataSource = [] }) => {
     {
       title: '平台信息',
       dataIndex: 'lockStock',
-      width: 280,
+      width: 180,
       render: (item, record) => {
         return (
           <ItemContainer

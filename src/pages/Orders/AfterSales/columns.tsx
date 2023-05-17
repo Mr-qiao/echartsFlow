@@ -282,10 +282,10 @@ function useColumns({ formRef }: IProps): [ProColumns<DataType>[], () => void] {
         return (
           <>
             <Popover
-              zIndex={1}
+              zIndex={3}
               destroyTooltipOnHide={{ keepParent: false }}
               placement="left"
-              title={'预订信息'}
+              // title={'预订信息'}
               trigger="hover"
               content={<PropoverTable dataSource={record['items'] as []} />}
             >
