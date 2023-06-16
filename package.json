@@ -36,7 +36,6 @@
     "lodash": "^4.17.21",
     "lodash-es": "^4.17.21",
     "moment": "^2.29.4",
-    "pro-components=2.3.5": "link:@ant-design/pro-components=2.3.5",
     "prop-types": "^15.8.1",
     "query-string": "^8.1.0",
     "react-mentions": "^4.4.7",
