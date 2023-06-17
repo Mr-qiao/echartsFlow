@@ -13,7 +13,7 @@ import { history } from 'umi';
 const { RangePicker } = DatePicker;
 
 function Purchase(props: any) {
-  // const { tabKey } = props;
+  // const { tabKey } = props
   const actionRef = useRef() as any;
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
