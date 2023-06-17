@@ -64,9 +64,6 @@ dependencies:
   moment:
     specifier: ^2.29.4
     version: 2.29.4
-  pro-components=2.3.5:
-    specifier: link:@ant-design/pro-components=2.3.5
-    version: link:@ant-design/pro-components=2.3.5
   prop-types:
     specifier: ^15.8.1
     version: 15.8.1
@@ -3532,27 +3529,27 @@ packages:
       remove-accents: 0.4.2
     dev: false
 
-  /@tanstack/query-core@4.29.11:
-    resolution: {integrity: sha512-8C+hF6SFAb/TlFZyS9FItgNwrw4PMa7YeX+KQYe2ZAiEz6uzg6yIr+QBzPkUwZ/L0bXvGd1sufTm3wotoz+GwQ==}
+  /@tanstack/query-core@4.29.14:
+    resolution: {integrity: sha512-ElEAahtLWA7Y7c2Haw10KdEf2tx+XZl/Z8dmyWxZehxWK3TPL5qtXtb7kUEhvt/8u2cSP62fLxgh2qqzMMGnDQ==}
     dev: false
 
-  /@tanstack/react-query-devtools@4.29.13(@tanstack/react-query@4.29.13)(react-dom@16.14.0)(react@16.14.0):
-    resolution: {integrity: sha512-nmAaEMzh/dhVl7dukfdWmvj0d2EuLxXC9/34Tl/Yu61oetg3VshC60W6bN5+pgtC3njhQgMguKCAwWYUDc9n+A==}
+  /@tanstack/react-query-devtools@4.29.14(@tanstack/react-query@4.29.14)(react-dom@16.14.0)(react@16.14.0):
+    resolution: {integrity: sha512-2H4otgQiXJSU7z8HIPw6whm7xfaEA3ouoM2PrWTHs+DMFX0BbodhOfQeJxsjw5uq2oV1yln/DABLJjZoQmQbpQ==}
     peerDependencies:
-      '@tanstack/react-query': 4.29.13
+      '@tanstack/react-query': 4.29.14
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
       '@tanstack/match-sorter-utils': 8.8.4
-      '@tanstack/react-query': 4.29.13(react-dom@16.14.0)(react@16.14.0)
+      '@tanstack/react-query': 4.29.14(react-dom@16.14.0)(react@16.14.0)
       react: 16.14.0
       react-dom: 16.14.0(react@16.14.0)
       superjson: 1.12.3
       use-sync-external-store: 1.2.0(react@16.14.0)
     dev: false
 
-  /@tanstack/react-query@4.29.13(react-dom@16.14.0)(react@16.14.0):
-    resolution: {integrity: sha512-qF8SHosMU6SzxWa7Ivxp3Q07zXvH+8PBDAlH8CR9ywfT3Y7uOK3jclfwMLzqgoGgDnYCarY2Ra+qDV0+xm19JQ==}
+  /@tanstack/react-query@4.29.14(react-dom@16.14.0)(react@16.14.0):
+    resolution: {integrity: sha512-wh4bd/QIy85YgTDBtj/7/9ZkpRX41QdZuUL8xKoSzuMCukXvAE1/oJ4p0F15lqQq9W3g2pgcbr2Aa+CNvqABhg==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
@@ -3563,7 +3560,7 @@ packages:
       react-native:
         optional: true
     dependencies:
-      '@tanstack/query-core': 4.29.11
+      '@tanstack/query-core': 4.29.14
       react: 16.14.0
       react-dom: 16.14.0(react@16.14.0)
       use-sync-external-store: 1.2.0(react@16.14.0)
@@ -4063,7 +4060,7 @@ packages:
       '@umijs/utils': 4.0.52
       cors: 2.8.5
       css-loader: 6.7.1(webpack@5.87.0)
-      es5-imcompatible-versions: 0.1.84
+      es5-imcompatible-versions: 0.1.85
       fork-ts-checker-webpack-plugin: 7.3.0(typescript@4.9.5)(webpack@5.87.0)
       jest-worker: 29.3.1
       lightningcss: 1.18.0
@@ -4218,8 +4215,8 @@ packages:
       '@ant-design/antd-theme-variable': 1.0.0
       '@ant-design/icons': 4.7.0(react-dom@16.14.0)(react@16.14.0)
       '@ant-design/pro-components': 2.4.5(antd@4.24.10)(rc-field-form@1.32.2)(react-dom@16.14.0)(react@16.14.0)
-      '@tanstack/react-query': 4.29.13(react-dom@16.14.0)(react@16.14.0)
-      '@tanstack/react-query-devtools': 4.29.13(@tanstack/react-query@4.29.13)(react-dom@16.14.0)(react@16.14.0)
+      '@tanstack/react-query': 4.29.14(react-dom@16.14.0)(react@16.14.0)
+      '@tanstack/react-query-devtools': 4.29.14(@tanstack/react-query@4.29.14)(react-dom@16.14.0)(react@16.14.0)
       '@umijs/bundler-utils': 4.0.52
       '@umijs/valtio': 1.0.3(react@16.14.0)
       antd-dayjs-webpack-plugin: 1.0.6(dayjs@1.11.8)
@@ -5234,7 +5231,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001503
-      electron-to-chromium: 1.4.432
+      electron-to-chromium: 1.4.433
       node-releases: 2.0.12
       update-browserslist-db: 1.0.11(browserslist@4.21.9)
     dev: false
@@ -6098,8 +6095,8 @@ packages:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
     dev: true
 
-  /electron-to-chromium@1.4.432:
-    resolution: {integrity: sha512-yz3U/khQgAFT2HURJA3/F4fKIyO2r5eK09BQzBZFd6BvBSSaRuzKc2ZNBHtJcO75/EKiRYbVYJZ2RB0P4BuD2g==}
+  /electron-to-chromium@1.4.433:
+    resolution: {integrity: sha512-MGO1k0w1RgrfdbLVwmXcDhHHuxCn2qRgR7dYsJvWFKDttvYPx6FNzCGG0c/fBBvzK2LDh3UV7Tt9awnHnvAAUQ==}
     dev: false
 
   /elliptic@6.5.4:
@@ -6271,8 +6268,8 @@ packages:
       next-tick: 1.1.0
     dev: false
 
-  /es5-imcompatible-versions@0.1.84:
-    resolution: {integrity: sha512-2qAKSU1wKRNLc3n62i0nhmJGTFM9gl0f1YzfPx0Nr8OFw1uQc0pD3jHrZWqGZ/gKmuK9yX43/36Jl2cafgvkuA==}
+  /es5-imcompatible-versions@0.1.85:
+    resolution: {integrity: sha512-zvMgrVgw4Tm/l22r+b4m5RCdYwYE7fBNNWA8iKHrzr7tYUHBwkCCLMGTz83HO/F3HfLlAUutO813hrOQw0/Sfw==}
     dev: false
 
   /es6-iterator@2.0.3:
