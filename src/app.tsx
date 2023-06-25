@@ -2,8 +2,10 @@
 
 import AvatarName from '@/components/AvatarName';
 import Breadcrumb from '@/components/Breadcrumb';
+import config from '@/config';
 import { PageContainer } from '@ant-design/pro-components';
 import { useLocation } from '@umijs/max';
+import { Monitor } from '@xlion/monitor';
 import { ConfigProvider } from 'antd';
 import 'antd/dist/reset.css';
 import dayjs from 'dayjs';
@@ -15,6 +17,15 @@ import { errorConfig } from './requestErrorConfig';
 import './style/base.less';
 
 dayjs.locale('zh-cn');
+
+const { ajaxBaseUrlKI } = config;
+
+Monitor.init({
+  appCode: 'SCM_FACOTRY',
+  reportUrl: ajaxBaseUrlKI,
+  listenRequest: false,
+  listenRoute: true,
+});
 
 // 全局初始化数据配置，用于 Layout 用户信息和权限初始化
 // 更多信息见文档：https://umijs.org/docs/api/runtime-config#getinitialstate

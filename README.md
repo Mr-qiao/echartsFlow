@@ -4,10 +4,6 @@
 
 - `顾孝标`：All modules
 
-### 权限配置
-
-- 新开发模块需要到 对应环境[[dev](https://dev.xinc818.net/hrm/#/staff/manage?appCode=SCM&appName=%E8%AE%BE%E8%AE%A1%E5%B8%88%E7%B3%BB%E7%BB%9F),[daily](https://daily.xinc818.net/hrm/#/staff/manage?appCode=SCM&appName=%E8%AE%BE%E8%AE%A1%E5%B8%88%E7%B3%BB%E7%BB%9F),[gray](https://gray.xinc818.net/hrm/#/staff/manage?appCode=SCM&appName=%E8%AE%BE%E8%AE%A1%E5%B8%88%E7%B3%BB%E7%BB%9F)] 的盖亚系统 配置 `权限管理`与`角色管理`
-
 ### 相关文档
 
 - [设计师平台项目 prd](https://wiki.xinc818.com/pages/viewpage.action?pageId=52874233)
