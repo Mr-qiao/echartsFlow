@@ -20,6 +20,7 @@
     "@ant-design/pro-layout": "7.11.0",
     "@fingerprintjs/fingerprintjs": "^3.4.1",
     "@umijs/max": "^4.0.52",
+    "@xc/kunlun-request": "^0.0.6",
     "@xc/react-hooks": "^1.0.3",
     "@xc/web-cmpt": "^1.0.18",
     "@xc/web-utils": "~1.0.13",

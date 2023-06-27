@@ -1,9 +1,10 @@
-import { request } from '@/utils/request';
+import { httpRequest, request } from '@/utils/request';
+
 /**
  * 销售订单 --- 查询销售订单
  */
 export function getSaleOrderList(body: object, options: any) {
-  return request.KLAPI.post(
+  return httpRequest.post(
     '/designweb/supplier/order/sale/getFactorySaleOrderList',
     body,
     {

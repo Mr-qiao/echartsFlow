@@ -1,39 +1,20 @@
 ﻿import config from '@/config';
 import { navigateToLogin } from '@/utils';
-// import FingerprintJS from '@fingerprintjs/fingerprintjs';
-import klRequest from '@/utils/klRequest';
-// import FingerprintJS from '@fingerprintjs/fingerprintjs';
 import type { RequestConfig } from '@umijs/max';
 import { message, notification } from 'antd';
 import Cookies from 'js-cookie';
 
-// let visitorId: string;
-
-// async function getVisitorId() {
-//   const fpPromise = FingerprintJS.load();
-
-//   const fp = await fpPromise;
-//   const result = await fp.get();
-
-//   visitorId = result.visitorId || '';
-// }
-
-// getVisitorId();
+import type { KunlunProps, KunlunResponseProps } from '@xc/kunlun-request';
+import { klRequest } from '@xc/kunlun-request';
 
 const { ajaxBaseUrl, ajaxBaseUrlKI } = config;
 
-// 与后端约定的响应数据格式
-interface ResponseStructure {
-  entry?: any;
-  message?: string;
-  hasNext: boolean;
-  requestId: number;
-  status: boolean;
-  timestamp?: number;
-  totalRecordSize: number;
-  traceId?: string;
-  data?: any;
-}
+const klConfig: KunlunProps = {
+  kl_os_type: 3,
+  kl_platform: 3,
+  kl_display_type: 1,
+  baseURL: ajaxBaseUrlKI as string,
+};
 
 const codeMessage: any = {
   200: '服务器成功返回请求的数据。',
@@ -53,19 +34,6 @@ const codeMessage: any = {
   504: '网关超时。',
 };
 
-// let visitorId: string;
-
-// async function getVisitorId() {
-//   const fpPromise = FingerprintJS.load();
-
-//   const fp = await fpPromise;
-//   const result = await fp.get();
-
-//   visitorId = result.visitorId || '';
-// }
-
-// getVisitorId();
-
 /**
  * @name 错误处理
  * pro 自带的错误处理， 可以在这里做自己的改动
@@ -73,7 +41,7 @@ const codeMessage: any = {
  */
 
 export const errorConfig: RequestConfig = {
-  //   baseURL: ajaxBaseUrl,
+  baseURL: ajaxBaseUrl,
   timeout: 10000,
   withCredentials: true,
   // headers: {
@@ -111,29 +79,20 @@ export const errorConfig: RequestConfig = {
   requestInterceptors: [
     (config: any) => {
       // 拦截请求配置，进行个性化处理。
-      config.baseURL = config.kl ? ajaxBaseUrlKI : ajaxBaseUrl;
+      // TODO：目前token还兼容老接口
       const token =
-        // Cookies.get('token') ||
-        // localStorage.getItem('token') ||
         Cookies.get('supplier-token') || localStorage.getItem('supplier-token');
 
-      // TODO：目前兼容老API，并后期会依次介入新API
-      if (config.kl) {
-        klRequest(config, {
-          kl_token: 'supplier-token', // 用户token
-          kl_os_type: 3, // 操作系统类型：0、空缺（默认：客户端未填，当做0）1、Android 2、iOS 3、PC
-          kl_platform: 3, // 平台：0、空缺（默认：客户端未填，当做0）1、APP 2、微信小程序XCX 3、浏览器Browser
-          kl_display_type: 1, // 展示类型：0、空缺(默认：客户端未填，当作0) 1、Native 2、H5
-        });
-      } else {
+      if (token) {
         config.headers = {
           ...config.headers,
           token,
         };
       }
 
-      const url = config?.url;
-      return { ...config, url };
+      return config.hasGateway
+        ? { ...klRequest(config, klConfig) }
+        : { ...config };
     },
   ],
 
@@ -163,7 +122,7 @@ export const errorConfig: RequestConfig = {
         };
         return false;
       }
-      const { data } = response as unknown as ResponseStructure;
+      const { data } = response as unknown as KunlunResponseProps;
       if (data.code === 401) {
         message.error(data.message);
       }
