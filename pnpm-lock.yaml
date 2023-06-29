@@ -10,6 +10,9 @@ dependencies:
   '@ant-design/pro-layout':
     specifier: 7.11.0
     version: 7.11.0(antd@5.3.2)(react-dom@16.14.0)(react@16.14.0)
+  '@types/lodash':
+    specifier: ^4.14.195
+    version: 4.14.195
   '@umijs/max':
     specifier: ^4.0.52
     version: 4.0.52(@babel/core@7.22.5)(@types/react-dom@18.0.11)(@types/react@18.0.28)(dva@2.5.0-beta.2)(postcss@8.4.24)(prettier@2.8.4)(rc-field-form@1.33.0)(react-dom@16.14.0)(react@16.14.0)(styled-components@6.0.1)(typescript@4.9.5)(webpack@5.88.1)
@@ -58,6 +61,9 @@ dependencies:
   jsencrypt:
     specifier: ^3.3.2
     version: 3.3.2
+  lodash:
+    specifier: ^4.17.21
+    version: 4.17.21
   lodash-es:
     specifier: ^4.17.21
     version: 4.17.21
@@ -3808,7 +3814,7 @@ packages:
     resolution: {integrity: sha512-hy8b7Y1J8OGe6LbAjj3xniQrj3v6lsivCcrmf4TzSgPzLkhIeKgc5IZnT7ReIqmEuodjfO8EYAuoFvIrHi/+jQ==}
     deprecated: This is a stub types definition. history provides its own type definitions, so you do not need this installed.
     dependencies:
-      history: 5.3.0
+      history: 4.10.1
     dev: false
 
   /@types/hoist-non-react-statics@3.3.1:
@@ -3861,12 +3867,11 @@ packages:
   /@types/lodash-es@4.17.7:
     resolution: {integrity: sha512-z0ptr6UI10VlU6l5MYhGwS4mC8DZyYer2mCoyysZtSF7p26zOX8UpbrV0YpNYLGS8K4PUFIyEr62IMFFjveSiQ==}
     dependencies:
-      '@types/lodash': 4.14.191
+      '@types/lodash': 4.14.195
     dev: true
 
-  /@types/lodash@4.14.191:
-    resolution: {integrity: sha512-BdZ5BCCvho3EIXw6wUCXHe7rS53AIDPLE+JzwgT+OsJk53oBfbSmZZ7CX4VaRoN78N+TJpFi9QPlfIVNmJYWxQ==}
-    dev: true
+  /@types/lodash@4.14.195:
+    resolution: {integrity: sha512-Hwx9EUgdwf2GLarOjQp5ZH8ZmblzcbTBC2wtQWNKARBSxM9ezRIAUpeDTgoQRAFB0+8CNWXVA9+MaSOzOF3nPg==}
 
   /@types/minimatch@5.1.2:
     resolution: {integrity: sha512-K0VQKziLUWkVKiRVrx4a40iPaxTUefQmjtkQofBkYRcoaaL/8rhwDWww9qWbrgicNOgnpIsMxyNIUM4+n6dUIA==}
@@ -3908,7 +3913,7 @@ packages:
       '@types/history': 4.7.11
       '@types/react': 18.0.28
       '@types/react-router': 5.1.20
-      redux: 4.2.1
+      redux: 3.7.2
     dev: false
 
   /@types/react-router@5.1.20:
