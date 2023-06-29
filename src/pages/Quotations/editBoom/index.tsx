@@ -12,7 +12,7 @@ import {
   Table,
 } from 'antd';
 import dayjs from 'dayjs';
-import _ from 'lodash';
+import _ from 'lodash-es';
 import { useEffect, useState } from 'react';
 import { history } from 'umi';
 

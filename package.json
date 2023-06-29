@@ -18,7 +18,6 @@
     "@ant-design/icons": "^4.7.0",
     "@ant-design/pro-components": "2.4.5",
     "@ant-design/pro-layout": "7.11.0",
-    "@fingerprintjs/fingerprintjs": "^3.4.1",
     "@umijs/max": "^4.0.52",
     "@xc/kunlun-request": "^0.0.6",
     "@xc/react-hooks": "^1.0.3",
@@ -35,7 +34,6 @@
     "js-base64": "^3.7.3",
     "js-cookie": "^3.0.1",
     "jsencrypt": "^3.3.2",
-    "lodash": "^4.17.21",
     "lodash-es": "^4.17.21",
     "moment": "^2.29.4",
     "prop-types": "^15.8.1",
@@ -47,7 +45,6 @@
     "umi-request": "^1.4.0"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.191",
     "@types/lodash-es": "^4.17.7",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",

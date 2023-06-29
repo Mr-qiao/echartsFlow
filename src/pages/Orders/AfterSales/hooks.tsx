@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { ProColumnType, ProFormInstance } from '@ant-design/pro-components';
 import { Select } from 'antd';
-import { omit } from 'lodash';
+import { omit } from 'lodash-es';
 
 interface IProps extends ProColumnType {
   options: Array<{ label: string; value: number | string }>;
