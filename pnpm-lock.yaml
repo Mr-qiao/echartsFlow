@@ -17,8 +17,8 @@ dependencies:
     specifier: ^4.0.52
     version: 4.0.52(@babel/core@7.22.5)(@types/react-dom@18.0.11)(@types/react@18.0.28)(dva@2.5.0-beta.2)(postcss@8.4.24)(prettier@2.8.4)(rc-field-form@1.33.0)(react-dom@16.14.0)(react@16.14.0)(styled-components@6.0.1)(typescript@4.9.5)(webpack@5.88.1)
   '@xc/kunlun-request':
-    specifier: ^1.5.5
-    version: 1.5.5(react@16.14.0)(styled-components@6.0.1)(webpack@5.88.1)
+    specifier: ^1.5.7
+    version: 1.5.7(react@16.14.0)(styled-components@6.0.1)(webpack@5.88.1)
   '@xc/react-hooks':
     specifier: ^1.0.3
     version: 1.0.3
@@ -43,12 +43,18 @@ dependencies:
   antd:
     specifier: ^5.3.2
     version: 5.3.2(moment@2.29.4)(react-dom@16.14.0)(react@16.14.0)
+  axios:
+    specifier: ^1.4.0
+    version: 1.4.0
   classnames:
     specifier: ^2.3.2
     version: 2.3.2
   dayjs:
     specifier: ^1.11.8
     version: 1.11.8
+  fingerprintjs2:
+    specifier: ^2.1.4
+    version: 2.1.4
   html2canvas:
     specifier: ~1.1.5
     version: 1.1.5
@@ -4795,8 +4801,8 @@ packages:
       '@xtuc/long': 4.2.2
     dev: false
 
-  /@xc/kunlun-request@1.5.5(react@16.14.0)(styled-components@6.0.1)(webpack@5.88.1):
-    resolution: {integrity: sha512-7mMKDZsi0MKUTPbwqg15o0JIZZyRaMB5ehNHmFXiHWZvXR/fbbfNFd/UOmSj9v7v7KIcFxWknsPBWdWnAkE2sA==}
+  /@xc/kunlun-request@1.5.7(react@16.14.0)(styled-components@6.0.1)(webpack@5.88.1):
+    resolution: {integrity: sha512-glAqw3mbh/hx6KEFIgwhYPsnbAYV1mj1y8tuKm6pPqP4qpv05lsGkqaF934xkkjV6tLZ2jCexTro/GkVoT+UJQ==}
     peerDependencies:
       react: '>16.8.0'
     dependencies:
