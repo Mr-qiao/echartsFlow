@@ -17,8 +17,8 @@ dependencies:
     specifier: ^4.0.52
     version: 4.0.52(@babel/core@7.22.5)(@types/react-dom@18.0.11)(@types/react@18.0.28)(dva@2.5.0-beta.2)(postcss@8.4.24)(prettier@2.8.4)(rc-field-form@1.33.0)(react-dom@16.14.0)(react@16.14.0)(styled-components@6.0.1)(typescript@4.9.5)(webpack@5.88.1)
   '@xc/kunlun-request':
-    specifier: ^1.5.3
-    version: 1.5.3(react@16.14.0)(styled-components@6.0.1)(webpack@5.88.1)
+    specifier: ^1.5.5
+    version: 1.5.5(react@16.14.0)(styled-components@6.0.1)(webpack@5.88.1)
   '@xc/react-hooks':
     specifier: ^1.0.3
     version: 1.0.3
@@ -4795,8 +4795,8 @@ packages:
       '@xtuc/long': 4.2.2
     dev: false
 
-  /@xc/kunlun-request@1.5.3(react@16.14.0)(styled-components@6.0.1)(webpack@5.88.1):
-    resolution: {integrity: sha512-5t7mm/GB9jKmPIO1fFeVmgz4ZyKgwKQc+MkFpvO2tzTGXbBjRMzcpuZeSfMF+6j2icmedfg45SiRbSgo2p7VNw==}
+  /@xc/kunlun-request@1.5.5(react@16.14.0)(styled-components@6.0.1)(webpack@5.88.1):
+    resolution: {integrity: sha512-7mMKDZsi0MKUTPbwqg15o0JIZZyRaMB5ehNHmFXiHWZvXR/fbbfNFd/UOmSj9v7v7KIcFxWknsPBWdWnAkE2sA==}
     peerDependencies:
       react: '>16.8.0'
     dependencies:
