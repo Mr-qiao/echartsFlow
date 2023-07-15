@@ -4806,6 +4806,31 @@ packages:
     peerDependencies:
       react: '>16.8.0'
     dependencies:
+      '@xc/kunlun-request': 1.5.8(react@16.14.0)(styled-components@6.0.1)(webpack@5.88.1)
+      axios: 1.4.0
+      father: 4.2.3(styled-components@6.0.1)(webpack@5.88.1)
+      fingerprintjs2: 2.1.4
+      js-cookie: 3.0.5
+      react: 16.14.0
+    transitivePeerDependencies:
+      - '@types/node'
+      - '@types/webpack'
+      - debug
+      - sockjs-client
+      - styled-components
+      - supports-color
+      - type-fest
+      - webpack
+      - webpack-dev-server
+      - webpack-hot-middleware
+      - webpack-plugin-serve
+    dev: false
+
+  /@xc/kunlun-request@1.5.8(react@16.14.0)(styled-components@6.0.1)(webpack@5.88.1):
+    resolution: {integrity: sha512-2FNc+FMKGFgc3frzKWk0wvUoMn5YHwXewOOswfWgdc/xeqGa+sudQcl3G6lQCXUcjE8ovSaY8Rl4OPCV+onw0w==}
+    peerDependencies:
+      react: '>16.8.0'
+    dependencies:
       axios: 1.4.0
       father: 4.2.3(styled-components@6.0.1)(webpack@5.88.1)
       fingerprintjs2: 2.1.4

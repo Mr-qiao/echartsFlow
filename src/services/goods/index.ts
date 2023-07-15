@@ -1,4 +1,4 @@
-import { request } from '@/utils/request';
+import { httpRequest, request } from '@/utils/request';
 
 /**商品管理 */
 // 列表
@@ -69,3 +69,7 @@ export const supplierGoodsList = (body: any) =>
 
 export const supplierItemList = (body: any) =>
   request.post(`/item/item/factory/supplierItem/list`, body);
+
+// 通过类目Id查询属性 商详页新增需要
+export const getItemPropertyByCategoryId = (body: any) =>
+  httpRequest.post(`/item/categoryProperty/getItemPropertyByCategoryId`, body);

@@ -41,7 +41,7 @@ import { navigateToLogin } from '@/utils';
 import type { KunlunResponseProps } from '@xc/kunlun-request';
 import { WebRequest } from '@xc/kunlun-request';
 import { message, notification } from 'antd';
-
+import Cookies from 'js-cookie';
 const { ajaxBaseUrlKI } = config;
 
 const codeMessage: any = {
@@ -63,9 +63,14 @@ const codeMessage: any = {
 };
 
 export const httpRequest = new WebRequest({
+  withCredentials: true,
+  headers: {
+    kl_token:
+      Cookies.get('supplier-token') || localStorage.getItem('supplier-token'),
+  },
   interceptors: {
-    responseInterceptor(response: any) {
-      const { data } = response as KunlunResponseProps;
+    responseInterceptor(response: KunlunResponseProps) {
+      const { data } = response;
       if (data.code === 401) {
         message.error(data.message);
       }
@@ -73,6 +78,7 @@ export const httpRequest = new WebRequest({
       if (data.code === 1000010001 || data.code === 1000010031) {
         navigateToLogin();
       }
+
       return response.data;
     },
     responseInterceptorCatch(error: any, opts: any) {
