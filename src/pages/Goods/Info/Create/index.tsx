@@ -25,9 +25,9 @@ import { goodsAdd, goodsDetail, sampleDetail } from '@/services/goods';
 import BrandSelectCpt from './components/BrandSelectCpt';
 import SkuCpt from './components/SkuCpt';
 
-import type { DefaultOptionType } from 'antd/es/cascader';
 import SkuTablesCpt from './components/SkuTablesCpt';
 import { AttrTypes } from './constant';
+import { useCategoryProps } from './hooks';
 import styles from './index.less';
 
 const PriceKeys = [
@@ -44,6 +44,8 @@ const Index: React.FC = () => {
   const { id } = useParams();
   // const { category } = useModel('category');
   const [category] = useCategory();
+
+  const [{ groupDict, propsDict, loading }, onReloadProps] = useCategoryProps();
   // console.log(category, '-----');
   // const [detail, setDetail] = useState<any>({});
   const [refSampleClothesId, setSampleId] = useState<any>();
@@ -59,7 +61,9 @@ const Index: React.FC = () => {
   //   const sampleListRef = useRef<any>(null);
 
   const handleChangeCate = (value?: any[]) => {
-    let cateId = value ? value[value.length - 1] : undefined;
+    const cateId = value ? [...value].pop() : undefined;
+    onReloadProps(cateId);
+    return;
     return goodsDetail({ categoryId: cateId, type: 3 }).then(({ entry }) => {
       setDynProps(
         groupBy(
@@ -179,7 +183,7 @@ const Index: React.FC = () => {
     } else if (sampleId) {
       autoCompleteWithSample(sampleId);
     } else {
-      handleChangeCate();
+      // handleChangeCate();
     }
   }, []);
 
@@ -340,14 +344,28 @@ const Index: React.FC = () => {
     }
   }
 
-  // 检索
-  const filter = (inputValue: string, path: DefaultOptionType[]) =>
-    path.some(
-      (option) =>
-        (option.name as string)
-          .toLowerCase()
-          .indexOf(inputValue.toLowerCase()) > -1,
-    );
+  //渲染其他属性
+  function renderOtherProps() {
+    return Object.keys(groupDict)?.map((item) => {
+      if (item === '基本信息') {
+        return <React.Fragment key={item}></React.Fragment>;
+      }
+      return (
+        <React.Fragment key={item}>
+          <h2>{item === '未分组' ? '' : item}</h2>
+          <Row>
+            {groupDict[item]?.map((component, i) => {
+              return (
+                <Col span={12} key={`${item}-${i}`}>
+                  {component}
+                </Col>
+              );
+            })}
+          </Row>
+        </React.Fragment>
+      );
+    });
+  }
 
   return (
     <div className={styles.goodsCreate}>
@@ -430,7 +448,16 @@ const Index: React.FC = () => {
                 options={category}
                 placeholder="请选择上架类目"
                 onChange={handleChangeCate}
-                showSearch={{ filter }}
+                showSearch={{
+                  filter: (inputValue, path) => {
+                    return path.some(
+                      (option) =>
+                        option.name
+                          .toLowerCase()
+                          .indexOf(inputValue.toLowerCase()) > -1,
+                    );
+                  },
+                }}
                 fieldNames={{
                   children: 'children',
                   label: 'name',
@@ -468,7 +495,7 @@ const Index: React.FC = () => {
               <InputNumber placeholder="请输入" min={0} />
             </Form.Item>
           </Col>
-          {renderDynProps(true)}
+          {/* {renderDynProps(true)} */}
 
           <Col span={24}>
             <Form.Item
@@ -503,7 +530,8 @@ const Index: React.FC = () => {
             </Form.Item>
           </Col>
         </Row>
-        {renderDynProps()}
+        {/* {renderDynProps()} */}
+        {renderOtherProps()}
 
         <h2>sku信息</h2>
         <SkuCpt form={form} skuAttrOptions={skuAttr} />
@@ -650,40 +678,40 @@ const Index: React.FC = () => {
     }
   }
 
-  function renderDynProps(isBaseProps = false) {
-    if (isBaseProps && dynProps['基本信息']) {
-      return dynProps['基本信息'].map((item: any) => (
-        <Col key={item.categoryPropertyName} span={12}>
-          {renderAttrItem(item)}
-        </Col>
-      ));
-    }
-    const attrGroupKeys = Object.keys(dynProps).filter(
-      (key) => key !== '基本信息',
-    );
-    if (attrGroupKeys.length === 0) return null;
+  // function renderDynProps(isBaseProps = false) {
+  //   if (isBaseProps && dynProps['基本信息']) {
+  //     return dynProps['基本信息'].map((item: any) => (
+  //       <Col key={item.categoryPropertyName} span={12}>
+  //         {renderAttrItem(item)}
+  //       </Col>
+  //     ));
+  //   }
+  //   const attrGroupKeys = Object.keys(dynProps).filter(
+  //     (key) => key !== '基本信息',
+  //   );
+  //   if (attrGroupKeys.length === 0) return null;
 
-    return attrGroupKeys.map((key, idx) => {
-      if (isBaseProps) {
-        return dynProps[key].map((item: any) => (
-          <Col key={item.categoryPropertyName} span={12}>
-            {renderAttrItem(item)}
-          </Col>
-        ));
-      }
-      return (
-        <React.Fragment key={idx}>
-          <h2>{key}</h2>
-          <Row>
-            {dynProps[key].map((item: any) => (
-              <Col key={item.categoryPropertyName} span={12}>
-                {renderAttrItem(item)}
-              </Col>
-            ))}
-          </Row>
-        </React.Fragment>
-      );
-    });
-  }
+  //   return attrGroupKeys.map((key, idx) => {
+  //     if (isBaseProps) {
+  //       return dynProps[key].map((item: any) => (
+  //         <Col key={item.categoryPropertyName} span={12}>
+  //           {renderAttrItem(item)}
+  //         </Col>
+  //       ));
+  //     }
+  //     return (
+  //       <React.Fragment key={idx}>
+  //         <h2>{key}</h2>
+  //         <Row>
+  //           {dynProps[key].map((item: any) => (
+  //             <Col key={item.categoryPropertyName} span={12}>
+  //               {renderAttrItem(item)}
+  //             </Col>
+  //           ))}
+  //         </Row>
+  //       </React.Fragment>
+  //     );
+  //   });
+  // }
 };
 export default Index;

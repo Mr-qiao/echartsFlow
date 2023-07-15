@@ -70,6 +70,30 @@ export const supplierGoodsList = (body: any) =>
 export const supplierItemList = (body: any) =>
   request.post(`/item/item/factory/supplierItem/list`, body);
 
-// 通过类目Id查询属性 商详页新增需要
-export const getItemPropertyByCategoryId = (body: any) =>
-  httpRequest.post(`/item/categoryProperty/getItemPropertyByCategoryId`, body);
+/**
+ * 查询类目动态属性
+ * @url https://admin-kunlun-dev.xinc818.com/#/apiDetail?requestPath=/item/categoryProperty/getItemPropertyByCategoryId
+ */
+export const getItemPropertyByCategoryId = (body: { categoryId: number }) => {
+  return httpRequest.post(
+    `/item/categoryProperty/getItemPropertyByCategoryId`,
+    {
+      ...body,
+      itemType: 3,
+    },
+  );
+};
+/**
+ * 详情
+ * @url https://admin-kunlun-dev.xinc818.com/#/apiDetail?requestPath=/item/item/viewByIdV2
+ */
+export const viewByIdV2Detail = (body: Recordable<any>) => {
+  return httpRequest.post(`/item/item/viewByIdV2`, body);
+};
+/**
+ * 保存
+ * @url https://admin-kunlun-dev.xinc818.com/#/apiDetail?requestPath=/item/item/saveItem
+ */
+export const saveItem = (body: Recordable<any>) => {
+  return httpRequest.post(`/item/item/saveItem`, body);
+};
