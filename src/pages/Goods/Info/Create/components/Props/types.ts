@@ -1,1 +1,1 @@
-export { RuleType } from '../../types';
+export { IPropsType, RuleType } from '../../types';

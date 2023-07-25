@@ -1,5 +1,5 @@
+import React from 'react';
 import { Form } from 'antd';
-import React, { Suspense } from 'react';
 
 import { IPropsType } from '../types';
 
@@ -9,19 +9,22 @@ type IProps = IPropsType;
 
 const DynamicProps: React.FC<IProps> = ({ ...props }) => {
   const renderFormItem = () => {
+    if (!props.propertyType) {
+      return <></>;
+    }
     const { Component, rules } = renderProps(props.propertyType);
+
     const _FormItemProps = {
       label: props.categoryPropertyName,
-      rules: rules({ ...props.categoryPropertyRule, required: props.required }),
-      name: ['baseProperties', `${props.categoryPropertyCode}`],
+      rules: rules({ ...props.categoryPropertyRule, required: props.required }, props.categoryPropertyName),
+      name: ['itemProperties', `${props.categoryPropertyCode}`],
       preserve: false,
     };
+    // console.log(_FormItemProps, props.categoryPropertyName, props.categoryPropertyCode);
     return (
-      <Suspense fallback={<>loading</>}>
-        <Form.Item {..._FormItemProps}>
-          <Component {...props}></Component>
-        </Form.Item>
-      </Suspense>
+      <Form.Item {..._FormItemProps}>
+        <Component {...props}></Component>
+      </Form.Item>
     );
   };
 

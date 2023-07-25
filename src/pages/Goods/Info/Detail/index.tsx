@@ -1,241 +1,136 @@
 import './index.less';
 
 import { math } from '@xlion/utils';
-import { Col, Row, Spin, Table } from 'antd';
+import { Col, Row, Spin, Table, Space } from 'antd';
 import { groupBy } from 'lodash-es';
+import { Descriptions, GlobalModal, Typography } from '@xlion/component';
 import React, { useEffect, useState } from 'react';
 
 import Image from '@/components/Image';
 import { formatPriceRange, formatRatioRange, transformFen2Yuan } from '@/utils';
 
 import { useParams } from '@umijs/max';
-import { AttrTypes } from '../Create/constant';
+import { AttrTypes } from '../Create/constants';
 // import Api from '../services';
-import { goodsDetail } from '@/services/goods';
+import useColumns from './columns';
+import { ModalType, MoreModal } from './components/MoreModal';
+import dynamicProps from './DynamicProps';
+import { saveViewByIdOnlyDetail } from '@/services/goods';
 
-const GoodsInfo = React.forwardRef(({ isSupplier = true }: any, ref) => {
-  const { id } = useParams();
+// import ss from './index.less'
+
+const baseMoreCount = 4;
+
+const GoodsInfo = React.forwardRef(({ id, isSupplier = false }: any, ref) => {
+  // const { id } = useParams();
 
   const [detail, setDetail] = useState<any>({});
   const [dynProps, setDynProps] = useState<any[]>([]);
   const [skus, setSkus] = useState<any[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
 
-  const columns = [
-    {
-      title: '规格信息',
-      dataIndex: 'name',
-      width: 300,
-      render: (_: any, record: any) => {
-        return (
-          <div className="u-f__center" style={{ justifyContent: 'flex-start' }}>
-            <Image
-              width={90}
-              height={90}
-              src={
-                Array.isArray(record.images) &&
-                record.images.length > 0 &&
-                record.images[0]
-              }
-            />
-            <div className="u-ml10" style={{ width: 'calc(100% - 100px)' }}>
-              <p className="u-fs12 u-mb5">
-                <span className="u-c888">规格：</span>
-                {record.properties || '-'}
-              </p>
-              <p className="u-fs12 u-mb5">
-                <span className="u-c888">sku编码：</span>
-                {record.sysSkuCode || '-'}
-              </p>
-              <p className="u-fs12 u-mb5">
-                <span className="u-c888">sku商家编码：</span>
-                {record.skuCode || '-'}
-              </p>
-              <p className="u-fs12 u-mb5">
-                <span className="u-c888">渠道销售sku编码：</span>
-                {record.outsideSkuCode || '-'}
-              </p>
-            </div>
-          </div>
-        );
-      },
-    },
-    {
-      title: '价格（元）',
-      dataIndex: 'thirdId',
-      width: 180,
-      render: (_: any, record: any) => {
-        return (
-          <div className="u-ml10">
-            <p className="u-fs12 u-mb5">
-              <span className="u-c888">吊牌价：</span>
-              {record.itemPrice.originPrice || '-'}
-            </p>
-            <p className="u-fs12 u-mb5">
-              <span className="u-c888">参考销售价：</span>
-              {record.itemPrice.salePrice || '-'}
-            </p>
-            <p className="u-fs12 u-mb5">
-              <span className="u-c888">预计直播价：</span>
-              {record.itemPrice.estimateLivePrice || '-'}
-            </p>
-            {/* 注意！！！！！！！ 【供应商 采购成本价】和 【款式商品 采购成本价】字段不一致！！！！！！！！！ */}
-            {isSupplier ? (
-              /* purchaseCostPrice*/
-              <p className="u-fs12 ">
-                <span className="u-c888">采购成本价：</span>
-                {record?.itemPrice?.purchaseCostPrice || '-'}
-              </p>
-            ) : (
-              /* supplyPrice*/
-              <p className="u-fs12 ">
-                <span className="u-c888">采购成本价：</span>
-                {record?.itemPrice?.supplyPrice || '-'}
-              </p>
-            )}
-          </div>
-        );
-      },
-    },
-    {
-      title: '佣金',
-      dataIndex: 'thirdId',
-      width: 180,
-      render: (_: any, record: any) => {
-        console.log(record, 'record');
-        return (
-          <div className="u-ml10">
-            <p className="u-fs12 u-mb5">
-              <span className="u-c888">预计佣金比例：</span>
-              {`${
-                record?.itemPrice?.commissionRatio === 0
-                  ? 0
-                  : record?.itemPrice?.commissionRatio
-              }%` || '-'}
-            </p>
-          </div>
-        );
-      },
-    },
-    {
-      title: '库存',
-      dataIndex: 'thirdId',
-      width: 180,
-      render: (_: any, record: any) => {
-        let stock = record?.invSku?.stock || 0;
-        let lockStock = record?.invSku?.lockStock || 0;
-        let val = stock - lockStock;
-        return (
-          <div className="u-ml10">
-            <p className="u-fs12 u-mb5">
-              <span className="u-c888">现货库存：</span>
-              {stock}
-            </p>
-            <p className="u-fs12 u-mb5">
-              <span className="u-c888">锁定库存：</span>
-              {lockStock}
-            </p>
-            <p className="u-fs12 ">
-              <span className="u-c888">可用库存：</span>
-              {val}
-            </p>
-          </div>
-        );
-      },
-    },
-  ];
+  const [columns] = useColumns(isSupplier)
+
+
+  //基础信息-查看更多
+  const handleBaseMore = () => {
+    GlobalModal.show(
+      <MoreModal dataSource={dynProps['基本信息'].slice(baseMoreCount)} type={ModalType.BASE} />,
+    );
+  };
 
   //获取商品信息
   async function getGoodsDetail(itemId: any) {
-    setLoading(true);
-    return goodsDetail({ itemId }).then(({ entry }) => {
-      const {
-        item: baseInfo,
-        baseProperties,
-        otherViewProperties,
-        skus = [],
-      } = entry;
+    try {
+      const { entry } = await saveViewByIdOnlyDetail({ itemId });
+
+      const { item: baseInfo, itemPropertyList = [], skus = [], otherViewProperties = {} } = entry;
       let data: any = {
         ...baseInfo,
         mainImg: baseInfo.images?.[0] || '',
-        estimateLivePriceRange: formatPriceRange(
-          otherViewProperties.refEstimateLivePrice,
-        ),
+        estimateLivePriceRange: formatPriceRange(otherViewProperties.refEstimateLivePrice),
         originPriceRange: formatPriceRange(otherViewProperties.refOriginPrice),
         salePriceRange: formatPriceRange(otherViewProperties.refSalePrice),
         supplyPriceRange: formatPriceRange(otherViewProperties.refSupplyPrice),
-        commissionRatioRange: formatRatioRange(
-          otherViewProperties.refCommissionRatio,
-        ),
+        commissionRatioRange: formatRatioRange(otherViewProperties.refCommissionRatio),
       };
-      setLoading(false);
+      const itemProperties = itemPropertyList?.reduce((acc: any, cur: any) => {
+        return [...acc, ...cur.childList];
+      }, []);
       //动态属性
+
       setDynProps(
-        groupBy(
-          baseProperties.sort((a, b) => a.order - b.order),
-          (item) => {
-            return item.bizGroupName;
-          },
-        ),
+        itemPropertyList?.reduce((acc: any, cur: any) => {
+          acc[cur.groupName] = cur.childList;
+          return acc;
+        }, {}),
       );
       setDetail({
         ...data,
-        baseProperties: baseProperties?.reduce((acc: Recordable<any>, cur) => {
-          let value: any;
-          if (Array.isArray(cur.categoryPropertyValues)) {
-            switch (cur.type) {
-              case AttrTypes.TEXT:
-              case AttrTypes.NUMBER:
-              case AttrTypes.TEXTAREA:
-              case AttrTypes.DATE:
-                value = cur.categoryPropertyValues[0];
-                break;
-              case AttrTypes.SELECT:
-              case AttrTypes.MULTIPLE_SELECT:
-                value =
-                  cur.propertySelectValues
-                    .map((itm: any) =>
-                      cur.categoryPropertyValues.includes(`${itm.valueId}`)
-                        ? itm.value
-                        : false,
-                    )
-                    .filter(Boolean)
-                    .join('；') || '-';
-                break;
-              case AttrTypes.DATE_RANGE:
-              case AttrTypes.NUMBER_RANGE:
-                value = cur.categoryPropertyValues.join(' - ') || '-';
-                break;
-              default:
-                value = cur.categoryPropertyValues;
-            }
-          }
-          acc[cur.categoryPropertyCode] = value || '-';
-          return acc;
-        }, {}),
+        baseProperties: itemProperties,
       });
 
       //sku值
       setSkus(() =>
-        skus.map((sku: any) => ({
+        skus.map((sku) => ({
           ...sku,
           itemPrice: {
-            ...transformFen2Yuan(sku.itemPrice, [
+            ...transformFen2Yuan(sku.itemPrice || {}, [
               'originPrice',
               'salePrice',
               'estimateLivePrice',
               'supplyPrice',
+              'purchaseCostPrice',
             ]),
             commissionRatio: math.div(sku?.itemPrice?.commissionRatio, 100),
-            purchaseCostPrice: math.div(
-              sku?.itemPrice?.purchaseCostPrice,
-              1000,
-            ),
           },
         })),
       );
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  //基本信息
+  function renderBaseProps() {
+    return dynProps['基本信息']
+      ?.slice(0, baseMoreCount)
+      ?.map((item, i) => {
+        return <React.Fragment key={i}>{dynamicProps(item)}</React.Fragment>;
+      })
+      .concat([
+        dynProps['基本信息']?.length > baseMoreCount && (
+          <Descriptions.Item key="more">
+            <Typography.Link onClick={handleBaseMore}>更多</Typography.Link>
+          </Descriptions.Item>
+        ),
+      ]);
+  }
+
+  //除 基本 的其余信息
+  function renderDynamicProps() {
+    return Object.keys(dynProps)?.map((item) => {
+      if (item === '基本信息') {
+        return <React.Fragment key={item}></React.Fragment>;
+      }
+      return (
+        <React.Fragment key={item}>
+          <h1>{item === '未分组' ? '' : item}</h1>
+          <Descriptions
+            className="u-ml20"
+            column={2}
+            labelStyle={{ flexShrink: 0 }}
+            contentStyle={{ flex: 1, width: 0, paddingRight: 20, flexDirection: 'column' }}
+          >
+            {dynProps[item]?.map((component, i) => {
+              return <React.Fragment key={i}>{dynamicProps(component)}</React.Fragment>;
+            })}
+          </Descriptions>
+        </React.Fragment>
+      );
     });
   }
+
+
   React.useImperativeHandle(ref, () => ({
     reload: () => {
       getGoodsDetail(id);
@@ -247,259 +142,93 @@ const GoodsInfo = React.forwardRef(({ isSupplier = true }: any, ref) => {
   }, [id]);
 
   return (
-    <Spin spinning={loading}>
-      <div className="goods__detail-wrap">
-        <Row className="u-w100">
-          <Col>
-            <Image
-              width={200}
-              height={200}
-              src={detail?.mainImg}
-              style={{ borderRadius: 10 }}
-            />
-            <div className="u-flex u-mt10">
-              {detail.images
-                ?.filter((_item: any, i: number) => i !== 0 && i <= 3)
-                ?.map((item: any, i: number) => {
-                  return (
-                    <Image
-                      key={i}
-                      width={60}
-                      height={60}
-                      src={item}
-                      style={{ borderRadius: 10 }}
-                    />
-                  );
+    <div className="goods__detail-wrap">
+      <Row className="u-w100">
+        <Col>
+          <Image
+            width={200}
+            height={200}
+            src={detail?.mainImg}
+            style={{ borderRadius: 10 }}
+          />
+          <div className="u-flex u-mt10">
+            {detail.images
+              ?.filter((_item: any, i: number) => i !== 0 && i <= 3)
+              ?.map((item: any, i: number) => {
+                return (
+                  <Image
+                    key={i}
+                    width={60}
+                    height={60}
+                    src={item}
+                    style={{ borderRadius: 10 }}
+                  />
+                );
+              })}
+          </div>
+        </Col>
+        <Col span={18}>
+
+          <Descriptions
+            title={detail.title}
+            className="u-ml20"
+            column={2}
+            labelStyle={{ flexShrink: 0 }}
+            contentStyle={{ flex: 1, width: 0, paddingRight: 20, flexDirection: 'column' }}
+          >
+            <Descriptions.Item label="款式编码"> {detail.sysItemCode}</Descriptions.Item>
+            <Descriptions.Item label="品牌信息（中文）"> {detail.brandName}</Descriptions.Item>
+            <Descriptions.Item label="商家款式编码">
+              {detail.supplierStyleCode || '-'}
+            </Descriptions.Item>
+            <Descriptions.Item label="品牌信息（英文）">
+              {detail.brandNameEn || '-'}
+            </Descriptions.Item>
+            {/* <Descriptions.Item label="供应商"> {detail.supplierName || '-'}</Descriptions.Item> */}
+            <Descriptions.Item label="69码"> {detail.snCode || '-'}</Descriptions.Item>
+            <Descriptions.Item label="类目">
+              {Array.isArray(detail.categoryNames) ? (
+                <span className="u-els" style={{ flex: 1 }}>
+                  {detail.categoryNames?.join(' / ')}
+                </span>
+              ) : (
+                '-'
+              )}
+            </Descriptions.Item>
+            <Descriptions.Item label="参考销售价">{detail.salePriceRange}</Descriptions.Item>
+            <Descriptions.Item label="来源">
+              {detail.source === 8 ? '供应链中台商品' : '成衣款'}
+            </Descriptions.Item>
+            <Descriptions.Item label="预计佣金比例">
+              {detail.commissionRatioRange}
+            </Descriptions.Item>
+            <Descriptions.Item label="渠道商品编码">
+              {detail.outsideItemCode || '-'}
+            </Descriptions.Item>
+            {renderBaseProps()}
+
+          </Descriptions>
+        </Col>
+        {detail.contents && detail?.contents.length > 0 && (
+          <Col span={24}>
+            {detail.contents && detail?.contents.length > 0 ? (
+              <Space size={10}>
+                {detail?.contents?.map((item, i) => {
+                  return <Image width={80} height={80} key={i} src={item.image} />;
                 })}
-            </div>
+              </Space>
+            ) : (
+              <span> -</span>
+            )}
           </Col>
-          <Col span={18}>
-            <div className="u-ml20">
-              <div className="u-f__start u-els u-w70">
-                <p className="u-els u-fs16 u-fw700 u-mt10 u-mb10">
-                  {detail.title}
-                </p>
-                {/* {detail.online && ( */}
-                {/*<Tag color={dictColor(detail.online, 'ONLINE_OR_OFFLINE')} className="u-ml10">*/}
-                {/*	{dict(detail.online, 'ONLINE_OR_OFFLINE')}*/}
-                {/*</Tag>*/}
-                {/* )} */}
-              </div>
-              <Row className="goods__info-wrap" gutter={[16, 8]}>
-                <Col span={12}>
-                  <p>
-                    <span className="u-c888">款式编码：</span>
-                    {detail.sysItemCode}
-                  </p>
-                </Col>
-                <Col span={12}>
-                  <p>
-                    <span className="u-c888">品牌信息（中文）：</span>
-                    {detail.brandName}
-                  </p>
-                </Col>
-                <Col span={12}>
-                  <p>
-                    <span className="u-c888">商家款式编码：</span>
-                    {detail.supplierStyleCode || '-'}
-                  </p>
-                </Col>
-                <Col span={12}>
-                  <p>
-                    <span className="u-c888">品牌信息（英文）：</span>
-                    {detail.brandNameEn || '-'}
-                  </p>
-                </Col>
-                <Col span={12}>
-                  <p className="u-flex ">
-                    <span className="u-c888">类目：</span>
-                    {Array.isArray(detail.categoryNames) ? (
-                      <span className="u-els" style={{ flex: 1 }}>
-                        {detail.categoryNames?.join(' / ')}
-                      </span>
-                    ) : (
-                      '-'
-                    )}
-                  </p>
-                </Col>
+        )}
 
-                <Col span={12}>
-                  <p>
-                    <span className="u-c888">参考销售价：</span>
-                    {detail.salePriceRange}
-                  </p>
-                </Col>
-                <Col span={12}>
-                  <p>
-                    <span className="u-c888">69码：</span>
-                    {detail.snCode}
-                  </p>
-                </Col>
-                {/*<Col span={12}>*/}
-                {/*	<p>*/}
-                {/*		<span className="u-c888">参考供货价：</span>*/}
-                {/*		{detail.supplyPriceRange}*/}
-                {/*	</p>*/}
-                {/*</Col>*/}
-                <Col span={12}>
-                  <p>
-                    <span className="u-c888">来源：</span>
-                    成衣款
-                  </p>
-                </Col>
-                <Col span={12}>
-                  <p>
-                    <span className="u-c888">预计佣金比例：</span>
-                    {detail.commissionRatioRange}
-                  </p>
-                </Col>
-                <Col span={12}>
-                  <p>
-                    <span className="u-c888">渠道商品编码：</span>
-                    {detail.outsideItemCode}
-                  </p>
-                </Col>
-                {/* <Col span={12}>
-                <p>
-                  <span className="u-c888">商品详情：</span>
-                  <div className="u-flex u-mt10">
-                    {detail.contents
-                      ?.filter((item: any, i: number) => i !== 0 && i <= 3)
-                      ?.map((item: any, i: number) => {
-                        return (
-                          <Image
-                            key={i}
-                            width={60}
-                            height={60}
-                            src={item.image}
-                            style={{ borderRadius: 10 }}
-                          />
-                        );
-                      })}
-                  </div>
-                </p>
-              </Col> */}
-
-                {/* <Col span={12}>
-                <p>
-                  <span className="u-c888">销售平台渠道：</span>
-                  {dict(detail.supplierStyleCode, 'LIVE_PLATFORM_TYPE')}
-                </p>
-              </Col> */}
-
-                {/* <Col span={12}>
-                <p className="u-els">
-                  <span className="u-c888">在售链接：</span>
-                  <a href={detail.supplierStyleCode}>{detail.supplierStyleCode}</a>
-                </p>
-              </Col> */}
-
-                {renderDynProps(true)}
-                {/* {detail.sellPoint && ( */}
-
-                {/* )} */}
-              </Row>
-            </div>
-          </Col>
-
-          <React.Fragment>
-            <Col span={24}>
-              <h1>商品详情：</h1>
-            </Col>
-            <Row gutter={[16, 10]} className="u-w100">
-              <Col span={24}>
-                <div className="u-flex u-mt10">
-                  {detail.contents?.map((item: any, i: number) => {
-                    return (
-                      <div className="u-ml10" key={i}>
-                        <Image
-                          width={60}
-                          height={60}
-                          src={item?.image}
-                          style={{ borderRadius: 10 }}
-                        />
-                      </div>
-                    );
-                  })}
-                </div>
-              </Col>
-            </Row>
-          </React.Fragment>
-
-          {renderDynProps()}
-
-          <Col span={24}>
-            <h1>SKU信息</h1>
-          </Col>
-          <Col span={24}>
-            <Table columns={columns} dataSource={skus} rowKey={'skuId'}></Table>
-          </Col>
-        </Row>
-      </div>
-    </Spin>
+      </Row>
+      {renderDynamicProps()}
+      <h1>SKU信息</h1>
+      <Table columns={columns} dataSource={skus} rowKey={'skuId'}></Table>
+    </div>
   );
 
-  function renderAttrItem(attr: {
-    type: number;
-    required: 0 | 1;
-    categoryPropertyCode: string;
-    categoryPropertyName: string;
-    unit: string;
-    propertySelectValues: any[];
-    value: any;
-  }) {
-    const props = {
-      label: attr.categoryPropertyName,
-      rules: [{ required: attr.required === 1 ? true : false }],
-      name: ['baseProperties', `${attr.categoryPropertyCode}`],
-      preserve: false,
-      value: detail.baseProperties[attr.categoryPropertyCode],
-    };
-
-    return (
-      <p className="u-els" title={props.label}>
-        <span className="u-c888">{props.label}：</span>
-        {props.value}
-      </p>
-    );
-  }
-
-  function renderDynProps(isBaseProps = false) {
-    if (isBaseProps && dynProps['基本信息']) {
-      return dynProps['基本信息'].map((item: any) => (
-        <Col key={item.categoryPropertyName} span={12}>
-          {renderAttrItem(item)}
-        </Col>
-      ));
-    }
-    const attrGroupKeys = Object.keys(dynProps).filter(
-      (key) => key !== '基本信息',
-    );
-    if (attrGroupKeys.length === 0) return null;
-
-    return attrGroupKeys.map((key, idx: number) => {
-      if (isBaseProps) {
-        return dynProps[key].map((item: any) => (
-          <Col key={item.categoryPropertyName} span={12}>
-            {renderAttrItem(item)}
-          </Col>
-        ));
-      }
-      return (
-        <React.Fragment key={idx}>
-          <Col span={24}>
-            <h1>{key}</h1>
-          </Col>
-          <Row gutter={[16, 10]} className="u-w100">
-            {dynProps[key].map((item: any) => (
-              <Col key={item.categoryPropertyName} span={12}>
-                {renderAttrItem(item)}
-              </Col>
-            ))}
-          </Row>
-        </React.Fragment>
-      );
-    });
-  }
 });
 export default GoodsInfo;

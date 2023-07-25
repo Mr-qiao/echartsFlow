@@ -1,4 +1,4 @@
-import { ATTR_TYPE, IS_DISABLED, USE_SCOPE_TYPE } from './constant';
+import { ATTR_TYPE, IS_DISABLED, USE_SCOPE_TYPE } from './constants';
 
 //动态类目属性
 export interface IPropsType {

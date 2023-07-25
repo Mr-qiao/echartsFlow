@@ -3,22 +3,41 @@
  */
 import React from 'react';
 
-import InputNumberRange from '@/components/InputNumberRange';
-import type { FormRule } from 'antd';
-import { RuleType } from '../types';
+import {Input, type FormRule} from '@xlion/component';
+import {RuleType, IPropsType} from '../types';
 
-interface IProps {}
-
-export const rules = (rules: RuleType): FormRule[] => {
-  return [{ required: true }];
+export const rules = (rules: RuleType, label: string): FormRule[] => {
+	return [
+		{
+			required: rules?.required,
+			message: `请输入${label}`
+		}, {
+			pattern: /(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?/gi,
+			message: `请输入正确的URL地址`
+		}
+	];
 };
 
-const Index: React.FC<IProps> = () => {
-  //暂无联动属性
-  return (
-    <>
-      <InputNumberRange />
-    </>
-  );
+const Index: React.FC<IPropsType> = (options): JSX.Element => {
+	
+	
+	const {desc, categoryPropertyRule, read, value, onChange} = options
+	
+	
+	const props: any = {
+		placeholder: desc || `请输入${options?.categoryPropertyName}`,
+		maxLength: categoryPropertyRule?.max,
+		disabled: read === 1,
+		value,
+		onChange: (event: React.ChangeEvent<HTMLInputElement>) => {
+			onChange(event.target.value)
+		}
+	}
+	
+	return (
+	 <>
+		 <Input {...props} />
+	 </>
+	);
 };
 export default Index;
