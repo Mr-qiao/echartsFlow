@@ -458,7 +458,9 @@ const Index: React.FC = () => {
       history.replace('/goods/list');
     } catch (error) {
       console.log(error);
-      message.info('请检查表单必填项～');
+      if (error.errorFields && error.errorFields.length > 0) {
+        message.info('请检查表单必填项～');
+      }
     } finally {
       setPending(false);
     }

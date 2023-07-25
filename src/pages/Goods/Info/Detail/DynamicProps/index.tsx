@@ -73,10 +73,10 @@ const DynamicProps: React.FC<IProps> = ({ itemPropertyType, ...info }) => {
         );
       //单图片 --------
       case ATTR_TYPE.IMAGE:
-        return <ImageContainer src={value?.split(',')} showCount={3} />;
+        return value ? <ImageContainer src={value?.split(',')} showCount={3} /> : '-';
       //多图 --------
       case ATTR_TYPE.IMAGE_MULTIPLE:
-        return <ImageContainer src={value?.split(',')} showCount={3} />;
+        return value ? <ImageContainer src={value?.split(',')} showCount={3} /> : '-';
       //文件 --------
       case ATTR_TYPE.FILE:
         return <FilesComponent value={value} />;
