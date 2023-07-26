@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import { PlusOutlined } from '@ant-design/icons';
-import type { InputRef, FormRule } from '@xlion/component';
-import { Button, Divider, Input, Select, Space } from '@xlion/component';
-import { RuleType, IPropsType } from '../types';
+import type { FormRule, InputRef } from '@xlion/component';
+import { Button, Divider, Input, Select } from '@xlion/component';
+import { IPropsType, RuleType } from '../types';
 
 export const rules = (rules: RuleType, label: string): FormRule[] => {
   return [{ required: rules.required === 1, message: `请选择${label}` }];
@@ -13,7 +13,6 @@ const Index: React.FC<IPropsType> = ({ ...props }: IPropsType) => {
   const [values, setValues] = useState<any[]>([]);
   const [name, setName] = useState<string>('');
   const inputRef = useRef<InputRef>(null);
-
 
   useEffect(() => {
     if (props?.itemCatePropertyValueEnumS) {
@@ -32,7 +31,7 @@ const Index: React.FC<IPropsType> = ({ ...props }: IPropsType) => {
 
   return (
     <Select
-      style={{ width: '100%' }}
+      style={{ minWidth: '200px' }}
       allowClear
       showSearch
       disabled={props.read === 1}
@@ -45,10 +44,18 @@ const Index: React.FC<IPropsType> = ({ ...props }: IPropsType) => {
           {props?.custom === 1 && (
             <>
               <Divider style={{ margin: '8px 0' }} />
-              <div style={{ padding: '0 8px 4px', gap: '8px' }} className='u-f__between'>
-                <Input placeholder="请输入" ref={inputRef} value={name} onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                  setName(event.target.value);
-                }} />
+              <div
+                style={{ padding: '0 8px 4px', gap: '8px' }}
+                className="u-f__between"
+              >
+                <Input
+                  placeholder="请输入"
+                  ref={inputRef}
+                  value={name}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    setName(event.target.value);
+                  }}
+                />
                 <Button
                   type={name ? 'primary' : 'default'}
                   disabled={!!!name}

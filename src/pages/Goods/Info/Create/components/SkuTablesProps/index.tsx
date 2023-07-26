@@ -1,12 +1,15 @@
-import React, { useContext, useRef } from 'react';
 import type {
   ActionType,
   EditableFormInstance,
   ProColumns,
   ProFormInstance,
 } from '@ant-design/pro-components';
-import { EditableProTable, ProFormDependency } from '@ant-design/pro-components';
+import {
+  EditableProTable,
+  ProFormDependency,
+} from '@ant-design/pro-components';
 import { Button, GlobalModal, Popconfirm } from '@xlion/component';
+import React, { useContext, useRef } from 'react';
 
 import { CptContext } from '../..';
 import { ATTR_TYPE } from '../../constants';
@@ -27,7 +30,8 @@ type DataSourceType = {
 };
 
 export default () => {
-  const { form, skuProps, skuOptionsDict, skuPropsDict } = useContext(CptContext);
+  const { form, skuProps, skuOptionsDict, skuPropsDict } =
+    useContext(CptContext);
 
   const formRef = useRef<ProFormInstance<any>>();
   const actionRef = useRef<ActionType>();
@@ -90,10 +94,20 @@ export default () => {
         let width: number | null = null;
         switch (props.propertyType) {
           case ATTR_TYPE.IMAGE:
-            props = { ...props, itemRender: true, thumbnailSize: 40, tip: false } as IPropsType;
+            props = {
+              ...props,
+              itemRender: true,
+              thumbnailSize: 40,
+              tip: false,
+            } as IPropsType;
             break;
           case ATTR_TYPE.IMAGE_MULTIPLE:
-            props = { ...props, itemRender: true, thumbnailSize: 40, tip: false } as IPropsType;
+            props = {
+              ...props,
+              itemRender: true,
+              thumbnailSize: 40,
+              tip: false,
+            } as IPropsType;
             width = 300;
             break;
           case ATTR_TYPE.FILE:
@@ -145,7 +159,6 @@ export default () => {
               <Button
                 onClick={handleBatchFill}
                 type="primary"
-                danger
                 style={{ marginLeft: '12.5%', marginBottom: 5 }}
               >
                 批量填充
@@ -177,10 +190,14 @@ export default () => {
                         placement="left"
                         title="删除此行?"
                         onConfirm={() => {
-                          const tableDataSource = form.getFieldValue('skus') as any[];
+                          const tableDataSource = form.getFieldValue(
+                            'skus',
+                          ) as any[];
                           console.log(tableDataSource, 'tableDataSource');
                           form.setFieldsValue({
-                            skus: tableDataSource.filter((item) => item?.skuId !== row?.skuId),
+                            skus: tableDataSource.filter(
+                              (item) => item?.skuId !== row?.skuId,
+                            ),
                           });
                         }}
                         okText="确认"

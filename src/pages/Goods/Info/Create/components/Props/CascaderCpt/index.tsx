@@ -1,21 +1,29 @@
-import React, { useRef, useState, useEffect } from 'react';
-
 import { PlusOutlined } from '@ant-design/icons';
 import type { FormRule, InputRef } from '@xlion/component';
-import { Button, Divider, Input, Space, TreeSelect } from '@xlion/component';
-import { RuleType, IPropsType } from '../types';
+import { Button, Divider, Input, TreeSelect } from '@xlion/component';
+import React, { useEffect, useRef, useState } from 'react';
+
+import { IPropsType, RuleType } from '../types';
 
 export const rules = (rules: RuleType, label: string): FormRule[] => {
-  return [{ required: rules.required === 1, message: `请选择${label}` }];
+  return [
+    { required: rules.required === 1, message: `请选择${label}` },
+    {
+      max: rules.max,
+      type: 'array',
+    },
+    {
+      min: rules.min,
+      type: 'array',
+    },
+  ];
 };
 
 const Index: React.FC<IPropsType> = ({ ...props }: IPropsType) => {
-  const { value } = props
+  const { value } = props;
   const [categoryValues, setCategoryValues] = useState<any[]>([]);
   const [name, setName] = useState<string>('');
   const inputRef = useRef<InputRef>(null);
-
-
 
   useEffect(() => {
     if (props?.itemCatePropertyValueEnumS) {
@@ -26,15 +34,20 @@ const Index: React.FC<IPropsType> = ({ ...props }: IPropsType) => {
   const addItem = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
 
-    setCategoryValues([{ label: name, value: name, children: [] }, ...categoryValues]);
+    setCategoryValues([
+      { label: name, value: name, children: [] },
+      ...categoryValues,
+    ]);
     setName('');
     setTimeout(() => {
       inputRef.current?.focus();
     }, 0);
   };
 
+  console.log(props, 'ndkjansk');
   return (
     <TreeSelect
+      className="selectSty"
       treeCheckable
       multiple
       maxTagCount="responsive"
@@ -48,9 +61,11 @@ const Index: React.FC<IPropsType> = ({ ...props }: IPropsType) => {
         value: 'value',
         children: 'children',
       }}
-      style={{ width: '100%' }}
+      style={{ minWidth: '200px' }}
       treeData={categoryValues}
-      filterTreeNode={(inputValue: any, treeNode: any) => treeNode.label.includes(inputValue)}
+      filterTreeNode={(inputValue: any, treeNode: any) =>
+        treeNode.label.includes(inputValue)
+      }
       dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
       dropdownRender={(menu) => (
         <>
@@ -58,10 +73,19 @@ const Index: React.FC<IPropsType> = ({ ...props }: IPropsType) => {
           {props?.custom === 1 && (
             <>
               <Divider style={{ margin: '8px 0' }} />
-              <div style={{ padding: '0 8px 4px', gap: '8px' }} className='u-f__between'>
-                <Input placeholder="请输入" style={{ width: '100%' }} ref={inputRef} value={name} onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                  setName(event.target.value);
-                }} />
+              <div
+                style={{ padding: '0 8px 4px', gap: '8px' }}
+                className="u-f__between"
+              >
+                <Input
+                  placeholder="请输入"
+                  style={{ width: '100%' }}
+                  ref={inputRef}
+                  value={name}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    setName(event.target.value);
+                  }}
+                />
                 <Button
                   type={name ? 'primary' : 'default'}
                   disabled={!!!name}

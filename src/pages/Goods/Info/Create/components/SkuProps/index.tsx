@@ -1,6 +1,13 @@
-import React, { useContext } from 'react';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Input, message, Select, Table, TableProps } from '@xlion/component';
+import {
+  Button,
+  Input,
+  message,
+  Select,
+  Table,
+  TableProps,
+} from '@xlion/component';
+import React, { useContext } from 'react';
 // import { Table } from '@xlion/component';
 import { math, uuid } from '@xlion/utils';
 import { Form, FormListFieldData } from 'antd';
@@ -26,7 +33,9 @@ const doComb = (data: any[]): { skuId: number; properties: string }[] => {
       } else {
         let str = temp?.length > 0 ? temp?.join('；') : temp;
         // console.log(str, temp, data);
-        let item = JSON.parse(JSON.stringify({ skuId: results.length, properties: str }));
+        let item = JSON.parse(
+          JSON.stringify({ skuId: results.length, properties: str }),
+        );
         results.push(item); // 深度拷贝temp
       }
     });
@@ -61,10 +70,15 @@ const SkuProps: React.FC<IProps> = () => {
                 const row = getFieldValue(['saleProperties']);
                 const fakeSkuAttrOptions = skuOptions.map((item) => ({
                   ...item,
-                  disabled: row.some((r: any) => r.categoryPropertyType?.value === item.value),
+                  disabled: row.some(
+                    (r: any) => r.categoryPropertyType?.value === item.value,
+                  ),
                 }));
                 return (
-                  <Form.Item name={[field.name, 'categoryPropertyType']} noStyle>
+                  <Form.Item
+                    name={[field.name, 'categoryPropertyType']}
+                    noStyle
+                  >
                     <Select
                       options={fakeSkuAttrOptions}
                       placeholder="请选择"
@@ -76,8 +90,15 @@ const SkuProps: React.FC<IProps> = () => {
                         //  根据选择规格 ，添加规格枚举
 
                         form.setFieldValue(
-                          ['saleProperties', field.name, 'categoryPropertyValues'],
-                          val ? skuOptionsDict[val.label]?.itemCatePropertyValueEnumS : [],
+                          [
+                            'saleProperties',
+                            field.name,
+                            'categoryPropertyValues',
+                          ],
+                          val
+                            ? skuOptionsDict[val.label]
+                                ?.itemCatePropertyValueEnumS
+                            : [],
                         );
                       }}
                     />
@@ -96,19 +117,25 @@ const SkuProps: React.FC<IProps> = () => {
             <Form.Item
               shouldUpdate={(prev, cur) => {
                 return (
-                  prev?.saleProperties[index]?.categoryPropertyType?.toString() !==
+                  prev?.saleProperties[
+                    index
+                  ]?.categoryPropertyType?.toString() !==
                   cur?.saleProperties[index]?.categoryPropertyType?.toString()
                 );
               }}
               noStyle
             >
               {({ getFieldValue }) => {
-                const { categoryPropertyType = '' } = getFieldValue(['saleProperties', index]);
-                const rowData: IPropsType | undefined = skuOptionsDict[categoryPropertyType?.label];
+                const { categoryPropertyType = '' } = getFieldValue([
+                  'saleProperties',
+                  index,
+                ]);
+                const rowData: IPropsType | undefined =
+                  skuOptionsDict[categoryPropertyType?.label];
                 const { itemCatePropertyValueEnumS = [] } = rowData || {};
                 return categoryPropertyType && rowData ? (
                   Array.isArray(itemCatePropertyValueEnumS) &&
-                    itemCatePropertyValueEnumS.length > 0 ? (
+                  itemCatePropertyValueEnumS.length > 0 ? (
                     <SpecsCheckboxInput rowData={rowData} field={field} />
                   ) : (
                     <SpecsInput rowData={rowData} field={field} />
@@ -151,30 +178,38 @@ const SkuProps: React.FC<IProps> = () => {
       for (let i of saleProperties) {
         const categoryPropertyValues = i.categoryPropertyValues
           ? i.categoryPropertyValues
-            ?.map((item) => {
-              //区分对象和字符串
-              if (typeof item === 'string') {
-                return item;
-              } else {
-                return item.checked ? item.value : false;
-              }
-            })
-            .filter(Boolean)
+              ?.map((item) => {
+                //区分对象和字符串
+                if (typeof item === 'string') {
+                  return item;
+                } else {
+                  return item.checked ? item.value : false;
+                }
+              })
+              .filter(Boolean)
           : [];
-        if (Array.from(new Set(categoryPropertyValues)).length !== categoryPropertyValues.length) {
+        if (
+          Array.from(new Set(categoryPropertyValues)).length !==
+          categoryPropertyValues.length
+        ) {
           message.info('规格分类不允许重名');
           return;
         }
         if (
           !i.categoryPropertyType?.value ||
-          !(Array.isArray(categoryPropertyValues) && categoryPropertyValues.length > 0)
+          !(
+            Array.isArray(categoryPropertyValues) &&
+            categoryPropertyValues.length > 0
+          )
         ) {
           message.info('请选择规格并输入规格值');
           return;
         }
 
         _array.push(
-          categoryPropertyValues?.map((item) => `${i.categoryPropertyType.label}：${item}`),
+          categoryPropertyValues?.map(
+            (item) => `${i.categoryPropertyType.label}：${item}`,
+          ),
         );
       }
       // console.log(_array);
@@ -197,28 +232,32 @@ const SkuProps: React.FC<IProps> = () => {
         form.setFieldValue('skus', newData);
 
         //原数据用于 监听 单向
-        let skusOrigin: Recordable<{ key: string; rowSpan: number; title: string; value: string[] }> =
-          _array
-            ?.map((item, idx) => {
-              let title = '';
-              const arr = item.reduce((acc: any, cur: any) => {
-                const [key, value] = cur.split('：');
-                title = key;
-                return [...(acc || []), value];
-              }, []);
-              const rowSpan = _array
-                .slice(idx + 1)
-                ?.reduce((acc: any, cur: any) => math.mul(acc, cur.length), 1);
-              return {
-                title,
-                value: arr,
-                rowSpan: rowSpan,
-              };
-            })
-            ?.reduce((acc: any, cur: any) => {
-              acc[cur.title] = { ...cur, key: uuid() };
-              return acc;
-            }, {});
+        let skusOrigin: Recordable<{
+          key: string;
+          rowSpan: number;
+          title: string;
+          value: string[];
+        }> = _array
+          ?.map((item, idx) => {
+            let title = '';
+            const arr = item.reduce((acc: any, cur: any) => {
+              const [key, value] = cur.split('：');
+              title = key;
+              return [...(acc || []), value];
+            }, []);
+            const rowSpan = _array
+              .slice(idx + 1)
+              ?.reduce((acc: any, cur: any) => math.mul(acc, cur.length), 1);
+            return {
+              title,
+              value: arr,
+              rowSpan: rowSpan,
+            };
+          })
+          ?.reduce((acc: any, cur: any) => {
+            acc[cur.title] = { ...cur, key: uuid() };
+            return acc;
+          }, {});
         console.log(skusOrigin);
         form.setFieldValue('skusOrigin', skusOrigin);
       } catch (e) {
@@ -243,7 +282,12 @@ const SkuProps: React.FC<IProps> = () => {
           ]}
         >
           {(skuAttrs, { add, remove }) => (
-            <Form.Item label="生成SKU" required labelCol={{ span: 3 }} wrapperCol={{ span: 19 }}>
+            <Form.Item
+              label="生成SKU"
+              required
+              labelCol={{ span: 3 }}
+              wrapperCol={{ span: 19 }}
+            >
               <Table
                 className={ss.skuAttrTable}
                 rowKey="name"
@@ -265,7 +309,7 @@ const SkuProps: React.FC<IProps> = () => {
                 )}
               />
 
-              <Button type="primary" style={{ marginTop: 16 }} onClick={handleCreateSku}>
+              <Button style={{ marginTop: 16 }} onClick={handleCreateSku}>
                 生成SKU
               </Button>
             </Form.Item>
