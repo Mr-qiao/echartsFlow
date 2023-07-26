@@ -171,7 +171,6 @@ const SkuProps: React.FC<IProps> = () => {
   //生成sku
   const handleCreateSku = () => {
     const saleProperties = form.getFieldValue('saleProperties');
-
     if (Array.isArray(saleProperties) && saleProperties.length > 0) {
       let _array: any[] = [];
 
@@ -195,6 +194,7 @@ const SkuProps: React.FC<IProps> = () => {
           message.info('规格分类不允许重名');
           return;
         }
+
         if (
           !i.categoryPropertyType?.value ||
           !(

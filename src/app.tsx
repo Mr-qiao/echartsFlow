@@ -5,7 +5,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import config from '@/config';
 import { PageContainer } from '@ant-design/pro-components';
 import { useLocation } from '@umijs/max';
-import { ConfigProvider } from '@xlion/component';
+import { ConfigProvider, GlobalModal } from '@xlion/component';
 
 import zhCN from '@xlion/component/dist/locale/zh_CN';
 import { Monitor } from '@xlion/monitor';
@@ -134,6 +134,7 @@ export const layout = () => {
               {children}
             </ConfigProvider>
           </PageContainer>
+          <GlobalModal.Container />
         </div>
       );
     },

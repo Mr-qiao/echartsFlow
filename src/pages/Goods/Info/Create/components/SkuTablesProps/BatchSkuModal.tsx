@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
 import { Col, ModalProps, Row } from '@xlion/component';
 import { Form, message } from 'antd';
+import React, { useEffect, useState } from 'react';
 
 import CustomModal from '@/components/CustomModal';
 import { sleep } from '@/utils';
@@ -17,6 +17,7 @@ interface IProps extends Omit<ModalProps, 'onOk' | 'onCancel'> {
 export const BatchSkuModal: React.FC<IProps> = ({ skuPropsDict, ...props }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [form] = Form.useForm();
+
   useEffect(() => {
     // console.log(skuProps, skuOptionsDict, skuPropsDict);
   }, []);
