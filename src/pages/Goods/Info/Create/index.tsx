@@ -1,5 +1,5 @@
 import { history, useParams, useSearchParams, useLocation } from '@umijs/max';
-import { safeJSONParse } from '@xlion/utils';
+import { safeJSONParse, math } from '@xlion/utils';
 import {
   Button,
   Cascader,
@@ -146,8 +146,8 @@ const Index: React.FC = () => {
       return {
         [ATTR_TYPE.TEXT]: value,
         [ATTR_TYPE.TEXTAREA]: value,
-        [ATTR_TYPE.NUMBER_PRICE]: value,
-        [ATTR_TYPE.NUMBER_RATE]: value.split(',')?.filter(Boolean),
+        [ATTR_TYPE.NUMBER_PRICE]: typeof value === 'string' ? Number(value) : undefined,
+        [ATTR_TYPE.NUMBER_RATE]: typeof value === 'string' ? math.div(value, 100) : undefined,
         [ATTR_TYPE.RADIO]: value
           .split(',')
           ?.filter(Boolean)
@@ -156,7 +156,7 @@ const Index: React.FC = () => {
           .split(',')
           ?.filter(Boolean)
           ?.map((item) => ({ label: item, value: item })),
-        [ATTR_TYPE.NUMBER]: value,
+        [ATTR_TYPE.NUMBER]: typeof value === 'string' ? Number(value) : undefined,
         [ATTR_TYPE.NUMBER_RANGE]: value.split(',')?.filter(Boolean),
         [ATTR_TYPE.DATE]: value,
         [ATTR_TYPE.DATE_RANGE]: value.split(',')?.filter(Boolean),
