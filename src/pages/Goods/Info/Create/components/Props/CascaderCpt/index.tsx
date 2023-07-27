@@ -6,17 +6,25 @@ import React, { useEffect, useRef, useState } from 'react';
 import { IPropsType, RuleType } from '../types';
 
 export const rules = (rules: RuleType, label: string): FormRule[] => {
-  return [
+  let rulesList = [
     { required: rules.required === 1, message: `请选择${label}` },
-    {
-      max: rules.max,
-      type: 'array',
-    },
-    {
-      min: rules.min,
-      type: 'array',
-    },
   ];
+
+  if (rules.max || rules.min) {
+    rulesList.push(
+      {
+        max: rules.max,
+        type: 'array',
+        message: `最多选择${rules.max}个`,
+      },
+      {
+        min: rules.min,
+        type: 'array',
+        message: `最少选择${rules.min}个`,
+      },
+    );
+  }
+  return rulesList;
 };
 
 const Index: React.FC<IPropsType> = ({ ...props }: IPropsType) => {
@@ -44,7 +52,6 @@ const Index: React.FC<IPropsType> = ({ ...props }: IPropsType) => {
     }, 0);
   };
 
-  console.log(props, 'ndkjansk');
   return (
     <TreeSelect
       className="selectSty"
