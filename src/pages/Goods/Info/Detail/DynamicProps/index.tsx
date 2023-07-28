@@ -1,9 +1,9 @@
-import React from 'react';
 import { Descriptions, Typography } from '@xlion/component';
+import React from 'react';
 
 import ImageContainer from '@/components/ItemContainer';
 import { transformFen2Yuan } from '@/utils';
-
+import { math } from '@xlion/utils';
 import { ATTR_TYPE } from '../constants';
 import { IPropsType } from '../types';
 
@@ -30,19 +30,25 @@ const DynamicProps: React.FC<IProps> = ({ itemPropertyType, ...info }) => {
             ellipsis={{
               tooltip:
                 info.unit && info.unit === '元'
-                  ? transformFen2Yuan(info, ['itemPropertyValues'], false, 1000).itemPropertyValues
+                  ? transformFen2Yuan(info, ['itemPropertyValues'], false, 1000)
+                      .itemPropertyValues
                   : value,
             }}
           >
             {info.unit && info.unit === '元'
-              ? transformFen2Yuan(info, ['itemPropertyValues'], false, 1000).itemPropertyValues
+              ? transformFen2Yuan(info, ['itemPropertyValues'], false, 1000)
+                  .itemPropertyValues
               : value}
             {info.unit ? info.unit : ''}
           </Typography.Text>
         );
       //百分比 --------
       case ATTR_TYPE.NUMBER_RATE:
-        return <Typography.Text ellipsis={{ tooltip: value + '%' }}>{value + '%'}</Typography.Text>;
+        return (
+          <Typography.Text>
+            {value ? math.div(value, 100) + '%' : '-'}
+          </Typography.Text>
+        );
       //单选 --------
       // case ATTR_TYPE.RADIO:
       //   break;
@@ -56,7 +62,10 @@ const DynamicProps: React.FC<IProps> = ({ itemPropertyType, ...info }) => {
       case ATTR_TYPE.NUMBER_RANGE:
         return (
           <Typography.Text
-            ellipsis={{ tooltip: value?.replace(',', ' - ') + (info.unit ? info.unit : '') }}
+            ellipsis={{
+              tooltip:
+                value?.replace(',', ' - ') + (info.unit ? info.unit : ''),
+            }}
           >
             {value?.replace(',', ' - ') + (info.unit ? info.unit : '')}
           </Typography.Text>
@@ -73,24 +82,38 @@ const DynamicProps: React.FC<IProps> = ({ itemPropertyType, ...info }) => {
         );
       //单图片 --------
       case ATTR_TYPE.IMAGE:
-        return value ? <ImageContainer src={value?.split(',')} showCount={3} /> : '-';
+        return value ? (
+          <ImageContainer src={value?.split(',')} showCount={3} />
+        ) : (
+          '-'
+        );
       //多图 --------
       case ATTR_TYPE.IMAGE_MULTIPLE:
-        return value ? <ImageContainer src={value?.split(',')} showCount={3} /> : '-';
+        return value ? (
+          <ImageContainer src={value?.split(',')} showCount={3} />
+        ) : (
+          '-'
+        );
       //文件 --------
       case ATTR_TYPE.FILE:
         return <FilesComponent value={value} />;
       //链接 --------
       case ATTR_TYPE.LINK:
         return (
-          <Typography.Text className={value ? 'u-c__blue' : ''} ellipsis={{ tooltip: true }} copyable={value ? true : false}>
+          <Typography.Text
+            className={value ? 'u-c__blue' : ''}
+            ellipsis={{ tooltip: true }}
+            copyable={value ? true : false}
+          >
             {value || '-'}
           </Typography.Text>
         );
 
       default:
         return (
-          <Typography.Text ellipsis={{ tooltip: value + (info.unit ? info.unit : '') }}>
+          <Typography.Text
+            ellipsis={{ tooltip: value + (info.unit ? info.unit : '') }}
+          >
             {value || '-' + (info.unit ? info.unit : '')}
           </Typography.Text>
         );
@@ -98,7 +121,9 @@ const DynamicProps: React.FC<IProps> = ({ itemPropertyType, ...info }) => {
   };
 
   return (
-    <Descriptions.Item label={info.itemPropertyName || '-'}>{renderFormItem()}</Descriptions.Item>
+    <Descriptions.Item label={info.itemPropertyName || '-'}>
+      {renderFormItem()}
+    </Descriptions.Item>
   );
 };
 
