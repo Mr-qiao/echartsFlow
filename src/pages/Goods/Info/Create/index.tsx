@@ -271,7 +271,7 @@ const Index: React.FC = () => {
           };
           return acc;
         }, {}),
-        skus: skus.map(({ skuPropertyInfos = [], ...sku }: any) => {
+        skus: skus?.map(({ skuPropertyInfos = [], ...sku }: any) => {
           return {
             uuid: uuid(),
             ...sku,
