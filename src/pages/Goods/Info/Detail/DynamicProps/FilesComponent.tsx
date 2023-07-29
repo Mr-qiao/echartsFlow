@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { LinkOutlined } from '@ant-design/icons';
 import { Popover, Typography } from '@xlion/component';
 
-import ss from './index.less';
+import './index.less';
 
 const maxCount = 4;
 export const FilesComponent = ({ value }: { value: string }) => {
@@ -39,7 +39,7 @@ export const FilesComponent = ({ value }: { value: string }) => {
                 <Popover
                   key="more"
                   placement="top"
-                  overlayClassName={ss['detail__popover-wrapper']}
+                  overlayClassName="detail__popover-wrapper"
                   content={
                     <div className="u-flex u-f__column" style={{ width: 300 }}>
                       {dataSource?.map((item) => tagRender(item))}

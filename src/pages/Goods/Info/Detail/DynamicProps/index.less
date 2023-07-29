@@ -25,3 +25,25 @@
     }
   }
 }
+
+//附件 下载
+.a-typography__download-wrapper {
+  display: flex;
+  width: 100%;
+
+  .a-typography__download {
+    opacity: 0;
+  }
+
+  &:hover {
+    color: var(--theme-blue-color);
+
+    .ui-typography {
+      color: var(--theme-blue-color);
+    }
+
+    .a-typography__download {
+      opacity: 1;
+    }
+  }
+}
