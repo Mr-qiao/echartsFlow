@@ -64,11 +64,20 @@ const codeMessage: any = {
 
 export const httpRequest = new WebRequest({
   withCredentials: true,
-  headers: {
-    kl_token:
-      Cookies.get('supplier-token') || localStorage.getItem('supplier-token'),
-  },
   interceptors: {
+    requestInterceptor(config) {
+      const token =
+        Cookies.get('supplier-token') || localStorage.getItem('supplier-token');
+
+      if (token) {
+        config.headers = {
+          ...config.headers,
+          token,
+        };
+      }
+
+      return { ...config };
+    },
     responseInterceptor(response: KunlunResponseProps) {
       const { data } = response;
       if (data.code === 401) {
