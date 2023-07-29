@@ -1,7 +1,7 @@
 import { Descriptions, Typography } from '@xlion/component';
 import React from 'react';
 
-import ImageContainer from '@/components/ItemContainer';
+import ImageContainer from '@/components/ImageContainer';
 import { transformFen2Yuan } from '@/utils';
 import { math } from '@xlion/utils';
 import { ATTR_TYPE } from '../constants';
@@ -82,6 +82,12 @@ const DynamicProps: React.FC<IProps> = ({ itemPropertyType, ...info }) => {
         );
       //单图片 --------
       case ATTR_TYPE.IMAGE:
+        console.log(
+          value,
+          value?.split(','),
+          itemPropertyType,
+          '----=====-=---==',
+        );
         return value ? (
           <ImageContainer src={value?.split(',')} showCount={3} />
         ) : (

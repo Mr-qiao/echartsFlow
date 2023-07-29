@@ -3,12 +3,18 @@ import { Descriptions, DescriptionsProps, ImageProps } from 'antd';
 import Image from '@/components/Image';
 
 interface IProps extends DescriptionsProps {
-  options: { label: any, value: any }[];
+  options: { label: any; value: any }[];
   images?: string[] | string;
   imagesProps?: ImageProps;
   imageRender?: React.ReactNode;
 }
-const ItemContainer = ({ options, images, imageRender, imagesProps, ...props }: IProps) => {
+const ItemContainer = ({
+  options,
+  images,
+  imageRender,
+  imagesProps,
+  ...props
+}: IProps) => {
   const descElem = (
     <Descriptions
       column={1}
@@ -42,10 +48,11 @@ const ItemContainer = ({ options, images, imageRender, imagesProps, ...props }: 
               typeof images === 'string'
                 ? images
                 : Array.isArray(images) && images.length > 0
-                  ? images[0]
-                  : ''
+                ? images[0]
+                : ''
             }
-            {...(Array.isArray(images) && images.length > 0 && { previewGroup: images })}
+            {...(Array.isArray(images) &&
+              images.length > 0 && { previewGroup: images })}
             width={80}
             height={80}
             {...imagesProps}
