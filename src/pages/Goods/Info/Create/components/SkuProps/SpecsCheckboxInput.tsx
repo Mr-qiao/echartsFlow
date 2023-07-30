@@ -1,4 +1,3 @@
-import React, { useContext } from 'react';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import {
   Button,
@@ -11,6 +10,7 @@ import {
   Space,
   Typography,
 } from 'antd';
+import React, { useContext } from 'react';
 
 import { IS_DISABLED } from '../../constants';
 import { CptContext } from '../../index';
@@ -23,7 +23,12 @@ interface IProps {
   value?: OptionsType[];
   [x: string]: any;
 }
-type OptionsType = { label: string; value: string | number; custom: boolean; checked: boolean };
+type OptionsType = {
+  label: string;
+  value: string | number;
+  custom: boolean;
+  checked: boolean;
+};
 
 const SpecsCheckboxInput: React.FC<IProps> = ({ field, rowData }) => {
   const { form } = useContext(CptContext);
@@ -79,8 +84,14 @@ const SpecsCheckboxInput: React.FC<IProps> = ({ field, rowData }) => {
               return (
                 <Col span={5} key={attrIndex}>
                   {!row?.custom ? (
-                    <Form.Item noStyle name={[attrField.name, 'checked']} valuePropName="checked">
-                      <Checkbox style={{ marginRight: 10 }}>{row?.value}</Checkbox>
+                    <Form.Item
+                      noStyle
+                      name={[attrField.name, 'checked']}
+                      valuePropName="checked"
+                    >
+                      <Checkbox style={{ marginRight: 10 }}>
+                        {row?.value}
+                      </Checkbox>
                     </Form.Item>
                   ) : (
                     rowData.custom === IS_DISABLED.IS && (
@@ -93,7 +104,11 @@ const SpecsCheckboxInput: React.FC<IProps> = ({ field, rowData }) => {
                           <Checkbox />
                         </Form.Item>
                         <Form.Item noStyle name={[attrField.name, 'value']}>
-                          <Input maxLength={10} placeholder="请输入" style={{ width: 100 }} />
+                          <Input
+                            maxLength={10}
+                            placeholder="请输入"
+                            style={{ width: 100 }}
+                          />
                         </Form.Item>
                         <Typography.Link
                           disabled={attrValues.length === 1}
@@ -107,7 +122,7 @@ const SpecsCheckboxInput: React.FC<IProps> = ({ field, rowData }) => {
                 </Col>
               );
             })}
-            {rowData.custom === IS_DISABLED.IS && attrValues?.length < 10 && (
+            {rowData.custom === IS_DISABLED.IS && (
               <Col>
                 <Button
                   type="link"
