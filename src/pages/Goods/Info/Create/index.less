@@ -46,4 +46,42 @@
     color: #ff4d4f;
   }
 
+  :global {
+    .ant-select:not(.ant-select-customize-input) .ant-select-selector {
+      background-color: #f7f8fa;
+      border-color: #f7f8fa;
+      box-shadow: none;
+    }
+    //覆盖 ui组件 错误样式
+    .ant-form-item-has-error {
+      //输入框
+      .ui-input,
+      //选择器
+      .ui-select-selector,
+      //下拉选择 滑动
+      .ui-select:not(.ui-select-disabled):hover .ui-select-selector,
+      //日期 /日期范围
+      .ui-picker,
+      //数字-单位
+      .ui-input-number-group,
+      //数字区间
+      .ui-input-number-range,
+      //数字
+      .ui-input-number-input,
+      // 图片
+      .ui-upload .ui-thumbnail-select ,
+      .ui-upload.ui-upload-select-text .ui-btn-default {
+        border: 1px solid #e52848;
+      }
+      //强制覆盖 下拉选择
+      .ui-select-disabled:not(.ui-select-customize-input) .ui-select-selector {
+        border: 1px solid #e52848 !important;
+      }
+      //
+      & .ui-input-number-group .ui-input-number-input,
+      & .ui-input-number-range .ui-input-number-input {
+        border: none;
+      }
+    }
+  }
 }

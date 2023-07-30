@@ -1,3 +1,4 @@
+import { useRef, useState } from 'react'
 import GoodsTableCol from '@/components/goodsTableCol';
 import SelectTree from '@/components/selectTree';
 import { useCategory } from '@/hooks';
@@ -5,11 +6,16 @@ import { supplierItemList } from '@/services/goods';
 import { filterPageName } from '@/utils';
 import { ProTable } from '@ant-design/pro-components';
 import { history } from '@umijs/max';
+import DrawerModal from '@/components/DrawerModal';
 import { Button, Space } from 'antd';
 import BrandSelectCpt from './Create/components/BrandSelectCpt';
+import GoodsDetail from '@/pages/Goods/Info/Detail'
 
 function Goods() {
   const [category] = useCategory();
+  const drawerModal = useRef<any>();
+  const [goodsItem, setGoodsItem] = useState<any>({});
+  const goodsDetailRef = useRef<any>();
   const columns: any = [
     {
       title: '款式编码',
@@ -95,10 +101,10 @@ function Goods() {
             imgList={
               recode?.images?.length > 0
                 ? recode?.images?.map((item: any) => {
-                    return {
-                      src: item || '',
-                    };
-                  })
+                  return {
+                    src: item || '',
+                  };
+                })
                 : [{ src: '' }]
             }
           />
@@ -127,75 +133,81 @@ function Goods() {
       render: (_: any, recode: any) => {
         return (
           <Space direction="vertical" size={[0, 2]}>
-            <a
+            {/* <a
               onClick={() => {
                 history.push(`/goods/detail/${recode.itemId}`);
               }}
             >
               查看
+            </a> */}
+            <a
+              onClick={() => {
+                setGoodsItem(recode)
+                drawerModal.current?.show();
+              }}
+            >
+              查看
             </a>
-            {/*<a*/}
-            {/*  onClick={() => {*/}
-            {/*    history.push(`/goods/edit/${recode.itemId}`);*/}
-            {/*  }}*/}
-            {/*>*/}
-            {/*  编辑*/}
-            {/*</a>*/}
           </Space>
         );
       },
     },
   ];
   return (
-    <ProTable
-      rowKey={'itemId'}
-      columns={columns}
-      search={{
-        labelWidth: 100,
-        span: 6,
-        defaultCollapsed: false,
-      }}
-      scroll={{
-        x: 'max-content',
-      }}
-      defaultSize={'small'}
-      form={{
-        size: 'small',
-      }}
-      options={false}
-      request={async (
-        // 第一个参数 params 查询表单和 params 参数的结合
-        // 第一个参数中一定会有 pageSize 和  current ，这两个参数是 antd 的规范
-        params,
-        sort,
-        filter,
-      ) => {
-        const arg0 = {
-          ...filterPageName(params),
-          // startTime: params.time?.length > 0 ? moment(params.time[0]).valueOf() : undefined,
-          // endTime: params.time?.length > 0 ? moment(params.time[1]).valueOf() : undefined,
-        };
-        const res = await supplierItemList(arg0);
-        const data = res.entry.list;
-        return {
-          data: data || [],
-          success: res.success,
-          // 不传会使用 data 的长度，如果是分页一定要传
-          total: res?.entry.totalRecord,
-        };
-      }}
-      headerTitle={
-        <Button
-          key="primary"
-          type="primary"
-          onClick={() => {
-            history.push('/goods/create');
-          }}
-        >
-          创建供应商款式信息
-        </Button>
-      }
-    ></ProTable>
+    <>
+      <ProTable
+        rowKey={'itemId'}
+        columns={columns}
+        search={{
+          labelWidth: 100,
+          span: 6,
+          defaultCollapsed: false,
+        }}
+        scroll={{
+          x: 'max-content',
+        }}
+        defaultSize={'small'}
+        form={{
+          size: 'small',
+        }}
+        options={false}
+        request={async (
+          // 第一个参数 params 查询表单和 params 参数的结合
+          // 第一个参数中一定会有 pageSize 和  current ，这两个参数是 antd 的规范
+          params,
+          sort,
+          filter,
+        ) => {
+          const arg0 = {
+            ...filterPageName({ ...params }),
+            // startTime: params.time?.length > 0 ? moment(params.time[0]).valueOf() : undefined,
+            // endTime: params.time?.length > 0 ? moment(params.time[1]).valueOf() : undefined,
+          };
+          const res = await supplierItemList(arg0);
+          const data = res.entry.list;
+          return {
+            data: data || [],
+            success: res.success,
+            // 不传会使用 data 的长度，如果是分页一定要传
+            total: res?.entry.totalRecord,
+          };
+        }}
+        headerTitle={
+          <Button
+            key="primary"
+            type="primary"
+            onClick={() => {
+              history.push('/goods/create');
+            }}
+          >
+            创建供应商款式信息
+          </Button>
+        }
+      ></ProTable>
+      <DrawerModal ref={drawerModal} width={1200}>
+        <GoodsDetail id={goodsItem?.itemId} ref={goodsDetailRef} />
+      </DrawerModal>
+    </>
   );
 }
 

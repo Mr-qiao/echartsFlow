@@ -1,3 +1,16 @@
+@text-color-sub: #86909c;
+@text-color-main: #1d2129;
+@theme-red: #f00009;
+@theme-blue: #315ff5;
+
+:root {
+  --text-color-sub: @text-color-sub;
+  --text-color-main: @text-color-main;
+  --theme-red-color: @theme-red;
+  --theme-blue-color: @theme-blue;
+  --theme-color: var(--theme-red-color);
+}
+
 each(range(50), {
   .u-pt@{value}{
     padding-top: @value*1px;
@@ -16,7 +29,7 @@ each(range(50), {
     margin-top: @value*1px;
   }
   //.u-mr@{value} {
-  //  margin-right: @value*1px;
+  //  margin-right: @value 1px;
   //}
   .u-mb@{value} {
    margin-bottom:@value*1px;
@@ -26,54 +39,54 @@ each(range(50), {
   }
 });
 
-.u-fs10{
+.u-fs10 {
   font-size: 10px;
 }
-.u-fs12{
+.u-fs12 {
   font-size: 12px;
 }
 
-.u-fs14{
+.u-fs14 {
   font-size: 14px;
 }
 
-.u-fs16{
+.u-fs16 {
   font-size: 16px;
 }
 
-.u-fs18{
+.u-fs18 {
   font-size: 18px;
 }
 
-.u-fs20{
+.u-fs20 {
   font-size: 20px;
 }
 
-.u-fs22{
+.u-fs22 {
   font-size: 22px;
 }
 
-.u-fs24{
+.u-fs24 {
   font-size: 24px;
 }
 
-.u-fs26{
+.u-fs26 {
   font-size: 26px;
 }
 
-.u-fs28{
+.u-fs28 {
   font-size: 28px;
 }
 
-.u-fs32{
+.u-fs32 {
   font-size: 32px;
 }
 
-.u-fs36{
+.u-fs36 {
   font-size: 36px;
 }
 
-.u-fs48{
+.u-fs48 {
   font-size: 48px;
 }
 
@@ -184,8 +197,8 @@ each(range(50), {
   text-decoration: line-through;
 }
 
-.u-td__ul{
- text-decoration:underline;
+.u-td__ul {
+  text-decoration: underline;
 }
 
 /* 字体颜色 */
@@ -220,13 +233,13 @@ each(range(50), {
   color: #fff;
 }
 .u-c__red {
-  color: #EE194A;
+  color: #ee194a;
 }
 .u-c__blue {
-  color: #5E75F0;
+  color: #5e75f0;
 }
 .u-c__gray {
-  color: #C9CDD4;
+  color: #c9cdd4;
 }
 .u-c__4868EC {
   color: #4868ec;

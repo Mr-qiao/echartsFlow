@@ -1,0 +1,64 @@
+.goods__detail-wrap {
+  background-color: #fff;
+
+  :global {
+    h1 {
+      position: relative;
+      margin-top: 10px;
+      padding: 16px 0;
+      font-size: 14px;
+      border-top: 1px solid #e8e8e8;
+    }
+
+    //附件 下载
+    .a-typography__download-wrapper {
+      display: flex;
+      width: 100%;
+
+      .a-typography__download {
+        opacity: 0;
+      }
+
+      &:hover {
+        color: var(--theme-blue-color);
+
+        .ui-typography {
+          color: var(--theme-blue-color);
+        }
+
+        .a-typography__download {
+          opacity: 1;
+        }
+      }
+    }
+
+    p {
+      color: #666;
+    }
+
+    .u-fs16 {
+      font-size: 16px;
+    }
+
+    .u-fw700 {
+      font-weight: 700;
+    }
+
+    .u-mr10 {
+      margin-right: 10px;
+    }
+
+    .u-ml20 {
+      margin-left: 20px;
+    }
+
+    .u-mt10 {
+      margin-top: 10px;
+    }
+
+    .u-flex {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}

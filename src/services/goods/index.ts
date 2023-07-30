@@ -1,4 +1,4 @@
-import { request } from '@/utils/request';
+import { httpRequest, request } from '@/utils/request';
 
 /**商品管理 */
 // 列表
@@ -69,3 +69,41 @@ export const supplierGoodsList = (body: any) =>
 
 export const supplierItemList = (body: any) =>
   request.post(`/item/item/factory/supplierItem/list`, body);
+
+/** ------------------------ 昆仑 ------------------------ */
+
+/**
+ * 查询类目动态属性
+ * @url https://admin-kunlun-dev.xinc818.com/#/apiDetail?requestPath=/item/categoryProperty/getItemPropertyByCategoryId
+ */
+export const getItemPropertyByCategoryId = async (body: { categoryId: number }) => {
+  return httpRequest.post(
+    `/item/categoryProperty/getItemPropertyByCategoryId`,
+    {
+      ...body,
+      itemType: 3,
+    },
+  );
+};
+/**
+ * 详情
+ * @url https://admin-kunlun-dev.xinc818.com/#/apiDetail?requestPath=/item/item/viewByIdV2
+ */
+export const viewByIdV2Detail = async (body: Recordable<any>) => {
+  return httpRequest.post(`/item/item/viewByIdV2`, body);
+};
+/**
+ * 保存
+ * @url https://admin-kunlun-dev.xinc818.com/#/apiDetail?requestPath=/item/item/saveItem
+ */
+export const saveItem = async (body: Recordable<any>) => {
+  return httpRequest.post(`/item/item/saveItem`, body);
+};
+
+/**
+ * 款式详情
+ * @url https://admin-kunlun-dev.xinc818.com/#/apiDetail?requestPath=	/item/item/viewByIdOnlyDetail
+ */
+export const saveViewByIdOnlyDetail = async (body: Recordable<any>) => {
+  return httpRequest.post('/item/item/viewByIdOnlyDetail', body);
+}

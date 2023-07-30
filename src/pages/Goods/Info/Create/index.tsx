@@ -1,255 +1,395 @@
-import { history, useParams, useSearchParams } from '@umijs/max';
-import { InputNumberRange } from '@xlion/component';
-import { math } from '@xlion/utils';
+import { history, useParams, useSearchParams, useLocation } from '@umijs/max';
+import { safeJSONParse, math } from '@xlion/utils';
 import {
   Button,
   Cascader,
   Col,
-  DatePicker,
   Form,
+  FormInstance,
   Input,
   InputNumber,
   message,
   Row,
-  Select,
+  Spin,
+  UploadFile,
 } from 'antd';
-import { groupBy, omit, pick } from 'lodash-es';
-import moment from 'moment';
-import React, { useEffect, useState } from 'react';
+import { pick } from 'lodash-es';
+import React, { createContext, useEffect, useState, useMemo } from 'react';
 
 import Upload from '@/components/Upload';
 import { useCategory } from '@/hooks';
-import { sleep, transformFen2Yuan, uuid } from '@/utils';
-// import Api from '../services';
-import { goodsAdd, goodsDetail, sampleDetail } from '@/services/goods';
+import { sleep, uuid } from '@/utils';
+import { viewByIdV2Detail, saveItem } from '@/services/goods';
 import BrandSelectCpt from './components/BrandSelectCpt';
-import SkuCpt from './components/SkuCpt';
-
-import type { DefaultOptionType } from 'antd/es/cascader';
-import SkuTablesCpt from './components/SkuTablesCpt';
-import { AttrTypes } from './constant';
+import SkuProps from './components/SkuProps'
+import SkuTablesProps from './components/SkuTablesProps'
+import { ATTR_TYPE } from './constants';
+import { useCategoryProps } from './hooks';
 import styles from './index.less';
+import { IPropsType } from './types';
 
-const PriceKeys = [
-  'estimateLivePrice',
-  'originPrice',
-  'salePrice',
-  'supplyPrice',
-];
+
+let imgUploadSize = 5;
+
+export enum ModalType {
+  EDIT,
+  ADD,
+  SAMPLE_STYLE_ADD,
+  PLATFORM_ADD,
+}
+
+export const CptContext = createContext<{
+  form: FormInstance;
+  skuOptions: Array<{ label: string; value: string | number }>;
+  skuOptionsDict: Recordable<IPropsType>;
+  skuProps: Array<{ label: string; value: string | number }>;
+  skuPropsDict: Recordable<IPropsType>;
+}>({} as any);
 
 const Index: React.FC = () => {
   const [searchParams] = useSearchParams();
+  // 样衣id
   const sampleId = searchParams.get('sampleId');
 
+  //供应商商品绑定 id
+  const scmItemId = searchParams.get('scmItemId');
+
+  // 款式id
   const { id } = useParams();
-  // const { category } = useModel('category');
+  // 类目
   const [category] = useCategory();
-  // console.log(category, '-----');
-  // const [detail, setDetail] = useState<any>({});
-  const [refSampleClothesId, setSampleId] = useState<any>();
-  // const [brandList, setBrandList] = useState<any[]>();
+  const [pending, setPending] = useState(false);
 
-  const [dynProps, setDynProps] = useState<any[]>([]);
-  const [skuAttr, setSkuAttr] = useState<any[]>([]); // sku 属性枚举
+  const [
+    { groupDict, propsDict, skuOptions, skuOptionsDict, skuProps, skuPropsDict, loading },
+    onReloadProps,
+  ] = useCategoryProps();
 
-  // const [saleProperties, setSaleProperties] = useState<any[]>([]); // sku 属性枚举
 
   const [form] = Form.useForm();
 
-  //   const sampleListRef = useRef<any>(null);
+
+  const location = useLocation();
+
+  const type: ModalType = useMemo(() => {
+    if (location.pathname.includes('edit')) {
+      return ModalType.EDIT;
+    } else if (location.pathname.includes('create')) {
+      //来源-样衣
+      if (sampleId) {
+        return ModalType.SAMPLE_STYLE_ADD;
+        //来源-供应链
+      } else if (scmItemId) {
+        return ModalType.PLATFORM_ADD;
+      } else {
+        return ModalType.ADD;
+      }
+    } else return ModalType.ADD;
+  }, [location]);
 
   const handleChangeCate = (value?: any[]) => {
-    let cateId = value ? value[value.length - 1] : undefined;
-    return goodsDetail({ categoryId: cateId, type: 3 }).then(({ entry }) => {
-      setDynProps(
-        groupBy(
-          entry?.baseProperties.sort((a, b) => a.order - b.order),
-          (item) => {
-            return item.bizGroupName;
-          },
-        ),
-      );
-
-      // setSaleProperties(entry?.saleProperties);
-
-      //sku枚举
-      setSkuAttr(
-        entry?.salePropertiesEnum.map((item: any) => ({
-          label: item.categoryPropertyName,
-          value: item.categoryPropertyCode,
-        })),
-      );
-
-      form.setFieldValue('saleProperties', []);
-      form.setFieldValue('skus', []);
-    });
-  };
-  const handleLinkSample = () => {
-    // sampleListRef.current?.show();
-  };
-  const handleNoLinkSample = () => {
-    form.setFieldValue('source', 1);
-    form.setFieldValue(['extraMap', 'refSampleClothesId'], '');
-    setSampleId('');
+    const cateId = value ? [...value].pop() : undefined;
+    onReloadProps(cateId);
+    form.resetFields(['skusOrigin', 'sku', 'saleProperties']);
   };
 
   useEffect(() => {
-    let _: {
-      itemId?: string | number;
-      type: number;
-      categoryId?: string | number;
-    } = { type: 3 };
-    if (id) {
-      _ = { itemId: Number(id), type: 3 };
+    //处理sku
+    if (Object.keys(skuOptionsDict).length > 0 && type === ModalType.EDIT) {
+      const saleProperties = form.getFieldValue('saleProperties');
+      const newArr = saleProperties?.map((item) => {
+        const { categoryPropertyType, categoryPropertyValues } = item;
+        const { label } = categoryPropertyType || {};
+        //过滤 空数据与空枚举
+        if (!label) return item;
+        const { itemCatePropertyValueEnumS = [] } = skuOptionsDict[label] || {};
+        //过滤 空数据与空枚举
+        if (
+          !categoryPropertyValues ||
+          !(itemCatePropertyValueEnumS && itemCatePropertyValueEnumS.toString())
+        ) {
+          return item;
+        }
+        const values = categoryPropertyValues?.reduce((acc: any, cur: any) => {
+          const key = typeof cur === 'object' ? cur.value : cur;
+          acc[key] = typeof cur === 'object' ? { ...cur } : cur;
+          return acc;
+        }, {});
+        let keys: string[] = [];
+        //二次装填数据，处理 有枚举值，合并 values
+        const itemEnums = itemCatePropertyValueEnumS?.map((item) => {
+          const { value } = item;
+          keys.push(value);
+          return { ...item, ...(values[value] && { checked: true }) };
+        });
+        //过滤 不再枚举【itemCatePropertyValueEnumS】内部的 value值，重新处理
+        const customVal: { value: string; checked: boolean; custom: boolean }[] = Object.keys(
+          values,
+        )
+          ?.filter((o) => !keys.includes(o))
+          ?.map((o) =>
+            //如果 values 为字符串 添加value 与chekced
+            typeof values[o] === 'string' ? { value: values[o], checked: true } : values[o],
+          );
+        return { ...item, categoryPropertyValues: [...itemEnums, ...customVal] };
+      });
+      form.setFieldValue('saleProperties', newArr);
 
-      Promise.all([goodsDetail(_)]).then(([{ entry }]) => {
-        //动态属性
-        setDynProps(
-          groupBy(
-            entry?.baseProperties.sort((a, b) => a.order - b.order),
-            (item) => {
-              return item.bizGroupName;
-            },
-          ),
-        );
-        //sku枚举
-        setSkuAttr(
-          entry?.salePropertiesEnum.map((item: any) => ({
-            label: item.categoryPropertyName,
-            value: item.categoryPropertyCode,
-          })),
-        );
-        //sku值
-        // setSaleProperties(entry?.saleProperties);
+      console.log('skuOptionsDict skuOptionsDict', skuOptionsDict, saleProperties);
+    }
+  }, [skuOptionsDict]);
 
-        form.setFieldsValue({
-          ...entry?.item,
-          ...entry,
-          brandId: {
-            label: entry?.item?.brandName,
-            value: entry?.item?.brandId,
+  //详情处理 动态属性 value
+  function getPropsValue(_: string | null, type) {
+    const value = _;
+    if (value && type) {
+      return {
+        [ATTR_TYPE.TEXT]: value,
+        [ATTR_TYPE.TEXTAREA]: value,
+        [ATTR_TYPE.NUMBER_PRICE]: typeof value === 'string' ? Number(value) : undefined,
+        [ATTR_TYPE.NUMBER_RATE]: typeof value === 'string' ? math.div(value, 100) : undefined,
+        [ATTR_TYPE.RADIO]: value
+          .split(',')
+          ?.filter(Boolean)
+          ?.map((item) => ({ label: item, value: item })),
+        [ATTR_TYPE.CHECKBOX]: value
+          .split(',')
+          ?.filter(Boolean)
+          ?.map((item) => ({ label: item, value: item })),
+        [ATTR_TYPE.NUMBER]: typeof value === 'string' ? Number(value) : undefined,
+        [ATTR_TYPE.NUMBER_RANGE]: value.split(',')?.filter(Boolean),
+        [ATTR_TYPE.DATE]: value,
+        [ATTR_TYPE.DATE_RANGE]: value.split(',')?.filter(Boolean),
+        [ATTR_TYPE.IMAGE]: value.split(',')?.filter(Boolean),
+        [ATTR_TYPE.IMAGE_MULTIPLE]: value.split(',')?.filter(Boolean),
+        [ATTR_TYPE.FILE]: value.split(',')?.filter(Boolean),
+        [ATTR_TYPE.LINK]: value,
+      }[type];
+    } else {
+      return value;
+    }
+  }
+  //提交 转换 动态属性 value
+  function changePropsValue(_: any[] | null, type) {
+    const values = _;
+    try {
+      switch (type) {
+        case ATTR_TYPE.CHECKBOX:
+          return values
+            ?.map((item: any) => {
+              return typeof item === 'object' ? item?.value : item;
+            })
+            .filter(Boolean);
+        case ATTR_TYPE.RADIO:
+          return values
+            ?.map((item: any) => {
+              return typeof item === 'object' ? item?.value : item;
+            })
+            .filter(Boolean);
+        case ATTR_TYPE.FILE:
+          return values
+            ?.map((item: UploadFile) => {
+              return typeof item === 'object' ? item?.url : item;
+            })
+            .filter(Boolean);
+        case ATTR_TYPE.IMAGE:
+          return values
+            ?.map((item: UploadFile) => {
+              return typeof item === 'object' ? item?.url : item;
+            })
+            .filter(Boolean);
+        case ATTR_TYPE.IMAGE_MULTIPLE:
+          return values
+            ?.map((item: UploadFile) => {
+              return typeof item === 'object' ? item?.url : item;
+            })
+            .filter(Boolean);
+        default:
+          return values;
+      }
+    } catch (e) {
+      return values;
+    }
+  }
+
+  // 详情
+  async function autoCompleteWithDetail() {
+    try {
+      let _: { itemId?: string | number; type: number; categoryId?: string | number } = {
+        type: 3,
+        itemId: Number(id),
+      };
+
+      const {
+        entry: { item, saleProperties, itemProperties, skus, ...entry } = {
+          item: {},
+          saleProperties: [],
+          itemProperties: [],
+          skus: [],
+        },
+      } = await viewByIdV2Detail(_);
+      //动态属性
+
+      onReloadProps(item.categoryId);
+      console.log('skuOptionsDict skuOptionsDict111', skuOptionsDict);
+
+      const _detail = {
+        ...item,
+        ...entry,
+        brandId: { label: item?.brandName, value: item?.brandId },
+        supplierId: { label: item?.supplierName, value: item?.supplierId },
+        contents: item?.contents?.map((item) => item.image),
+        categoryId: item?.categoryIds,
+
+        saleProperties: saleProperties?.map((item) => ({
+          uuid: uuid(),
+          categoryPropertyType: {
+            label: item.itemPropertyName,
+            value: item.itemPropertyCode,
           },
-
-          saleProperties: entry?.saleProperties.map((item: any) => ({
-            uuid: uuid(),
-            categoryPropertyType: {
-              label: item.categoryPropertyName,
-              value: item.categoryPropertyCode,
-            },
-            categoryPropertyValues: item.categoryPropertyValues,
-          })),
-          baseProperties: entry?.baseProperties?.reduce(
-            (acc: Recordable<any>, cur: any) => {
-              let value: any;
-              if (Array.isArray(cur.categoryPropertyValues)) {
-                switch (cur.type) {
-                  case AttrTypes.TEXT:
-                  case AttrTypes.NUMBER:
-                  case AttrTypes.SELECT:
-                  case AttrTypes.TEXTAREA:
-                    value = cur.categoryPropertyValues[0];
-                    break;
-                  case AttrTypes.DATE:
-                    value = moment(cur.categoryPropertyValues[0]);
-                    break;
-                  case AttrTypes.DATE_RANGE:
-                    value = cur.categoryPropertyValues.map((item: string) =>
-                      moment(item),
-                    );
-                    break;
-                  default:
-                    value = cur.categoryPropertyValues;
-                }
-              }
-              acc[cur.categoryPropertyCode] = value;
-              return acc;
-            },
-            {},
-          ),
-          categoryId: entry?.item?.categoryIds,
-          skus: entry?.skus?.map((sku: any) => ({
+          categoryPropertyValues: item.salePropertyValues
+            ? safeJSONParse(item.salePropertyValues)
+            : item?.itemPropertyValues?.split(','),
+        })),
+        itemProperties: itemProperties?.reduce((acc: Recordable<any>, cur: any) => {
+          console.log(
+            'acc[cur.itemPropertyCode]',
+            cur,
+            acc,
+            acc[cur.itemPropertyCode],
+            getPropsValue(cur.itemPropertyValues, cur.itemPropertyType),
+          );
+          acc[cur.itemPropertyCode] = getPropsValue(cur.itemPropertyValues, cur.itemPropertyType);
+          return acc;
+        }, {}),
+        skusOrigin: saleProperties?.reduce((acc: any, cur: any) => {
+          acc[cur.itemPropertyName] = {
+            title: cur.itemPropertyName,
+            value: cur.itemPropertyValues?.split(',')?.filter(Boolean),
+            key: uuid(),
+            rowSpan: 0,
+          };
+          return acc;
+        }, {}),
+        skus: skus?.map(({ skuPropertyInfos = [], ...sku }: any) => {
+          return {
             uuid: uuid(),
             ...sku,
-            images: sku.images?.map((url: string) => ({ url })),
-            commissionRatio: math.div(sku.itemPrice.commissionRatio, 100),
-            ...transformFen2Yuan(sku.itemPrice, PriceKeys),
-          })),
-        });
-      });
-    } else if (sampleId) {
-      autoCompleteWithSample(sampleId);
-    } else {
-      handleChangeCate();
+            ...skuPropertyInfos?.reduce((acc: any, cur: any) => {
+              // if (cur.itemPropertyCode === 'color' || cur.itemPropertyCode === 'size') {
+              //   acc[cur.itemPropertyCode] = cur.itemPropertyValues;
+              //   return acc;
+              // }
+              acc[cur.itemPropertyCode] = getPropsValue(
+                cur.itemPropertyValues,
+                cur.itemPropertyType,
+              );
+
+              return acc;
+            }, {}),
+          };
+        }),
+      };
+      console.log('_detail_detail_detail_detail', _detail);
+      form.setFieldsValue(_detail);
+    } catch (e) {
+      console.log(e);
     }
-  }, []);
-
-  // useEffect(() => {
-
-  // }, [sampleId]);
+  }
 
   // 自动填充样衣信息
-  async function autoCompleteWithSample(sampleId?: number) {
-    if (!sampleId) {
+  // async function autoCompleteWithSample(sampleId?: number) {
+  //   if (!sampleId) {
+  //     form.setFieldsValue({
+  //       refSampleClothesId: undefined,
+  //       source: 1,
+  //     });
+  //     setSampleId('');
+  //     return;
+  //   } else {
+  //     form.setFieldValue('source', 2);
+  //     form.setFieldValue(
+  //       ['extraMap', 'refSampleClothesId'],
+  //       sampleId?.toString(),
+  //     );
+  //     setSampleId(sampleId?.toString());
+  //   }
+  //   const { entry } = await sampleDetail({ itemId: Number(sampleId) });
+  //   await handleChangeCate(entry.categoryIds);
+
+  //   form.setFieldsValue({
+  //     refSampleClothesId: entry.itemId,
+  //     title: entry.title,
+  //     supplierStyleCode: entry.supplierStyleCode,
+  //     categoryId: entry.categoryIds,
+  //     brandId: entry.brandId
+  //       ? {
+  //         label: entry.brandName,
+  //         value: entry.brandId,
+  //       }
+  //       : undefined,
+  //     images: entry.images?.slice(0, 3) || [],
+  //     baseProperties: {
+  //       ...pick(entry, [
+  //         'saleUrl',
+  //         'sellingAdvantage',
+  //         'shape',
+  //         'flowerBoard',
+  //         // 'style',
+  //         'stage',
+  //         'technologyDescription',
+  //         'structureDescription',
+  //         'weight',
+  //       ]),
+  //     },
+  //     saleProperties: [
+  //       {
+  //         uuid: uuid(),
+  //         categoryPropertyType: {
+  //           label: '尺码',
+  //           value: 'size',
+  //         },
+  //         categoryPropertyValues: entry.sizeComb,
+  //       },
+  //       {
+  //         uuid: uuid(),
+  //         categoryPropertyType: {
+  //           label: '颜色',
+  //           value: 'color',
+  //         },
+  //         categoryPropertyValues: entry.colorComb,
+  //       },
+  //     ],
+  //   });
+  // }
+
+  // 供应商商品绑定 自动填充 商品信息
+  async function autoCompleteWithSupplier(scmItemId?: number) {
+    if (!scmItemId) {
       form.setFieldsValue({
         refSampleClothesId: undefined,
         source: 1,
       });
       setSampleId('');
       return;
-    } else {
-      form.setFieldValue('source', 2);
-      form.setFieldValue(
-        ['extraMap', 'refSampleClothesId'],
-        sampleId?.toString(),
-      );
-      setSampleId(sampleId?.toString());
     }
-    const { entry } = await sampleDetail({ itemId: Number(sampleId) });
-    await handleChangeCate(entry.categoryIds);
-
+    const { entry } = await viewByIdV2Detail({ itemId: Number(scmItemId) });
     form.setFieldsValue({
-      refSampleClothesId: entry.itemId,
-      title: entry.title,
-      supplierStyleCode: entry.supplierStyleCode,
-      categoryId: entry.categoryIds,
-      brandId: entry.brandId
-        ? {
-            label: entry.brandName,
-            value: entry.brandId,
-          }
+      ...pick(entry?.item, [
+        'title',
+        'supplierStyleCode',
+        'categoryIds',
+        'snCode',
+        'outsideItemCode',
+      ]),
+      // supplierId: entry?.item?.supplierId
+      //   ? { label: entry?.item?.supplierName, value: entry?.item?.supplierId }
+      //   : undefined,
+      brandId: entry?.item?.brandId
+        ? { label: entry?.item?.brandName, value: entry?.item?.brandId }
         : undefined,
-      images: entry.images?.slice(0, 3) || [],
-      baseProperties: {
-        ...pick(entry, [
-          'saleUrl',
-          'sellingAdvantage',
-          'shape',
-          'flowerBoard',
-          'style',
-          'stage',
-          'technologyDescription',
-          'structureDescription',
-          'weight',
-        ]),
-      },
-      saleProperties: [
-        {
-          uuid: uuid(),
-          categoryPropertyType: {
-            label: '尺码',
-            value: 'size',
-          },
-          categoryPropertyValues: entry.sizeComb,
-        },
-        {
-          uuid: uuid(),
-          categoryPropertyType: {
-            label: '颜色',
-            value: 'color',
-          },
-          categoryPropertyValues: entry.colorComb,
-        },
-      ],
+      images: entry?.item?.images?.slice(0, imgUploadSize) || [],
+      contents: entry?.item?.contents?.map((item) => item.image),
     });
   }
 
@@ -257,268 +397,360 @@ const Index: React.FC = () => {
   async function onFinish() {
     try {
       const values = await form.validateFields();
-      // setPending(true);
-
-      const attrKeyTypeMap = Object.keys(dynProps).reduce(
-        (acc: any, cur: any) => {
-          dynProps[cur].forEach((item) => {
-            acc[item.categoryPropertyCode] = item.type;
-          });
-          return acc;
-        },
-        {},
-      );
+      setPending(true);
+      if (values.saleProperties?.length > 0 && (!values.skus || values.skus?.length === 0)) {
+        message.error('请生成sku~');
+        return;
+      }
       const data = {
         ...values,
         images:
-          values.images?.map((img: { url: string }) =>
-            typeof img === 'object' ? img.url : img,
-          ) || [],
+          values.images?.map((img: { url: string }) => (typeof img === 'object' ? img.url : img)) ||
+          [],
         contents:
-          values.contents?.map((img: { url: string }) =>
-            typeof img === 'object'
-              ? { image: img.url, jumpUrl: '' }
-              : { image: img, jumpUrl: '' },
-          ) || [],
-        brandId:
-          typeof values.brandId === 'object'
-            ? values.brandId.value
-            : values.brandId,
+          values.contents?.map((img: { url: string }) => ({
+            image: typeof img === 'object' ? img.url : img,
+          })) || [],
+        brandId: typeof values.brandId === 'object' ? values.brandId.value : values.brandId,
         supplierId:
-          typeof values.supplierId === 'object'
-            ? values.supplierId.value
-            : values.supplierId,
+          typeof values.supplierId === 'object' ? values.supplierId.value : values.supplierId,
         categoryId: [...values.categoryId].pop(),
-
-        saleProperties: values.saleProperties?.map((item: any) => ({
-          categoryPropertyCode: item.categoryPropertyType.value,
-          categoryPropertyName: item.categoryPropertyType.label,
-          categoryPropertyValues: item.categoryPropertyValues,
-        })),
-        baseProperties: Object.keys(values.baseProperties).reduce(
-          (acc: Recordable<any>, key: string) => {
-            if (values.baseProperties[key] !== undefined) {
-              const type = attrKeyTypeMap[key];
-              switch (type) {
-                case AttrTypes.DATE:
-                  acc[key] = moment(values.baseProperties[key]).format(
-                    'YYYY-MM-DD',
-                  );
-                  break;
-                case AttrTypes.DATE_RANGE:
-                  acc[key] = [
-                    moment(values.baseProperties[key][0]).format('YYYY-MM-DD'),
-                    moment(values.baseProperties[key][1]).format('YYYY-MM-DD'),
-                  ];
-                  break;
-                default:
-                  acc[key] = values.baseProperties[key];
-                  break;
+        //处理sku 销售属性
+        saleProperties: values.saleProperties?.map((item: any) => {
+          const _values = item.categoryPropertyValues
+            ?.map((item) => {
+              // 过滤 checkbox
+              if (typeof item === 'object') {
+                return item.checked && item.value ? item : false;
+              } else {
+                return item ? item : false;
               }
-            }
-            return acc;
-          },
-          {},
-        ),
-        skus: values.skus.map((item: any) => ({
-          ...omit(item, ['images', ...PriceKeys]),
-          images: item.images?.map((img: { url: string }) =>
-            typeof img === 'object' ? img.url : img,
-          ),
-          itemPrice: {
-            commissionRatio: math.mul(item.commissionRatio, 100),
-            ...transformFen2Yuan(item, PriceKeys, true),
-          },
-        })),
+            })
+            .filter(Boolean);
+          return {
+            itemPropertyCode: item.categoryPropertyType.value,
+            itemPropertyName: item.categoryPropertyType.label,
+            salePropertyValues: _values,
+            itemPropertyValues: _values
+              ?.map((item) => (typeof item === 'object' ? item.value : item))
+              .toString(),
+          };
+        }),
+        //处理动态属性
+        itemProperties: setMap(values.itemProperties, propsDict),
+        //处理sku
+        skus: values.skus?.map((item: any) => {
+          const { skuId, properties, ..._ } = item;
+          return {
+            skuId,
+            properties,
+            skuPropKVParamList: setMap(_, skuPropsDict),
+          };
+        }),
+        sourceFlag: 2
       };
-      await goodsAdd(data);
-      message.success('添加成功');
+      if (id) {
+        data.itemId = Number(id);
+      }
+      await saveItem(data);
+      message.success(id ? '保存成功' : '添加成功');
       await sleep(1500);
-      history.push('/goods/list');
+      history.replace('/goods/list');
     } catch (error) {
       console.log(error);
+      if (error.errorFields && error.errorFields.length > 0) {
+        message.info('请检查表单必填项～');
+      }
+    } finally {
+      setPending(false);
+    }
+
+    function setMap(dataSource: Recordable<any>, dict: Recordable<IPropsType>) {
+      return Object.keys(dataSource || {}).reduce((acc: Recordable<any>, key: string) => {
+        const item = dataSource[key];
+        if (item !== undefined) {
+          const props = dict[key];
+          if (!props) {
+            acc.push({ itemPropertyCode: key, itemPropertyValues: item });
+          } else {
+            const { propertyType } = props;
+            acc.push({
+              itemPropertyId: props.propertyId,
+              itemPropertyCode: key,
+              itemPropertyValues: propertyType
+                ? changePropsValue(item, propertyType)?.toString()
+                : item,
+            });
+          }
+        }
+        return acc;
+      }, []);
     }
   }
 
-  // 检索
-  const filter = (inputValue: string, path: DefaultOptionType[]) =>
-    path.some(
-      (option) =>
-        (option.name as string)
-          .toLowerCase()
-          .indexOf(inputValue.toLowerCase()) > -1,
-    );
+  useEffect(() => {
+
+    if (type === ModalType.EDIT) {
+      // 编辑
+      autoCompleteWithDetail()
+    } else if (type === ModalType.SAMPLE_STYLE_ADD) {
+      // 新增 来源 - 样衣
+      // autoCompleteWithSample(sampleId ? Number(sampleId) : 0)
+    } else if (type === ModalType.PLATFORM_ADD) {
+      // 新增 来源 - 供应链
+      autoCompleteWithSupplier(scmItemId ? Number(scmItemId) : 0);
+    }
+  }, []);
+
+  //渲染基础属性
+  function renderBaseProps() {
+    return groupDict['基本信息']?.map((item, i) => {
+      let {
+        props: { name },
+      } = item;
+      // let [, categoryPropertyCode] = name;
+      // if (categoryPropertyCode === 'styleSource') {
+      //   let props = propsDict[categoryPropertyCode];
+      //   const _props = {
+      //     label: props.categoryPropertyName,
+      //     rules: [{ required: props.required === 1 ? true : false }],
+      //     name: ['itemProperties', `${props.categoryPropertyCode}`],
+      //     preserve: false,
+      //   };
+      //   return (
+      //     <Col span={12} key={i}>
+      //       <Form.Item {..._props} wrapperCol={{ span: 5 }}>
+      //         <Select options={props.itemCatePropertyValueEnumS} placeholder="请选择" allowClear />
+      //       </Form.Item>
+      //       <div style={{ position: 'absolute', top: 5, left: '45%' }}>
+      //         <Typography.Link style={{ marginLeft: '20px' }} onClick={handleLinkSample}>
+      //           关联样衣
+      //         </Typography.Link>
+
+      //         {refSampleClothesId && (
+      //           <>
+      //             <Typography.Link style={{ marginLeft: '10px' }} onClick={handleNoLinkSample}>
+      //               取消
+      //             </Typography.Link>
+      //             <span className="u-ml10">已关联(样衣Id：{refSampleClothesId})</span>
+      //           </>
+      //         )}
+      //       </div>
+      //     </Col>
+      //   );
+      // }
+      return (
+        <Col span={12} key={i}>
+          {item}
+        </Col>
+      );
+    });
+  }
+
+  //渲染其他属性
+  function renderOtherProps() {
+    return Object.keys(groupDict)?.map((item) => {
+      if (item === '基本信息') {
+        return <React.Fragment key={item}></React.Fragment>;
+      }
+      return (
+        <React.Fragment key={item}>
+          <h2>{item === '未分组' ? '' : item}</h2>
+          <Row>
+            {groupDict[item]?.map((component, i) => {
+              return (
+                <Col span={12} key={`${item}-${i}`}>
+                  {component}
+                </Col>
+              );
+            })}
+          </Row>
+        </React.Fragment>
+      );
+    });
+  }
 
   return (
     <div className={styles.goodsCreate}>
-      {/* <Button
-        onClick={() => {
-          history.back();
-        }}
-        style={{ color: '#666' }}
-        className="u-mr10 u-mb20"
-      >
-        返回
-      </Button> */}
-      <Form labelCol={{ span: 6 }} wrapperCol={{ span: 14 }} form={form}>
-        {/* 样衣 or 款式 */}
-        <Form.Item label="类型" name="type" hidden={true} initialValue={3}>
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label="关联样衣 "
-          name={['extraMap', 'refSampleClothesId']}
-          hidden={true}
+      <Spin spinning={loading}>
+        <CptContext.Provider
+          value={{ form, skuOptions, skuOptionsDict, skuProps, skuPropsDict }}
         >
-          <Input />
-        </Form.Item>
-        {/* 1pc  2小程序*/}
-        <Form.Item
-          label="商品类型"
-          name={['extraMap', 'client']}
-          hidden={true}
-          initialValue={1}
-        >
-          <Input />
-        </Form.Item>
-        {/* 1未关联  2关联*/}
-        <Form.Item
-          label="关联样衣"
-          name="source"
-          hidden={true}
-          initialValue={5}
-        >
-          <Input />
-        </Form.Item>
-        <h2>基本信息</h2>
-        <Row className={styles.plr20}>
-          <Col span={12}>
+          <Form labelCol={{ span: 6 }} wrapperCol={{ span: 14 }} form={form}>
+            {/* 样衣 or 款式 */}
+            <Form.Item label="类型" name="type" hidden={true} initialValue={3}>
+              <Input />
+            </Form.Item>
             <Form.Item
-              label="款式名称"
-              name="title"
-              rules={[{ required: true }]}
+              label="关联样衣 "
+              name={['extraMap', 'refSampleClothesId']}
+              hidden={true}
             >
-              <Input placeholder="请输入" maxLength={50} />
+              <Input />
             </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item label="商家款式编码" name="supplierStyleCode">
-              <Input maxLength={50} />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
+            {/* 1pc  2小程序*/}
             <Form.Item
-              label="69码"
-              name="snCode"
-              rules={[{ message: '仅支持数字', pattern: /^[\d]+$/ }]}
+              label="商品类型"
+              name={['extraMap', 'client']}
+              hidden={true}
+              initialValue={1}
             >
-              <Input placeholder="请输入" maxLength={20} />
+              <Input />
             </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item label="渠道商品编码" name="outsideItemCode">
-              <Input maxLength={50} />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
+            {/* 1未关联  2关联*/}
             <Form.Item
-              label="类目"
-              name="categoryId"
-              rules={[{ required: true, message: '请选择类目～' }]}
+              label="关联样衣"
+              name="source"
+              hidden={true}
+              initialValue={5}
             >
-              <Cascader
-                options={category}
-                placeholder="请选择上架类目"
-                onChange={handleChangeCate}
-                showSearch={{ filter }}
-                fieldNames={{
-                  children: 'children',
-                  label: 'name',
-                  value: 'categoryId',
-                }}
-              />
+              <Input />
             </Form.Item>
-          </Col>
+            <h2>基本信息</h2>
+            <Row className={styles.plr20}>
+              <Col span={12}>
+                <Form.Item
+                  label="款式名称"
+                  name="title"
+                  rules={[{ required: true }]}
+                >
+                  <Input placeholder="请输入" maxLength={50} />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item label="商家款式编码" name="supplierStyleCode">
+                  <Input maxLength={50} />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  label="69码"
+                  name="snCode"
+                  rules={[{ message: '仅支持数字', pattern: /^[\d]+$/ }]}
+                >
+                  <Input placeholder="请输入" maxLength={20} />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item label="渠道商品编码" name="outsideItemCode">
+                  <Input maxLength={50} />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  label="类目"
+                  name="categoryId"
+                  rules={[{ required: true, message: '请选择类目～' }]}
+                >
+                  <Cascader
+                    options={category}
+                    placeholder="请选择上架类目"
+                    onChange={handleChangeCate}
+                    showSearch={{
+                      filter: (inputValue, path) => {
+                        return path.some(
+                          (option) =>
+                            option.name
+                              .toLowerCase()
+                              .indexOf(inputValue.toLowerCase()) > -1,
+                        );
+                      },
+                    }}
+                    fieldNames={{
+                      children: 'children',
+                      label: 'name',
+                      value: 'categoryId',
+                    }}
+                  />
+                </Form.Item>
+              </Col>
 
-          {/*<Col span={12} pull={2}>*/}
-          {/*  <Typography.Link style={{ marginLeft: '20px' }} onClick={handleLinkSample}>*/}
-          {/*    关联样衣*/}
-          {/*  </Typography.Link>*/}
+              {/*<Col span={12} pull={2}>*/}
+              {/*  <Typography.Link style={{ marginLeft: '20px' }} onClick={handleLinkSample}>*/}
+              {/*    关联样衣*/}
+              {/*  </Typography.Link>*/}
 
-          {/*  {refSampleClothesId && (*/}
-          {/*    <>*/}
-          {/*      <Typography.Link style={{ marginLeft: '10px' }} onClick={handleNoLinkSample}>*/}
-          {/*        取消关联*/}
-          {/*      </Typography.Link>*/}
-          {/*      <span className="u-ml10">已关联(样衣Id：{refSampleClothesId})</span>*/}
-          {/*    </>*/}
-          {/*  )}*/}
-          {/*</Col>*/}
-          <Col span={12}>
-            <Form.Item
-              label="品牌"
-              name="brandId"
-              rules={[{ required: true, message: '请选择品牌～' }]}
+              {/*  {refSampleClothesId && (*/}
+              {/*    <>*/}
+              {/*      <Typography.Link style={{ marginLeft: '10px' }} onClick={handleNoLinkSample}>*/}
+              {/*        取消关联*/}
+              {/*      </Typography.Link>*/}
+              {/*      <span className="u-ml10">已关联(样衣Id：{refSampleClothesId})</span>*/}
+              {/*    </>*/}
+              {/*  )}*/}
+              {/*</Col>*/}
+              {/* 基础属性 */}
+              {renderBaseProps()}
+
+              <Col span={12}>
+                <Form.Item
+                  label="品牌"
+                  name="brandId"
+                  rules={[{ required: true, message: '请选择品牌～' }]}
+                >
+                  <BrandSelectCpt isCreate />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item label="库存" name="invSkuViewParam">
+                  <InputNumber placeholder="请输入" min={0} />
+                </Form.Item>
+              </Col>
+              <Col span={24}>
+                <Form.Item
+                  label="商品图片"
+                  name="images"
+                  rules={[{ required: true, message: '请选择主图～' }]}
+                  labelCol={{ span: 3 }}
+                  wrapperCol={{ span: 20 }}
+                >
+                  <Upload
+                    listType="picture-card"
+                    maxCount={imgUploadSize}
+                    size={10}
+                    tip="支持jpg、jpeg、png格式，小于10Mb图片不清晰将会被降低选中概率，故要求图片尺寸在600*600以上"
+                  />
+                </Form.Item>
+              </Col>
+
+              <Col span={24}>
+                <Form.Item
+                  label="商品详情"
+                  name="contents"
+                  labelCol={{ span: 3 }}
+                  wrapperCol={{ span: 20 }}
+                >
+                  <Upload
+                    listType="picture-card"
+                    maxCount={20}
+                    size={10}
+                    tip="支持jpg、jpeg、png格式，小于10Mb图片不清晰将会被降低选中概率，故要求图片尺寸在600*600以上"
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
+            {/* 其他动态属性 */}
+            {renderOtherProps()}
+
+            <h2>sku信息</h2>
+            {/* <SkuCpt form={form} skuAttrOptions={skuAttr} /> */}
+
+            {/* <SkuTablesCpt form={form} /> */}
+            <SkuProps />
+            <SkuTablesProps />
+
+            <Button
+              type="primary"
+              danger
+              loading={pending}
+              style={{ marginLeft: '12.5%', marginTop: 20 }}
+              onClick={onFinish.bind(null, false)}
             >
-              <BrandSelectCpt isCreate />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item label="库存" name="invSkuViewParam">
-              <InputNumber placeholder="请输入" min={0} />
-            </Form.Item>
-          </Col>
-          {renderDynProps(true)}
-
-          <Col span={24}>
-            <Form.Item
-              label="商品图片"
-              name="images"
-              rules={[{ required: true, message: '请选择主图～' }]}
-              labelCol={{ span: 3 }}
-              wrapperCol={{ span: 20 }}
-            >
-              <Upload
-                listType="picture-card"
-                maxCount={5}
-                size={10}
-                tip="支持jpg、jpeg、png格式，小于10Mb图片不清晰将会被降低选中概率，故要求图片尺寸在600*600以上"
-              />
-            </Form.Item>
-          </Col>
-
-          <Col span={24}>
-            <Form.Item
-              label="商品详情"
-              name="contents"
-              labelCol={{ span: 3 }}
-              wrapperCol={{ span: 20 }}
-            >
-              <Upload
-                listType="picture-card"
-                maxCount={20}
-                size={10}
-                tip="支持jpg、jpeg、png格式，小于10Mb图片不清晰将会被降低选中概率，故要求图片尺寸在600*600以上"
-              />
-            </Form.Item>
-          </Col>
-        </Row>
-        {renderDynProps()}
-
-        <h2>sku信息</h2>
-        <SkuCpt form={form} skuAttrOptions={skuAttr} />
-
-        <SkuTablesCpt form={form} />
-
-        <Button
-          type="primary"
-          danger
-          style={{ marginLeft: '12.5%', marginTop: 20 }}
-          onClick={onFinish.bind(null, false)}
-        >
-          确认提交
-        </Button>
-      </Form>
+              确认提交
+            </Button>
+          </Form>
+        </CptContext.Provider>
+      </Spin>
       {/* <SampleListModal
         // ref={sampleListRef}
         onChange={(value) => {
@@ -532,158 +764,5 @@ const Index: React.FC = () => {
       /> */}
     </div>
   );
-
-  function renderAttrItem(attr: {
-    type: number;
-    required: 0 | 1;
-    categoryPropertyCode: string;
-    categoryPropertyName: string;
-    unit: string;
-    propertySelectValues: any[];
-  }) {
-    const propertySelectValues = Array.isArray(attr?.propertySelectValues)
-      ? attr?.propertySelectValues
-      : [];
-    const props = {
-      label: attr.categoryPropertyName,
-      rules: [{ required: attr.required === 1 ? true : false }],
-      name: ['baseProperties', `${attr.categoryPropertyCode}`],
-      preserve: false,
-    };
-    let options = propertySelectValues.map(({ valueId, value }) => ({
-      label: value,
-      value: `${valueId}`,
-    }));
-    switch (attr.type) {
-      case AttrTypes.TEXT:
-        return (
-          <Form.Item {...props}>
-            <Input placeholder="请输入" maxLength={50} />
-          </Form.Item>
-        );
-      case AttrTypes.NUMBER:
-        return (
-          <Form.Item {...props}>
-            <InputNumber
-              className="w-full"
-              placeholder="请输入"
-              addonAfter={attr.unit}
-            />
-          </Form.Item>
-        );
-      case AttrTypes.SELECT:
-        return (
-          <Form.Item {...props}>
-            <Select allowClear options={options} placeholder="请选择" />
-          </Form.Item>
-        );
-      case AttrTypes.MULTIPLE_SELECT:
-        return (
-          <Form.Item {...props}>
-            <Select
-              allowClear
-              mode="tags"
-              options={options}
-              placeholder="请选择"
-            />
-          </Form.Item>
-        );
-      case AttrTypes.NUMBER_RANGE:
-        return (
-          <Form.Item {...props}>
-            <InputNumberRange addonAfter={attr.unit} />
-          </Form.Item>
-        );
-      case AttrTypes.DATE:
-        return (
-          <Form.Item {...props}>
-            <DatePicker className="w-full" placeholder="请选择" />
-          </Form.Item>
-        );
-      case AttrTypes.DATE_RANGE:
-        return (
-          <Form.Item {...props}>
-            <DatePicker.RangePicker className="w-full" />
-          </Form.Item>
-        );
-      case AttrTypes.TEXTAREA:
-        return (
-          <Form.Item {...props}>
-            <Input.TextArea placeholder="请输入" maxLength={500} />
-          </Form.Item>
-        );
-      case AttrTypes.LINK:
-        return (
-          <Form.Item
-            {...props}
-            rules={[
-              {
-                message: '请输入正确的链接',
-                pattern:
-                  /(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?/gi,
-              },
-            ]}
-          >
-            <Input placeholder="请输入" maxLength={200} />
-          </Form.Item>
-        );
-      case AttrTypes.IMAGE:
-        return (
-          <Form.Item {...props}>
-            <Upload listType="picture-card" />
-          </Form.Item>
-        );
-      case AttrTypes.MULTIPLE_IMAGE:
-        return (
-          <Form.Item {...props}>
-            <Upload listType="picture-card" maxCount={6} />
-          </Form.Item>
-        );
-      case AttrTypes.FILE:
-        return (
-          <Form.Item {...props}>
-            <Upload maxCount={6} />
-          </Form.Item>
-        );
-      default:
-        return null;
-    }
-  }
-
-  function renderDynProps(isBaseProps = false) {
-    if (isBaseProps && dynProps['基本信息']) {
-      return dynProps['基本信息'].map((item: any) => (
-        <Col key={item.categoryPropertyName} span={12}>
-          {renderAttrItem(item)}
-        </Col>
-      ));
-    }
-    const attrGroupKeys = Object.keys(dynProps).filter(
-      (key) => key !== '基本信息',
-    );
-    if (attrGroupKeys.length === 0) return null;
-
-    return attrGroupKeys.map((key, idx) => {
-      if (isBaseProps) {
-        return dynProps[key].map((item: any) => (
-          <Col key={item.categoryPropertyName} span={12}>
-            {renderAttrItem(item)}
-          </Col>
-        ));
-      }
-      return (
-        <React.Fragment key={idx}>
-          <h2>{key}</h2>
-          <Row>
-            {dynProps[key].map((item: any) => (
-              <Col key={item.categoryPropertyName} span={12}>
-                {renderAttrItem(item)}
-              </Col>
-            ))}
-          </Row>
-        </React.Fragment>
-      );
-    });
-  }
 };
 export default Index;

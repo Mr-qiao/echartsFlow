@@ -14,7 +14,7 @@ import {
   Table,
   Tabs,
 } from 'antd';
-import _ from 'lodash';
+import _ from 'lodash-es';
 import { useEffect, useState } from 'react';
 import { history } from 'umi';
 import './index.less';

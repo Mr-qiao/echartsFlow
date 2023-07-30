@@ -18,12 +18,13 @@
     "@ant-design/icons": "^4.7.0",
     "@ant-design/pro-components": "2.4.5",
     "@ant-design/pro-layout": "7.11.0",
-    "@fingerprintjs/fingerprintjs": "^3.4.1",
+    "@types/lodash": "^4.14.195",
     "@umijs/max": "^4.0.52",
+    "@xc/kunlun-request": "^1.5.7",
     "@xc/react-hooks": "^1.0.3",
     "@xc/web-cmpt": "^1.0.18",
     "@xc/web-utils": "~1.0.13",
-    "@xlion/component": "^0.2.0",
+    "@xlion/component": "^1.5.1",
     "@xlion/monitor": "0.0.41-beta",
     "@xlion/utils": "^0.5.0",
     "ahooks": "^3.7.5",
@@ -46,7 +47,6 @@
     "umi-request": "^1.4.0"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.191",
     "@types/lodash-es": "^4.17.7",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
