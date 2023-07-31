@@ -31,7 +31,7 @@ const SpecsInput: React.FC<IProps> = ({ field, rowData }) => {
                   </Typography.Link>
                 </Space>
               ))}
-              {rowData.custom === IS_DISABLED.IS && attrValues.length < 10 && (
+              {rowData.custom === IS_DISABLED.IS && (
                 <Button
                   type="link"
                   style={{ padding: '3px' }}
