@@ -9,6 +9,8 @@ import React, { useEffect, useState } from 'react';
 import Image from '@/components/Image';
 import { formatPriceRange, formatRatioRange, transformFen2Yuan } from '@/utils';
 
+import ImagesGroup from './components/ImagesGroup';
+
 import { useParams } from '@umijs/max';
 import { AttrTypes } from '../Create/constants';
 // import Api from '../services';
@@ -145,7 +147,7 @@ const GoodsInfo = React.forwardRef(({ id, isSupplier = false }: any, ref) => {
     <div className="goods__detail-wrap">
       <Row className="u-w100">
         <Col>
-          <Image
+          {/* <Image
             width={200}
             height={200}
             src={detail?.mainImg}
@@ -165,7 +167,8 @@ const GoodsInfo = React.forwardRef(({ id, isSupplier = false }: any, ref) => {
                   />
                 );
               })}
-          </div>
+          </div> */}
+          <ImagesGroup images={detail?.images?.concat([])} />
         </Col>
         <Col span={18}>
 
@@ -212,9 +215,11 @@ const GoodsInfo = React.forwardRef(({ id, isSupplier = false }: any, ref) => {
         {detail.contents && detail?.contents.length > 0 && (
           <Col span={24}>
             {detail.contents && detail?.contents.length > 0 ? (
-              <Space size={10}>
+              <Space size={10} className="u-mt10">
                 {detail?.contents?.map((item, i) => {
-                  return <Image width={80} height={80} key={i} src={item.image} />;
+                  return (
+                    <Image width={50} height={50} key={i} src={item.image} placeholder={true} />
+                  );
                 })}
               </Space>
             ) : (
