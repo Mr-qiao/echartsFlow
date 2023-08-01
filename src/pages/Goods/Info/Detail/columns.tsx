@@ -99,8 +99,9 @@ function useColumns(isSupplier): [TableProps<IPropsType>['columns']] {
                 return skuPropertyInfos?.length > 0 ? (
                     <Descriptions
                         column={1}
-                        labelStyle={{ flexShrink: 0 }}
-                        contentStyle={{ flex: 1, width: 0, paddingRight: 20, flexDirection: 'column' }}
+                        labelStyle={{ flexShrink: 0, fontSize: 12 }}
+                        contentStyle={{ fontSize: 12, flex: 1, width: 0, paddingRight: 20, flexDirection: 'column', padding: 0 }}
+                        className="otherInfo"
                     >
                         {skuPropertyInfos
                             ?.slice(0, tableMoreCount)

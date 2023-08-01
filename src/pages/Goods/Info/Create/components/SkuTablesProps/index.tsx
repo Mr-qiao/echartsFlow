@@ -91,9 +91,10 @@ export default () => {
       ...skuProps?.map((item) => {
         let props = skuPropsDict[item.value];
         const { Component, rules } = renderProps(props.propertyType);
-        let width: number | null = null;
+        let width: number | null = 180;
         switch (props.propertyType) {
           case ATTR_TYPE.IMAGE:
+            width = 80;
             props = {
               ...props,
               itemRender: true,
@@ -154,7 +155,7 @@ export default () => {
         const skus = form.getFieldValue('skus');
         //监听 skusOrigin 根据 skusOrigin 填写skus
         return (
-          skusOrigin && (
+          skusOrigin && skus && (
             <div className={ss['custom__editableProTable']}>
               <Button
                 onClick={handleBatchFill}
