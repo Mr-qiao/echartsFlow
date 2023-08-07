@@ -2,7 +2,7 @@ import BatchInput from '@/components/batchInput';
 import SelectCpt from '@/components/selectCpt';
 import TabPane from '@/components/TabPane';
 import { PURCHASE_ORDER_TABLIST } from '@/constants/orders';
-import { purchaseExportList, purchaseQueryList } from '@/services/orders';
+import { purchaseExportList, purchaseQueryList } from '@/services/orders/purchaseSales';
 import { filterPageName } from '@/utils';
 import { ProTable } from '@ant-design/pro-components';
 import { Button, DatePicker, Modal } from 'antd';

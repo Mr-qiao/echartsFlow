@@ -9,7 +9,7 @@ import { Button } from 'antd';
 import moment from 'moment';
 
 import CustomProTable from '@/components/CustomProTable';
-import Api from '@/services/orders/afterSales';
+import { afterSaleList, afterSaleExport } from '@/services/orders/afterSales';
 
 import useColumns, { AFTER_SALES_TIME_TYPE_DICT } from './columns';
 import { useSelectDict } from './hooks';
@@ -44,7 +44,7 @@ const Index = () => {
         delete o[item];
       }
     });
-    Api.AfterSales.Export(o, { isDownload: true, responseType: 'blob' });
+    afterSaleExport(o, { isDownload: true, responseType: 'blob' });
   };
   const columns: ProColumns<DataType>[] = [...columnItems];
 
@@ -57,7 +57,7 @@ const Index = () => {
         rowKey="id"
         className="custom-table"
         options={true}
-        ajaxRequest={Api.AfterSales.List}
+        ajaxRequest={afterSaleList}
         search={{
           // collapsed: false,
           defaultCollapsed: false,

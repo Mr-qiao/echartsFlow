@@ -184,18 +184,18 @@ function EditBoom() {
               <Row>
                 {dataObj?.imgUrlList?.length > 0
                   ? dataObj?.imgUrlList.map((item: any, index: any) => {
-                      if (index > 0) {
-                        return (
-                          <Col
-                            key={index}
-                            span={24}
-                            style={{ marginTop: index > 1 ? 10 : 0 }}
-                          >
-                            <Image width={80} height={80} src={item} />
-                          </Col>
-                        );
-                      }
-                    })
+                    if (index > 0) {
+                      return (
+                        <Col
+                          key={index}
+                          span={24}
+                          style={{ marginTop: index > 1 ? 10 : 0 }}
+                        >
+                          <Image width={80} height={80} src={item} />
+                        </Col>
+                      );
+                    }
+                  })
                   : null}
               </Row>
             </Col>
@@ -246,7 +246,7 @@ function EditBoom() {
           updateById(arg0).then((res) => {
             if (res.success) {
               message.success('成功');
-              history.push('/quotation/list');
+              history.push('/quotations/list');
             }
           });
         }}

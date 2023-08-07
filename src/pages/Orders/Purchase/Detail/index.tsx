@@ -3,7 +3,7 @@ import {
   purchaseQueryById,
   purchaseQueryByIdLogList,
   purchaseUpdateStatus,
-} from '@/services/orders';
+} from '@/services/orders/purchaseSales';
 import { useParams } from '@umijs/max';
 import {
   Button,
@@ -138,9 +138,9 @@ function PurchaseDetail() {
       detailStatusParamList:
         action === 4
           ? dataSource.map((item: any) => ({
-              ...item,
-              purchaseOrderDetailId: item.id,
-            }))
+            ...item,
+            purchaseOrderDetailId: item.id,
+          }))
           : undefined,
       rejectReason: action === 4 ? value.rejectReason : undefined,
     };

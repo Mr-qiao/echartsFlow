@@ -1,5 +1,5 @@
 import { ORDER_TIME_TYPE, PLATFORM_ORDERSTATUS } from '@/constants/orders';
-import { exportSaleOrderList, getSaleOrderList } from '@/services/orders';
+import { exportSaleOrderList, getSaleOrderList } from '@/services/orders/salesOrder';
 import { ProTable } from '@ant-design/pro-components';
 import { Button } from 'antd';
 import React, { useRef, useState } from 'react';
