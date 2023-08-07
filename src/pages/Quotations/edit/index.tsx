@@ -514,8 +514,8 @@ function QuotationEdit() {
     const asd = d?.itemSkuList?.map((item: any) => {
       const huizong = _.ceil(
         Number(item?.gyhuizong || 0) +
-          Number(item?.qitahuizong || 0) +
-          Number(item?.wuliaohuizong || 0),
+        Number(item?.qitahuizong || 0) +
+        Number(item?.wuliaohuizong || 0),
         2,
       );
       return {
@@ -559,7 +559,7 @@ function QuotationEdit() {
     updateById(arg0).then((res) => {
       if (res.success) {
         message.success('成功');
-        history.push('/quotation/list');
+        history.push('/quotations/list');
       } else {
         message.error(res.message);
       }
@@ -591,7 +591,7 @@ function QuotationEdit() {
               return (
                 <div
                   key={index}
-                  // style={}
+                // style={}
                 >
                   <a href={item.url}>{item.name}</a>
                 </div>
