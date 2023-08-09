@@ -2,7 +2,6 @@ import './index.less';
 
 import { math } from '@xlion/utils';
 import { Col, Row, Spin, Table, Space } from 'antd';
-import { groupBy } from 'lodash-es';
 import { Descriptions, GlobalModal, Typography } from '@xlion/component';
 import React, { useEffect, useState } from 'react';
 
@@ -11,13 +10,10 @@ import { formatPriceRange, formatRatioRange, transformFen2Yuan } from '@/utils';
 
 import ImagesGroup from './components/ImagesGroup';
 
-import { useParams } from '@umijs/max';
-import { AttrTypes } from '../Create/constants';
-// import Api from '../services';
 import useColumns from './columns';
 import { ModalType, MoreModal } from './components/MoreModal';
 import dynamicProps from './DynamicProps';
-import { saveViewByIdOnlyDetail } from '@/services/goods';
+import { supplierViewByIdOnlyDetail } from '@/services/goods/supplier';
 
 // import ss from './index.less'
 
@@ -43,7 +39,7 @@ const GoodsInfo = React.forwardRef(({ id, isSupplier = false }: any, ref) => {
   //获取商品信息
   async function getGoodsDetail(itemId: any) {
     try {
-      const { entry } = await saveViewByIdOnlyDetail({ itemId });
+      const { entry } = await supplierViewByIdOnlyDetail({ itemId });
 
       const { item: baseInfo, itemPropertyList = [], skus = [], otherViewProperties = {} } = entry;
       let data: any = {

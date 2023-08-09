@@ -19,7 +19,7 @@ import React, { createContext, useEffect, useState, useMemo } from 'react';
 import Upload from '@/components/Upload';
 import { useCategory } from '@/hooks';
 import { sleep, uuid } from '@/utils';
-import { viewByIdV2Detail, saveItem } from '@/services/goods';
+import { supplierViewByIdV2Detail, supplierSaveItem } from '@/services/goods/supplier';
 import BrandSelectCpt from './components/BrandSelectCpt';
 import SkuProps from './components/SkuProps'
 import SkuTablesProps from './components/SkuTablesProps'
@@ -227,7 +227,7 @@ const Index: React.FC = () => {
           itemProperties: [],
           skus: [],
         },
-      } = await viewByIdV2Detail(_);
+      } = await supplierViewByIdV2Detail(_);
       //动态属性
 
       onReloadProps(item.categoryId);
@@ -373,7 +373,7 @@ const Index: React.FC = () => {
       setSampleId('');
       return;
     }
-    const { entry } = await viewByIdV2Detail({ itemId: Number(scmItemId) });
+    const { entry } = await supplierViewByIdV2Detail({ itemId: Number(scmItemId) });
     form.setFieldsValue({
       ...pick(entry?.item, [
         'title',
@@ -452,7 +452,7 @@ const Index: React.FC = () => {
       if (id) {
         data.itemId = Number(id);
       }
-      await saveItem(data);
+      await supplierSaveItem(data);
       message.success(id ? '保存成功' : '添加成功');
       await sleep(1500);
       history.replace('/goods/list');

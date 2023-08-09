@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { debounce } from '@/utils';
 
-import { brandList } from '@/services/goods';
+import { brandList } from '@/services/goods/supplier';
 import AddBrand from './AddBrand';
 
 const BrandSelectCpt = React.forwardRef(

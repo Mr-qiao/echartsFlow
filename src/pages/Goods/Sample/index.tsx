@@ -2,11 +2,11 @@ import SearchSelect from '@/components/SearchSelect';
 import SelectTree from '@/components/selectTree';
 import { useCategory } from '@/hooks';
 import {
-  delivery,
-  mark,
+  sampledDeliverPoor,
+  sampleStartPoor,
   sampleQueryList,
   searchForSystem,
-} from '@/services/goods';
+} from '@/services/goods/sample';
 import { filterPageName, transformFen2Yuan } from '@/utils';
 import { ProTable } from '@ant-design/pro-components';
 import { Form, Image, message, Modal, Select, Space } from 'antd';
@@ -125,10 +125,10 @@ function Sample() {
       render: (val: any, recode: any) => {
         return recode.status
           ? {
-              0: '待开始',
-              1: '打样中',
-              2: '已交付',
-            }[val]
+            0: '待开始',
+            1: '打样中',
+            2: '已交付',
+          }[val]
           : '待开始';
       },
     },
@@ -171,23 +171,20 @@ function Sample() {
             </a>
             {[0].includes(status) || !status ? (
               <a
-                onClick={() => {
+                onClick={async () => {
                   setbyId(recode);
                   // setOpen(true)
-                  mark({ status: '1', itemId: recode?.itemId }, {}).then(
-                    (res: any) => {
-                      if (res.success) {
-                        message.success({
-                          content: '打样成功',
-                          duration: 2,
-                          onClose: () => {
-                            actionRef.current.reload();
-                          },
-                        });
-                        setOpen(false);
-                      }
-                    },
-                  );
+                  const res = await sampleStartPoor({ status: '1', itemId: recode?.itemId });
+                  if (res.success) {
+                    message.success({
+                      content: '打样成功',
+                      duration: 2,
+                      onClose: () => {
+                        actionRef.current.reload();
+                      },
+                    });
+                    setOpen(false);
+                  }
                 }}
               >
                 开始打样
@@ -196,7 +193,7 @@ function Sample() {
             {[1].includes(status) ? (
               <a
                 onClick={() => {
-                  delivery({ status: '2', itemId: recode?.itemId }, {}).then(
+                  sampledDeliverPoor({ status: '2', itemId: recode?.itemId }, {}).then(
                     (res: any) => {
                       if (res.success) {
                         message.success({
@@ -289,7 +286,7 @@ function Sample() {
         destroyOnClose
         onOk={() => {
           form.validateFields().then((values) => {
-            mark({ ...values, itemId: byId?.itemId }, {}).then((res: any) => {
+            sampleStartPoor({ ...values, itemId: byId?.itemId }, {}).then((res: any) => {
               if (res.success) {
                 message.success('备注状态成功');
                 setOpen(false);

@@ -1,6 +1,15 @@
+/**
+ * 报价管理
+ */
 import { request } from '@umijs/max';
 
-export function queryList(body: object, options: any) {
+/**
+ * 报价列表
+ * @param body 
+ * @param options 
+ * @returns 
+ */
+export function quotationsList(body: object, options: any) {
   return request('/designweb/supplier/ask/page', {
     method: 'POST',
     data: body,
@@ -12,7 +21,13 @@ export function queryList(body: object, options: any) {
   });
 }
 
-export async function queryById(
+/**
+ * 报价详情
+ * @param params 
+ * @param options 
+ * @returns 
+ */
+export async function quotationsById(
   params?: any,
   options?: { [key: string]: any },
 ) {
@@ -25,7 +40,13 @@ export async function queryById(
   });
 }
 
-export async function updateById(
+/**
+ * 更新报价
+ * @param params 
+ * @param options 
+ * @returns 
+ */
+export async function quotationsUpdateById(
   params?: any,
   options?: { [key: string]: any },
 ) {

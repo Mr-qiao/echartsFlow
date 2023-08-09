@@ -1,5 +1,5 @@
 import BottomButton from '@/components/bottomButton';
-import { queryById, updateById } from '@/services/quotations';
+import { quotationsById, quotationsUpdateById } from '@/services/quotations';
 import { ProCard } from '@ant-design/pro-components';
 import { useParams } from '@umijs/max';
 import {
@@ -154,7 +154,7 @@ function EditBoom() {
   const [itemProperties, setItemProperties] = useState([]) as any;
   const { id } = useParams();
   useEffect(() => {
-    queryById({ id: id }).then((res) => {
+    quotationsById({ id: id }).then((res) => {
       if (res.success) {
         setDataObj(res.entry);
         setItemProperties(res.entry?.itemProperties || []);
@@ -243,7 +243,7 @@ function EditBoom() {
             },
             sumPrice: sumPrice,
           };
-          updateById(arg0).then((res) => {
+          quotationsUpdateById(arg0).then((res) => {
             if (res.success) {
               message.success('成功');
               history.push('/quotations/list');

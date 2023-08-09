@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 import GoodsTableCol from '@/components/goodsTableCol';
 import SelectTree from '@/components/selectTree';
 import { useCategory } from '@/hooks';
-import { supplierItemList } from '@/services/goods';
+import { supplierItemList } from '@/services/goods/supplier';
 import { filterPageName } from '@/utils';
 import { ProTable } from '@ant-design/pro-components';
 import { history } from '@umijs/max';

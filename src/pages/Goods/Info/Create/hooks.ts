@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { getItemPropertyByCategoryId } from '@/services/goods';
+import { supplierItemPropertyByCategoryId } from '@/services/goods/supplier';
 
 import dynamicProps from './components/DynamicProps';
 import { IPropsType } from './types';
@@ -26,7 +26,7 @@ export const useCategoryProps = (): [any, (id: string) => any] => {
   async function getDynamicProps(categoryId) {
     try {
       setLoading(true);
-      const { entry } = await getItemPropertyByCategoryId({ categoryId });
+      const { entry } = await supplierItemPropertyByCategoryId({ categoryId });
       const { categoryProperties = [], skuGroupProperties = [], skuSaleProperties = [] } = entry;
 
       const _obj: Recordable<React.ReactNode> = {};

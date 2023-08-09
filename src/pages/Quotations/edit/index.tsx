@@ -1,7 +1,7 @@
 import BottomButton from '@/components/bottomButton';
 import GoodImgEditCheck from '@/components/goodImgEditCheck';
 import RepeatTable from '@/pages/Quotations/components/repeatTable';
-import { queryById, updateById } from '@/services/quotations';
+import { quotationsById, quotationsUpdateById } from '@/services/quotations';
 import { useParams } from '@@/exports';
 import { ProCard } from '@ant-design/pro-components';
 import {
@@ -445,7 +445,7 @@ function QuotationEdit() {
     setDataSourcePp(datas);
   };
   const queryListAll = async () => {
-    const res = await queryById({ id: params.id });
+    const res = await quotationsById({ id: params.id });
     const entry = res?.entry || {};
     const gy = _.cloneDeep(entry?.craftMap?.workmanshipDetailList);
     const wll = _.cloneDeep(entry?.materialMap?.skuMaterialList);
@@ -556,7 +556,7 @@ function QuotationEdit() {
       sumPrice: huizong,
       otherPrice: qitaPirce,
     };
-    updateById(arg0).then((res) => {
+    quotationsUpdateById(arg0).then((res) => {
       if (res.success) {
         message.success('成功');
         history.push('/quotations/list');
