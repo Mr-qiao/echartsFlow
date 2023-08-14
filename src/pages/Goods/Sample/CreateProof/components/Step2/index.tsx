@@ -1,13 +1,12 @@
 /**
  * @file 图样附图
  */
-import { Button, Form, Input } from 'antd';
+import { Form, Input } from '@xlion/component';
 import { pick } from 'lodash-es';
 import { useEffect } from 'react';
 
 import Upload from '@/components/Upload';
 
-import ss from '../../index.less';
 import { IStepProps } from '../../types';
 
 const FormItem = Form.Item;

@@ -5,13 +5,15 @@ import './index.less';
 
 import { UploadOutlined } from '@ant-design/icons';
 import { uuid } from '@xlion/utils';
-import { Button, message, Upload as AntdUpload, UploadProps } from 'antd';
-import type { UploadFile } from 'antd/es/upload/interface';
+import { Button, message, Upload as XUpload, UploadProps } from '@xlion/component';
+import { UploadFile } from '@xlion/component/dist/upload'
 import { useMemo, useRef } from 'react';
 
 import { getSignature } from '@/services/common';
 
 import Thumbnail from '../Thumbnail';
+
+const { AntdUpload } = XUpload
 
 type OSSDataType = {
   key: string;
@@ -31,7 +33,7 @@ interface AliyunOSSUploadProps extends Omit<UploadProps, 'onChange' | 'multiple'
   onChange?: (fileList: UploadFile[]) => void;
 }
 
-const noop = () => {};
+const noop = () => { };
 const formatValue = (value: UploadFile[]) => {
   return value.map((item) => {
     if (typeof item === 'string') {
@@ -76,6 +78,7 @@ const Upload: React.FC<AliyunOSSUploadProps> = ({
   const OSSDataMapRef = useRef<Recordable<OSSDataType>>({});
 
   const handleChange: UploadProps['onChange'] = ({ file, fileList }) => {
+    console.log(file, fileList, '哈哈哈哈哈')
     let list = [...fileList];
     const OSSData = OSSDataMapRef.current[file.uid];
     const index = list.findIndex((item) => item.uid === file.uid);

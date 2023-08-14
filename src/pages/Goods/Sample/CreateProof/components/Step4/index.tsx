@@ -2,7 +2,6 @@
  * @file 物料清单
  */
 import { PlusOutlined } from '@ant-design/icons';
-import { Table } from '@xlion/component';
 import { uuid } from '@xlion/utils';
 import {
   Button,
@@ -14,7 +13,8 @@ import {
   Space,
   TableProps,
   Typography,
-} from 'antd';
+  Table
+} from '@xlion/component';
 import { useEffect } from 'react';
 
 import ss from '../../index.less';
@@ -241,12 +241,12 @@ const MaterialList: React.FC<IStepProps> = ({
       {
         title: '物料名称',
         width: 100,
-        render: (_, record,index) => {
+        render: (_, record, index) => {
           const field = fields[index];
           return (
             <FormItem {...field} className="mb-0" name={[field.name, 'materialName']}>
-            <Input placeholder="请输入" maxLength={100} />
-          </FormItem>
+              <Input placeholder="请输入" maxLength={100} />
+            </FormItem>
           )
         },
       },

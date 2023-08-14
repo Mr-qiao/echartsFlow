@@ -1,4 +1,4 @@
-import { Select, SelectProps } from 'antd';
+import { Select, SelectProps } from '@xlion/component';
 import React, { useEffect, useState } from 'react';
 
 import Api from './services';
@@ -49,6 +49,7 @@ const SelectCpt = React.forwardRef(({ value, onChange, ...props }: IProps) => {
 			onChange={handleChange}
 			onSearch={handleSearch}
 			onFocus={() => getList()}
+			{...props}
 		>
 			{list?.map((item, i) => (
 				<Select.Option key={i} value={item.employeeId} name={item.employeeId}>

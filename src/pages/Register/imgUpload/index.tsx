@@ -1,6 +1,7 @@
 import { uploadPicture } from '@/services/loginRegister';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import { Image, message, Upload } from 'antd';
+import { Image, message } from '@xlion/component'
+import { Upload as AntdUpload } from 'antd'
 import type { RcFile, UploadProps } from 'antd/es/upload/interface';
 import React, { useEffect, useState } from 'react';
 
@@ -21,6 +22,8 @@ const beforeUpload = (file: RcFile) => {
   }
   return isJpgOrPng && isLt2M;
 };
+
+
 
 const ImgUpload: React.FC = (props: any) => {
   const { onChange, value = '' } = props;
@@ -57,7 +60,7 @@ const ImgUpload: React.FC = (props: any) => {
           />
         </div>
       ) : null}
-      <Upload
+      <AntdUpload
         name="avatar"
         listType="picture-card"
         className="avatar-uploader"
@@ -67,7 +70,7 @@ const ImgUpload: React.FC = (props: any) => {
         onChange={handleChange}
       >
         {uploadButton}
-      </Upload>
+      </AntdUpload>
     </div>
   );
 };

@@ -1,9 +1,8 @@
 /**
  * @file 基本信息
  */
-import {PlusOutlined} from '@ant-design/icons';
-import {Table} from '@xlion/component';
-import {uuid} from '@xlion/utils';
+import { PlusOutlined } from '@ant-design/icons';
+import { uuid } from '@xlion/utils';
 import {
 	Button,
 	Checkbox,
@@ -17,16 +16,17 @@ import {
 	Select,
 	TableProps,
 	Typography,
-} from 'antd';
-import {pick} from 'lodash-es';
+	Table
+} from '@xlion/component';
+import { pick } from 'lodash-es';
 import moment from 'moment';
-import {useEffect} from 'react';
+import { useEffect } from 'react';
 
 import Upload from '@/components/Upload';
-import {useSelectDict} from '@/hooks';
+import { useSelectDict } from '@/hooks';
 
 import ss from '../../index.less';
-import {IStepProps} from '../../types';
+import { IStepProps } from '../../types';
 import PlateDivisionSelect from '../PlateDivisionSelect';
 
 const FormItem = Form.Item;
@@ -45,7 +45,7 @@ const shouldDateTransformKeys = [
 
 const dictKeys = ['type_for_people', 'type_sample_source', 'type_model', 'type_season'];
 
-const BasicInfo: React.FC<IStepProps> = ({sampleInfo, proofInfo, onOk}) => {
+const BasicInfo: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => {
 	const [form] = Form.useForm();
 	const [selectDict, selectDictMap] = useSelectDict(dictKeys);
 
@@ -55,7 +55,7 @@ const BasicInfo: React.FC<IStepProps> = ({sampleInfo, proofInfo, onOk}) => {
 		const data = pick(proofInfo, Object.keys(values));
 		form.setFieldsValue({
 			...data,
-			sampleDesignerId: {label: proofInfo.sampleDesignerName, proofInfo: data.sampleDesignerId},
+			sampleDesignerId: { label: proofInfo.sampleDesignerName, proofInfo: data.sampleDesignerId },
 			...shouldDateTransformKeys.reduce((acc: Recordable<any>, cur) => {
 				if (data[cur]) {
 					acc[cur] = moment(data[cur]);
@@ -65,7 +65,7 @@ const BasicInfo: React.FC<IStepProps> = ({sampleInfo, proofInfo, onOk}) => {
 			skcList:
 				data.skcList?.map((skc: any) => ({
 					...skc,
-					skcImageUrls: skc?.skcImageUrls?.map((url: string) => ({url})),
+					skcImageUrls: skc?.skcImageUrls?.map((url: string) => ({ url })),
 				})) || [],
 		});
 	}, [proofInfo]);
@@ -96,9 +96,9 @@ const BasicInfo: React.FC<IStepProps> = ({sampleInfo, proofInfo, onOk}) => {
 	};
 
 	const getColumns = ({
-												fields,
-												remove,
-											}: {
+		fields,
+		remove,
+	}: {
 		fields: FormListFieldData[];
 		remove: (index: number | number[]) => void;
 	}) => {
@@ -112,15 +112,15 @@ const BasicInfo: React.FC<IStepProps> = ({sampleInfo, proofInfo, onOk}) => {
 				width: 140,
 				render: (_, record, index: number) => {
 					const field = fields[index];
-					const options = sampleInfo.colorComb.map((color) => ({label: color, value: color}));
+					const options = sampleInfo.colorComb.map((color) => ({ label: color, value: color }));
 					return (
 						<FormItem
 							{...field}
 							className="mb-0"
 							name={[field.name, 'skcColorName']}
-							rules={[{required: true, message: '请选择'}]}
+							rules={[{ required: true, message: '请选择' }]}
 						>
-							<Select allowClear options={options}/>
+							<Select allowClear options={options} />
 						</FormItem>
 					);
 				},
@@ -144,7 +144,7 @@ const BasicInfo: React.FC<IStepProps> = ({sampleInfo, proofInfo, onOk}) => {
 					const field = fields[index];
 					return (
 						<FormItem {...field} className="mb-0" name={[field.name, 'skcImageUrls']}>
-							<Upload listType="picture-card" maxCount={6} tip={false}/>
+							<Upload listType="picture-card" maxCount={6} tip={false} />
 						</FormItem>
 					);
 				},
@@ -158,15 +158,15 @@ const BasicInfo: React.FC<IStepProps> = ({sampleInfo, proofInfo, onOk}) => {
 				width: 140,
 				render: (_, record, index: number) => {
 					const field = fields[index];
-					const options = sampleInfo.sizeComb.map((size) => ({label: size, value: size}));
+					const options = sampleInfo.sizeComb.map((size) => ({ label: size, value: size }));
 					return (
 						<FormItem
 							{...field}
 							className="mb-0"
 							name={[field.name, 'skcSize']}
-							rules={[{required: true, message: '请选择'}]}
+							rules={[{ required: true, message: '请选择' }]}
 						>
-							<Select allowClear options={options}/>
+							<Select allowClear options={options} />
 						</FormItem>
 					);
 				},
@@ -191,8 +191,8 @@ const BasicInfo: React.FC<IStepProps> = ({sampleInfo, proofInfo, onOk}) => {
 		] as TableProps<any>['columns'];
 	};
 	return (
-		<Form form={form} labelCol={{style: {width: 100}}} disabled>
-			<Descriptions labelStyle={{width: 100, justifyContent: 'flex-end'}}>
+		<Form form={form} labelCol={{ style: { width: 100 } }} disabled>
+			<Descriptions labelStyle={{ width: 100, justifyContent: 'flex-end' }}>
 				<Descriptions.Item label="款式来源" span={3}>
 					{selectDictMap.typeSampleSource?.[sampleInfo.source] ?? '-'}
 				</Descriptions.Item>
@@ -231,7 +231,7 @@ const BasicInfo: React.FC<IStepProps> = ({sampleInfo, proofInfo, onOk}) => {
 					<FormItem
 						label="打样方式"
 						name="sampleClothesRequirementType"
-						rules={[{required: true, message: '请选择打样方式'}]}
+						rules={[{ required: true, message: '请选择打样方式' }]}
 					>
 						<Select
 							placeholder="请选择"
@@ -267,41 +267,41 @@ const BasicInfo: React.FC<IStepProps> = ({sampleInfo, proofInfo, onOk}) => {
 				</Col>
 				<Col span={8}>
 					<FormItem label="面料需求时间" name="liningRequirementTime">
-						<DatePicker className="w-full" placeholder="请选择"/>
+						<DatePicker className="w-full" placeholder="请选择" />
 					</FormItem>
 				</Col>
 				<Col span={8}>
 					<FormItem label="物料需求时间" name="bomRequirementTime">
-						<DatePicker className="w-full" placeholder="请选择"/>
+						<DatePicker className="w-full" placeholder="请选择" />
 					</FormItem>
 				</Col>
 				<Col span={8}>
 					<FormItem
 						label="样衣需求时间"
 						name="sampleClothesRequirementTime"
-						rules={[{required: true, message: '请选择样衣需求时间'}]}
+						rules={[{ required: true, message: '请选择样衣需求时间' }]}
 					>
-						<DatePicker className="w-full" placeholder="请选择"/>
+						<DatePicker className="w-full" placeholder="请选择" />
 					</FormItem>
 				</Col>
 				<Col span={8}>
 					<FormItem label="面料完成时间" name="liningFinishTime">
-						<DatePicker className="w-full" placeholder="请选择"/>
+						<DatePicker className="w-full" placeholder="请选择" />
 					</FormItem>
 				</Col>
 				<Col span={8}>
 					<FormItem label="辅料完成时间" name="rimFinishTime">
-						<DatePicker className="w-full" placeholder="请选择"/>
+						<DatePicker className="w-full" placeholder="请选择" />
 					</FormItem>
 				</Col>
 				<Col span={8}>
 					<FormItem label="样衣评审时间" name="sampleClothesAuditTime">
-						<DatePicker className="w-full" placeholder="请选择"/>
+						<DatePicker className="w-full" placeholder="请选择" />
 					</FormItem>
 				</Col>
 				<Col span={8}>
 					<FormItem label="样衣完成时间" name="sampleClothesFinishTime">
-						<DatePicker className="w-full" placeholder="请选择"/>
+						<DatePicker className="w-full" placeholder="请选择" />
 					</FormItem>
 				</Col>
 			</Row>
@@ -309,42 +309,42 @@ const BasicInfo: React.FC<IStepProps> = ({sampleInfo, proofInfo, onOk}) => {
 			<Row gutter={12}>
 				<Col span={8}>
 					<FormItem label="版师" name="sampleDesignerId">
-						<PlateDivisionSelect placeholder="请选择"/>
+						<PlateDivisionSelect placeholder="请选择" />
 					</FormItem>
 				</Col>
 				<Col span={8}>
 					<FormItem label="样板类型" name="modelType">
-						<Select placeholder="请选择" options={selectDict.typeModel}/>
+						<Select placeholder="请选择" options={selectDict.typeModel} />
 					</FormItem>
 				</Col>
 				<Col span={24}>
 					<FormItem label="重打原因" name="returnReason">
-						<Input.TextArea rows={3} showCount maxLength={500} placeholder="请输入"/>
+						<Input.TextArea rows={3} showCount maxLength={500} placeholder="请输入" />
 					</FormItem>
 				</Col>
 				<Col span={24}>
 					<FormItem label="款式要求" name="styleRequest">
-						<Input.TextArea rows={3} showCount maxLength={500} placeholder="请输入"/>
+						<Input.TextArea rows={3} showCount maxLength={500} placeholder="请输入" />
 					</FormItem>
 				</Col>
 				<Col span={24}>
 					<FormItem label="物料要求" name="sampleRequest">
-						<Input.TextArea rows={3} showCount maxLength={500} placeholder="请输入"/>
+						<Input.TextArea rows={3} showCount maxLength={500} placeholder="请输入" />
 					</FormItem>
 				</Col>
 				<Col span={24}>
 					<FormItem label="制板要求" name="modelRequest">
-						<Input.TextArea rows={3} showCount maxLength={500} placeholder="请输入"/>
+						<Input.TextArea rows={3} showCount maxLength={500} placeholder="请输入" />
 					</FormItem>
 				</Col>
 				<Col span={24}>
 					<FormItem label="工艺要求" name="techniqueRequest">
-						<Input.TextArea rows={3} showCount maxLength={500} placeholder="请输入"/>
+						<Input.TextArea rows={3} showCount maxLength={500} placeholder="请输入" />
 					</FormItem>
 				</Col>
 				<Col span={24}>
 					<FormItem label="备注" name="remark">
-						<Input.TextArea rows={3} showCount maxLength={500} placeholder="请输入"/>
+						<Input.TextArea rows={3} showCount maxLength={500} placeholder="请输入" />
 					</FormItem>
 				</Col>
 
@@ -363,21 +363,21 @@ const BasicInfo: React.FC<IStepProps> = ({sampleInfo, proofInfo, onOk}) => {
 							},
 						]}
 					>
-						{(fields, {add, remove}, {errors}) => (
+						{(fields, { add, remove }, { errors }) => (
 							<FormItem label="SKC" shouldUpdate required>
 								<Table
 									key={fields.length}
 									rowKey="name"
 									editable
 									className={ss.editTable}
-									columns={getColumns({fields, remove})}
+									columns={getColumns({ fields, remove })}
 									dataSource={fields}
-									scroll={{x: 989}}
+									scroll={{ x: 989 }}
 									footer={() => (
 										<Button
 											block
 											type="dashed"
-											icon={<PlusOutlined/>}
+											icon={<PlusOutlined />}
 											onClick={() => {
 												add({
 													uuid: uuid(),
@@ -393,7 +393,7 @@ const BasicInfo: React.FC<IStepProps> = ({sampleInfo, proofInfo, onOk}) => {
 									)}
 								/>
 
-								<Form.ErrorList errors={errors}/>
+								<Form.ErrorList errors={errors} />
 							</FormItem>
 						)}
 					</FormList>

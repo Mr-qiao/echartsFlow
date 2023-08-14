@@ -4,7 +4,6 @@
 
 import { request } from '@/utils/request';
 
-
 /**
  * 打样列表
  * @param body 
@@ -43,12 +42,20 @@ export const sampledDeliverPoor = (body: any) => {
     return request.post(`/item/item/factory/sample/demand/delivery`, body);
 }
 
-// 列表
+/**
+ * 列表
+ * @param body 
+ * @returns 
+ */
 export const sampleList = (body: any) => {
     return request.post(`/item/item/platform/sample/list`, body);
 }
 
-// 详情
+/**
+ * 详情
+ * @param body 
+ * @returns 
+ */
 export const sampleDetail = (body: { itemId: number }) => {
     return request.post(`/designweb/designer/sample/clothes/detail`, body);
 }

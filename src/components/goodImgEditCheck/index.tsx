@@ -1,11 +1,11 @@
-import {Col, Row, Image, Descriptions} from 'antd';
+import { Col, Row, Image, Descriptions } from '@xlion/component';
 import './index.less';
 import dayjs from "dayjs";
 
-const {Item} = Descriptions;
+const { Item } = Descriptions;
 
 function GoodImgEditCheck(props) {
-	const {data = {}} = props
+	const { data = {} } = props
 	const arr = data?.imgUrlList?.map((item: any) => ({
 		src: item
 	})) || []
@@ -24,8 +24,8 @@ function GoodImgEditCheck(props) {
 					</Col>
 					<Row className={'bus-img'}>
 						{imgF.map((item: any, index) => (
-							<Col key={index} style={{marginLeft: index === 0 ? 0 : 10}}>
-								<Image width={60} height={60} src={item.src}/>
+							<Col key={index} style={{ marginLeft: index === 0 ? 0 : 10 }}>
+								<Image width={60} height={60} src={item.src} />
 							</Col>
 						))}
 					</Row>

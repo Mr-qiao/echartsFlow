@@ -1,20 +1,20 @@
 import BottomButton from '@/components/bottomButton';
 import { quotationsById, quotationsUpdateById } from '@/services/quotations';
-import { ProCard } from '@ant-design/pro-components';
 import { useParams } from '@umijs/max';
+
 import {
-  Col,
-  Descriptions,
+  Col, Card, Table, Descriptions,
   Image,
   InputNumber,
   message,
-  Row,
-  Table,
-} from 'antd';
+  Row
+} from '@xlion/component'
 import dayjs from 'dayjs';
 import _ from 'lodash-es';
 import { useEffect, useState } from 'react';
 import { history } from 'umi';
+
+import './index.less'
 
 const DescriptionsItem = Descriptions.Item;
 
@@ -51,6 +51,7 @@ function EditBoom() {
           render: (_: any, recode: any, index: number) => {
             return (
               <InputNumber
+                bordered
                 min={0}
                 value={recode.productionCost}
                 onChange={(e) => {
@@ -70,6 +71,7 @@ function EditBoom() {
           render: (_: any, recode: any, index: number) => {
             return (
               <InputNumber
+                bordered
                 min={0}
                 value={recode.brandPremium}
                 onChange={(e) => {
@@ -89,6 +91,7 @@ function EditBoom() {
           render: (_: any, recode: any, index: number) => {
             return (
               <InputNumber
+                bordered
                 min={0}
                 value={recode.ipExpense}
                 onChange={(e) => {
@@ -108,6 +111,7 @@ function EditBoom() {
           render: (_: any, recode: any, index: number) => {
             return (
               <InputNumber
+                bordered
                 min={0}
                 value={recode.packagingMaterial}
                 onChange={(e) => {
@@ -127,6 +131,7 @@ function EditBoom() {
           render: (_: any, recode: any, index: number) => {
             return (
               <InputNumber
+                bordered
                 min={0}
                 value={recode.expressCharge}
                 onChange={(e) => {
@@ -170,7 +175,7 @@ function EditBoom() {
   }, []);
   return (
     <div>
-      <ProCard>
+      <Card className="card_boom">
         <Row>
           <Image.PreviewGroup>
             <Col>
@@ -232,7 +237,7 @@ function EditBoom() {
           dataSource={dataSource}
           pagination={false}
         />
-      </ProCard>
+      </Card>
       <BottomButton
         okText={'提交报价'}
         onOk={() => {

@@ -1,6 +1,5 @@
-import { Cascader } from 'antd';
+import { Cascader } from '@xlion/component';
 
-import type { DefaultOptionType } from 'antd/es/cascader';
 
 function SelectTree(props: any) {
   const { options = [], onChange, value, ...prop } = props;
@@ -17,7 +16,7 @@ function SelectTree(props: any) {
         {...prop}
         changeOnSelect
         // value={value}
-        showSearch={(inputValue: string, path: DefaultOptionType[]) => {
+        showSearch={(inputValue: string, path: any[]) => {
           return path.some(
             (option) =>
               option.name.toLowerCase().indexOf(inputValue.toLowerCase()) > -1,

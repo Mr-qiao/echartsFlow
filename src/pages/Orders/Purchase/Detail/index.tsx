@@ -15,7 +15,7 @@ import {
   Modal,
   Space,
   Table,
-} from 'antd';
+} from '@xlion/component';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { history } from 'umi';
@@ -147,7 +147,7 @@ function PurchaseDetail() {
     purchaseUpdateStatus(arg0, {}).then((res: any) => {
       if (res.success) {
         message.success(`${action === 3 ? '确认' : '驳回'}成功`);
-        history.push('/order/purchase');
+        history.push('/orders/purchase');
       } else {
         message.error(`${action === 3 ? '确认' : '驳回'}失败,请稍后再试`);
       }

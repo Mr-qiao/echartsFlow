@@ -3,17 +3,9 @@ import GoodImgEditCheck from '@/components/goodImgEditCheck';
 import RepeatTable from '@/pages/Quotations/components/repeatTable';
 import { quotationsById, quotationsUpdateById } from '@/services/quotations';
 import { useParams } from '@@/exports';
-import { ProCard } from '@ant-design/pro-components';
-import {
-  Descriptions,
-  Image,
-  Input,
-  InputNumber,
-  message,
-  Select,
-  Table,
-  Tabs,
-} from 'antd';
+
+import { Image, Input, InputNumber, message, Select, Table, Tabs, Card, Descriptions } from '@xlion/component'
+
 import _ from 'lodash-es';
 import { useEffect, useState } from 'react';
 import { history } from 'umi';
@@ -143,6 +135,7 @@ function QuotationEdit() {
       render: (_: any, recode: any, index: number) => {
         return (
           <InputNumber
+            bordered
             precision={2}
             value={recode.dj || 0}
             min={0}
@@ -165,6 +158,7 @@ function QuotationEdit() {
       render: (_: any, recode: any, index: number) => {
         return (
           <InputNumber
+            bordered
             min={0}
             value={recode.skuyl || 0}
             onChange={(e) => {
@@ -186,6 +180,7 @@ function QuotationEdit() {
       render: (_: any, recode: any, index: number) => {
         return (
           <InputNumber
+            bordered
             min={0}
             max={100}
             addonAfter={'%'}
@@ -228,6 +223,7 @@ function QuotationEdit() {
       render: (_: any, recode: any, index: number) => {
         return (
           <InputNumber
+            bordered
             min={0}
             precision={2}
             value={recode.gydj}
@@ -252,6 +248,7 @@ function QuotationEdit() {
         return (
           <Input
             value={recode.bjxm}
+            bordered
             onChange={(e) => {
               const NewArr = [...dataSourceQt];
               NewArr[index].bjxm = e.target.value;
@@ -268,6 +265,7 @@ function QuotationEdit() {
       render: (i: any, recode: any, index: number) => {
         return (
           <Select
+            bordered
             style={{ width: 200 }}
             disabled={recode?.dis}
             value={recode.bjsxgg}
@@ -301,6 +299,7 @@ function QuotationEdit() {
         return (
           <Input
             value={recode.yt}
+            bordered
             onChange={(e) => {
               const NewArr = [...dataSourceQt];
               NewArr[index].yt = e.target.value;
@@ -318,6 +317,7 @@ function QuotationEdit() {
       render: (_: any, recode: any, index: number) => {
         return (
           <InputNumber
+            bordered
             precision={2}
             value={recode.jsdj}
             onChange={(e) => {
@@ -338,6 +338,7 @@ function QuotationEdit() {
       render: (_: any, recode: any, index: number) => {
         return (
           <InputNumber
+            bordered
             value={recode.sysl}
             min={0}
             onChange={(e) => {
@@ -567,11 +568,11 @@ function QuotationEdit() {
   };
   return (
     <div className={'edit-quo'}>
-      <ProCard>
+      <Card>
         <GoodImgEditCheck data={data} />
-      </ProCard>
-      <ProCard title={'图样副图'}>
-        <Descriptions column={1}>
+      </Card>
+      <Card title={'图样副图'}>
+        <Descriptions column={1} contentStyle={{ display: 'block' }}>
           <Descriptions.Item label={'图片附件'}>
             <Image.PreviewGroup>
               {arr.map((item: any, index: any) => {
@@ -616,51 +617,57 @@ function QuotationEdit() {
             })}
           </Descriptions.Item>
           <Descriptions.Item label={'物料报价'}>
-            <h1 style={{ margin: 0 }}>物料报价:{wlbjz}</h1>
-            <Tabs
-              defaultActiveKey={tabKey}
-              items={dataSourcePp.map((item: any, index: any) => {
-                return {
-                  key: index,
-                  label: item.properties,
-                  children: tabKey === index && (
-                    <div>
-                      <Table
-                        size={'small'}
-                        columns={columnsWl}
-                        dataSource={dataSourcePp[tabKey].materialDetailList}
-                        scroll={{ x: 900 }}
-                        pagination={false}
-                      />
-                    </div>
-                  ),
-                };
-              })}
-              onChange={(key: string) => {
-                setTabKey(key);
-              }}
-            />
+            <div>
+              <h1 style={{ margin: 0 }}>物料报价:{wlbjz}</h1>
+              <Tabs
+                defaultActiveKey={tabKey}
+                items={dataSourcePp.map((item: any, index: any) => {
+                  return {
+                    key: index,
+                    label: item.properties,
+                    children: tabKey === index && (
+                      <div>
+                        <Table
+                          size={'small'}
+                          columns={columnsWl}
+                          dataSource={dataSourcePp[tabKey].materialDetailList}
+                          scroll={{ x: 900 }}
+                          pagination={false}
+                        />
+                      </div>
+                    ),
+                  };
+                })}
+                onChange={(key: string) => {
+                  setTabKey(key);
+                }}
+              />
+            </div>
           </Descriptions.Item>
-          <Descriptions.Item label={'工艺报价'}>
-            <h1 style={{ margin: 0 }}>工艺报价:{gybjz}</h1>
-            <div>裁剪要求：{data?.craftMap?.clippingRequest}</div>
-            <div>后道工序：{data?.craftMap?.followingProcess}</div>
-            <div>工艺指示：{data?.craftMap?.acceptanceStandard}</div>
-            <Table
-              size={'small'}
-              columns={columnsGy}
-              dataSource={dataSourceGy}
-              scroll={{ x: 900 }}
-              pagination={false}
-            />
+          <Descriptions.Item label={'工艺报价'} ca>
+            <div>
+              <h1 style={{ margin: 0 }}>工艺报价:{gybjz}</h1>
+              <div>裁剪要求：{data?.craftMap?.clippingRequest}</div>
+              <div>后道工序：{data?.craftMap?.followingProcess}</div>
+              <div>工艺指示：{data?.craftMap?.acceptanceStandard}</div>
+              <Table
+                size={'small'}
+                columns={columnsGy}
+                dataSource={dataSourceGy}
+                scroll={{ x: 900 }}
+                pagination={false}
+              />
+            </div>
           </Descriptions.Item>
           <Descriptions.Item label={'其他报价'}>
-            <h1 style={{ margin: 0 }}>其他报价:{qitaPirce}</h1>
-            <RepeatTable
-              columns={columnsQt}
-              dataSource={dataSourceQt}
-              setData={setDataSourceQt}
-            />
+            <div>
+              <h1 style={{ margin: 0 }}>其他报价:{qitaPirce}</h1>
+              <RepeatTable
+                columns={columnsQt}
+                dataSource={dataSourceQt}
+                setData={setDataSourceQt}
+              />
+            </div>
           </Descriptions.Item>
           <Descriptions.Item label={'汇总报价'}>
             <Table
@@ -672,7 +679,7 @@ function QuotationEdit() {
             />
           </Descriptions.Item>
         </Descriptions>
-      </ProCard>
+      </Card>
       <BottomButton onOk={submit} />
     </div>
   );

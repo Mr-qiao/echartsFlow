@@ -2,7 +2,6 @@
  * @file 尺寸标准
  */
 import { PlusOutlined } from '@ant-design/icons';
-import { Table } from '@xlion/component';
 import { math, uuid } from '@xlion/utils';
 import {
   Button,
@@ -15,7 +14,8 @@ import {
   Row,
   TableProps,
   Typography,
-} from 'antd';
+  Table
+} from '@xlion/component';
 import { pick } from 'lodash-es';
 import moment from 'moment';
 import { useEffect } from 'react';

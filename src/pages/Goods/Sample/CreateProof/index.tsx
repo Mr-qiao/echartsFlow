@@ -3,7 +3,7 @@
  */
 import { useNavigate, useSearchParams } from '@umijs/max';
 import { useMount } from 'ahooks';
-import { Button, message, Steps } from 'antd';
+import { Button, message, Steps } from '@xlion/component';
 import { pick } from 'lodash-es';
 import React, { useState } from 'react';
 

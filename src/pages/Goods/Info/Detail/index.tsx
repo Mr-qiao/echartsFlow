@@ -1,11 +1,9 @@
 import './index.less';
 
 import { math } from '@xlion/utils';
-import { Col, Row, Spin, Table, Space } from 'antd';
-import { Descriptions, GlobalModal, Typography } from '@xlion/component';
+import { Descriptions, GlobalModal, Typography, Table, Space, Col, Row, Image } from '@xlion/component';
 import React, { useEffect, useState } from 'react';
 
-import Image from '@/components/Image';
 import { formatPriceRange, formatRatioRange, transformFen2Yuan } from '@/utils';
 
 import ImagesGroup from './components/ImagesGroup';
@@ -143,27 +141,6 @@ const GoodsInfo = React.forwardRef(({ id, isSupplier = false }: any, ref) => {
     <div className="goods__detail-wrap">
       <Row className="u-w100">
         <Col>
-          {/* <Image
-            width={200}
-            height={200}
-            src={detail?.mainImg}
-            style={{ borderRadius: 10 }}
-          />
-          <div className="u-flex u-mt10">
-            {detail.images
-              ?.filter((_item: any, i: number) => i !== 0 && i <= 3)
-              ?.map((item: any, i: number) => {
-                return (
-                  <Image
-                    key={i}
-                    width={60}
-                    height={60}
-                    src={item}
-                    style={{ borderRadius: 10 }}
-                  />
-                );
-              })}
-          </div> */}
           <ImagesGroup images={detail?.images?.concat([])} />
         </Col>
         <Col span={18}>
@@ -205,7 +182,6 @@ const GoodsInfo = React.forwardRef(({ id, isSupplier = false }: any, ref) => {
               {detail.outsideItemCode || '-'}
             </Descriptions.Item>
             {renderBaseProps()}
-
           </Descriptions>
         </Col>
         {detail.contents && detail?.contents.length > 0 && (

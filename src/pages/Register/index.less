@@ -20,7 +20,7 @@
   }
 
   .ant-form-item .ant-form-item-explain {
-    font-size: 12px
+    font-size: 12px;
   }
 }
 
@@ -67,6 +67,13 @@
   width: 60%;
   margin: 0 auto;
   margin-bottom: 50px;
+  :global {
+    .ui-steps-item-process > .ui-steps-item-container > .ui-steps-item-icon,
+    .ui-steps-item-finish .ui-steps-item-icon {
+      background-color: #3b66fd;
+      border-color: #3b66fd;
+    }
+  }
 }
 
 .btnFlex {

@@ -11,17 +11,27 @@ import {
 import { setCookie } from '@/utils/utils';
 import { Link, useParams } from '@umijs/max';
 import {
+  // Alert,
+  // Button,
+  // Checkbox,
+  // Col,
+  // Form,
+  // Input,
+  // message,
+  Result,
+  // Row,
+  // Steps,
+} from 'antd';
+import {
   Alert,
   Button,
   Checkbox,
   Col,
   Form,
   Input,
-  message,
-  Result,
-  Row,
+  message, Row,
   Steps,
-} from 'antd';
+} from '@xlion/component'
 import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
 import { history } from 'umi';
@@ -236,6 +246,7 @@ const Launch: any = () => {
       return Promise.resolve();
     }
   };
+
   return (
     <div style={bgStyle}>
       <div className={styles.icon}>
@@ -278,7 +289,7 @@ const Launch: any = () => {
             <Form.Item
               label={'公司全称'}
               name={'companyName'}
-              help="同一个企业仅可入驻 1 次，请填写完整公司名称，以避免重复注册"
+              extra="同一个企业仅可入驻 1 次，请填写完整公司名称，以避免重复注册"
               rules={[
                 {
                   required: true,
@@ -289,12 +300,13 @@ const Launch: any = () => {
               <Input
                 maxLength={50}
                 placeholder={'请输入营业执照上的公司全称'}
+                bordered
               />
             </Form.Item>
             <Form.Item
               label="登录名"
               name="loginName"
-              help={'支持英文（区分大小写）、数字或者下划线，最长 16 位'}
+              extra={'支持英文（区分大小写）、数字或者下划线，最长 16 位'}
               rules={[
                 {
                   required: true,
@@ -311,6 +323,7 @@ const Launch: any = () => {
                 placeholder="请输入登录账号"
                 autoComplete="new-password"
                 maxLength={16}
+                bordered
               />
             </Form.Item>
             <Form.Item
@@ -327,7 +340,7 @@ const Launch: any = () => {
                 },
               ]}
             >
-              <Input placeholder="推荐使用企业邮箱" />
+              <Input placeholder="推荐使用企业邮箱" bordered />
             </Form.Item>
             <Form.Item
               label="验证码"
@@ -342,7 +355,7 @@ const Launch: any = () => {
             >
               <Row>
                 <Col span={12}>
-                  <Input placeholder="请输入6位邮箱验证码" maxLength={6} />
+                  <Input placeholder="请输入6位邮箱验证码" maxLength={6} bordered />
                 </Col>
                 <Col span={8} offset={2}>
                   <Button onClick={sendCaptcha} disabled={isSend}>
@@ -368,6 +381,7 @@ const Launch: any = () => {
                 placeholder="8-16位字母与数字组合，需同时包含大写、小写字母与数字"
                 autoComplete="new-password"
                 maxLength={20}
+                bordered
               />
             </Form.Item>
             <Form.Item
@@ -385,6 +399,7 @@ const Launch: any = () => {
                 type="password"
                 placeholder="8-16位字母与数字组合，需同时包含大写、小写字母与数字"
                 maxLength={20}
+                bordered
               />
             </Form.Item>
             <Form.Item
@@ -468,7 +483,7 @@ const Launch: any = () => {
               label={'公司全称'}
               name={'companyName'}
               validateTrigger="onBlur"
-              help="同一个企业仅可入驻 1 次，请填写完整公司名称，以避免重复注册"
+              extra="同一个企业仅可入驻 1 次，请填写完整公司名称，以避免重复注册"
               rules={[
                 {
                   required: true,
@@ -482,6 +497,7 @@ const Launch: any = () => {
               <Input
                 maxLength={50}
                 placeholder={'请输入营业执照上的公司全称'}
+                bordered
               />
             </Form.Item>
             <Form.Item
@@ -507,7 +523,7 @@ const Launch: any = () => {
                 },
               ]}
             >
-              <Input placeholder="请输入统一社会信用代码" maxLength={18} />
+              <Input placeholder="请输入统一社会信用代码" maxLength={18} bordered />
             </Form.Item>
             <Form.Item
               label={'营业执照'}
@@ -527,7 +543,7 @@ const Launch: any = () => {
                 },
               ]}
             >
-              <Input maxLength={15} placeholder="请输入联系人名称" />
+              <Input maxLength={15} placeholder="请输入联系人名称" bordered />
             </Form.Item>
             <Form.Item
               label={'手机号码'}
@@ -540,7 +556,7 @@ const Launch: any = () => {
                 },
               ]}
             >
-              <Input maxLength={11} placeholder="请输入手机号码" />
+              <Input maxLength={11} placeholder="请输入手机号码" bordered />
             </Form.Item>
             <Form.Item
               label="验证码"
@@ -555,7 +571,7 @@ const Launch: any = () => {
             >
               <Row>
                 <Col span={12}>
-                  <Input placeholder="请输入6位验证码" maxLength={6} />
+                  <Input placeholder="请输入6位验证码" maxLength={6} bordered />
                 </Col>
                 <Col span={8} offset={2}>
                   <Button onClick={sendCaptchaTwo} disabled={isSendTwo}>
@@ -575,10 +591,10 @@ const Launch: any = () => {
                 },
               ]}
             >
-              <Input placeholder="请输入微信号" />
+              <Input placeholder="请输入微信号" bordered />
             </Form.Item>
             <Form.Item label={'第三方店铺链接（可选）'} name={'otherShopLink'}>
-              <Input placeholder={'填写店铺链接有助于快速通过审核'} />
+              <Input placeholder={'填写店铺链接有助于快速通过审核'} bordered />
             </Form.Item>
             <Row>
               <Col offset={6}>
@@ -604,6 +620,7 @@ const Launch: any = () => {
             title="提交审核成功"
             subTitle="企业认证信息已提交，工作人员将在 1-2 个工作日完成资料审核"
             extra={[
+              // eslint-disable-next-line react/jsx-key
               <div
                 className={styles.btnFlex}
                 style={{ justifyContent: 'center' }}
