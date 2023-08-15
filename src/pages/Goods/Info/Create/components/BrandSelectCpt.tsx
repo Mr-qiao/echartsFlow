@@ -1,4 +1,4 @@
-import { Divider, Select } from 'antd';
+import { Divider, Select } from '@xlion/component';
 import React, { useEffect, useRef, useState } from 'react';
 
 import { debounce } from '@/utils';

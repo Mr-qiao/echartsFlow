@@ -17,7 +17,7 @@ export const SearchColumns = () => {
       name: 'brandIds',
       type: 'select',
       renderFormItem: () => (
-        <BrandSelectCpt mode="multiple" style={{ width: '100%' }} />
+        <BrandSelectCpt mode="multiple" showArrow style={{ width: '100%' }} />
       )
     },
     {
