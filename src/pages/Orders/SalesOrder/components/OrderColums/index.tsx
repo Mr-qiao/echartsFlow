@@ -1,7 +1,7 @@
 import GoodsTableCol from '@/components/goodsTableCol';
 import Images from '@/components/Image';
 import { winOpen } from '@/utils/index';
-import { Table } from 'antd';
+import { Table } from '@xlion/component';
 import React from 'react';
 
 import styless from './index.less';

@@ -1,7 +1,8 @@
 /**
  * 商品信息
  */
-import { Col, Image, Row, Typography } from 'antd';
+import { Col, Row, Typography } from '@xlion/component';
+import { Image } from '@xlion/component'
 import React from 'react';
 import './index.less';
 
@@ -28,14 +29,14 @@ const GoodsTableCol: React.FC<propsType> = ({
         <Image.PreviewGroup>
           <Col className={'good-table-list-img'}>
             <Col>
-              <Image width={80} height={80} src={mainImg} />
+              <Image width={80} height={80} src={mainImg} preview={{ src: mainImg }} />
               {isDeleted === 1 && <div className={'imageTitle'}>已作废</div>}
             </Col>
             {isFooterImg && subplotImg.length > 0 && (
               <Row className={'bus-img'}>
                 {subplotImg.map((item: any, index: any) => (
                   <Col key={index} style={{ marginLeft: index === 0 ? 0 : 7 }}>
-                    <Image width={22} height={22} src={item.src} />
+                    <Image width={22} height={22} src={item.src} preview={{ src: item.src }} />
                   </Col>
                 ))}
               </Row>

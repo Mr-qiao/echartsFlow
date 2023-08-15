@@ -1,7 +1,7 @@
 ﻿import config from '@/config';
 import { navigateToLogin } from '@/utils';
 import type { RequestConfig } from '@umijs/max';
-import { message, notification } from 'antd';
+import { message, notification } from '@xlion/component';
 import Cookies from 'js-cookie';
 
 import type { KunlunProps, KunlunResponseProps } from '@xc/kunlun-request';
@@ -50,7 +50,7 @@ export const errorConfig: RequestConfig = {
   // },
   // 错误处理： umi@3 的错误处理方案。
   errorConfig: {
-    errorThrower: (res) => {},
+    errorThrower: (res) => { },
     // 错误接收及处理
     errorHandler: (error: any, opts: any) => {
       if (opts?.skipErrorHandler) throw error;
@@ -123,13 +123,23 @@ export const errorConfig: RequestConfig = {
         return false;
       }
       const { data } = response as unknown as KunlunResponseProps;
-      if (data.code === 401) {
-        message.error(data.message);
+      // if (data.code === 401) {
+      //   message.error(data.message);
+      // }
+
+      // if (data.code === 1000010001 || data.code === 1000010031) {
+      //   navigateToLogin();
+      // }
+      if ([1000010001, 1000010031].includes(data.code) || ['1000010001', '1000010031'].includes(data.responseCode)) {
+        navigateToLogin();
+        return Promise.reject(data)
       }
 
-      if (data.code === 1000010001 || data.code === 1000010031) {
-        navigateToLogin();
+      if (!('code' in data ? 200 === data.code : data.status)) {
+        message.error(data.message || data.exception)
+        return Promise.reject(data)
       }
+
       return response;
     },
   ],
