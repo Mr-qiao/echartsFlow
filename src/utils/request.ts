@@ -63,7 +63,6 @@ const codeMessage: any = {
 };
 
 export const httpRequest = new WebRequest({
-  withCredentials: true,
   interceptors: {
     requestInterceptor(config) {
       const token =

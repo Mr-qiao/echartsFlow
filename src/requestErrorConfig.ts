@@ -43,14 +43,13 @@ const codeMessage: any = {
 export const errorConfig: RequestConfig = {
   baseURL: ajaxBaseUrl,
   timeout: 10000,
-  withCredentials: true,
   // headers: {
   // 	// 'app-code': 'SCM',
   // 	token: localStorage.getItem('token') || '',
   // },
   // 错误处理： umi@3 的错误处理方案。
   errorConfig: {
-    errorThrower: (res) => { },
+    errorThrower: (res) => {},
     // 错误接收及处理
     errorHandler: (error: any, opts: any) => {
       if (opts?.skipErrorHandler) throw error;
@@ -130,13 +129,18 @@ export const errorConfig: RequestConfig = {
       // if (data.code === 1000010001 || data.code === 1000010031) {
       //   navigateToLogin();
       // }
-      if ([1000010001, 1000010031].includes(data.code) || ['1000010001', '1000010031'].includes(data.responseCode)) {
+      if (
+        [1000010001, 1000010031].includes(data.code) ||
+        ['1000010001', '1000010031'].includes(data.responseCode)
+      ) {
         navigateToLogin();
       }
 
       // data.login 初始化会调用https://api.dev.xinc818.net/iam/gt/register?platForm=IAM?
-      if (!('code' in data ? 200 === data.code : (data.status || response.status))) {
-        message.error(data.message || data.exception)
+      if (
+        !('code' in data ? 200 === data.code : data.status || response.status)
+      ) {
+        message.error(data.message || data.exception);
       }
 
       return response;
