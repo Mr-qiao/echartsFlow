@@ -2,7 +2,7 @@
  * 样衣
  */
 
-import { request } from '@/utils/request';
+import { request, httpRequest } from '@/utils/request';
 
 /**
  * 打样列表
@@ -10,7 +10,7 @@ import { request } from '@/utils/request';
  * @returns 
  */
 export const sampleQueryList = (body: any) => {
-    return request.post(`/item/item/factory/sample/demand/list`, body);
+    return httpRequest.post(`/item/item/factory/sample/demand/list`, body);
 }
 
 /**
@@ -30,7 +30,7 @@ export const searchForSystem = (body: any) => {
  * @param body 
  */
 export const sampleStartPoor = (body: any) => {
-    request.post(`/item/item/factory/sample/demand/mark`, body);
+    return httpRequest.post(`/item/item/factory/sample/demand/mark`, body);
 }
 
 /**
@@ -39,7 +39,7 @@ export const sampleStartPoor = (body: any) => {
  * @returns 
  */
 export const sampledDeliverPoor = (body: any) => {
-    return request.post(`/item/item/factory/sample/demand/delivery`, body);
+    return httpRequest.post(`/item/item/factory/sample/demand/delivery`, body);
 }
 
 /**
@@ -48,7 +48,7 @@ export const sampledDeliverPoor = (body: any) => {
  * @returns 
  */
 export const sampleList = (body: any) => {
-    return request.post(`/item/item/platform/sample/list`, body);
+    return httpRequest.post(`/item/item/platform/sample/list`, body);
 }
 
 /**
@@ -57,5 +57,5 @@ export const sampleList = (body: any) => {
  * @returns 
  */
 export const sampleDetail = (body: { itemId: number }) => {
-    return request.post(`/designweb/designer/sample/clothes/detail`, body);
+    return httpRequest.post(`/designweb/designer/sample/clothes/detail`, body);
 }

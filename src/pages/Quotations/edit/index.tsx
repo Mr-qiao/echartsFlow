@@ -455,6 +455,7 @@ function QuotationEdit() {
     entry.itemSkuList = entry?.goodsInfoMap?.goodsInfoList;
     setGybjz(entry.craftPrice);
     setWlbjz(entry.materialPrice);
+
     setDataSourcePp(wl || []);
     setDataSourceGy(gy);
     setData(entry);
@@ -566,6 +567,7 @@ function QuotationEdit() {
       }
     });
   };
+
   return (
     <div className={'edit-quo'}>
       <Card>

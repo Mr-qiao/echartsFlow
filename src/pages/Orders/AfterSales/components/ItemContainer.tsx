@@ -1,4 +1,4 @@
-import { Descriptions, DescriptionsProps } from 'antd';
+import { Descriptions, DescriptionsProps } from '@xlion/component';
 
 interface IProps extends DescriptionsProps {
   options: any;

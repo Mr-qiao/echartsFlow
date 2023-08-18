@@ -1,25 +1,29 @@
-import { Space } from '@xlion/component';
+import { Space, message } from '@xlion/component';
 import SelectTree from '@/components/selectTree';
 import { useCategory } from '@/hooks';
 import SearchSelect from '@/components/SearchSelect';
 import {
   searchForSystem,
+  sampledDeliverPoor,
+  sampleStartPoor,
 } from '@/services/goods/sample';
 import dayjs from 'dayjs';
 import { transformFen2Yuan } from '@/utils';
 import { Image } from '@xlion/component';
-
+import { DEFAULT_IMG_SRC } from '@/constants'
+import { XTableColumns, XTableSearchItem } from '@xlion/component/dist/x-table/interface';
+import { DataType } from './types'
 import { history } from 'umi';
 
-type IProps = {
-  onStartPoor: (v) => void;
-  onDeliverPoor: (v) => void;
-};
 
-// 搜索列表
-export const SearchColumns = () => {
+
+
+export default function useColumns({ actionRef, setbyId, setOpen }): [XTableSearchItem[], XTableColumns<DataType>] {
+
   const [category] = useCategory();
-  const columns: any[] = [
+
+  // 搜索配置
+  const searchColumns: XTableSearchItem[] = [
     {
       label: '样衣名称',
       name: 'refTitle',
@@ -72,24 +76,19 @@ export const SearchColumns = () => {
       )
     },
   ]
-  return columns;
-}
-
-// 列表
-export const TableColumns = (props: IProps) => {
-  const { onStartPoor, onDeliverPoor } = props;
-  const columns: any[] = [
+  //   表格列配置
+  const tableColumns: XTableColumns<DataType> = [
     {
       title: '样衣图片',
       dataIndex: 'imgs',
-      search: false,
       width: 180,
       render: (_: any, recode: any) => {
         return (
           <Image
             width={60}
             height={60}
-            src={recode?.refImages !== null ? recode?.refImages[0] : ''}
+            preview={recode?.refImages !== null ? recode?.refImages[0] : DEFAULT_IMG_SRC}
+            src={recode?.refImages !== null ? recode?.refImages[0] : DEFAULT_IMG_SRC}
           />
         );
       },
@@ -148,7 +147,6 @@ export const TableColumns = (props: IProps) => {
     },
     {
       title: '需求状态',
-      search: false,
       dataIndex: 'status',
       render: (val: any, recode: any) => {
         return recode.status
@@ -166,7 +164,6 @@ export const TableColumns = (props: IProps) => {
     },
     {
       title: '操作',
-      search: false,
       align: 'center',
       fixed: 'right',
       width: 200,
@@ -183,8 +180,25 @@ export const TableColumns = (props: IProps) => {
             </a>
             {[0].includes(status) || !status ? (
               <a
-                onClick={() => {
-                  onStartPoor?.(recode)
+                onClick={async () => {
+                  try {
+                    //   onStartPoor?.(recode)
+                    setbyId(recode)
+                    // setOpen(true)
+                    const { success }: any = await sampleStartPoor({ status: '1', itemId: recode?.itemId });
+                    if (success) {
+                      message.success({
+                        content: '打样成功',
+                        duration: 2,
+                        onClose: () => {
+                          actionRef.current.reload();
+                        },
+                      });
+                      setOpen(false);
+                    }
+                  } catch (error) {
+
+                  }
                 }}
               >
                 开始打样
@@ -192,8 +206,22 @@ export const TableColumns = (props: IProps) => {
             ) : null}
             {[1].includes(status) ? (
               <a
-                onClick={() => {
-                  onDeliverPoor?.(recode)
+                onClick={async () => {
+                  try {
+                    //   onDeliverPoor?.(recode)
+                    const { success }: any = await sampledDeliverPoor({ status: '2', itemId: recode?.itemId });
+                    if (success) {
+                      message.success({
+                        content: '交付完成',
+                        duration: 2,
+                        onClose: () => {
+                          actionRef.current.reload();
+                        },
+                      });
+                    }
+                  } catch (error) {
+
+                  }
                 }}
               >
                 交付样衣
@@ -205,6 +233,8 @@ export const TableColumns = (props: IProps) => {
     },
   ];
 
-  return columns;
-};
 
+  return [
+    searchColumns, tableColumns
+  ]
+}

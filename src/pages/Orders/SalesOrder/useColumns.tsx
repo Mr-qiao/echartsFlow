@@ -1,4 +1,3 @@
-
 import dayjs from 'dayjs';
 import { PLATFORM_ORDERSTATUS, ORDER_STATUS_1_TYPE, PlATFORM_ORDER_TYPE, ORDER_TIME_TYPE } from './constants'
 import BatchInput from '@/components/batchInput';
@@ -6,13 +5,17 @@ import GoodsTableCol from '@/components/goodsTableCol';
 import { DAYFORMAT_MINUTE, DEFAULT_IMG_SRC } from '@/constants';
 import { Image, Popover } from '@xlion/component';
 import OrderColumns from './components/OrderColums';
+import { List } from './types'
+import { XTableColumns, XTableSearchItem } from '@xlion/component/dist/x-table/interface';
+
 import styles from './index.less';
 
 
-// 搜索列表
-export const SearchColumns = ({ platformType, setPlatformType, formRef }) => {
+export default function useColumns({ platformType, setPlatformType, formRef }): [XTableSearchItem[], XTableColumns<List>] {
 
-  const columns: any[] = [
+
+  // 搜索配置i
+  const searchColumns: XTableSearchItem[] = [
     {
       selectLabel: {
         valueEnum: PLATFORM_ORDERSTATUS,
@@ -78,12 +81,9 @@ export const SearchColumns = ({ platformType, setPlatformType, formRef }) => {
       }
     },
   ]
-  return columns;
-}
 
-// 列表
-export const TableColumns = () => {
-  const columns: any[] = [
+  //  列表配置
+  const tableColumns: XTableColumns<List> = [
     {
       title: '序号',
       dataIndex: 'index',
@@ -91,7 +91,6 @@ export const TableColumns = () => {
     },
     {
       title: '系统信息',
-      search: false,
       dataIndex: 'systemInfoVO',
       render: (record: any) => {
         return (
@@ -122,7 +121,6 @@ export const TableColumns = () => {
     },
     {
       title: '平台信息',
-      search: false,
       dataIndex: 'platformInfoVO',
       render: (record: any) => {
         return (
@@ -150,7 +148,6 @@ export const TableColumns = () => {
     {
       title: '商品信息',
       dataIndex: 'itemInfoVOList',
-      search: false,
       width: 300,
       render: (record: any, col: any) => {
         return (
@@ -219,7 +216,6 @@ export const TableColumns = () => {
     {
       title: '日期信息',
       dataIndex: 'dateInfoVO',
-      search: false,
       render: (record: any) => {
         const planDeliverTime = record.planDeliverTime
           ? dayjs(record.planDeliverTime).format(DAYFORMAT_MINUTE)
@@ -262,7 +258,6 @@ export const TableColumns = () => {
     {
       title: '收货信息',
       dataIndex: 'receiveInfoVO',
-      search: false,
       width: 300,
       render: (record: any) => {
         return (
@@ -289,7 +284,6 @@ export const TableColumns = () => {
     {
       title: '发货信息',
       dataIndex: 'deliveryInfoVO',
-      search: false,
       render: (record: any) => {
         const deliverTime = record.deliverTime
           ? dayjs(record.deliverTime).format(DAYFORMAT_MINUTE)
@@ -321,6 +315,9 @@ export const TableColumns = () => {
     },
   ];
 
-  return columns;
-};
 
+  return [
+    searchColumns, tableColumns
+  ]
+
+}

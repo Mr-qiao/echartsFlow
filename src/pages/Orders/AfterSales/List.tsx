@@ -1,12 +1,16 @@
 import { useRef, useState } from 'react';
 
 import {
-  ActionType,
+  // ActionType,
   ProColumns,
   ProFormInstance,
 } from '@ant-design/pro-components';
-import { Button } from 'antd';
+// import { Button } from 'antd';
 import moment from 'moment';
+
+import { FormInstance } from '@xlion/component/dist/form'
+import { XTable, Button } from '@xlion/component'
+import { ActionType } from '@xlion/component/dist/x-table'
 
 import CustomProTable from '@/components/CustomProTable';
 import { afterSaleList, afterSaleExport } from '@/services/orders/afterSales';
@@ -18,11 +22,11 @@ import { DataType } from './types';
 
 const Index = () => {
   const [searchParams, setSearchParams] = useState<Recordable<any>>({});
-  const formRef = useRef<ProFormInstance>();
+  const formRef = useRef<FormInstance>();
   const actionRef = useRef<ActionType>();
   const [, searchDateDictMap] = useSelectDict(AFTER_SALES_TIME_TYPE_DICT);
 
-  const [columnItems, reloadItem] = useColumns({ formRef });
+  const [searchColumns, tableColumns] = useColumns({ formRef });
 
   const handleExport = async () => {
     let values = formRef.current?.getFieldsValue();
@@ -46,11 +50,53 @@ const Index = () => {
     });
     afterSaleExport(o, { isDownload: true, responseType: 'blob' });
   };
-  const columns: ProColumns<DataType>[] = [...columnItems];
+  // const columns: ProColumns<DataType>[] = [...columnItems];
+  // const [searchColumns, tableColumns] = columnItems
 
   return (
     <>
-      <CustomProTable
+      <XTable
+        rowKey="id"
+        formRef={formRef}
+        actionRef={actionRef}
+        className="custom-table"
+        search={{
+          defaultCollapsed: false,
+          labelWidth: 110,
+          span: 4,
+          columns: searchColumns
+        }}
+        columns={tableColumns}
+        toolbar={{
+          extra: () => <Button
+            key="export"
+            className="u-mr8"
+            type="primary"
+            onClick={handleExport}
+          >
+            导出
+          </Button>
+        }}
+        scroll={{ x: 'max-content' }}
+        request={async (params) => {
+          const { orderType, salesType, timeType, pageSize, current, ...par } = params;
+          let arg0: any = {
+            pageSize,
+            pageNum: current,
+            ...par,
+          };
+          setSearchParams(arg0)
+          const { entry }: any = await afterSaleList(arg0);
+          return {
+            data: entry.list || [],
+            success: true,
+            // 不传会使用 data 的长度，如果是分页一定要传
+            total: entry.totalRecord,
+          };
+        }}
+      />
+
+      {/* <CustomProTable
         columns={columns}
         formRef={formRef}
         actionRef={actionRef}
@@ -59,7 +105,6 @@ const Index = () => {
         options={true}
         ajaxRequest={afterSaleList}
         search={{
-          // collapsed: false,
           defaultCollapsed: false,
           labelWidth: 125,
           className: 'search-form',
@@ -87,7 +132,7 @@ const Index = () => {
             </Button>,
           ].filter(Boolean),
         }}
-      />
+      /> */}
     </>
   );
 };

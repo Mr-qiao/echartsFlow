@@ -147,6 +147,8 @@ const Launch: any = () => {
         },
         handler,
       );
+    }).catch((err) => {
+      console.log(err, 'err')
     });
   };
   useEffect(() => {

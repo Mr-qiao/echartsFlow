@@ -1,17 +1,24 @@
+
+
 import { Space } from '@xlion/component';
 import BrandSelectCpt from './Create/components/BrandSelectCpt';
 import SelectTree from '@/components/selectTree';
 import { useCategory } from '@/hooks';
 import GoodsTableCol from '@/components/goodsTableCol';
+import { SHOETREE } from './constants'
+import { DataType } from './types'
+import { XTableColumns, XTableSearchItem } from '@xlion/component/dist/x-table/interface';
 
-type IProps = {
-  onShow: (v) => void;
-};
 
-// 搜索列表
-export const SearchColumns = () => {
+interface IProps {
+  drawerModal: any
+  setGoodsItem: any
+}
+
+export default function useColumns({ drawerModal, setGoodsItem }: IProps): [XTableSearchItem[], XTableColumns<DataType>] {
   const [category] = useCategory();
-  const columns: any[] = [
+  // 搜索配置
+  const searchColumns: XTableSearchItem[] = [
     {
       label: '商品品牌',
       name: 'brandIds',
@@ -50,27 +57,19 @@ export const SearchColumns = () => {
       name: 'hasSample',
       type: 'select',
       fieldProps: {
-        options: [
-          { label: '成衣款', value: 0 },
-          { label: '设计师款', value: 1 },
-        ],
+        options: SHOETREE,
       },
     },
   ]
-  return columns;
-}
 
-// 列表
-export const TableColumns = (props: IProps) => {
-  const { onShow } = props;
-  const columns: any[] = [
+  // 列表配置
+  const tableColumns: XTableColumns<DataType> = [
     {
       title: '款式编码',
       dataIndex: 'sysItemCode',
     },
     {
       title: '商品信息',
-      search: false,
       render: (_: any, recode: any) => {
         return (
           <GoodsTableCol
@@ -115,7 +114,6 @@ export const TableColumns = (props: IProps) => {
     },
     {
       title: '供应商商品编码',
-      search: false,
       dataIndex: 'supplierStyleCode',
     },
     {
@@ -131,7 +129,8 @@ export const TableColumns = (props: IProps) => {
           <Space direction="vertical" size={[0, 2]}>
             <a
               onClick={() => {
-                onShow?.(recode)
+                setGoodsItem(recode)
+                drawerModal.current?.show();
               }}
             >
               查看
@@ -142,6 +141,14 @@ export const TableColumns = (props: IProps) => {
     },
   ];
 
-  return columns;
-};
 
+
+
+
+  return [
+    searchColumns, tableColumns
+  ]
+
+
+
+}

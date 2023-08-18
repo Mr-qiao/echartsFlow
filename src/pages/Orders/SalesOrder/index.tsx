@@ -9,6 +9,8 @@ import { ORDER_TIME_TYPE, PLATFORM_ORDERSTATUS } from '@/constants/orders';
 import { exportSaleOrderList, getSaleOrderList } from '@/services/orders/salesOrder';
 import { SearchColumns, TableColumns } from './columns'
 
+import useColumns from './useColumns';
+
 function SalesOrder() {
   const [tableTab, setTableTab] = useState<string>('0');
   const actionRef = useRef() as any;
@@ -17,6 +19,12 @@ function SalesOrder() {
   // const [timeType, setTimeType] = useState(1);
   const formRef: any = useRef();
   const [exportParams, setExportParams] = useState<any>({}); //导出参数
+
+  const [searchColumns, tableColumns] = useColumns({
+    platformType,
+    formRef,
+    setPlatformType
+  })
 
   const onSelectChange = (newSelectedRowKeys: any) => {
     setSelectedRowKeys(newSelectedRowKeys);
@@ -48,13 +56,9 @@ function SalesOrder() {
           span: 4,
           labelWidth: 110,
 
-          columns: SearchColumns({
-            platformType,
-            formRef,
-            setPlatformType
-          })
+          columns: searchColumns
         }}
-        columns={TableColumns()}
+        columns={tableColumns}
         toolbar={{
           extra: () => <Button
             type="primary"

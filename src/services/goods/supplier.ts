@@ -10,7 +10,7 @@ import { httpRequest, request } from '@/utils/request'
  * @returns 
  */
 export const supplierItemList = async (body: any) => {
-    return request.post(`/item/item/factory/supplierItem/list`, body);
+    return httpRequest.post(`/item/item/factory/supplierItem/list`, body);
 }
 
 
@@ -30,11 +30,9 @@ export const brandList = async (body: any) => {
  * @returns 
  */
 export const categoryTree = async (body: any, options: any) => {
-    return request.post(`/item/category/getCategoryTree`, body);
+    return httpRequest.post(`/item/category/getCategoryTree`, body);
 }
 
-
-/** ------------------------ 昆仑 ------------------------ */
 
 /**
  * 查询类目动态属性

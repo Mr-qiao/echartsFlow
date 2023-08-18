@@ -7,7 +7,9 @@ import { Form, message, Modal, Select, XTable } from '@xlion/component';
 import { useRef, useState } from 'react';
 
 
-import { SearchColumns, TableColumns } from './columns'
+// import { SearchColumns, TableColumns } from './columns'
+import useColumns from './useColumns';
+
 
 const { Option } = Select;
 
@@ -16,38 +18,38 @@ function Sample() {
   const [activeKey, setActiveKey] = useState('99');
   const actionRef = useRef() as any;
   const arrOptions = ['待确认', '打样中', '已交付'];
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
   const [byId, setbyId] = useState({}) as any;
 
+  const [searchColumns, tableColumns] = useColumns({ actionRef, setbyId, setOpen })
 
-  const onStartPoor = async (recode) => {
-    setbyId(recode);
-    // setOpen(true)
-    const res = await sampleStartPoor({ status: '1', itemId: recode?.itemId });
-    if (res.success) {
-      message.success({
-        content: '打样成功',
-        duration: 2,
-        onClose: () => {
-          actionRef.current.reload();
-        },
-      });
-      setOpen(false);
-    }
-  }
+  // const onStartPoor = async (recode) => {
+  //   setbyId(recode);
+  //   const res = await sampleStartPoor({ status: '1', itemId: recode?.itemId });
+  //   if (res.success) {
+  //     message.success({
+  //       content: '打样成功',
+  //       duration: 2,
+  //       onClose: () => {
+  //         actionRef.current.reload();
+  //       },
+  //     });
+  //     setOpen(false);
+  //   }
+  // }
 
-  const onDeliverPoor = async (recode) => {
-    const res = await sampledDeliverPoor({ status: '2', itemId: recode?.itemId }, {});
-    if (res.success) {
-      message.success({
-        content: '交付完成',
-        duration: 2,
-        onClose: () => {
-          actionRef.current.reload();
-        },
-      });
-    }
-  }
+  // const onDeliverPoor = async (recode) => {
+  //   const res = await sampledDeliverPoor({ status: '2', itemId: recode?.itemId });
+  //   if (res.success) {
+  //     message.success({
+  //       content: '交付完成',
+  //       duration: 2,
+  //       onClose: () => {
+  //         actionRef.current.reload();
+  //       },
+  //     });
+  //   }
+  // }
 
   return (
     <>
@@ -61,9 +63,9 @@ function Sample() {
           defaultCollapsed: false,
           labelWidth: 100,
           span: 4,
-          columns: SearchColumns()
+          columns: searchColumns
         }}
-        columns={TableColumns({ onStartPoor, onDeliverPoor })}
+        columns={tableColumns}
         request={async (params) => {
           const arg0 = {
             ...params,
@@ -73,7 +75,7 @@ function Sample() {
           const data = res.entry.list;
           return {
             data: data,
-            success: res.success,
+            success: true,
             // 不传会使用 data 的长度，如果是分页一定要传
             total: res?.entry.totalRecord,
           };

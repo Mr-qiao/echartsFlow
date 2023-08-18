@@ -1,4 +1,4 @@
-import { Select } from 'antd';
+import { Select } from '@xlion/component';
 import { useEffect, useState } from 'react';
 
 import { frequency } from '@/utils';
@@ -8,7 +8,7 @@ export default function SearchSelect(props) {
     ajaxRequest,
     style,
     placeholder,
-    onChange = () => {},
+    onChange = () => { },
     params = {},
     searchKey = 'key',
     filterOption = false,

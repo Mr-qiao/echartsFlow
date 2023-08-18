@@ -5,8 +5,8 @@ import {
   PLATFORM_STATUS,
 } from './constants';
 
-enum QUESTION_TYPE {}
-enum ORDER_QUESTION_TYPE {}
+enum QUESTION_TYPE { }
+enum ORDER_QUESTION_TYPE { }
 
 export type DictType = Array<{ label: string; value: number | string }>;
 
@@ -33,7 +33,7 @@ export type GoodsInfoType = {
 };
 export type DataType = {
   id: number;
-
+  title: string;
   questionType: string | QUESTION_TYPE; //售后信息 - 问题类型 （？？？未确定 是否枚举）
   type: AFTER_SALES_TYPE; //售后信息 - 售后类型
   shopStatus: PLATFORM_STATUS; //售后信息 - 平台状态

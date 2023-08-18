@@ -133,8 +133,9 @@ export const errorConfig: RequestConfig = {
       if ([1000010001, 1000010031].includes(data.code) || ['1000010001', '1000010031'].includes(data.responseCode)) {
         navigateToLogin();
       }
+
       // data.login 初始化会调用https://api.dev.xinc818.net/iam/gt/register?platForm=IAM?
-      if (!('code' in data ? 200 === data.code : (data.status || data.login))) {
+      if (!('code' in data ? 200 === data.code : (data.status || response.status))) {
         message.error(data.message || data.exception)
       }
 

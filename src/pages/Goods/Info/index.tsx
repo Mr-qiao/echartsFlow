@@ -5,19 +5,16 @@ import DrawerModal from '@/components/DrawerModal';
 import { Button, XTable } from '@xlion/component';
 import GoodsDetail from '@/pages/Goods/Info/Detail'
 
-
-import { SearchColumns, TableColumns } from './columns'
+import useColumns from './useColumns'
+import { ActionType } from '@xlion/component/dist/x-table/interface';
 
 const Goods = () => {
   const drawerModal = useRef<any>();
   const [goodsItem, setGoodsItem] = useState<any>({});
   const goodsDetailRef = useRef<any>();
-  const actionRef = useRef(null)
+  const actionRef = useRef<ActionType>()
+  const [searchColumns, tableColumns] = useColumns({ drawerModal, setGoodsItem })
 
-  const onShow = (recode) => {
-    setGoodsItem(recode)
-    drawerModal.current?.show();
-  }
 
   return (
     <>
@@ -28,7 +25,7 @@ const Goods = () => {
           defaultCollapsed: false,
           labelWidth: 100,
           span: 4,
-          columns: SearchColumns()
+          columns: searchColumns
         }}
         toolbar={{
           title: (
@@ -39,9 +36,9 @@ const Goods = () => {
             </Button>
           ),
         }}
-        columns={TableColumns({ onShow })}
+        columns={tableColumns}
         request={async (params) => {
-          const { entry } = await supplierItemList(params)
+          const { entry }: any = await supplierItemList(params)
           return {
             data: entry.list || [],
             success: true,

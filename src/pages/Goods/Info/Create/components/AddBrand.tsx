@@ -1,5 +1,5 @@
 /* eslint-disable react/require-default-props */
-import { Form, Input, message } from 'antd';
+import { Form, Input, message } from '@xlion/component';
 import React, { ReactNode, useRef } from 'react';
 
 import CustomModal from '@/components/CustomModal';

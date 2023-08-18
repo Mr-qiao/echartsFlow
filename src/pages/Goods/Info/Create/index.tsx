@@ -688,7 +688,7 @@ const Index: React.FC = () => {
                   name="brandId"
                   rules={[{ required: true, message: '请选择品牌～' }]}
                 >
-                  <BrandSelectCpt isCreate />
+                  <BrandSelectCpt isCreate style={{ width: '100%' }} />
                 </Form.Item>
               </Col>
               <Col span={12}>

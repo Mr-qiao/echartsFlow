@@ -1,4 +1,4 @@
-import { Table, TableProps, Typography } from 'antd';
+import { Table, TableProps, Typography } from '@xlion/component';
 
 import Image from '@/components/Image';
 

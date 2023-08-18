@@ -12,7 +12,7 @@ export const useSelectDict = (dictTypes: string[]): [DictType, DictMapType] => {
 
   useMount(async () => {
     const res = await getSelectDict({
-      types: dictTypes.join(','),
+      types: dictTypes
     });
     const obj: DictMapType = {};
     Object.keys(res).forEach((key) => {

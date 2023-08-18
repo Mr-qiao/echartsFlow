@@ -4,6 +4,7 @@
 import { Col, Row, Typography } from '@xlion/component';
 import { Image } from '@xlion/component'
 import React from 'react';
+import { DEFAULT_IMG_SRC } from '@/constants'
 import './index.less';
 
 interface propsType {
@@ -23,20 +24,21 @@ const GoodsTableCol: React.FC<propsType> = ({
 }) => {
   const mainImg = imgList[0]?.src; // 主图
   const subplotImg = imgList.slice(1, 4); // 副图
+
   return (
     <Row className={'good-table-list'}>
       {isMainImg && (
         <Image.PreviewGroup>
           <Col className={'good-table-list-img'}>
             <Col>
-              <Image width={80} height={80} src={mainImg} preview={{ src: mainImg }} />
+              <Image width={80} height={80} src={mainImg || DEFAULT_IMG_SRC} preview={{ src: mainImg || DEFAULT_IMG_SRC }} fallback={DEFAULT_IMG_SRC} />
               {isDeleted === 1 && <div className={'imageTitle'}>已作废</div>}
             </Col>
             {isFooterImg && subplotImg.length > 0 && (
               <Row className={'bus-img'}>
                 {subplotImg.map((item: any, index: any) => (
                   <Col key={index} style={{ marginLeft: index === 0 ? 0 : 7 }}>
-                    <Image width={22} height={22} src={item.src} preview={{ src: item.src }} />
+                    <Image width={22} height={22} src={item.src} preview={{ src: item.src }} fallback={DEFAULT_IMG_SRC} />
                   </Col>
                 ))}
               </Row>

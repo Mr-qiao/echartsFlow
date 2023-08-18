@@ -1,7 +1,7 @@
 /**
  * 采购订单
  */
-import { request } from '@/utils/request';
+import { request, httpRequest } from '@/utils/request';
 
 /**
  * 列表
@@ -10,14 +10,7 @@ import { request } from '@/utils/request';
  * @returns 
  */
 export async function purchaseQueryList(body: object, options: any) {
-  return request.post('/designweb/supplier/purchase/order/page', {
-    ...body,
-    ...(options || {
-      headers: {
-        'content-type': 'application/json',
-      },
-    }),
-  });
+  return httpRequest.post('/designweb/supplier/purchase/order/page', body, options);
 }
 
 /**
@@ -44,9 +37,7 @@ export async function purchaseExportList(body: object, options: any) {
  * @returns 
  */
 export async function purchaseQueryById(body: object, options: any) {
-  return request.get('/designweb/supplier/purchase/order/get', {
-    ...body,
-  });
+  return httpRequest.post('/designweb/supplier/purchase/order/get', body, options);
 }
 
 /**
@@ -56,9 +47,7 @@ export async function purchaseQueryById(body: object, options: any) {
  * @returns 
  */
 export async function purchaseQueryByIdLogList(body: object, options: any) {
-  return request.get('/designweb/supplier/purchase/order/log/list', {
-    ...body,
-  });
+  return httpRequest.post('/designweb/supplier/purchase/order/log/list', body, options);
 }
 
 /**
@@ -68,14 +57,7 @@ export async function purchaseQueryByIdLogList(body: object, options: any) {
  * @returns 
  */
 export async function purchaseUpdateStatus(body: object, options: any) {
-  return request.post('/designweb/supplier/purchase/order/updateStatus', {
-    ...body,
-    ...(options || {
-      headers: {
-        'content-type': 'application/json',
-      },
-    }),
-  });
+  return httpRequest.post('/designweb/supplier/purchase/order/updateStatus', body, options);
 }
 
 // export function queryList(body: object, options: any) {

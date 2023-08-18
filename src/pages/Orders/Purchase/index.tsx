@@ -5,13 +5,14 @@
 import { purchaseExportList, purchaseQueryList } from '@/services/orders/purchaseSales';
 // import { filterPageName } from '@/utils';
 // import { ProTable } from '@ant-design/pro-components';
-import { Button, DatePicker, Modal } from 'antd';
+// import { Button, DatePicker, Modal } from 'antd';
 import { PURCHASE_ORDER_TABLIST } from './constants'
 // import moment from 'moment';
 import { useRef, useState } from 'react';
-import { XPageContainer, XTable } from '@xlion/component'
-import { TableColumns, SearchColumns } from './columns'
+import { XPageContainer, XTable, Button, DatePicker, Modal } from '@xlion/component'
+// import { TableColumns, SearchColumns } from './columns'
 // import { history } from 'umi';
+import useColumns from './useColumns';
 
 const { RangePicker } = DatePicker;
 
@@ -22,6 +23,9 @@ function Purchase(props: any) {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [tabKey, setTabKey] = useState('2') as any;
   const ref: any = useRef();
+
+  const [searchColumns, tableColumns] = useColumns({ tabKey })
+
   const dcolumns: any = [
     {
       title: '导入文件名称',
@@ -113,9 +117,9 @@ function Purchase(props: any) {
             defaultCollapsed: false,
             labelWidth: 100,
             span: 4,
-            columns: SearchColumns({ tabKey })
+            columns: searchColumns
           }}
-          columns={TableColumns()}
+          columns={tableColumns}
           request={async (params = {}) => {
             const arg0 = {
               // ...filterPageName(params),

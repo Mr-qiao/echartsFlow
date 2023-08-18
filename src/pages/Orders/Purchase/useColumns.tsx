@@ -1,12 +1,13 @@
+
 import SelectCpt from '@/components/selectCpt';
 import BatchInput from '@/components/batchInput';
 import dayjs from 'dayjs';
-
 import { history } from 'umi';
+import { XTableSearchItem, XTableColumns } from '@xlion/component/dist/x-table/interface'
+import { List } from './types'
 
-// 搜索列表
-export const SearchColumns = ({ tabKey }) => {
-  const columns: any[] = [
+export default function useColumns({ tabKey }): [XTableSearchItem[], XTableColumns<List>] {
+  const searchColumns: XTableSearchItem[] = [
     {
       label: '采购单号',
       name: 'purNoList',
@@ -49,12 +50,8 @@ export const SearchColumns = ({ tabKey }) => {
       renderFormItem: () => <SelectCpt style={{ width: '100%' }} showArrow={true} />,
     },
   ]
-  return columns;
-}
 
-// 列表
-export const TableColumns = () => {
-  const columns: any[] = [
+  const tableColumns: XTableColumns<List> = [
     {
       title: '序号',
       dataIndex: 'index',
@@ -126,6 +123,5 @@ export const TableColumns = () => {
     },
   ];
 
-  return columns;
-};
-
+  return [searchColumns, tableColumns]
+}

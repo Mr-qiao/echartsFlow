@@ -2,56 +2,75 @@ import { useEffect, useState } from 'react';
 
 import { ProColumnType, ProFormInstance } from '@ant-design/pro-components';
 import { Select } from 'antd';
+import { FormInstance } from '@xlion/component/dist/form'
 import { omit } from 'lodash-es';
+import { XTableSearchItem } from '@xlion/component/dist/x-table/interface';
 
-interface IProps extends ProColumnType {
-  options: Array<{ label: string; value: number | string }>;
+
+interface IProps extends XTableSearchItem {
+  // options: Array<{ label: string; value: number | string }>;
+  options: { [key: string | number]: any };
   onLabelChange?: (value: string) => void; //label
-  formRef: React.MutableRefObject<ProFormInstance | undefined>;
+  formRef: React.MutableRefObject<FormInstance | undefined>;
+  name: string;
+  transform?: (v) => void;
 }
 export const useSearchColumns = ({
   options,
   onLabelChange,
   formRef,
-
+  name,
   ...props
-}: IProps): [ProColumnType, () => void] => {
-  let [inputVal, setInputVal] = useState<any>(options?.[0].value);
+}: IProps): [XTableSearchItem, () => void] => {
+  let [inputVal, setInputVal] = useState<any>(Object.keys(options)[0]);
+
+  // const item = {
+  //   title: (
+  //     <Select
+  //       {...{
+  //         style: {
+  //           overflow: 'hidden',
+  //           textOverflow: 'ellipsis',
+  //           whiteSpace: 'nowrap',
+  //           height: 28,
+  //           width: 120,
+  //         },
+  //         options,
+  //         value: inputVal,
+  //         onChange: (val) => {
+  //           formRef?.current?.resetFields([inputVal]);
+  //           setInputVal(val);
+  //           onLabelChange?.(val);
+  //         },
+  //       }}
+  //     />
+  //   ),
+  //   formItemProps: {
+  //     htmlFor: '',
+  //   },
+  //   dataIndex: inputVal,
+  //   ...props,
+  // };
+
   const item = {
-    title: (
-      <Select
-        {...{
-          style: {
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
-            height: 28,
-            width: 120,
-          },
-          options,
-          value: inputVal,
-          onChange: (val) => {
-            // setTimeType(val);
-            // onSearchParams?.({ [name]: val });
-            formRef?.current?.resetFields([inputVal]);
-            setInputVal(val);
-            onLabelChange?.(val);
-          },
-        }}
-      />
-    ),
-    formItemProps: {
-      htmlFor: '',
+    selectLabel: {
+      valueEnum: options,
+      name,
+      // defaultValue: inputVal,
+      onChange: (val) => {
+        formRef?.current?.resetFields([inputVal]);
+        setInputVal(val);
+        onLabelChange?.(val);
+      }
     },
-    dataIndex: inputVal,
-    ...props,
-  };
+    name: inputVal,
+    ...props
+  }
   function resetItem() {
     setInputVal(options?.[0].value);
   }
   return [item, resetItem];
 };
-
 export type DictType = Array<{ label: string; value: string | number }>;
 type DictMapType = Recordable<any>;
 interface IOptions {
@@ -104,7 +123,7 @@ export const useSelectDict = (
           }, {}),
         );
       }
-    } catch (e) {}
+    } catch (e) { }
   }
   useEffect(() => {
     // console.log(res, obj);

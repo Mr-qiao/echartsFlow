@@ -10,7 +10,7 @@ export const useCategory = () => {
   useEffect(() => {
     // if (!cookie) return;
     categoryTree({}, {}).then((res) => {
-      setCategory(res.entry || []);
+      setCategory(res?.entry || []);
     });
     // console.log(cookie, 'cookie')
   }, []);

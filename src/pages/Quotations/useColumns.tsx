@@ -2,13 +2,21 @@ import GoodsTableCol from '@/components/goodsTableCol';
 import { history } from 'umi';
 import dayjs from 'dayjs';
 import { DatePicker } from '@xlion/component';
-
-
+import { XTableColumns, XTableSearchItem } from '@xlion/component/dist/x-table/interface';
+import { DataType } from './types'
+import {
+  DomainTypeMap,
+  AnswerTypeMap,
+  StatusTypeMap,
+  EnumStatusType,
+  DomainTypeMapList,
+  AnswerTypeMapList,
+  StatusTypeMapList
+} from './constants'
 const { RangePicker } = DatePicker;
-
-// 搜索列表
-export const SearchColumns = () => {
-  const columns: any[] = [
+export default function useColumns(): [XTableSearchItem[], XTableColumns<DataType>] {
+  // 搜索配置
+  const searchColumns: XTableSearchItem[] = [
     {
       label: '款式编码',
       name: 'itemSysCode',
@@ -24,10 +32,7 @@ export const SearchColumns = () => {
       name: 'domainType',
       type: 'select',
       fieldProps: {
-        options: [
-          { label: '样衣', value: 1 },
-          { label: '款式', value: 2 },
-        ],
+        options: DomainTypeMapList,
       },
     },
     {
@@ -35,10 +40,7 @@ export const SearchColumns = () => {
       name: 'answerType',
       type: 'select',
       fieldProps: {
-        options: [
-          { label: '成品报价', value: 1 },
-          { label: 'boom报价', value: 2 },
-        ],
+        options: AnswerTypeMapList,
       },
     },
     {
@@ -46,19 +48,14 @@ export const SearchColumns = () => {
       name: 'status',
       type: 'select',
       fieldProps: {
-        options: [
-          { label: '未开始', value: 1 },
-          { label: '待报价', value: 2 },
-          { label: '已报价', value: 3 },
-          { label: '已结束', value: 4 },
-        ],
+        options: StatusTypeMapList,
       },
     },
     {
       label: '询价时间',
       name: 'time',
       type: 'dateTimeRange',
-      renderFormItem: (item: any, _: any, form: any) => {
+      renderFormItem: () => {
         return (
           <RangePicker
             showTime
@@ -71,7 +68,7 @@ export const SearchColumns = () => {
       label: '报价时间',
       name: 'bjTime',
       type: 'dateTimeRange',
-      renderFormItem: (item: any, _: any, form: any) => {
+      renderFormItem: () => {
         return (
           <RangePicker
             showTime
@@ -81,12 +78,8 @@ export const SearchColumns = () => {
       },
     },
   ]
-  return columns;
-}
-
-// 列表
-export const TableColumns = () => {
-  const columns: any[] = [
+  //   列表配置
+  const tableColumns: XTableColumns<DataType> = [
     {
       title: '商品ID',
       dataIndex: 'itemId',
@@ -126,29 +119,17 @@ export const TableColumns = () => {
     {
       title: '询价用途',
       dataIndex: 'domainType',
-      valueEnum: {
-        1: '样衣',
-        2: '款式',
-      },
+      valueEnum: DomainTypeMap,
     },
     {
       title: '报价类型',
       dataIndex: 'answerType',
-      valueEnum: {
-        1: '成品报价',
-        2: 'boom报价',
-      },
+      valueEnum: AnswerTypeMap,
     },
     {
       title: '报价状态',
       dataIndex: 'status',
-      valueEnum: {
-        1: '未开始',
-        2: '待报价',
-        3: '已报价',
-        4: '已结束',
-        // 5: '已采用',
-      },
+      valueEnum: StatusTypeMap,
     },
     {
       title: '预计采购量',
@@ -180,7 +161,7 @@ export const TableColumns = () => {
       fixed: 'right',
       width: 100,
       render: (_: any, recode: any) => {
-        return recode.status !== 1 && recode.status !== 4 ? (
+        return recode.status !== EnumStatusType.FinishQuoted && recode.status !== EnumStatusType.Finish ? (
           <a
             onClick={() => {
               if (recode.answerType === 1) {
@@ -190,13 +171,16 @@ export const TableColumns = () => {
               history.push(`/quotations/edit/${recode.id}`);
             }}
           >
-            {recode.status === 3 ? '修改报价' : '填写报价'}
+            {recode.status === EnumStatusType.FinishQuoted ? '修改报价' : '填写报价'}
           </a>
         ) : null;
       },
     },
   ];
 
-  return columns;
-};
 
+  return [
+    searchColumns, tableColumns
+  ]
+
+}

@@ -1,5 +1,6 @@
 import { request } from '@umijs/max';
 import { camelCase } from 'lodash-es';
+import { httpRequest } from '@/utils/request'
 
 //合作商服务概况
 
@@ -36,31 +37,58 @@ export function getOssFileUrl(body: object) {
     }),
   });
 }
+// export function getSelectDict(params: Recordable<any>) {
+//   return request('/designweb/dict/dropdown/batch', {
+//     method: 'GET',
+//     params,
+//   }).then(({ entry }) => {
+//     const data: any = {};
+//     Object.keys(entry).forEach((key: string) => {
+//       const itemEnum: any[] = entry[key].map((item: any) => {
+//         return {
+//           value: Number(item.value),
+//           key: Number(item.value),
+//           label: item.name,
+//           disabled: item.disabled,
+//         };
+//       });
+//       data[camelCase(key)] =
+//         itemEnum.length > 1
+//           ? [
+//             ...itemEnum.filter((item: any) => !item.disabled),
+//             ...itemEnum.filter((item: any) => item.disabled),
+//           ]
+//           : itemEnum;
+//     });
+//     return data;
+//   });
+// }
 export function getSelectDict(params: Recordable<any>) {
-  return request('/designweb/dict/dropdown/batch', {
-    method: 'GET',
-    params,
-  }).then(({ entry }) => {
-    const data: any = {};
-    Object.keys(entry).forEach((key: string) => {
-      const itemEnum: any[] = entry[key].map((item: any) => {
-        return {
-          value: Number(item.value),
-          key: Number(item.value),
-          label: item.name,
-          disabled: item.disabled,
-        };
-      });
-      data[camelCase(key)] =
-        itemEnum.length > 1
-          ? [
-              ...itemEnum.filter((item: any) => !item.disabled),
-              ...itemEnum.filter((item: any) => item.disabled),
-            ]
-          : itemEnum;
+  return httpRequest.post('/designweb/dict/dropdown/batch', params)
+    .then(({ entry }: any) => {
+      const data: any = {};
+      if (entry) {
+        Object.keys(entry).forEach((key: string) => {
+          const itemEnum: any[] = entry[key].map((item: any) => {
+            return {
+              value: Number(item.value),
+              key: Number(item.value),
+              label: item.name,
+              disabled: item.disabled,
+            };
+          });
+          data[camelCase(key)] =
+            itemEnum.length > 1
+              ? [
+                ...itemEnum.filter((item: any) => !item.disabled),
+                ...itemEnum.filter((item: any) => item.disabled),
+              ]
+              : itemEnum;
+        });
+        return data;
+      }
+      return data;
     });
-    return data;
-  });
 }
 
 export function getAreaList() {
@@ -71,8 +99,5 @@ export function getAreaList() {
 
 // 品牌管理-新增或编辑品牌
 export function doBrandCreateOrUpdate(data: Recordable<any>) {
-  return request('/item/item/factory/saveOrUpdateBrand', {
-    method: 'post',
-    data: data,
-  });
+  return httpRequest.post('/item/item/factory/saveOrUpdateBrand', data);
 }

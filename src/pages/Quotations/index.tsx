@@ -1,15 +1,17 @@
 import { quotationsList } from '@/services/quotations';
-import { filterPageName } from '@/utils';
 import { useRef, useState } from 'react';
 import { XTable } from '@xlion/component'
 
-import { TableColumns, SearchColumns } from './columns'
+import useColumns from './useColumns';
 import dayjs from 'dayjs';
 
 
+
+
 function Quotation() {
-  const [activeKey, setActiveKey] = useState('0');
+  const [activeKey,] = useState('0');
   const actionRef = useRef() as any;
+  const [searchColumns, tableColumns] = useColumns()
   return (
     <XTable
       rowKey={'id'}
@@ -17,19 +19,18 @@ function Quotation() {
       scroll={{
         x: 'max-content',
       }}
-      columns={TableColumns()}
+      columns={tableColumns}
       search={{
         labelWidth: 100,
         span: 4,
         defaultCollapsed: false,
-        columns: SearchColumns()
+        columns: searchColumns
       }}
       request={async (
         params
       ) => {
         const arg0 = {
           status: activeKey === '0' ? undefined : activeKey,
-          // ...filterPageName(params),
           ...params,
           itemIdList: params.itemId && [params.itemId],
 
@@ -52,16 +53,46 @@ function Quotation() {
               ? dayjs(params.bjTime[1]).valueOf()
               : undefined,
         };
-        const res = await quotationsList(arg0, {});
-        const data = res.entry.list;
+        const { entry }: any = await quotationsList(arg0, {});
         return {
-          data: data,
-          success: res.success,
+          data: entry.list || [],
+          success: true,
           // 不传会使用 data 的长度，如果是分页一定要传
-          total: res?.entry.totalRecord,
+          total: entry.totalRecord,
         };
       }}
     />
+    // toolbar={
+    // 	{
+    // 		menu: {
+    // 			type: 'tab',
+    // 			activeKey: activeKey,
+    // 			items: [
+    // 				{
+    // 					key: '0',
+    // 					label: <span>全部</span>,
+    // 				},
+    // 				{
+    // 					key: '2',
+    // 					label: <span>待报价</span>,
+    // 				},
+    // 				{
+    // 					key: '3',
+    // 					label: <span>已报价</span>,
+    // 				},
+    // 				{
+    // 					key: '4',
+    // 					label: <span>已失效</span>,
+    // 				},
+    // 			],
+    // 			onChange: (key: string) => {
+    // 				setActiveKey(key as string);
+    // 				actionRef.current.reload();
+    // 			},
+    // 		},
+    // 	} as any
+    // }
+
   );
 }
 

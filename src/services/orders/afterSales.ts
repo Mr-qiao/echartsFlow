@@ -1,14 +1,14 @@
 /**
  * 售后订单
  */
-import { request } from '@/utils/request';
+import { request, httpRequest } from '@/utils/request';
 
 /**
  * 查询列表
  * @url https://yapi.xinc818.com/project/1025/interface/api/167917
  */
 export async function afterSaleList(body: Recordable<any>) {
-  return request.post(`/designweb/supplier/jst/refund/selectList`, body);
+  return httpRequest.post(`/designweb/supplier/jst/refund/selectList`, body);
 }
 
 /**
