@@ -1,11 +1,10 @@
 import { useState } from 'react';
 
 // import { XTableColumns, XTableColumnType } from '@ant-design/pro-components';
-import { Badge, Popover, Select, Tag } from '@xlion/component'
-import { XTableColumns } from '@xlion/component/dist/x-table'
+import { Badge, Popover, Select, Tag } from '@xlion/component';
+import { XTableColumns } from '@xlion/component/dist/x-table';
 // import { Badge, Popover, Select } from 'antd';
 // import Tag from 'antd/lib/tag';
-// import moment from 'moment';
 import dayjs from 'dayjs';
 
 import BatchInput from '@/components/batchInput';
@@ -22,9 +21,12 @@ import {
 import { useSearchColumns, useSelectDict } from './hooks';
 import { DataType } from './types';
 
+import {
+  XTableColumnType,
+  XTableSearchItem,
+} from '@xlion/component/dist/x-table/interface';
 import ItemContainer from './components/ItemContainer';
 import PropoverTable from './components/PropoverTable';
-import { XTableColumnType, XTableSearchItem } from '@xlion/component/dist/x-table/interface';
 enum SELECT_TYPE {
   TYPE = 'type',
   SHOP_STATUS = 'shopStatus',
@@ -37,11 +39,11 @@ enum SELECT_TYPE {
 //   { label: '系统订单号', value: 'oIds' },
 // ];
 const ORDER_TYPE_DICT = {
-  'asIds': '售后单号',
-  'outerAsIds': '平台售后单',
-  'soIds': '平台订单号',
-  'oIds': '系统订单号',
-}
+  asIds: '售后单号',
+  outerAsIds: '平台售后单',
+  soIds: '平台订单号',
+  oIds: '系统订单号',
+};
 // export const AFTER_SALES_TIME_TYPE_DICT = [
 //   { label: '申请日期', value: 'AS_DATE' },
 //   { label: '付款日期', value: 'PAY_DATE' },
@@ -51,12 +53,12 @@ const ORDER_TYPE_DICT = {
 //   { label: '发货日期', value: 'SEND_DATE' },
 // ];
 export const AFTER_SALES_TIME_TYPE_DICT = {
-  'AS_DATE': '申请日期',
-  'PAY_DATE': '付款日期',
-  'ORDER_DATE': '下单日期',
-  'MODIFIED_DATE': '更新日期',
-  'RECEIVE_DATE': '入仓时间选择',
-  'SEND_DATE': '发货日期',
+  AS_DATE: '申请日期',
+  PAY_DATE: '付款日期',
+  ORDER_DATE: '下单日期',
+  MODIFIED_DATE: '更新日期',
+  RECEIVE_DATE: '入仓时间选择',
+  SEND_DATE: '发货日期',
 };
 // const SELECT_TYPE_DICT = [
 //   { label: '售后类型', value: SELECT_TYPE.TYPE },
@@ -82,10 +84,11 @@ const platformKeys = [PLATFORM_STATUS.WAIT_SELLER_AGREE];
 interface IProps {
   formRef?: any;
 }
-function useColumns({ formRef }: IProps): [XTableSearchItem[], XTableColumns<DataType>] {
+function useColumns({
+  formRef,
+}: IProps): [XTableSearchItem[], XTableColumns<DataType>] {
   const [salesType, setSalesType] = useState<string>(SELECT_TYPE.TYPE);
   const [timeType, setTimeType] = useState<string>('AS_DATE');
-
 
   //售后类型
   const [afterSalesDict, afterSalesDictMap] = useSelectDict(AFTER_SALES_DICT);
@@ -100,7 +103,7 @@ function useColumns({ formRef }: IProps): [XTableSearchItem[], XTableColumns<Dat
     formRef,
     renderFormItem: () => <BatchInput />,
     options: ORDER_TYPE_DICT,
-    name: 'orderType'
+    name: 'orderType',
   });
   //类型 搜索
   const [item_02, resetItem_02] = useSearchColumns({
@@ -123,7 +126,7 @@ function useColumns({ formRef }: IProps): [XTableSearchItem[], XTableColumns<Dat
     onLabelChange: (value) => {
       setSalesType(value);
     },
-    name: 'salesType'
+    name: 'salesType',
   });
   //日期 搜索
   const [item_03, resetItem_03] = useSearchColumns({
@@ -146,7 +149,12 @@ function useColumns({ formRef }: IProps): [XTableSearchItem[], XTableColumns<Dat
       };
       // },
     },
-    name: "timeType"
+    name: 'timeType',
+    fieldProps: {
+      style: {
+        width: '100%',
+      },
+    },
   });
 
   // 搜索条件

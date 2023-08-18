@@ -1,24 +1,17 @@
 import { useRef, useState } from 'react';
 
-import {
-  // ActionType,
-  ProColumns,
-  ProFormInstance,
-} from '@ant-design/pro-components';
 // import { Button } from 'antd';
-import moment from 'moment';
 
-import { FormInstance } from '@xlion/component/dist/form'
-import { XTable, Button } from '@xlion/component'
-import { ActionType } from '@xlion/component/dist/x-table'
+import { Button, XTable } from '@xlion/component';
+import { FormInstance } from '@xlion/component/dist/form';
+import { ActionType } from '@xlion/component/dist/x-table';
 
-import CustomProTable from '@/components/CustomProTable';
-import { afterSaleList, afterSaleExport } from '@/services/orders/afterSales';
+import { afterSaleExport, afterSaleList } from '@/services/orders/afterSales';
 
 import useColumns, { AFTER_SALES_TIME_TYPE_DICT } from './columns';
 import { useSelectDict } from './hooks';
 // import VoidedModal from './components/VoidedModal';
-import { DataType } from './types';
+import dayjs from 'dayjs';
 
 const Index = () => {
   const [searchParams, setSearchParams] = useState<Recordable<any>>({});
@@ -39,8 +32,8 @@ const Index = () => {
       const _ = searchDateDictMap[item];
       if (_ && o[item]) {
         const [dateStart, dateEnd] = [
-          moment(o[item][0]).format('YYYY-MM-DD 00:00:00'),
-          moment(o[item][1]).format('YYYY-MM-DD 23:59:59'),
+          dayjs(o[item][0]).format('YYYY-MM-DD 00:00:00'),
+          dayjs(o[item][1]).format('YYYY-MM-DD 23:59:59'),
         ];
         o.dateType = item;
         o.dateStart = dateStart;
@@ -64,28 +57,31 @@ const Index = () => {
           defaultCollapsed: false,
           labelWidth: 110,
           span: 4,
-          columns: searchColumns
+          columns: searchColumns,
         }}
         columns={tableColumns}
         toolbar={{
-          extra: () => <Button
-            key="export"
-            className="u-mr8"
-            type="primary"
-            onClick={handleExport}
-          >
-            导出
-          </Button>
+          extra: () => (
+            <Button
+              key="export"
+              className="u-mr8"
+              type="primary"
+              onClick={handleExport}
+            >
+              导出
+            </Button>
+          ),
         }}
         scroll={{ x: 'max-content' }}
         request={async (params) => {
-          const { orderType, salesType, timeType, pageSize, current, ...par } = params;
+          const { orderType, salesType, timeType, pageSize, current, ...par } =
+            params;
           let arg0: any = {
             pageSize,
             pageNum: current,
             ...par,
           };
-          setSearchParams(arg0)
+          setSearchParams(arg0);
           const { entry }: any = await afterSaleList(arg0);
           return {
             data: entry.list || [],

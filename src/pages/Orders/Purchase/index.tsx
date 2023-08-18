@@ -2,14 +2,16 @@
 // import SelectCpt from '@/components/selectCpt';
 // import TabPane from '@/components/TabPane';
 // import { PURCHASE_ORDER_TABLIST } from '@/constants/orders';
-import { purchaseExportList, purchaseQueryList } from '@/services/orders/purchaseSales';
+import {
+  purchaseExportList,
+  purchaseQueryList,
+} from '@/services/orders/purchaseSales';
 // import { filterPageName } from '@/utils';
 // import { ProTable } from '@ant-design/pro-components';
 // import { Button, DatePicker, Modal } from 'antd';
-import { PURCHASE_ORDER_TABLIST } from './constants'
-// import moment from 'moment';
+import { Button, DatePicker, XPageContainer, XTable } from '@xlion/component';
 import { useRef, useState } from 'react';
-import { XPageContainer, XTable, Button, DatePicker, Modal } from '@xlion/component'
+import { PURCHASE_ORDER_TABLIST } from './constants';
 // import { TableColumns, SearchColumns } from './columns'
 // import { history } from 'umi';
 import useColumns from './useColumns';
@@ -24,7 +26,7 @@ function Purchase(props: any) {
   const [tabKey, setTabKey] = useState('2') as any;
   const ref: any = useRef();
 
-  const [searchColumns, tableColumns] = useColumns({ tabKey })
+  const [searchColumns, tableColumns] = useColumns({ tabKey });
 
   const dcolumns: any = [
     {
@@ -102,7 +104,7 @@ function Purchase(props: any) {
         tabs={{
           activeKey: tabKey,
           items: PURCHASE_ORDER_TABLIST,
-          onChange: (key) => handleTabChange(key)
+          onChange: (key) => handleTabChange(key),
         }}
         contentStyle={{ padding: 0 }}
       >
@@ -117,7 +119,7 @@ function Purchase(props: any) {
             defaultCollapsed: false,
             labelWidth: 100,
             span: 4,
-            columns: searchColumns
+            columns: searchColumns,
           }}
           columns={tableColumns}
           request={async (params = {}) => {
@@ -146,7 +148,8 @@ function Purchase(props: any) {
             };
           }}
           toolbar={{
-            extra: () => // <Button key="show">导入发货</Button>,
+            extra: () => (
+              // <Button key="show">导入发货</Button>,
               // <Button key="out" onClick={() => {
               // 	setModalOpen(true)
               // }}>
@@ -158,10 +161,10 @@ function Purchase(props: any) {
                 onClick={purchaseExportListClick}
               >
                 导出
-              </Button>,
+              </Button>
+            ),
           }}
         />
-
       </XPageContainer>
       {/* <TabPane
         tabList={PURCHASE_ORDER_TABLIST}

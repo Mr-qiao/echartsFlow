@@ -16,7 +16,7 @@ import {
   Space,
   Table,
 } from '@xlion/component';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { history } from 'umi';
 
@@ -128,7 +128,7 @@ function PurchaseDetail() {
     {
       title: '操作时间',
       dataIndex: 'gmtCreate',
-      render: (i: any) => moment(i).format('YYYY-MM-DD HH:mm:ss'),
+      render: (i: any) => dayjs(i).format('YYYY-MM-DD HH:mm:ss'),
     },
   ];
   const updateAction = (action: any, value?: any) => {
@@ -138,9 +138,9 @@ function PurchaseDetail() {
       detailStatusParamList:
         action === 4
           ? dataSource.map((item: any) => ({
-            ...item,
-            purchaseOrderDetailId: item.id,
-          }))
+              ...item,
+              purchaseOrderDetailId: item.id,
+            }))
           : undefined,
       rejectReason: action === 4 ? value.rejectReason : undefined,
     };
@@ -264,7 +264,7 @@ function PurchaseDetail() {
           <Item label={'SKU数'}>{data.skuNumber}</Item>
           <Item label={'当前状态'}>{data.statusDesc}</Item>
           <Item label={'预计交付日期'}>
-            {moment(data.expectedTime).format('YYYY-MM-DD')}
+            {dayjs(data.expectedTime).format('YYYY-MM-DD')}
           </Item>
         </Descriptions>
         {bhShow ? (

@@ -2,7 +2,6 @@
  * @file 尺寸标准
  */
 import { PlusOutlined } from '@ant-design/icons';
-import { math, uuid } from '@xlion/utils';
 import {
   Button,
   Col,
@@ -12,12 +11,13 @@ import {
   Input,
   InputNumber,
   Row,
+  Table,
   TableProps,
   Typography,
-  Table
 } from '@xlion/component';
+import { math, uuid } from '@xlion/utils';
+import dayjs from 'dayjs';
 import { pick } from 'lodash-es';
-import moment from 'moment';
 import { useEffect } from 'react';
 
 import ss from '../../index.less';
@@ -26,13 +26,19 @@ import { IStepProps } from '../../types';
 const FormItem = Form.Item;
 const FormList = Form.List;
 
-const StandardSize: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => {
+const StandardSize: React.FC<IStepProps> = ({
+  sampleInfo,
+  proofInfo,
+  onOk,
+}) => {
   const [form] = Form.useForm();
 
   useEffect(() => {
     form.setFieldsValue({
       fangMaId: proofInfo.fangMaId,
-      fangMaTime: proofInfo.fangMaTime ? moment(proofInfo.fangMaTime) : undefined,
+      fangMaTime: proofInfo.fangMaTime
+        ? dayjs(proofInfo.fangMaTime)
+        : undefined,
       sizeDetailList:
         proofInfo.sizeDetailList?.map(({ sizeList = [], ...rest }: any) => {
           return {
@@ -51,9 +57,16 @@ const StandardSize: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => 
       const values = await form.validateFields();
       const data = {
         ...values,
-        fangMaTime: values.fangMaTime ? moment(values.fangMaTime).format('YYYY-MM-DD') : undefined,
+        fangMaTime: values.fangMaTime
+          ? dayjs(values.fangMaTime).format('YYYY-MM-DD')
+          : undefined,
         sizeDetailList: values.sizeDetailList.map((item: any) => ({
-          ...pick(item, ['positionName', 'measureType', 'errorRange', 'modelPrice']),
+          ...pick(item, [
+            'positionName',
+            'measureType',
+            'errorRange',
+            'modelPrice',
+          ]),
           sizeList: Object.keys(item)
             .filter((key) => key.startsWith('size-'))
             .map((key) => {
@@ -104,7 +117,11 @@ const StandardSize: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => 
         render: (_, record, index) => {
           const field = fields[index];
           return (
-            <FormItem {...field} className="mb-0" name={[field.name, 'measureType']}>
+            <FormItem
+              {...field}
+              className="mb-0"
+              name={[field.name, 'measureType']}
+            >
               <Input placeholder="请输入" maxLength={100} />
             </FormItem>
           );
@@ -115,8 +132,18 @@ const StandardSize: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => 
         render: (_, record, index) => {
           const field = fields[index];
           return (
-            <FormItem {...field} className="mb-0" name={[field.name, 'errorRange']}>
-              <InputNumber placeholder="请输入" min={0} max={999999.99} precision={2} step={0.01} />
+            <FormItem
+              {...field}
+              className="mb-0"
+              name={[field.name, 'errorRange']}
+            >
+              <InputNumber
+                placeholder="请输入"
+                min={0}
+                max={999999.99}
+                precision={2}
+                step={0.01}
+              />
             </FormItem>
           );
         },
@@ -126,8 +153,18 @@ const StandardSize: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => 
         render: (_, record, index) => {
           const field = fields[index];
           return (
-            <FormItem {...field} className="mb-0" name={[field.name, 'modelPrice']}>
-              <InputNumber placeholder="请输入" min={0} max={999999.99} precision={2} step={0.01} />
+            <FormItem
+              {...field}
+              className="mb-0"
+              name={[field.name, 'modelPrice']}
+            >
+              <InputNumber
+                placeholder="请输入"
+                min={0}
+                max={999999.99}
+                precision={2}
+                step={0.01}
+              />
             </FormItem>
           );
         },
@@ -138,8 +175,18 @@ const StandardSize: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => 
         render: (_, record, index) => {
           const field = fields[index];
           return (
-            <FormItem {...field} className="mb-0" name={[field.name, `size-${size}`]}>
-              <InputNumber placeholder="请输入" min={0} max={999999.99} precision={2} step={0.01} />
+            <FormItem
+              {...field}
+              className="mb-0"
+              name={[field.name, `size-${size}`]}
+            >
+              <InputNumber
+                placeholder="请输入"
+                min={0}
+                max={999999.99}
+                precision={2}
+                step={0.01}
+              />
             </FormItem>
           );
         },
@@ -191,7 +238,12 @@ const StandardSize: React.FC<IStepProps> = ({ sampleInfo, proofInfo, onOk }) => 
               dataSource={fields}
               scroll={{ x: 1090 }}
               footer={() => (
-                <Button block type="dashed" icon={<PlusOutlined />} onClick={() => add({ uuid: uuid() })}>
+                <Button
+                  block
+                  type="dashed"
+                  icon={<PlusOutlined />}
+                  onClick={() => add({ uuid: uuid() })}
+                >
                   新增一行
                 </Button>
               )}
