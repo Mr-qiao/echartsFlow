@@ -123,6 +123,7 @@ function Purchase(props: any) {
           }}
           columns={tableColumns}
           request={async (params = {}) => {
+            delete params?.time;
             const arg0 = {
               // ...filterPageName(params),
               ...params,
