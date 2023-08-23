@@ -68,9 +68,13 @@ function PurchaseDetail() {
         return (
           <GoodsTableCol
             isFooterImg={false}
-            imgList={recode.imgUrlList.map((item: any) => ({
-              src: item,
-            }))}
+            imgList={
+              recode.imgUrlList &&
+              recode.imgUrlList.length > 0 &&
+              recode.imgUrlList.map((item: any) => ({
+                src: item,
+              }))
+            }
             infoList={[
               {
                 title: '款式名称',
