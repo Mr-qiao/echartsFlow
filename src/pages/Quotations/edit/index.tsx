@@ -646,7 +646,7 @@ function QuotationEdit() {
               />
             </div>
           </Descriptions.Item>
-          <Descriptions.Item label={'工艺报价'} ca>
+          <Descriptions.Item label={'工艺报价'}>
             <div>
               <h1 style={{ margin: 0 }}>工艺报价:{gybjz}</h1>
               <div>裁剪要求：{data?.craftMap?.clippingRequest}</div>

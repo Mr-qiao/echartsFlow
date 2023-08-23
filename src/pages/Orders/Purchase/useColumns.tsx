@@ -47,7 +47,8 @@ export default function useColumns({ tabKey }): [XTableSearchItem[], XTableColum
     {
       label: '采购员',
       name: 'buyer',
-      renderFormItem: () => <SelectCpt style={{ width: '100%' }} showArrow={true} />,
+      type: 'select',
+      renderFormItem: () => <SelectCpt style={{ width: '100%' }} mode="" />,
     },
   ]
 
@@ -108,7 +109,6 @@ export default function useColumns({ tabKey }): [XTableSearchItem[], XTableColum
       title: '操作',
       fixed: 'right',
       width: 60,
-      search: false,
       render: (_: any, recode: any) => {
         return (
           <a

@@ -60,6 +60,11 @@ export default function useColumns({ drawerModal, setGoodsItem }: IProps): [XTab
         options: SHOETREE,
       },
     },
+    {
+      label: '快手商品id',
+      name: 'outsideItemCode',
+      type: 'input',
+    },
   ]
 
   // 列表配置
