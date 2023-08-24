@@ -1,14 +1,20 @@
-import BatchInput from '@/components/batchInput';
-import SelectCpt from '@/components/selectCpt';
-import TabPane from '@/components/TabPane';
-import { PURCHASE_ORDER_TABLIST } from '@/constants/orders';
-import { purchaseExportList, purchaseQueryList } from '@/services/orders';
-import { filterPageName } from '@/utils';
-import { ProTable } from '@ant-design/pro-components';
-import { Button, DatePicker, Modal } from 'antd';
-import moment from 'moment';
+// import BatchInput from '@/components/batchInput';
+// import SelectCpt from '@/components/selectCpt';
+// import TabPane from '@/components/TabPane';
+// import { PURCHASE_ORDER_TABLIST } from '@/constants/orders';
+import {
+  purchaseExportList,
+  purchaseQueryList,
+} from '@/services/orders/purchaseSales';
+// import { filterPageName } from '@/utils';
+// import { ProTable } from '@ant-design/pro-components';
+// import { Button, DatePicker, Modal } from 'antd';
+import { Button, DatePicker, XPageContainer, XTable } from '@xlion/component';
 import { useRef, useState } from 'react';
-import { history } from 'umi';
+import { PURCHASE_ORDER_TABLIST } from './constants';
+// import { TableColumns, SearchColumns } from './columns'
+// import { history } from 'umi';
+import useColumns from './useColumns';
 
 const { RangePicker } = DatePicker;
 
@@ -19,122 +25,9 @@ function Purchase(props: any) {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [tabKey, setTabKey] = useState('2') as any;
   const ref: any = useRef();
-  const columns: any = [
-    {
-      title: '序号',
-      dataIndex: 'index',
-      search: false,
-    },
-    {
-      title: '采购单号',
-      hideInTable: true,
-      dataIndex: 'purNoList',
-      renderFormItem: (item: any, _: any, form: any) => {
-        return <BatchInput />;
-      },
-    },
-    {
-      title: '货品编码',
-      hideInTable: true,
-      dataIndex: 'skuSysCodeList',
-      renderFormItem: (item: any, _: any, form: any) => {
-        return <BatchInput />;
-      },
-    },
-    {
-      title: '采购订单',
-      dataIndex: 'purNo',
-      width: 300,
-      search: false,
-      render: (_: any, recode: any) => {
-        return (
-          <a
-            onClick={() => {
-              history.push(`/orders/purchase-detail/${recode.id}`);
-            }}
-          >
-            {_}
-          </a>
-        );
-      },
-    },
-    {
-      title: 'SKU数',
-      dataIndex: 'skuNumber',
-      search: false,
-    },
-    {
-      title: '采购数量',
-      dataIndex: 'number',
-      search: false,
-    },
-    {
-      title: '采购金额',
-      dataIndex: 'amount',
-      search: false,
-    },
-    {
-      title: '预计交付日期',
-      dataIndex: 'time',
-      hideInTable: true,
-      valueType: 'dateRange',
-      search: {
-        transform: (value: any) => {
-          const [startTime, endTime] = value;
-          return {
-            expectedStartTime: moment(startTime).format('YYYY-MM-DD 00:00:00'),
-            expectedEndTime: moment(endTime).format('YYYY-MM-DD 23:59:59'),
-          };
-        },
-      },
-    },
-    {
-      title: '预计交付日期',
-      search: false,
-      dataIndex: 'expectedTime',
-      render: (i: any) => moment(i).format('YYYY-MM-DD'),
-    },
-    {
-      title: '采购状态',
-      dataIndex: 'status',
-      search: tabKey !== '0' ? false : true,
-      valueEnum: {
-        2: '待确认',
-        3: '已确认',
-        4: '已驳回',
-      },
-    },
-    {
-      title: '采购员',
-      dataIndex: 'buyer',
-      search: false,
-    },
-    {
-      title: '采购员',
-      dataIndex: 'buyer',
-      hideInTable: true,
-      renderFormItem: (item: any, _: any, form: any) => {
-        return <SelectCpt />;
-      },
-    },
-    {
-      title: '操作',
-      fixed: 'right',
-      width: 60,
-      search: false,
-      render: (_: any, recode: any) => {
-        return (
-          <a
-            onClick={() => {
-              history.push(`/orders/purchase-detail/${recode.id}`);
-            }}
-          >
-            查看
-          </a>
-        );
-      },
-    },
-  ];
+
+  const [searchColumns, tableColumns] = useColumns({ tabKey });
+
   const dcolumns: any = [
     {
       title: '导入文件名称',
@@ -207,7 +100,74 @@ function Purchase(props: any) {
   };
   return (
     <div>
-      <TabPane
+      <XPageContainer
+        tabs={{
+          activeKey: tabKey,
+          items: PURCHASE_ORDER_TABLIST,
+          onChange: (key) => handleTabChange(key),
+        }}
+        contentStyle={{ padding: 0 }}
+      >
+        <XTable
+          rowKey={'id'}
+          formRef={ref}
+          actionRef={actionRef}
+          scroll={{
+            x: 'max-content',
+          }}
+          search={{
+            defaultCollapsed: false,
+            labelWidth: 100,
+            span: 4,
+            columns: searchColumns,
+          }}
+          columns={tableColumns}
+          request={async (params = {}) => {
+            delete params?.time;
+            const arg0 = {
+              // ...filterPageName(params),
+              ...params,
+              status: tabKey === '0' ? params.status : Number(tabKey),
+              clientType: 2,
+              skuSysCodeList: params.skuSysCodeList
+                ? params.skuSysCodeList?.split(',')
+                : undefined,
+              purNoList: params.purNoList
+                ? params.purNoList?.split(',')
+                : undefined,
+            };
+            const res: any = await purchaseQueryList(arg0, {});
+            const data = res.entry.list.map((item: any, index: any) => ({
+              ...item,
+              index: index + 1,
+            }));
+            return {
+              data: data,
+              success: true,
+              // 不传会使用 data 的长度，如果是分页一定要传
+              total: res?.entry.totalRecord,
+            };
+          }}
+          toolbar={{
+            extra: () => (
+              // <Button key="show">导入发货</Button>,
+              // <Button key="out" onClick={() => {
+              // 	setModalOpen(true)
+              // }}>
+              // 	导入记录
+              // </Button>,
+              <Button
+                type="primary"
+                key="primary"
+                onClick={purchaseExportListClick}
+              >
+                导出
+              </Button>
+            ),
+          }}
+        />
+      </XPageContainer>
+      {/* <TabPane
         tabList={PURCHASE_ORDER_TABLIST}
         defaultActiveKey={tabKey}
         onChange={handleTabChange}
@@ -222,6 +182,8 @@ function Purchase(props: any) {
         rowKey={'id'}
         formRef={ref}
         request={async (params = {}, sort, filter) => {
+          console.log(params, 'params');
+
           const arg0 = {
             ...filterPageName(params),
             status: tabKey === '0' ? params.status : Number(tabKey),
@@ -290,7 +252,7 @@ function Purchase(props: any) {
           options={false}
           columns={dcolumns}
         />
-      </Modal>
+      </Modal> */}
     </div>
   );
 }

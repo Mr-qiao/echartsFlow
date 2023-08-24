@@ -10,7 +10,7 @@ import {
   LockOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Button, Form, Input, message, Spin } from 'antd';
+import { Button, Form, Input, message, Spin } from '@xlion/component';
 import { useEffect, useState } from 'react';
 import { history } from 'umi';
 import bgUrl from '../../../public/bj.png';
@@ -147,6 +147,8 @@ const Launch: any = () => {
         },
         handler,
       );
+    }).catch((err) => {
+      console.log(err, 'err')
     });
   };
   useEffect(() => {
@@ -185,6 +187,7 @@ const Launch: any = () => {
               size={'large'}
               prefix={<UserOutlined className="site-form-item-icon" />}
               placeholder="请输入用户名/邮箱"
+              bordered
             />
           </Form.Item>
           <Form.Item
@@ -203,6 +206,7 @@ const Launch: any = () => {
               type="password"
               size={'large'}
               placeholder="请输入密码"
+              bordered
               iconRender={(visible) =>
                 visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
               }

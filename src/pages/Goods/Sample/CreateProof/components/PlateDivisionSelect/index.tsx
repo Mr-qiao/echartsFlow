@@ -2,7 +2,7 @@
  * @file 版师选择
  */
 import { useDebounceFn } from 'ahooks';
-import { Empty, Select, SelectProps, Spin } from 'antd';
+import { Empty, Select, SelectProps, Spin } from '@xlion/component';
 import { useRef, useState } from 'react';
 
 import { getPlateDivisionList } from '@/services/proofDemand';

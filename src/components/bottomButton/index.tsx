@@ -1,7 +1,7 @@
 import './index.less'
-import {Button, Space} from "antd";
-import {history} from "umi";
-import React, {MouseEventHandler} from "react";
+import { Button, Space } from "@xlion/component";
+import { history } from "umi";
+import React, { MouseEventHandler } from "react";
 
 /**
  * 吸低按钮组件

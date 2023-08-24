@@ -6,7 +6,7 @@ import CustomModal from '@/components/CustomModal';
 import { useCategory } from '@/hooks';
 
 // import Api from '../../services';
-import { sampleList } from '@/services/goods';
+import { sampleList } from '@/services/goods/sample';
 import BrandSelectCpt from './BrandSelectCpt';
 
 export const SampleListModal = React.forwardRef(({ onChange }: any, ref) => {

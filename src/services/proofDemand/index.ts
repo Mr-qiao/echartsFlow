@@ -1,3 +1,6 @@
+/**
+ * 打样需求
+ */
 import { request } from '@/utils/request';
 
 /**
@@ -49,4 +52,11 @@ export function updateProofDemand(data: Recordable<any>) {
  */
 export function getPlateDivisionList(data: { name: string }) {
   return request.post('/usercenter-backend/employee/search', data);
+}
+
+
+/**打样需求 */
+// 详情
+export const proofDemandDetail = (body: { itemId: number }) => {
+  return request.post(`/item/item/designer/sample/clothes/requirement/detail`, body);
 }

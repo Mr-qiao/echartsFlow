@@ -2,9 +2,8 @@
  * @file 工艺指示
  */
 import { PlusOutlined } from '@ant-design/icons';
-import { Table } from '@xlion/component';
 import { uuid } from '@xlion/utils';
-import { Button, Form, FormListFieldData, Input, Select, Space, TableProps, Typography } from 'antd';
+import { Button, Form, FormListFieldData, Input, Select, Space, TableProps, Typography, Table } from '@xlion/component';
 import { pick } from 'lodash-es';
 import { useEffect } from 'react';
 

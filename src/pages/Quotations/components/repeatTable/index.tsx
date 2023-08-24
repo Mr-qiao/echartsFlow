@@ -1,4 +1,4 @@
-import {Button, Row, Table} from "antd";
+import { Button, Row, Table } from "@xlion/component";
 import './index.less'
 
 function RepeatTable(props: any) {
@@ -16,7 +16,7 @@ function RepeatTable(props: any) {
 			{dataSource.length > 0 ?
 				<Table
 					size={'small'}
-					scroll={{x: 900}}
+					scroll={{ x: 900 }}
 					columns={columns}
 					dataSource={dataSource}
 					pagination={false}

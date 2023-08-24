@@ -1,4 +1,4 @@
-import { Drawer, DrawerProps } from 'antd';
+import { Drawer, DrawerProps } from '@xlion/component';
 import React, { useState } from 'react';
 
 export interface IProps extends DrawerProps {

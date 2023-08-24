@@ -1,4 +1,4 @@
-import { Layout, Row, Typography } from 'antd';
+import { Layout, Row, Typography } from '@xlion/component';
 import React from 'react';
 import styles from './Guide.less';
 

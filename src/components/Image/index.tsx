@@ -1,7 +1,7 @@
 /**
  * @file 图片
  */
-import { Image as AntdImage, ImageProps } from 'antd';
+import { Image as AntdImage, ImageProps } from '@xlion/component';
 import { useState } from 'react';
 
 import { DEFAULT_IMG_SRC } from '@/constants';
@@ -16,7 +16,7 @@ const Image: React.FC<IPorps> = ({ src, previewGroup, ...rest }) => {
     <>
       <AntdImage
         fallback={DEFAULT_IMG_SRC}
-        src={src ? src : ''}
+        src={src || DEFAULT_IMG_SRC}
         preview={!(previewGroup && previewGroup?.length > 0)}
         {...rest}
         onClick={() => setVisible(true)}
@@ -27,7 +27,7 @@ const Image: React.FC<IPorps> = ({ src, previewGroup, ...rest }) => {
             preview={{ visible, onVisibleChange: (vis) => setVisible(vis) }}
           >
             {previewGroup?.map((item, i) => (
-              <AntdImage src={item} key={i} />
+              <AntdImage src={item} preview={{ src: item }} key={i} />
             ))}
           </AntdImage.PreviewGroup>
         </div>

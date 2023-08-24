@@ -2,6 +2,7 @@ import { defineConfig } from '@umijs/max';
 // import {routes} from './src/routes';
 import zhCN from 'antd/lib/locale/zh_CN';
 import routes from './src/routes';
+import path from 'path'
 
 export default defineConfig({
   publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
@@ -19,6 +20,9 @@ export default defineConfig({
     configProvider: {
       locale: zhCN,
     },
+  },
+  alias: {
+    dayjs: path.join(__dirname, './node_modules/dayjs'),
   },
   layout: {
     title: '设计师中台-工厂端',

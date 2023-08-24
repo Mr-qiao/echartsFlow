@@ -1,7 +1,6 @@
 import { uploadPicture } from '@/services/loginRegister';
-import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import { Image, message, Upload } from 'antd';
-import type { RcFile, UploadProps } from 'antd/es/upload/interface';
+import { Image, message, Thumbnail, Upload, UploadProps, } from '@xlion/component'
+import { RcFile } from '@xlion/component/dist/upload'
 import React, { useEffect, useState } from 'react';
 
 const getBase64 = (img: RcFile, callback: (url: string) => void) => {
@@ -22,6 +21,11 @@ const beforeUpload = (file: RcFile) => {
   return isJpgOrPng && isLt2M;
 };
 
+
+
+const { AntdUpload } = Upload
+
+
 const ImgUpload: React.FC = (props: any) => {
   const { onChange, value = '' } = props;
   const [loading, setLoading] = useState(false);
@@ -38,10 +42,11 @@ const ImgUpload: React.FC = (props: any) => {
   }, [value]);
 
   const uploadButton = (
-    <div>
-      {loading ? <LoadingOutlined /> : <PlusOutlined />}
-      <div style={{ marginTop: 8 }}>上传</div>
-    </div>
+    <Thumbnail size={100} />
+    // <div className='ui-upload ui-upload-select'>
+    //   {loading ? <LoadingOutlined /> : <PlusOutlined />}
+    //   <div style={{ marginTop: 8 }}>上传</div>
+    // </div>
   );
 
   return (
@@ -57,7 +62,7 @@ const ImgUpload: React.FC = (props: any) => {
           />
         </div>
       ) : null}
-      <Upload
+      <AntdUpload
         name="avatar"
         listType="picture-card"
         className="avatar-uploader"
@@ -67,7 +72,7 @@ const ImgUpload: React.FC = (props: any) => {
         onChange={handleChange}
       >
         {uploadButton}
-      </Upload>
+      </AntdUpload>
     </div>
   );
 };

@@ -1,23 +1,17 @@
 import './index.less';
 
 import { math } from '@xlion/utils';
-import { Col, Row, Spin, Table, Space } from 'antd';
-import { groupBy } from 'lodash-es';
-import { Descriptions, GlobalModal, Typography } from '@xlion/component';
+import { Descriptions, GlobalModal, Typography, Table, Space, Col, Row, Image } from '@xlion/component';
 import React, { useEffect, useState } from 'react';
 
-import Image from '@/components/Image';
 import { formatPriceRange, formatRatioRange, transformFen2Yuan } from '@/utils';
 
 import ImagesGroup from './components/ImagesGroup';
 
-import { useParams } from '@umijs/max';
-import { AttrTypes } from '../Create/constants';
-// import Api from '../services';
 import useColumns from './columns';
 import { ModalType, MoreModal } from './components/MoreModal';
 import dynamicProps from './DynamicProps';
-import { saveViewByIdOnlyDetail } from '@/services/goods';
+import { supplierViewByIdOnlyDetail } from '@/services/goods/supplier';
 
 // import ss from './index.less'
 
@@ -43,7 +37,7 @@ const GoodsInfo = React.forwardRef(({ id, isSupplier = false }: any, ref) => {
   //获取商品信息
   async function getGoodsDetail(itemId: any) {
     try {
-      const { entry } = await saveViewByIdOnlyDetail({ itemId });
+      const { entry } = await supplierViewByIdOnlyDetail({ itemId });
 
       const { item: baseInfo, itemPropertyList = [], skus = [], otherViewProperties = {} } = entry;
       let data: any = {
@@ -147,27 +141,6 @@ const GoodsInfo = React.forwardRef(({ id, isSupplier = false }: any, ref) => {
     <div className="goods__detail-wrap">
       <Row className="u-w100">
         <Col>
-          {/* <Image
-            width={200}
-            height={200}
-            src={detail?.mainImg}
-            style={{ borderRadius: 10 }}
-          />
-          <div className="u-flex u-mt10">
-            {detail.images
-              ?.filter((_item: any, i: number) => i !== 0 && i <= 3)
-              ?.map((item: any, i: number) => {
-                return (
-                  <Image
-                    key={i}
-                    width={60}
-                    height={60}
-                    src={item}
-                    style={{ borderRadius: 10 }}
-                  />
-                );
-              })}
-          </div> */}
           <ImagesGroup images={detail?.images?.concat([])} />
         </Col>
         <Col span={18}>
@@ -209,7 +182,6 @@ const GoodsInfo = React.forwardRef(({ id, isSupplier = false }: any, ref) => {
               {detail.outsideItemCode || '-'}
             </Descriptions.Item>
             {renderBaseProps()}
-
           </Descriptions>
         </Col>
         {detail.contents && detail?.contents.length > 0 && (

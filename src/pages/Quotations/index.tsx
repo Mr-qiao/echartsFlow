@@ -1,237 +1,67 @@
-import GoodsTableCol from '@/components/goodsTableCol';
-import { queryList } from '@/services/quotations';
-import { filterPageName } from '@/utils';
-import { ProTable } from '@ant-design/pro-components';
-import { DatePicker } from 'antd';
-import moment from 'moment';
+import { quotationsList } from '@/services/quotations';
 import { useRef, useState } from 'react';
-import { history } from 'umi';
+import { XTable } from '@xlion/component'
 
-const { RangePicker } = DatePicker;
+import useColumns from './useColumns';
+import dayjs from 'dayjs';
+
+
+
 
 function Quotation() {
-  const [activeKey, setActiveKey] = useState('0');
+  const [activeKey,] = useState('0');
   const actionRef = useRef() as any;
-  const columns: any = [
-    {
-      title: '商品ID',
-      dataIndex: 'itemId',
-      search: false,
-    },
-    {
-      title: '款式编码',
-      dataIndex: 'itemSysCode',
-      hideInTable: true,
-    },
-    {
-      title: '商品名称',
-      dataIndex: 'itemTitle',
-      hideInTable: true,
-    },
-    {
-      title: '商品信息',
-      search: false,
-      render: (_: any, recode: any) => {
-        return (
-          <GoodsTableCol
-            imgList={recode?.imgUrlList?.map((item: any) => ({ src: item }))}
-            infoList={[
-              {
-                title: '商品名称',
-                key: recode?.itemTitle,
-              },
-              {
-                title: '商品类目',
-                key: recode?.categoryName,
-              },
-              {
-                title: '商品品牌',
-                key: recode?.brandName,
-              },
-              {
-                title: '颜色',
-                key: recode?.color,
-              },
-              {
-                title: '尺码',
-                key: recode?.size,
-              },
-            ]}
-          />
-        );
-      },
-    },
-    {
-      title: '询价用途',
-      dataIndex: 'domainType',
-      valueEnum: {
-        1: '样衣',
-        2: '款式',
-      },
-    },
-    {
-      title: '报价类型',
-      dataIndex: 'answerType',
-      valueEnum: {
-        1: '成品报价',
-        2: 'boom报价',
-      },
-    },
-    {
-      title: '报价状态',
-      dataIndex: 'status',
-      valueEnum: {
-        1: '未开始',
-        2: '待报价',
-        3: '已报价',
-        4: '已结束',
-        // 5: '已采用',
-      },
-    },
-    {
-      title: '预计采购量',
-      dataIndex: 'number',
-      search: false,
-    },
-    {
-      title: '询价时间',
-      dataIndex: 'time',
-      hideInTable: true,
-      renderFormItem: (item: any, _: any, form: any) => {
-        return (
-          <RangePicker
-            showTime
-            placeholder={['请选择开始时间', '请选择结束时间']}
-          />
-        );
-      },
-    },
-    {
-      title: '报价时间',
-      dataIndex: 'bjTime',
-      hideInTable: true,
-      renderFormItem: (item: any, _: any, form: any) => {
-        return (
-          <RangePicker
-            showTime
-            placeholder={['请选择开始时间', '请选择结束时间']}
-          />
-        );
-      },
-    },
-    {
-      title: '询价日期',
-      dataIndex: 'askTime',
-      search: false,
-      width: 180,
-      render: (_: any, recode: any) => {
-        return (
-          <div>{moment(recode.askTime).format('YYYY-MM-DD HH:mm:ss')}</div>
-        );
-      },
-    },
-    {
-      title: '报价截止日期',
-      dataIndex: 'askEndTime',
-      search: false,
-      width: 180,
-      render: (_: any, recode: any) => {
-        return (
-          <div>{moment(recode.askEndTime).format('YYYY-MM-DD HH:mm:ss')}</div>
-        );
-      },
-    },
-    // {
-    // 	title: '结束时间',
-    // 	dataIndex: 'endTime',
-    // 	search: false,
-    // 	width: 180,
-    // 	render: (_: any, recode: any) => {
-    // 		return (
-    // 			<div>{moment(recode.endTime).format('YYYY-MM-DD HH:mm:ss')}</div>
-    // 		);
-    // 	},
-    // },
-    {
-      title: '操作',
-      search: false,
-      align: 'center',
-      fixed: 'right',
-      width: 100,
-      render: (_: any, recode: any) => {
-        return recode.status !== 1 && recode.status !== 4 ? (
-          <a
-            onClick={() => {
-              if (recode.answerType === 1) {
-                history.push(`/quotations/editBoom/${recode.id}`);
-                return;
-              }
-              history.push(`/quotations/edit/${recode.id}`);
-            }}
-          >
-            {recode.status === 3 ? '修改报价' : '填写报价'}
-          </a>
-        ) : null;
-      },
-    },
-  ];
+  const [searchColumns, tableColumns] = useColumns()
   return (
-    <ProTable
-      columns={columns}
+    <XTable
+      rowKey={'id'}
+      actionRef={actionRef}
       scroll={{
         x: 'max-content',
       }}
-      rowKey={'id'}
+      columns={tableColumns}
       search={{
-        // labelWidth: 120,
         labelWidth: 100,
-        span: 6,
+        span: 4,
         defaultCollapsed: false,
+        columns: searchColumns
       }}
-      actionRef={actionRef}
       request={async (
-        // 第一个参数 params 查询表单和 params 参数的结合
-        // 第一个参数中一定会有 pageSize 和  current ，这两个参数是 antd 的规范
-        params,
-        sort,
-        filter,
+        params
       ) => {
         const arg0 = {
           status: activeKey === '0' ? undefined : activeKey,
-          ...filterPageName(params),
+          ...params,
           itemIdList: params.itemId && [params.itemId],
+
           askStartTime:
             params.time?.length > 0
-              ? moment(params.time[0]).valueOf()
+              ? dayjs(params.time[0]).valueOf()
               : undefined,
 
           askEndTime:
             params.time?.length > 0
-              ? moment(params.time[1]).valueOf()
+              ? dayjs(params.time[1]).valueOf()
               : undefined,
           answerStartTime:
             params.bjTime?.length > 0
-              ? moment(params.bjTime[0]).valueOf()
+              ? dayjs(params.bjTime[0]).valueOf()
               : undefined,
 
           answerEndTime:
             params.bjTime?.length > 0
-              ? moment(params.bjTime[1]).valueOf()
+              ? dayjs(params.bjTime[1]).valueOf()
               : undefined,
         };
-        const res = await queryList(arg0, {});
-        const data = res.entry.list;
+        const { entry }: any = await quotationsList(arg0, {});
         return {
-          data: data,
-          success: res.success,
+          data: entry.list || [],
+          success: true,
           // 不传会使用 data 的长度，如果是分页一定要传
-          total: res?.entry.totalRecord,
+          total: entry.totalRecord,
         };
       }}
-      defaultSize={'small'}
-      form={{
-        size: 'small',
-      }}
+    />
     // toolbar={
     // 	{
     // 		menu: {
@@ -262,7 +92,7 @@ function Quotation() {
     // 		},
     // 	} as any
     // }
-    ></ProTable>
+
   );
 }
 

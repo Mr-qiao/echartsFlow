@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { categoryTree } from '@/services/goods';
+import { categoryTree } from '@/services/goods/supplier';
 
 // const cookie =  localStorage.getItem('supplier-token');
 // console.log(cookie, 'asdasdas')
@@ -10,7 +10,7 @@ export const useCategory = () => {
   useEffect(() => {
     // if (!cookie) return;
     categoryTree({}, {}).then((res) => {
-      setCategory(res.entry || []);
+      setCategory(res?.entry || []);
     });
     // console.log(cookie, 'cookie')
   }, []);

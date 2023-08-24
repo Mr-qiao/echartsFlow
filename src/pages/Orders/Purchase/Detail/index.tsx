@@ -3,7 +3,7 @@ import {
   purchaseQueryById,
   purchaseQueryByIdLogList,
   purchaseUpdateStatus,
-} from '@/services/orders';
+} from '@/services/orders/purchaseSales';
 import { useParams } from '@umijs/max';
 import {
   Button,
@@ -15,8 +15,8 @@ import {
   Modal,
   Space,
   Table,
-} from 'antd';
-import moment from 'moment';
+} from '@xlion/component';
+import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { history } from 'umi';
 
@@ -68,9 +68,13 @@ function PurchaseDetail() {
         return (
           <GoodsTableCol
             isFooterImg={false}
-            imgList={recode.imgUrlList.map((item: any) => ({
-              src: item,
-            }))}
+            imgList={
+              recode.imgUrlList &&
+              recode.imgUrlList.length > 0 &&
+              recode.imgUrlList.map((item: any) => ({
+                src: item,
+              }))
+            }
             infoList={[
               {
                 title: '款式名称',
@@ -128,7 +132,7 @@ function PurchaseDetail() {
     {
       title: '操作时间',
       dataIndex: 'gmtCreate',
-      render: (i: any) => moment(i).format('YYYY-MM-DD HH:mm:ss'),
+      render: (i: any) => dayjs(i).format('YYYY-MM-DD HH:mm:ss'),
     },
   ];
   const updateAction = (action: any, value?: any) => {
@@ -264,7 +268,7 @@ function PurchaseDetail() {
           <Item label={'SKU数'}>{data.skuNumber}</Item>
           <Item label={'当前状态'}>{data.statusDesc}</Item>
           <Item label={'预计交付日期'}>
-            {moment(data.expectedTime).format('YYYY-MM-DD')}
+            {dayjs(data.expectedTime).format('YYYY-MM-DD')}
           </Item>
         </Descriptions>
         {bhShow ? (

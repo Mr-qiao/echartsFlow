@@ -3,13 +3,14 @@
  */
 import { useNavigate, useSearchParams } from '@umijs/max';
 import { useMount } from 'ahooks';
-import { Button, message, Steps } from 'antd';
+import { Button, message, Steps } from '@xlion/component';
 import { pick } from 'lodash-es';
 import React, { useState } from 'react';
 
 import { addProofDemand, updateProofDemand } from '@/services/proofDemand';
 
-import { proofDemandDetail, sampleDetail } from '@/services/goods';
+import { sampleDetail } from '@/services/goods/sample';
+import { proofDemandDetail } from '@/services/proofDemand'
 import Step1 from './components/Step1';
 import Step2 from './components/Step2';
 import Step3 from './components/Step3';
@@ -22,12 +23,12 @@ const steps: Array<{
   title: string;
   content: React.FunctionComponent<IStepProps>;
 }> = [
-  { title: '基本信息', content: Step1 },
-  { title: '图样附图', content: Step2 },
-  { title: '尺寸标准', content: Step3 },
-  { title: '物料清单', content: Step4 },
-  { title: '工艺指示', content: Step5 },
-];
+    { title: '基本信息', content: Step1 },
+    { title: '图样附图', content: Step2 },
+    { title: '尺寸标准', content: Step3 },
+    { title: '物料清单', content: Step4 },
+    { title: '工艺指示', content: Step5 },
+  ];
 
 const Confirm = () => {
   const [current, setCurrent] = useState(0);

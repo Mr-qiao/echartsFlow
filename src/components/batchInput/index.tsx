@@ -2,7 +2,7 @@ import {
 	Input,
 	message,
 	Popover
-} from "antd"
+} from "@xlion/component"
 import React, { useState } from 'react'
 
 const BatchInput = (props) => {

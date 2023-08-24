@@ -1,37 +1,40 @@
-import { request } from '@umijs/max';
+/**
+ * 报价管理
+ */
+import { httpRequest, request } from '@/utils/request'
 
-export function queryList(body: object, options: any) {
-  return request('/designweb/supplier/ask/page', {
-    method: 'POST',
-    data: body,
-    // ...(options || {
-    headers: {
-      'content-type': 'application/json',
-    },
-    // }),
-  });
+/**
+ * 报价列表
+ * @param body 
+ * @param options 
+ * @returns 
+ */
+export function quotationsList(body: object, options: any) {
+  return httpRequest.post('/designweb/supplier/ask/page', body, options);
 }
 
-export async function queryById(
+/**
+ * 报价详情
+ * @param params 
+ * @param options 
+ * @returns 
+ */
+export async function quotationsById(
   params?: any,
   options?: { [key: string]: any },
 ) {
-  return request('/designweb/supplier/answer/get', {
-    method: 'GET',
-    params: {
-      ...params,
-    },
-    ...(options || {}),
-  });
+  return httpRequest.post('/designweb/supplier/answer/get', params, options);
 }
 
-export async function updateById(
+/**
+ * 更新报价
+ * @param params 
+ * @param options 
+ * @returns 
+ */
+export async function quotationsUpdateById(
   params?: any,
   options?: { [key: string]: any },
 ) {
-  return request('/designweb/supplier/answer/update', {
-    method: 'POST',
-    data: params,
-    ...(options || {}),
-  });
+  return httpRequest.post('/designweb/supplier/answer/update', params, options);
 }

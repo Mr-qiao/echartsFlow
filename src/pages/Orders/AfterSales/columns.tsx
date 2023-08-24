@@ -1,9 +1,11 @@
 import { useState } from 'react';
 
-import { ProColumns, ProFormInstance } from '@ant-design/pro-components';
-import { Badge, Popover, Select } from 'antd';
-import Tag from 'antd/lib/tag';
-import moment from 'moment';
+// import { XTableColumns, XTableColumnType } from '@ant-design/pro-components';
+import { Badge, Popover, Select, Tag } from '@xlion/component';
+import { XTableColumns } from '@xlion/component/dist/x-table';
+// import { Badge, Popover, Select } from 'antd';
+// import Tag from 'antd/lib/tag';
+import dayjs from 'dayjs';
 
 import BatchInput from '@/components/batchInput';
 import Image from '@/components/Image';
@@ -19,6 +21,10 @@ import {
 import { useSearchColumns, useSelectDict } from './hooks';
 import { DataType } from './types';
 
+import {
+  XTableColumnType,
+  XTableSearchItem,
+} from '@xlion/component/dist/x-table/interface';
 import ItemContainer from './components/ItemContainer';
 import PropoverTable from './components/PropoverTable';
 enum SELECT_TYPE {
@@ -26,25 +32,44 @@ enum SELECT_TYPE {
   SHOP_STATUS = 'shopStatus',
   ORDER_STATUS = 'orderStatus',
 }
-const ORDER_TYPE_DICT = [
-  { label: '售后单号', value: 'asIds' },
-  { label: '平台售后单', value: 'outerAsIds' },
-  { label: '平台订单号', value: 'soIds' },
-  { label: '系统订单号', value: 'oIds' },
-];
-export const AFTER_SALES_TIME_TYPE_DICT = [
-  { label: '申请日期', value: 'AS_DATE' },
-  { label: '付款日期', value: 'PAY_DATE' },
-  { label: '下单日期', value: 'ORDER_DATE' },
-  { label: '更新日期', value: 'MODIFIED_DATE' },
-  { label: '入仓时间选择', value: 'RECEIVE_DATE' },
-  { label: '发货日期', value: 'SEND_DATE' },
-];
-const SELECT_TYPE_DICT = [
-  { label: '售后类型', value: SELECT_TYPE.TYPE },
-  { label: '平台状态', value: SELECT_TYPE.SHOP_STATUS },
-  { label: '原订单状态', value: SELECT_TYPE.ORDER_STATUS },
-];
+// const ORDER_TYPE_DICT = [
+//   { label: '售后单号', value: 'asIds' },
+//   { label: '平台售后单', value: 'outerAsIds' },
+//   { label: '平台订单号', value: 'soIds' },
+//   { label: '系统订单号', value: 'oIds' },
+// ];
+const ORDER_TYPE_DICT = {
+  asIds: '售后单号',
+  outerAsIds: '平台售后单',
+  soIds: '平台订单号',
+  oIds: '系统订单号',
+};
+// export const AFTER_SALES_TIME_TYPE_DICT = [
+//   { label: '申请日期', value: 'AS_DATE' },
+//   { label: '付款日期', value: 'PAY_DATE' },
+//   { label: '下单日期', value: 'ORDER_DATE' },
+//   { label: '更新日期', value: 'MODIFIED_DATE' },
+//   { label: '入仓时间选择', value: 'RECEIVE_DATE' },
+//   { label: '发货日期', value: 'SEND_DATE' },
+// ];
+export const AFTER_SALES_TIME_TYPE_DICT = {
+  AS_DATE: '申请日期',
+  PAY_DATE: '付款日期',
+  ORDER_DATE: '下单日期',
+  MODIFIED_DATE: '更新日期',
+  RECEIVE_DATE: '入仓时间选择',
+  SEND_DATE: '发货日期',
+};
+// const SELECT_TYPE_DICT = [
+//   { label: '售后类型', value: SELECT_TYPE.TYPE },
+//   { label: '平台状态', value: SELECT_TYPE.SHOP_STATUS },
+//   { label: '原订单状态', value: SELECT_TYPE.ORDER_STATUS },
+// ];
+const SELECT_TYPE_DICT = {
+  [SELECT_TYPE.TYPE]: '售后类型',
+  [SELECT_TYPE.SHOP_STATUS]: '平台状态',
+  [SELECT_TYPE.ORDER_STATUS]: '原订单状态',
+};
 //售后订单枚举 keys
 const afterSalesKeys = [
   AFTER_SALES_TYPE.RETURN_SREFUND,
@@ -57,13 +82,13 @@ const afterSalesKeys = [
 //平台状态 枚举keys
 const platformKeys = [PLATFORM_STATUS.WAIT_SELLER_AGREE];
 interface IProps {
-  formRef: React.MutableRefObject<ProFormInstance | undefined>;
+  formRef?: any;
 }
-function useColumns({ formRef }: IProps): [ProColumns<DataType>[], () => void] {
+function useColumns({
+  formRef,
+}: IProps): [XTableSearchItem[], XTableColumns<DataType>] {
   const [salesType, setSalesType] = useState<string>(SELECT_TYPE.TYPE);
-  const [timeType, setTimeType] = useState<string>(
-    AFTER_SALES_TIME_TYPE_DICT[0].value,
-  );
+  const [timeType, setTimeType] = useState<string>('AS_DATE');
 
   //售后类型
   const [afterSalesDict, afterSalesDictMap] = useSelectDict(AFTER_SALES_DICT);
@@ -78,6 +103,7 @@ function useColumns({ formRef }: IProps): [ProColumns<DataType>[], () => void] {
     formRef,
     renderFormItem: () => <BatchInput />,
     options: ORDER_TYPE_DICT,
+    name: 'orderType',
   });
   //类型 搜索
   const [item_02, resetItem_02] = useSearchColumns({
@@ -100,67 +126,79 @@ function useColumns({ formRef }: IProps): [ProColumns<DataType>[], () => void] {
     onLabelChange: (value) => {
       setSalesType(value);
     },
+    name: 'salesType',
   });
   //日期 搜索
   const [item_03, resetItem_03] = useSearchColumns({
     formRef,
-    valueType: 'dateRange',
+    type: 'dateRange',
     options: AFTER_SALES_TIME_TYPE_DICT,
     onLabelChange: (value: string) => {
       setTimeType(value);
     },
-    search: {
-      transform: (value) => {
-        const [dateStart, dateEnd] = [
-          moment(value[0]).format('YYYY-MM-DD 00:00:00'),
-          moment(value[1]).format('YYYY-MM-DD 23:59:59'),
-        ];
-        return {
-          dateType: timeType,
-          dateStart,
-          dateEnd,
-        };
+    // search: {
+    transform: (value) => {
+      const [dateStart, dateEnd] = [
+        dayjs(value[0]).format('YYYY-MM-DD 00:00:00'),
+        dayjs(value[1]).format('YYYY-MM-DD 23:59:59'),
+      ];
+      return {
+        dateType: timeType,
+        dateStart,
+        dateEnd,
+      };
+      // },
+    },
+    name: 'timeType',
+    fieldProps: {
+      style: {
+        width: '100%',
       },
     },
   });
 
   // 搜索条件
-  const TABLE_SEARCH_COLUMSA = [
+  const TABLE_SEARCH_COLUMSA: XTableSearchItem[] = [
     { ...item_01 },
     {
-      title: '商品编码',
-      dataIndex: 'skuIds',
+      label: '商品编码',
+      name: 'skuIds',
+      type: 'input',
       renderFormItem: () => <BatchInput />,
     },
     {
-      title: '款式名称',
-      dataIndex: 'itemName',
+      label: '款式名称',
+      name: 'itemName',
+      type: 'input',
     },
     {
-      title: '商品ID',
-      dataIndex: 'shopSkuIds',
+      label: '商品ID',
+      name: 'shopSkuIds',
+      type: 'input',
       renderFormItem: () => <BatchInput />,
     },
     {
-      title: '快递单号',
-      dataIndex: 'lIds',
+      label: '快递单号',
+      name: 'lIds',
+      type: 'input',
       renderFormItem: () => <BatchInput />,
     },
     { ...item_02 },
     {
-      title: '快递公司',
-      dataIndex: 'logisticsCompany',
+      label: '快递公司',
+      name: 'logisticsCompany',
+      type: 'input',
     },
 
     { ...item_03 },
-  ] as ProColumns<DataType, 'text'>[];
+  ];
 
   //列表信息
-  const TABLE_LIST_COLUMSA: ProColumns<DataType, 'text'>[] = [
+  const TABLE_LIST_COLUMSA: XTableColumnType<DataType>[] = [
     {
       title: '序号',
       dataIndex: 'key11',
-      valueType: 'indexBorder',
+      valueType: 'index',
       width: 60,
     },
     {
@@ -284,7 +322,7 @@ function useColumns({ formRef }: IProps): [ProColumns<DataType>[], () => void] {
             <Popover
               zIndex={3}
               destroyTooltipOnHide={{ keepParent: false }}
-              placement="left"
+              placement="bottom"
               // title={'预订信息'}
               trigger="hover"
               content={<PropoverTable dataSource={record['items'] as []} />}
@@ -371,26 +409,21 @@ function useColumns({ formRef }: IProps): [ProColumns<DataType>[], () => void] {
       },
     },
   ];
-
-  function resetSearch() {
-    resetItem_01?.();
-    resetItem_02?.();
-    resetItem_03?.();
-  }
   return [
-    [
-      ...TABLE_SEARCH_COLUMSA.map((item) => {
-        item['hideInTable'] = true;
-        item['key'] = item['dataIndex'] as string;
-        return item;
-      }),
-      ...TABLE_LIST_COLUMSA.map((item) => {
-        item['hideInSearch'] = true;
-        item['key'] = item['dataIndex'] as string;
-        return item;
-      }),
-    ] as ProColumns<DataType>[],
-    resetSearch,
+    // [
+    //   ...TABLE_SEARCH_COLUMSA.map((item) => {
+    //     // item['hideInTable'] = true;
+    //     item['key'] = item['dataIndex'] as string;
+    //     return item;
+    //   }),
+    //   ...TABLE_LIST_COLUMSA.map((item) => {
+    //     // item['hideInSearch'] = true;
+    //     item['key'] = item['dataIndex'] as string;
+    //     return item;
+    //   }),
+    // ] as XTableColumns<DataType>[],
+    TABLE_SEARCH_COLUMSA,
+    TABLE_LIST_COLUMSA,
   ];
 }
 export default useColumns;
