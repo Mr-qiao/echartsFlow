@@ -142,9 +142,9 @@ function PurchaseDetail() {
       detailStatusParamList:
         action === 4
           ? dataSource.map((item: any) => ({
-              ...item,
-              purchaseOrderDetailId: item.id,
-            }))
+            ...item,
+            purchaseOrderDetailId: item.id,
+          }))
           : undefined,
       rejectReason: action === 4 ? value.rejectReason : undefined,
     };
