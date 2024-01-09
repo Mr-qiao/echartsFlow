@@ -10,7 +10,6 @@ import 'antd/dist/reset.css';
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
 import { useState } from 'react';
-import logo from '../public/imglogo.png';
 import './global.less';
 import { errorConfig } from './requestErrorConfig';
 import './style/base.less';
@@ -44,7 +43,9 @@ export const layout = () => {
       <div className="u-f__center">
         {/* <img src={logo} style={{ width: '200px', height: '80px' }} /> */}
         {/* <img src={logo} alt="" style={{ width: '200px', height: '80px' }} /> */}
-        <h1 className='u-fs20' style={{ margin: '20px 0 20px 20px' }}>共享出行监管平台</h1>
+        <h1 className="u-fs20" style={{ margin: '20px 0 20px 20px' }}>
+          可视化监管平台
+        </h1>
       </div>
     ),
     menu: {
