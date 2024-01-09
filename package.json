@@ -27,7 +27,6 @@
     "dayjs": "^1.11.8",
     "js-cookie": "^3.0.1",
     "jsencrypt": "^3.3.2",
-    "lodash": "^4.17.21",
     "lodash-es": "^4.17.21",
     "prop-types": "^15.8.1",
     "react-mentions": "^4.4.7",

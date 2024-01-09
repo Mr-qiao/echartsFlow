@@ -1,14 +1,12 @@
 // 运行时配置
-
 import AvatarName from '@/components/AvatarName';
 import Breadcrumb from '@/components/Breadcrumb';
-import config from '@/config';
 import { PageContainer } from '@ant-design/pro-components';
 import { ConfigProvider } from 'antd'
+import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { useLocation } from '@umijs/max';
 import zhCN from 'antd/es/locale/zh_CN';
 
-// import { Monitor } from '@xlion/monitor';
 import 'antd/dist/reset.css';
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
@@ -20,14 +18,6 @@ import './style/base.less';
 
 dayjs.locale('zh-cn');
 
-const { ajaxBaseUrlKI } = config;
-
-// Monitor.init({
-//   appCode: 'SCM_FACOTRY',
-//   reportUrl: ajaxBaseUrlKI,
-//   listenRequest: false,
-//   listenRoute: true,
-// });
 
 // 全局初始化数据配置，用于 Layout 用户信息和权限初始化
 // 更多信息见文档：https://umijs.org/docs/api/runtime-config#getinitialstate
@@ -36,23 +26,15 @@ export const layout = () => {
   const [collapsed, setCollapsed] = useState(false);
   return {
     // layout: 'side',
-    logo: 'https://s.xinc818.com/assets/images/favicon.ico',
+    // logo: 'https://s.xinc818.com/assets/images/favicon.ico',
     navTheme: 'light',
     headerTheme: 'light',
     token: {
       sider: {
         colorMenuBackground: '#3D54CC',
         colorTextMenuTitle: 'rgba(255,255,255,0.95)',
-        // colorMenuItemDivider: 'transparent',
         colorTextMenu: 'rgba(255,255,255,0.75)',
-        // colorTextMenuSecondary: 'rgba(255,255,255,0.65)',
         colorTextMenuSelected: '#fff',
-        // colorBgMenuItemSelected: '#e91a00',
-        // colorBgMenuItemCollapsedHover: 'rgba(0,0,0,0.06)',
-        // colorBgMenuItemCollapsedSelected: 'rgba(0,0,0,0.15)',
-        // colorTextCollapsedButtonHover: 'rgba(0,0,0,0.65)',
-        // colorTextCollapsedButton: 'rgba(0,0,0,0.45)',
-        // colorTextMenuActive: 'rgba(255,255,255,0.95)',
       },
       header: {
         colorBgHeader: '#fff',
@@ -84,7 +66,7 @@ export const layout = () => {
         className="u-c__gray u-f__end u-cr__p u-mr8"
         onClick={() => setCollapsed(!collapsed)}
       >
-        {/* {!collapsed ? (
+        {!collapsed ? (
           <>
             <span className="u-fs12 u-mr5">收起</span>
             <MenuFoldOutlined style={{ color: '#C9CDD4' }} />
@@ -94,7 +76,7 @@ export const layout = () => {
             <span className="u-fs12 u-mr5">展开</span>
             <MenuUnfoldOutlined style={{ color: '#C9CDD4' }} />
           </>
-        )} */}
+        )}
       </div>
     ),
     siderWidth: 200,

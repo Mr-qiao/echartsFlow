@@ -162,7 +162,7 @@ const Launch: any = () => {
       <div className={styles.icon}>
         <img src={imgURL}></img>
       </div>
-      <div className={styles.jf}>设计师管理平台-工厂端</div>
+      <div className={styles.jf}>可视化平台</div>
       <div className={styles.content}>
         <div className={styles.login}>登录</div>
         <Form
@@ -258,7 +258,7 @@ const Launch: any = () => {
         </Form>
       </div>
       <div className={styles.footer}>
-        Copyright &copy; 2023辛橙信息科技有限公司技术研发部出品
+        Copyright &copy; 2023xxxxx公司技术研发部出品
       </div>
     </div>
   );

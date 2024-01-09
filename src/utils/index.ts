@@ -1,4 +1,3 @@
-import DICT_CONST from '@/common/constants';
 import Config from '@/config';
 import { getOssFileUrl } from '@/services/common';
 import { message, Modal } from 'antd';
@@ -216,19 +215,7 @@ export const dictColor = function (
   }
 };
 
-function getDict(key: string, type: string, val: string, defaultValue: string) {
-  let dictList = DICT_CONST[type];
-  try {
-    console.log(dictList, 'dictList');
-    let [item] = dictList.filter(
-      (dict) => dict['key'].toString() === key.toString(),
-    );
-    console.log([item], 'item');
-    return item ? item[val] : defaultValue;
-  } catch (e) {
-    console.log(e);
-  }
-}
+
 
 export function transformFen2Yuan<T>(
   obj: T,

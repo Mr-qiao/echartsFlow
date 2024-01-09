@@ -17,23 +17,8 @@ const ajaxBaseUrl = {
   production: 'https://api.xinc818.com',
 }[env];
 
-const ajaxBaseUrlKI = {
-  development: 'https://kunlun-api-dev.xinc818.com',
-  daily: 'https://kunlun-api-daily.xinc818.com',
-  gray: 'https://kunlun-api-gray.xinc818.com',
-  production: 'https://kunlun-api.xinc818.com',
-}[env];
-
-const loginUrl: any = {
-  development: 'https://dev.xinc818.net/sso-system/',
-  daily: 'https://daily.xinc818.net/sso-system/',
-  gray: 'https://gray.xinc818.net/sso-system/',
-  production: 'https://gaea.xinc818.com/',
-}[env];
 
 export default {
   ajaxBaseUrl,
-  ajaxBaseUrlKI,
-  loginUrl,
   env,
 };

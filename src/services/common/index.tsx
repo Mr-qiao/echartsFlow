@@ -1,5 +1,4 @@
 import { request } from '@umijs/max';
-import { camelCase } from 'lodash-es';
 
 //合作商服务概况
 

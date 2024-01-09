@@ -10,18 +10,7 @@ import {
 } from '@/services/loginRegister';
 import { setCookie } from '@/utils/utils';
 import { Link, useParams } from '@umijs/max';
-import {
-  // Alert,
-  // Button,
-  // Checkbox,
-  // Col,
-  // Form,
-  // Input,
-  // message,
-  Result,
-  // Row,
-  // Steps,
-} from 'antd';
+
 import {
   Alert,
   Button,
@@ -31,6 +20,7 @@ import {
   Input,
   message, Row,
   Steps,
+  Result
 } from 'antd'
 import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';

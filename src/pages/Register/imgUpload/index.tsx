@@ -43,10 +43,6 @@ const ImgUpload: React.FC = (props: any) => {
 
   const uploadButton = (
     <Thumbnail size={100} />
-    // <div className='ui-upload ui-upload-select'>
-    //   {loading ? <LoadingOutlined /> : <PlusOutlined />}
-    //   <div style={{ marginTop: 8 }}>上传</div>
-    // </div>
   );
 
   return (
