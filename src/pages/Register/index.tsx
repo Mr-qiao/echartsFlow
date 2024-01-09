@@ -250,7 +250,7 @@ const Launch: any = () => {
             banner
           />
         )}
-        <div className={styles.register}>工厂入驻</div>
+        <div className={styles.register}>哈哈哈入驻</div>
         <Steps
           current={Number(params.id)}
           className={styles.steps}

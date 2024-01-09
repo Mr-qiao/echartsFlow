@@ -1,4 +1,4 @@
-export const DEFAULT_NAME = '设计师中台-工厂端';
+export const DEFAULT_NAME = '可视化大屏';
 
 export const NULLVALUE = '--';
 export const NOTHING = '无';

@@ -4,17 +4,8 @@ import type { RequestConfig } from '@umijs/max';
 import { message, notification } from 'antd';
 import Cookies from 'js-cookie';
 
-// import type { KunlunProps, KunlunResponseProps } from '@xc/kunlun-request';
-// import { klRequest } from '@xc/kunlun-request';
+const { ajaxBaseUrl } = config;
 
-const { ajaxBaseUrl, ajaxBaseUrlKI } = config;
-
-// const klConfig: KunlunProps = {
-//   kl_os_type: 3,
-//   kl_platform: 3,
-//   kl_display_type: 1,
-//   baseURL: ajaxBaseUrlKI as string,
-// };
 
 const codeMessage: any = {
   200: '服务器成功返回请求的数据。',
@@ -119,14 +110,7 @@ export const errorConfig: RequestConfig = {
         };
         return false;
       }
-      const { data } = response as unknown as KunlunResponseProps;
-      // if (data.code === 401) {
-      //   message.error(data.message);
-      // }
-
-      // if (data.code === 1000010001 || data.code === 1000010031) {
-      //   navigateToLogin();
-      // }
+      const { data } = response as unknown;
       if (
         [1000010001, 1000010031].includes(data.code) ||
         ['1000010001', '1000010031'].includes(data.responseCode)
@@ -134,7 +118,6 @@ export const errorConfig: RequestConfig = {
         navigateToLogin();
       }
 
-      // data.login 初始化会调用https://api.dev.xinc818.net/iam/gt/register?platForm=IAM?
       if (
         !('code' in data ? 200 === data.code : data.status || response.status)
       ) {

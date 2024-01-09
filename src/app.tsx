@@ -28,7 +28,7 @@ export const layout = () => {
     headerTheme: 'light',
     token: {
       sider: {
-        colorMenuBackground: '#3D54CC',
+        colorMenuBackground: '#001529',
         colorTextMenuTitle: 'rgba(255,255,255,0.95)',
         colorTextMenu: 'rgba(255,255,255,0.75)',
         colorTextMenuSelected: '#fff',
@@ -42,7 +42,9 @@ export const layout = () => {
     },
     menuHeaderRender: () => (
       <div className="u-f__center">
-        <img src={logo} style={{ width: '200px', height: '80px' }} />
+        {/* <img src={logo} style={{ width: '200px', height: '80px' }} /> */}
+        {/* <img src={logo} alt="" style={{ width: '200px', height: '80px' }} /> */}
+        <h1 className='u-fs20' style={{ margin: '20px 0 20px 20px' }}>共享出行监管平台</h1>
       </div>
     ),
     menu: {
