@@ -1,7 +1,7 @@
 /**
  * 商品管理 - 供应商商品列表
  */
-import { httpRequest, request } from '@/utils/request'
+import { request } from '@/utils/request'
 
 
 /**
@@ -10,7 +10,7 @@ import { httpRequest, request } from '@/utils/request'
  * @returns 
  */
 export const supplierItemList = async (body: any) => {
-    return httpRequest.post(`/item/item/factory/supplierItem/list`, body);
+    return request.post(`/item/item/factory/supplierItem/list`, body);
 }
 
 
@@ -30,7 +30,7 @@ export const brandList = async (body: any) => {
  * @returns 
  */
 export const categoryTree = async (body: any, options: any) => {
-    return httpRequest.post(`/item/category/getCategoryTree`, body);
+    return request.post(`/item/category/getCategoryTree`, body);
 }
 
 
@@ -39,7 +39,7 @@ export const categoryTree = async (body: any, options: any) => {
  * @url https://admin-kunlun-dev.xinc818.com/#/apiDetail?requestPath=/item/categoryProperty/getItemPropertyByCategoryId
  */
 export const supplierItemPropertyByCategoryId = async (body: { categoryId: number }) => {
-    return httpRequest.post(
+    return request.post(
         `/item/categoryProperty/getItemPropertyByCategoryId`,
         {
             ...body,
@@ -53,7 +53,7 @@ export const supplierItemPropertyByCategoryId = async (body: { categoryId: numbe
  * @url https://admin-kunlun-dev.xinc818.com/#/apiDetail?requestPath=/item/item/viewByIdV2
  */
 export const supplierViewByIdV2Detail = async (body: Recordable<any>) => {
-    return httpRequest.post(`/item/item/viewByIdV2`, body);
+    return request.post(`/item/item/viewByIdV2`, body);
 };
 
 /**
@@ -61,7 +61,7 @@ export const supplierViewByIdV2Detail = async (body: Recordable<any>) => {
 * @url https://admin-kunlun-dev.xinc818.com/#/apiDetail?requestPath=/item/item/saveItem
 */
 export const supplierSaveItem = async (body: Recordable<any>) => {
-    return httpRequest.post(`/item/item/saveItem`, body);
+    return request.post(`/item/item/saveItem`, body);
 };
 
 
@@ -70,5 +70,5 @@ export const supplierSaveItem = async (body: Recordable<any>) => {
  * @url https://admin-kunlun-dev.xinc818.com/#/apiDetail?requestPath=	/item/item/viewByIdOnlyDetail
  */
 export const supplierViewByIdOnlyDetail = async (body: Recordable<any>) => {
-    return httpRequest.post('/item/item/viewByIdOnlyDetail', body);
+    return request.post('/item/item/viewByIdOnlyDetail', body);
 }

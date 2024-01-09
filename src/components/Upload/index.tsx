@@ -4,7 +4,6 @@
 import './index.less';
 
 import { UploadOutlined } from '@ant-design/icons';
-import { uuid } from '@xlion/utils';
 import { Button, message, Upload as XUpload, UploadProps } from 'antd';
 import { UploadFile } from 'antd/dist/upload'
 import { useMemo, useRef } from 'react';
@@ -38,7 +37,7 @@ const formatValue = (value: UploadFile[]) => {
   return value.map((item) => {
     if (typeof item === 'string') {
       return {
-        uid: uuid(),
+        uid: 1,
         name: (item as string)?.split('/').pop(),
         url: item,
         status: 'done',
@@ -49,7 +48,7 @@ const formatValue = (value: UploadFile[]) => {
       return {
         ...item,
         name: item.name || item.url?.split('/').pop(),
-        uid: uuid(),
+        uid: 2,
       } as UploadFile;
     }
 

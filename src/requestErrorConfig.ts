@@ -4,17 +4,17 @@ import type { RequestConfig } from '@umijs/max';
 import { message, notification } from 'antd';
 import Cookies from 'js-cookie';
 
-import type { KunlunProps, KunlunResponseProps } from '@xc/kunlun-request';
-import { klRequest } from '@xc/kunlun-request';
+// import type { KunlunProps, KunlunResponseProps } from '@xc/kunlun-request';
+// import { klRequest } from '@xc/kunlun-request';
 
 const { ajaxBaseUrl, ajaxBaseUrlKI } = config;
 
-const klConfig: KunlunProps = {
-  kl_os_type: 3,
-  kl_platform: 3,
-  kl_display_type: 1,
-  baseURL: ajaxBaseUrlKI as string,
-};
+// const klConfig: KunlunProps = {
+//   kl_os_type: 3,
+//   kl_platform: 3,
+//   kl_display_type: 1,
+//   baseURL: ajaxBaseUrlKI as string,
+// };
 
 const codeMessage: any = {
   200: '服务器成功返回请求的数据。',
@@ -89,9 +89,7 @@ export const errorConfig: RequestConfig = {
         };
       }
 
-      return config.hasGateway
-        ? { ...klRequest(config, klConfig) }
-        : { ...config };
+      return config;
     },
   ],
 

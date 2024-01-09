@@ -8,7 +8,7 @@ import { ConfigProvider } from 'antd'
 import { useLocation } from '@umijs/max';
 import zhCN from 'antd/es/locale/zh_CN';
 
-import { Monitor } from '@xlion/monitor';
+// import { Monitor } from '@xlion/monitor';
 import 'antd/dist/reset.css';
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
@@ -22,12 +22,12 @@ dayjs.locale('zh-cn');
 
 const { ajaxBaseUrlKI } = config;
 
-Monitor.init({
-  appCode: 'SCM_FACOTRY',
-  reportUrl: ajaxBaseUrlKI,
-  listenRequest: false,
-  listenRoute: true,
-});
+// Monitor.init({
+//   appCode: 'SCM_FACOTRY',
+//   reportUrl: ajaxBaseUrlKI,
+//   listenRequest: false,
+//   listenRoute: true,
+// });
 
 // 全局初始化数据配置，用于 Layout 用户信息和权限初始化
 // 更多信息见文档：https://umijs.org/docs/api/runtime-config#getinitialstate

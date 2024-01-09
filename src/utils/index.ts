@@ -1,7 +1,6 @@
 import DICT_CONST from '@/common/constants';
 import Config from '@/config';
 import { getOssFileUrl } from '@/services/common';
-import { isNullOrUnDef, math } from '@xlion/utils';
 import { message, Modal } from 'antd';
 import { history } from 'umi';
 
@@ -239,18 +238,18 @@ export function transformFen2Yuan<T>(
 ) {
   const newObj: Partial<Record<keyof T, number>> = {};
   keys.forEach((key) => {
-    if (!isNullOrUnDef(obj[key])) {
-      if (reverse) {
-        // 乘以100
-        newObj[key] = math.mul(obj[key] as number, precision);
-      } else {
-        // 除以100
-        newObj[key] = math.div(
-          Math.floor(math.div(obj[key] as number, precision / 100)),
-          100,
-        );
-      }
-    }
+    // if (!isNullOrUnDef(obj[key])) {
+    // if (reverse) {
+    //   // 乘以100
+    //   newObj[key] = math.mul(obj[key] as number, precision);
+    // } else {
+    //   // 除以100
+    //   newObj[key] = math.div(
+    //     Math.floor(math.div(obj[key] as number, precision / 100)),
+    //     100,
+    //   );
+    // }
+    // }
   });
   return newObj as Record<keyof T, number>;
 }

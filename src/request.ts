@@ -38,8 +38,8 @@ export const request = {
 
 // import config from '@/config';
 // import { navigateToLogin } from '@/utils';
-// import type { KunlunResponseProps } from '@xc/kunlun-request';
-// import { WebRequest } from '@xc/kunlun-request';
+// import type { KunlunResponseProps } from 'antd';
+// import { WebRequest } from 'antd';
 // import { message, notification } from 'antd';
 // import Cookies from 'js-cookie';
 // const { ajaxBaseUrlKI } = config;
