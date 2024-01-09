@@ -31,7 +31,8 @@
     "prop-types": "^15.8.1",
     "react-mentions": "^4.4.7",
     "react-sortable-hoc": "^2.0.0",
-    "shelljs": "^0.8.5"
+    "shelljs": "^0.8.5",
+    "umi-request": "^1.4.0"
   },
   "devDependencies": {
     "@types/lodash-es": "^4.17.7",

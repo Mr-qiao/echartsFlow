@@ -38,9 +38,6 @@ dependencies:
   jsencrypt:
     specifier: ^3.3.2
     version: 3.3.2
-  lodash:
-    specifier: ^4.17.21
-    version: 4.17.21
   lodash-es:
     specifier: ^4.17.21
     version: 4.17.21
@@ -56,6 +53,9 @@ dependencies:
   shelljs:
     specifier: ^0.8.5
     version: 0.8.5
+  umi-request:
+    specifier: ^1.4.0
+    version: 1.4.0
 
 devDependencies:
   '@types/lodash-es':
@@ -10953,6 +10953,13 @@ packages:
     resolution: {integrity: sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==}
     engines: {node: '>=4.2.0'}
     hasBin: true
+
+  /umi-request@1.4.0:
+    resolution: {integrity: sha512-OknwtQZddZHi0Ggi+Vr/olJ7HNMx4AzlywyK0W3NZBT7B0stjeZ9lcztA85dBgdAj3KVk8uPJPZSnGaDjELhrA==}
+    dependencies:
+      isomorphic-fetch: 2.2.1
+      qs: 6.11.2
+    dev: false
 
   /umi@4.1.0(@babel/core@7.23.7)(@types/react@18.2.47)(eslint@8.35.0)(prettier@2.8.8)(react-dom@17.0.2)(react@17.0.2)(stylelint@14.8.2)(typescript@4.9.5)(webpack@5.89.0):
     resolution: {integrity: sha512-qNvYmZuXPP05OihSyR97IbHEpktHN1AGfMyxFeZtnTHZfSmaft36pLfH14PUXpFpUcAL5naiUuD0wcXzU3K+ag==}

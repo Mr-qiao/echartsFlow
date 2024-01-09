@@ -1,10 +1,9 @@
 // 运行时配置
 import AvatarName from '@/components/AvatarName';
-import Breadcrumb from '@/components/Breadcrumb';
-import { PageContainer } from '@ant-design/pro-components';
-import { ConfigProvider } from 'antd'
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
+import { PageContainer } from '@ant-design/pro-components';
 import { useLocation } from '@umijs/max';
+import { ConfigProvider } from 'antd';
 import zhCN from 'antd/es/locale/zh_CN';
 
 import 'antd/dist/reset.css';
@@ -18,14 +17,12 @@ import './style/base.less';
 
 dayjs.locale('zh-cn');
 
-
 // 全局初始化数据配置，用于 Layout 用户信息和权限初始化
 // 更多信息见文档：https://umijs.org/docs/api/runtime-config#getinitialstate
 
 export const layout = () => {
   const [collapsed, setCollapsed] = useState(false);
   return {
-    // layout: 'side',
     // logo: 'https://s.xinc818.com/assets/images/favicon.ico',
     navTheme: 'light',
     headerTheme: 'light',
@@ -46,15 +43,6 @@ export const layout = () => {
     menuHeaderRender: () => (
       <div className="u-f__center">
         <img src={logo} style={{ width: '200px', height: '80px' }} />
-        {/*{!collapsed && (*/}
-        {/*	// <img*/}
-        {/*	// 	alt="合作商监管平台"*/}
-        {/*	// 	className="u-ml6"*/}
-        {/*	// 	style={{width: '128px', height: '31px'}}*/}
-        {/*	// 	src="https://s.xinc818.com/files/webcil9xmqi0aolow2y/logo_name@2x.png"*/}
-        {/*	// />*/}
-        {/*	<h1 style={{color: '#fff', marginTop: 6, marginLeft: 6}}>飓风中台工厂端</h1>*/}
-        {/*)}*/}
       </div>
     ),
     menu: {
@@ -83,12 +71,6 @@ export const layout = () => {
     disableMobile: true, //禁止自动切换到移动页面
     contentStyle: {
       minHeight: '100vh',
-      // overflow: 'auto',
-      // overflowX: 'hidden',
-      // maxWidth:'100vh',
-      // padding: '16px',
-      // margin: 0,
-      // minWidth: '1080px',
     },
     childrenRender: (children: any) => {
       const location = useLocation();
@@ -96,26 +78,9 @@ export const layout = () => {
       return (
         <div>
           <AvatarName />
-          <PageContainer
-            // className="PageContainer"
-            breadcrumbRender={(props: any) => {
-              return <Breadcrumb {...props} />;
-            }}
-          >
-            {/* <ConfigProvider
-              theme={{
-                token: {
-                  colorPrimary: '#3D54CC',
-                },
-              }}
-            > */}
-            {/* {children} */}
-            {/* </ConfigProvider> */}
-            <ConfigProvider locale={zhCN}>
-              {children}
-            </ConfigProvider>
+          <PageContainer className="PageContainer">
+            <ConfigProvider locale={zhCN}>{children}</ConfigProvider>
           </PageContainer>
-          {/* <GlobalModal.Container /> */}
         </div>
       );
     },

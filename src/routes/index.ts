@@ -1,5 +1,4 @@
-import goods from './goods';
-
+import device from './device';
 
 const GlobalRouters = [
   {
@@ -29,8 +28,12 @@ const GlobalRouters = [
     layout: false,
     component: './Register/help',
   },
-
-  ...goods,
+  {
+    name: '监控大屏页',
+    path: '/home',
+    component: './Home',
+  },
+  ...device,
 ];
 
 export default GlobalRouters;
