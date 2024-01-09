@@ -4,7 +4,7 @@
 import type { FormRule } from 'antd';
 import React from 'react';
 
-import { Input } from '@xlion/component';
+import { Input } from 'antd';
 
 import { IPropsType } from '@/pages/Goods/Create/types';
 import { RuleType } from '../types';

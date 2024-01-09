@@ -1,7 +1,7 @@
 /**
  * @file 图片
  */
-import { Image as AntdImage, ImageProps } from '@xlion/component';
+import { Image as AntdImage, ImageProps } from 'antd';
 import { useState } from 'react';
 
 import { DEFAULT_IMG_SRC } from '@/constants';

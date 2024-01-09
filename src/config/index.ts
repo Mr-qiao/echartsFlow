@@ -1,14 +1,14 @@
 const host = location.host;
 
-let env = 'production';
+let env = 'daily';
 
-if (host.includes('dev') || host.includes('localhost')) {
-  env = 'development';
-} else if (host.includes('daily')) {
-  env = 'daily';
-} else if (host.includes('gray')) {
-  env = 'gray';
-}
+// if (host.includes('dev') || host.includes('localhost')) {
+//   env = 'development';
+// } else if (host.includes('daily')) {
+//   env = 'daily';
+// } else if (host.includes('gray')) {
+//   env = 'gray';
+// }
 
 const ajaxBaseUrl = {
   development: 'https://api.dev.xinc818.net',

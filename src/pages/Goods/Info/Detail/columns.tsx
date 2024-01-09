@@ -1,5 +1,5 @@
 import React from 'react';
-import { Descriptions, GlobalModal, TableProps, Typography } from '@xlion/component';
+import { Descriptions, GlobalModal, TableProps, Typography } from 'antd';
 
 import Image from '@/components/Image';
 

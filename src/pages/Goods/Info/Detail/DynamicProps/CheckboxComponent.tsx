@@ -1,6 +1,6 @@
 //多选
 import { useMemo } from 'react';
-import { Popover, Space, Tag, Typography } from '@xlion/component';
+import { Popover, Space, Tag, Typography } from 'antd';
 
 const maxCount = 4;
 

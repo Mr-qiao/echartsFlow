@@ -10,7 +10,7 @@ import {
   LockOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Button, Form, Input, message, Spin } from '@xlion/component';
+import { Button, Form, Input, message, Spin } from 'antd';
 import { useEffect, useState } from 'react';
 import { history } from 'umi';
 import bgUrl from '../../../public/bj.png';

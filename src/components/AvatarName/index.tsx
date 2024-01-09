@@ -1,4 +1,4 @@
-import { Dropdown } from '@xlion/component'
+import { Dropdown } from 'antd'
 import './index.less';
 import { history } from 'umi';
 import Cookies from "js-cookie";

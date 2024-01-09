@@ -4,7 +4,7 @@
 import React from 'react';
 
 import { IPropsType } from '@/pages/Goods/Create/types';
-import { InputNumberRange } from '@xlion/component';
+import { InputNumberRange } from 'antd';
 import { RuleType } from '../types';
 
 interface IProps {

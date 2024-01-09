@@ -31,7 +31,7 @@ import {
   Input,
   message, Row,
   Steps,
-} from '@xlion/component'
+} from 'antd'
 import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
 import { history } from 'umi';

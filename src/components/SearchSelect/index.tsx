@@ -1,4 +1,4 @@
-import { Select } from '@xlion/component';
+import { Select } from 'antd';
 import { useEffect, useState } from 'react';
 
 import { frequency } from '@/utils';

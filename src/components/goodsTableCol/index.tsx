@@ -2,7 +2,7 @@
  * 商品信息
  */
 import { DEFAULT_IMG_SRC } from '@/constants';
-import { Col, Image, Row, Typography } from '@xlion/component';
+import { Col, Image, Row, Typography } from 'antd';
 import React from 'react';
 import './index.less';
 

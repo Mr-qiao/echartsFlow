@@ -1,4 +1,4 @@
-import { Col, Row, Image, Descriptions } from '@xlion/component';
+import { Col, Row, Image, Descriptions } from 'antd';
 import './index.less';
 import dayjs from "dayjs";
 

@@ -2,7 +2,7 @@
 import React, { useMemo } from 'react';
 
 import CustomModal from '@/components/CustomModal';
-import { Descriptions, ModalProps } from '@xlion/component';
+import { Descriptions, ModalProps } from 'antd';
 import dynamicProps from '../DynamicProps';
 import { IPropsType } from '../types';
 import ss from './index.less';

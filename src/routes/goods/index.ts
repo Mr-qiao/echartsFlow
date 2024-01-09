@@ -32,19 +32,6 @@ export default [
         component: './Goods/Info/Detail',
         hideInMenu: true,
       },
-      {
-        path: 'sample',
-        name: '打样需求列表',
-        title: '打样需求列表',
-        component: './Goods/Sample',
-      },
-      {
-        path: 'sample/detail',
-        name: '打样需求详情',
-        title: '打样需求详情',
-        hideInMenu: true,
-        component: './Goods/Sample/CreateProof',
-      },
     ],
   },
 ];

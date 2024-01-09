@@ -1,4 +1,4 @@
-import { Breadcrumb } from '@xlion/component';
+import { Breadcrumb } from 'antd';
 import React, { Fragment } from 'react';
 
 export default function BreadcrumbCom(props: any) {

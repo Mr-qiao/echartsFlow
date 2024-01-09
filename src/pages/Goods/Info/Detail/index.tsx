@@ -1,7 +1,7 @@
 import './index.less';
 
 import { math } from '@xlion/utils';
-import { Descriptions, GlobalModal, Typography, Table, Space, Col, Row, Image } from '@xlion/component';
+import { Descriptions, GlobalModal, Typography, Table, Space, Col, Row, Image } from 'antd';
 import React, { useEffect, useState } from 'react';
 
 import { formatPriceRange, formatRatioRange, transformFen2Yuan } from '@/utils';

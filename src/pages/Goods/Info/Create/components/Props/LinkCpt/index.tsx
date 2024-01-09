@@ -3,8 +3,8 @@
  */
 import React from 'react';
 
-import {Input, type FormRule} from '@xlion/component';
-import {RuleType, IPropsType} from '../types';
+import { Input, type FormRule } from 'antd';
+import { RuleType, IPropsType } from '../types';
 
 export const rules = (rules: RuleType, label: string): FormRule[] => {
 	return [
@@ -19,11 +19,11 @@ export const rules = (rules: RuleType, label: string): FormRule[] => {
 };
 
 const Index: React.FC<IPropsType> = (options): JSX.Element => {
-	
-	
-	const {desc, categoryPropertyRule, read, value, onChange} = options
-	
-	
+
+
+	const { desc, categoryPropertyRule, read, value, onChange } = options
+
+
 	const props: any = {
 		placeholder: desc || `请输入${options?.categoryPropertyName}`,
 		maxLength: categoryPropertyRule?.max,
@@ -33,11 +33,11 @@ const Index: React.FC<IPropsType> = (options): JSX.Element => {
 			onChange(event.target.value)
 		}
 	}
-	
+
 	return (
-	 <>
-		 <Input {...props} />
-	 </>
+		<>
+			<Input {...props} />
+		</>
 	);
 };
 export default Index;

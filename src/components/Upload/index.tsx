@@ -5,8 +5,8 @@ import './index.less';
 
 import { UploadOutlined } from '@ant-design/icons';
 import { uuid } from '@xlion/utils';
-import { Button, message, Upload as XUpload, UploadProps } from '@xlion/component';
-import { UploadFile } from '@xlion/component/dist/upload'
+import { Button, message, Upload as XUpload, UploadProps } from 'antd';
+import { UploadFile } from 'antd/dist/upload'
 import { useMemo, useRef } from 'react';
 
 import { getSignature } from '@/services/common';

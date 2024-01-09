@@ -4,7 +4,7 @@
 import type { FormRule } from 'antd';
 import React from 'react';
 
-import { DatePicker } from '@xlion/component';
+import { DatePicker } from 'antd';
 
 import { IPropsType } from '@/pages/Goods/Create/types';
 import dayjs from 'dayjs';

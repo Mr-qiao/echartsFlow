@@ -1,13 +1,13 @@
 
 
-import { Space } from '@xlion/component';
+import { Space } from 'antd';
 import BrandSelectCpt from './Create/components/BrandSelectCpt';
 import SelectTree from '@/components/selectTree';
 import { useCategory } from '@/hooks';
 import GoodsTableCol from '@/components/goodsTableCol';
 import { SHOETREE } from './constants'
 import { DataType } from './types'
-import { XTableColumns, XTableSearchItem } from '@xlion/component/dist/x-table/interface';
+import { XTableColumns, XTableSearchItem } from 'antd/dist/x-table/interface';
 
 
 interface IProps {

@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import { PlusOutlined } from '@ant-design/icons';
-import type { FormRule, InputRef } from '@xlion/component';
-import { Button, Divider, Input, Select } from '@xlion/component';
+import type { FormRule, InputRef } from 'antd';
+import { Button, Divider, Input, Select } from 'antd';
 import { IPropsType, RuleType } from '../types';
 
 export const rules = (rules: RuleType, label: string): FormRule[] => {

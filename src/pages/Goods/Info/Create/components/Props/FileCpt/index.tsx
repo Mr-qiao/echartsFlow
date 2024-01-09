@@ -4,7 +4,7 @@
 import React from 'react';
 
 import type { FormRule } from 'antd';
-import { Upload, Typography } from '@xlion/component'
+import { Upload, Typography } from 'antd'
 import { IPropsType, RuleType } from '../types';
 import { getSignature } from "@/services/common";
 

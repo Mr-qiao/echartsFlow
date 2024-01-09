@@ -1,6 +1,6 @@
 import goods from './goods';
-import orders from './orders';
-import quotations from './quotations';
+
+
 const GlobalRouters = [
   {
     path: '/',
@@ -31,8 +31,6 @@ const GlobalRouters = [
   },
 
   ...goods,
-  ...quotations,
-  ...orders,
 ];
 
 export default GlobalRouters;

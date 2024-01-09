@@ -6,9 +6,9 @@ import {
   Select,
   Table,
   TableProps,
-} from '@xlion/component';
+} from 'antd';
 import React, { useContext } from 'react';
-// import { Table } from '@xlion/component';
+// import { Table } from 'antd';
 import { math, uuid } from '@xlion/utils';
 import { Form, FormListFieldData } from 'antd';
 
@@ -97,7 +97,7 @@ const SkuProps: React.FC<IProps> = () => {
                           ],
                           val
                             ? skuOptionsDict[val.label]
-                                ?.itemCatePropertyValueEnumS
+                              ?.itemCatePropertyValueEnumS
                             : [],
                         );
                       }}
@@ -135,7 +135,7 @@ const SkuProps: React.FC<IProps> = () => {
                 const { itemCatePropertyValueEnumS = [] } = rowData || {};
                 return categoryPropertyType && rowData ? (
                   Array.isArray(itemCatePropertyValueEnumS) &&
-                  itemCatePropertyValueEnumS.length > 0 ? (
+                    itemCatePropertyValueEnumS.length > 0 ? (
                     <SpecsCheckboxInput rowData={rowData} field={field} />
                   ) : (
                     <SpecsInput rowData={rowData} field={field} />
@@ -177,15 +177,15 @@ const SkuProps: React.FC<IProps> = () => {
       for (let i of saleProperties) {
         const categoryPropertyValues = i.categoryPropertyValues
           ? i.categoryPropertyValues
-              ?.map((item) => {
-                //区分对象和字符串
-                if (typeof item === 'string') {
-                  return item;
-                } else {
-                  return item.checked ? item.value : false;
-                }
-              })
-              .filter(Boolean)
+            ?.map((item) => {
+              //区分对象和字符串
+              if (typeof item === 'string') {
+                return item;
+              } else {
+                return item.checked ? item.value : false;
+              }
+            })
+            .filter(Boolean)
           : [];
         if (
           Array.from(new Set(categoryPropertyValues)).length !==

@@ -4,10 +4,10 @@ import AvatarName from '@/components/AvatarName';
 import Breadcrumb from '@/components/Breadcrumb';
 import config from '@/config';
 import { PageContainer } from '@ant-design/pro-components';
+import { ConfigProvider } from 'antd'
 import { useLocation } from '@umijs/max';
-import { ConfigProvider, GlobalModal } from '@xlion/component';
+import zhCN from 'antd/es/locale/zh_CN';
 
-import zhCN from '@xlion/component/dist/locale/zh_CN';
 import { Monitor } from '@xlion/monitor';
 import 'antd/dist/reset.css';
 import dayjs from 'dayjs';
@@ -18,7 +18,6 @@ import './global.less';
 import { errorConfig } from './requestErrorConfig';
 import './style/base.less';
 
-import '@xlion/component/dist/index.less';
 dayjs.locale('zh-cn');
 
 const { ajaxBaseUrlKI } = config;
@@ -130,11 +129,11 @@ export const layout = () => {
             > */}
             {/* {children} */}
             {/* </ConfigProvider> */}
-            <ConfigProvider prefixCls="ui" locale={zhCN}>
+            <ConfigProvider locale={zhCN}>
               {children}
             </ConfigProvider>
           </PageContainer>
-          <GlobalModal.Container />
+          {/* <GlobalModal.Container /> */}
         </div>
       );
     },

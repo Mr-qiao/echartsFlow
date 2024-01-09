@@ -3,16 +3,16 @@
  */
 import React from 'react';
 
-import type {FormRule} from 'antd';
-import {Upload, Typography, Popover, PreviewImage, Divider, Thumbnail} from '@xlion/component'
-import {IPropsType, RuleType} from '../types';
-import {getSignature} from "@/services/common";
+import type { FormRule } from 'antd';
+import { Upload, Typography, Popover, PreviewImage, Divider, Thumbnail } from 'antd'
+import { IPropsType, RuleType } from '../types';
+import { getSignature } from "@/services/common";
 
 interface IProps {
 }
 
 export const rules = (rules: RuleType, label): FormRule[] => {
-	return [{required: !!rules.required, message: `请上传${label || '图片'}`}];
+	return [{ required: !!rules.required, message: `请上传${label || '图片'}` }];
 };
 
 const ImageCpt: React.FC<IProps> = (options: any) => {
@@ -38,35 +38,35 @@ const ImageCpt: React.FC<IProps> = (options: any) => {
 		},
 		itemRender: itemRender ? (originNode, file, fileList, actions) => {
 			return (
-			 <Popover
-				placement="top"
-				content={
-					<>
-						<Typography.Link
-						 onClick={() => PreviewImage.show({list: [file.url]})}
-						>
-							预览
-						</Typography.Link>
-						<Divider type="vertical"/>
-						<Typography.Link onClick={actions.remove}>删除</Typography.Link>
-					</>
-				}
-			 >
-				 <div>
-					 <Thumbnail
-						disabled
-						size={thumbnailSize}
-						key={file.url || file.uid}
-						url={file.url}
-						percent={file.percent}
-					 />
-				 </div>
-			 </Popover>
+				<Popover
+					placement="top"
+					content={
+						<>
+							<Typography.Link
+								onClick={() => PreviewImage.show({ list: [file.url] })}
+							>
+								预览
+							</Typography.Link>
+							<Divider type="vertical" />
+							<Typography.Link onClick={actions.remove}>删除</Typography.Link>
+						</>
+					}
+				>
+					<div>
+						<Thumbnail
+							disabled
+							size={thumbnailSize}
+							key={file.url || file.uid}
+							url={file.url}
+							percent={file.percent}
+						/>
+					</div>
+				</Popover>
 			);
 		} : undefined,
-		thumbnailProps: {size: thumbnailSize || undefined},
-		requestSign: async ({resourceName}) => {
-			const {entry}: any = await getSignature({
+		thumbnailProps: { size: thumbnailSize || undefined },
+		requestSign: async ({ resourceName }) => {
+			const { entry }: any = await getSignature({
 				createTask: true,
 				resourceName: resourceName,
 				typeCode: 'SUPPLY_ADMIN_IMAGE_UPLOAD',
@@ -78,21 +78,21 @@ const ImageCpt: React.FC<IProps> = (options: any) => {
 	console.log(props, '多图props')
 	//暂无联动属性
 	return (
-	 <>
-		 <Upload  {...props}>
-			 {customText ? <Typography.Link
-				style={{
-					display: 'inline-flex',
-					width: 40,
-					height: 40,
-					justifyContent: 'center',
-					alignItems: 'center',
-				}}
-			 >
-				 {customText}
-			 </Typography.Link> : null}
-		 </Upload>
-	 </>
+		<>
+			<Upload  {...props}>
+				{customText ? <Typography.Link
+					style={{
+						display: 'inline-flex',
+						width: 40,
+						height: 40,
+						justifyContent: 'center',
+						alignItems: 'center',
+					}}
+				>
+					{customText}
+				</Typography.Link> : null}
+			</Upload>
+		</>
 	);
 };
 export default ImageCpt;

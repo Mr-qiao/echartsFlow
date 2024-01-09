@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { DownOutlined, UpOutlined } from '@ant-design/icons';
-import { Image } from '@xlion/component';
+import { Image } from 'antd';
 
 import { DEFAULT_IMG_SRC } from '@/constants';
 

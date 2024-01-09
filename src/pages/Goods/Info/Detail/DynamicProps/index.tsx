@@ -1,4 +1,4 @@
-import { Descriptions, Typography } from '@xlion/component';
+import { Descriptions, Typography } from 'antd';
 import React from 'react';
 
 import ImageContainer from '@/components/ImageContainer';
@@ -31,13 +31,13 @@ const DynamicProps: React.FC<IProps> = ({ itemPropertyType, ...info }) => {
               tooltip:
                 info.unit && info.unit === '元'
                   ? transformFen2Yuan(info, ['itemPropertyValues'], false, 1000)
-                      .itemPropertyValues
+                    .itemPropertyValues
                   : value,
             }}
           >
             {info.unit && info.unit === '元'
               ? transformFen2Yuan(info, ['itemPropertyValues'], false, 1000)
-                  .itemPropertyValues
+                .itemPropertyValues
               : value}
             {info.unit ? info.unit : ''}
           </Typography.Text>

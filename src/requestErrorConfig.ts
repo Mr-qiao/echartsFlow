@@ -1,7 +1,7 @@
 ﻿import config from '@/config';
 import { navigateToLogin } from '@/utils';
 import type { RequestConfig } from '@umijs/max';
-import { message, notification } from '@xlion/component';
+import { message, notification } from 'antd';
 import Cookies from 'js-cookie';
 
 import type { KunlunProps, KunlunResponseProps } from '@xc/kunlun-request';
@@ -49,7 +49,7 @@ export const errorConfig: RequestConfig = {
   // },
   // 错误处理： umi@3 的错误处理方案。
   errorConfig: {
-    errorThrower: (res) => {},
+    errorThrower: (res) => { },
     // 错误接收及处理
     errorHandler: (error: any, opts: any) => {
       if (opts?.skipErrorHandler) throw error;

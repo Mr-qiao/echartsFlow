@@ -1,6 +1,6 @@
 import './index.less';
 
-import { Modal } from '@xlion/component';
+import { Modal } from 'antd';
 import React, { useImperativeHandle, useState } from 'react';
 
 const CustomModal = React.forwardRef((props: DrawerProps, ref) => {

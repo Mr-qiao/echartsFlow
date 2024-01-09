@@ -1,4 +1,4 @@
-import { Col, ModalProps, Row } from '@xlion/component';
+import { Col, ModalProps, Row } from 'antd';
 import { Form, message } from 'antd';
 import React, { useEffect, useState } from 'react';
 

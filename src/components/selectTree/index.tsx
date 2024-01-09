@@ -1,4 +1,4 @@
-import { Cascader } from '@xlion/component';
+import { Cascader } from 'antd';
 
 
 function SelectTree(props: any) {

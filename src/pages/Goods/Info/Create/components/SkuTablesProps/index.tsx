@@ -8,7 +8,7 @@ import {
   EditableProTable,
   ProFormDependency,
 } from '@ant-design/pro-components';
-import { Button, GlobalModal, Popconfirm } from '@xlion/component';
+import { Button, GlobalModal, Popconfirm } from 'antd';
 import React, { useContext, useRef } from 'react';
 
 import { CptContext } from '../..';

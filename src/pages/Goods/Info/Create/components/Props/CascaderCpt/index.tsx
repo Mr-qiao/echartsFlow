@@ -1,6 +1,6 @@
 import { PlusOutlined } from '@ant-design/icons';
-import type { FormRule, InputRef } from '@xlion/component';
-import { Button, Divider, Input, TreeSelect } from '@xlion/component';
+import type { FormRule, InputRef } from 'antd';
+import { Button, Divider, Input, TreeSelect } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 
 import { IPropsType, RuleType } from '../types';

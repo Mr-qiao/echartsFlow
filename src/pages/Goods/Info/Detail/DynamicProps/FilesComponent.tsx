@@ -1,7 +1,7 @@
 //附件
 import { useMemo } from 'react';
 import { LinkOutlined } from '@ant-design/icons';
-import { Popover, Typography } from '@xlion/component';
+import { Popover, Typography } from 'antd';
 
 import './index.less';
 

@@ -1,6 +1,6 @@
 import { uploadPicture } from '@/services/loginRegister';
-import { Image, message, Thumbnail, Upload, UploadProps, } from '@xlion/component'
-import { RcFile } from '@xlion/component/dist/upload'
+import { Image, message, Thumbnail, Upload, UploadProps, } from 'antd'
+import { RcFile } from 'antd/dist/upload'
 import React, { useEffect, useState } from 'react';
 
 const getBase64 = (img: RcFile, callback: (url: string) => void) => {

@@ -1,5 +1,5 @@
 import './index.less'
-import { Button, Space } from "@xlion/component";
+import { Button, Space } from "antd";
 import { history } from "umi";
 import React, { MouseEventHandler } from "react";
 

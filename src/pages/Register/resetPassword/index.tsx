@@ -3,7 +3,7 @@ import styles from './index.less';
 import imgURL from '../../../../public/favicon.png';
 import bgUrl from '../../../../public/bj.png';
 // import {Button, Col, Form, Input, message, Row} from 'antd';
-import { Button, Col, Form, Input, message, Row } from '@xlion/component'
+import { Button, Col, Form, Input, message, Row } from 'antd'
 import PicturesWall from '@/components/PicturesWall';
 import { resetPassword, sendValidateCode } from '@/services/loginRegister';
 import { Link } from '@umijs/max';

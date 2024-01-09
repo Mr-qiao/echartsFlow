@@ -1,4 +1,4 @@
-import { Select, SelectProps } from '@xlion/component';
+import { Select, SelectProps } from 'antd';
 import React, { useEffect, useState } from 'react';
 
 import Api from './services';
