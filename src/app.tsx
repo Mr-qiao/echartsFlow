@@ -80,7 +80,7 @@ export const layout = () => {
       const isHome = location.pathname === '/home';
       return (
         <div>
-          <AvatarName />
+          {/* <AvatarName /> */}
           <PageContainer className="PageContainer">
             <ConfigProvider locale={zhCN}>{children}</ConfigProvider>
           </PageContainer>
