@@ -1,9 +1,33 @@
-
-import React from 'react';
-
+import ReactEcharts from 'echarts-for-react';
 import styles from './index.less';
 
 const Home: any = () => {
+  let option = {
+    legend: [
+      {
+        show: false,
+      },
+    ],
+    series: [
+      {
+        name: 'Access From',
+        type: 'pie',
+        radius: ['0', '60%'],
+        data: [
+          { value: 2, name: '报警' },
+          { value: 156, name: '正常' },
+          { value: 145, name: '离线' },
+        ],
+        emphasis: {
+          itemStyle: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.5)',
+          },
+        },
+      },
+    ],
+  };
 
   return (
     <div className={styles.bg}>
@@ -33,16 +57,140 @@ const Home: any = () => {
             <option>凉山州</option>
           </select>
 
-          <div className={styles.floatBox}></div>
+          <div className={styles.floatBox}>
+            <div className={styles.barsBox}>
+              <span className={styles.tit}>火灾预警</span>
+              <ReactEcharts
+                option={option}
+                style={{ width: 180, height: 160 }}
+              />
+            </div>
+            <table className={styles.t_table}>
+              <thead>
+                <tr>
+                  <th>区域</th>
+                  <th>上报时间</th>
+                  <th>跟进人</th>
+                  <th>处理状态</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>A区</td>
+                  <td>09-21 19:30</td>
+                  <td>王大锤</td>
+                  <td>待处理</td>
+                  <td>详情</td>
+                </tr>
+                <tr>
+                  <td>A区</td>
+                  <td>09-21 19:30</td>
+                  <td>王大锤</td>
+                  <td>待处理</td>
+                  <td>详情</td>
+                </tr>
+                <tr>
+                  <td>A区</td>
+                  <td>09-21 19:30</td>
+                  <td>王大锤</td>
+                  <td>待处理</td>
+                  <td>详情</td>
+                </tr>
+                <tr>
+                  <td>A区</td>
+                  <td>09-21 19:30</td>
+                  <td>王大锤</td>
+                  <td>待处理</td>
+                  <td>详情</td>
+                </tr>
+                <tr>
+                  <td>A区</td>
+                  <td>09-21 19:30</td>
+                  <td>王大锤</td>
+                  <td>待处理</td>
+                  <td>详情</td>
+                </tr>
+                <tr>
+                  <td>A区</td>
+                  <td>09-21 19:30</td>
+                  <td>王大锤</td>
+                  <td>待处理</td>
+                  <td>详情</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-          <div className={styles.floatBox}></div>
-
+          <div className={styles.floatBox}>
+            <div className={styles.barsBox}>
+              <span className={styles.tit}>火灾预警</span>
+              <ReactEcharts
+                option={option}
+                style={{ width: 180, height: 160 }}
+              />
+            </div>
+            <table className={styles.t_table}>
+              <thead>
+                <tr>
+                  <th>区域</th>
+                  <th>上报时间</th>
+                  <th>跟进人</th>
+                  <th>处理状态</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>A区</td>
+                  <td>09-21 19:30</td>
+                  <td>王大锤</td>
+                  <td>待处理</td>
+                  <td>详情</td>
+                </tr>
+                <tr>
+                  <td>A区</td>
+                  <td>09-21 19:30</td>
+                  <td>王大锤</td>
+                  <td>待处理</td>
+                  <td>详情</td>
+                </tr>
+                <tr>
+                  <td>A区</td>
+                  <td>09-21 19:30</td>
+                  <td>王大锤</td>
+                  <td>待处理</td>
+                  <td>详情</td>
+                </tr>
+                <tr>
+                  <td>A区</td>
+                  <td>09-21 19:30</td>
+                  <td>王大锤</td>
+                  <td>待处理</td>
+                  <td>详情</td>
+                </tr>
+                <tr>
+                  <td>A区</td>
+                  <td>09-21 19:30</td>
+                  <td>王大锤</td>
+                  <td>待处理</td>
+                  <td>详情</td>
+                </tr>
+                <tr>
+                  <td>A区</td>
+                  <td>09-21 19:30</td>
+                  <td>王大锤</td>
+                  <td>待处理</td>
+                  <td>详情</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
         <div className={styles.content_main}>
-
           <div className={styles.content_main_f}>
             <div className={styles.flexBox}>
-              <img alt="" src='' />
+              <img alt="" src="" />
               <span>园区概况</span>
             </div>
 
@@ -61,19 +209,141 @@ const Home: any = () => {
               <span>安防检测</span>
             </div>
           </div>
-
         </div>
 
         <div className={styles.content_r}>
           <span className={styles.content_r_time}>统计截止时间：2023-9-20</span>
 
-          <div className={styles.floatBox}></div>
-          <div className={styles.floatBox}></div>
-
+          <div className={styles.floatBox}>
+            <div className={styles.barsBox}>
+              <span className={styles.tit}>火灾预警</span>
+              <ReactEcharts
+                option={option}
+                style={{ width: 180, height: 160 }}
+              />
+            </div>
+            <table className={styles.t_table}>
+              <thead>
+                <tr>
+                  <th>区域</th>
+                  <th>上报时间</th>
+                  <th>跟进人</th>
+                  <th>处理状态</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>A区</td>
+                  <td>09-21 19:30</td>
+                  <td>王大锤</td>
+                  <td>待处理</td>
+                  <td>详情</td>
+                </tr>
+                <tr>
+                  <td>A区</td>
+                  <td>09-21 19:30</td>
+                  <td>王大锤</td>
+                  <td>待处理</td>
+                  <td>详情</td>
+                </tr>
+                <tr>
+                  <td>A区</td>
+                  <td>09-21 19:30</td>
+                  <td>王大锤</td>
+                  <td>待处理</td>
+                  <td>详情</td>
+                </tr>
+                <tr>
+                  <td>A区</td>
+                  <td>09-21 19:30</td>
+                  <td>王大锤</td>
+                  <td>待处理</td>
+                  <td>详情</td>
+                </tr>
+                <tr>
+                  <td>A区</td>
+                  <td>09-21 19:30</td>
+                  <td>王大锤</td>
+                  <td>待处理</td>
+                  <td>详情</td>
+                </tr>
+                <tr>
+                  <td>A区</td>
+                  <td>09-21 19:30</td>
+                  <td>王大锤</td>
+                  <td>待处理</td>
+                  <td>详情</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div className={styles.floatBox}>
+            <div className={styles.barsBox}>
+              <span className={styles.tit}>火灾预警</span>
+              <ReactEcharts
+                option={option}
+                style={{ width: 180, height: 160 }}
+              />
+            </div>
+            <table className={styles.t_table}>
+              <thead>
+                <tr>
+                  <th>区域</th>
+                  <th>上报时间</th>
+                  <th>跟进人</th>
+                  <th>处理状态</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>A区</td>
+                  <td>09-21 19:30</td>
+                  <td>王大锤</td>
+                  <td>待处理</td>
+                  <td>详情</td>
+                </tr>
+                <tr>
+                  <td>A区</td>
+                  <td>09-21 19:30</td>
+                  <td>王大锤</td>
+                  <td>待处理</td>
+                  <td>详情</td>
+                </tr>
+                <tr>
+                  <td>A区</td>
+                  <td>09-21 19:30</td>
+                  <td>王大锤</td>
+                  <td>待处理</td>
+                  <td>详情</td>
+                </tr>
+                <tr>
+                  <td>A区</td>
+                  <td>09-21 19:30</td>
+                  <td>王大锤</td>
+                  <td>待处理</td>
+                  <td>详情</td>
+                </tr>
+                <tr>
+                  <td>A区</td>
+                  <td>09-21 19:30</td>
+                  <td>王大锤</td>
+                  <td>待处理</td>
+                  <td>详情</td>
+                </tr>
+                <tr>
+                  <td>A区</td>
+                  <td>09-21 19:30</td>
+                  <td>王大锤</td>
+                  <td>待处理</td>
+                  <td>详情</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-
       </div>
-
     </div>
   );
 };

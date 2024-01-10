@@ -8,7 +8,7 @@
 
 .content {
   min-width: 1366px;
-  padding: 20px 40px 20px;
+  padding: 20px 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -26,6 +26,7 @@
 
   .content_r {
     text-align: right;
+
     .content_r_time {
       color: #fff;
       font-size: 15px;
@@ -36,15 +37,70 @@
     margin-top: 20px;
     width: 382px;
     border-radius: 8px;
-    height: 300px;
-    background-color: rgba(0, 168, 255, 0.2);
+    // height: 380px;
+    background-color: rgba(0, 168, 255, 20%);
+    display: flex;
+    flex-direction: column;
+    padding: 0 20px 20px;
+
+    .barsBox {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .tit {
+        font-size: 18px;
+        color: #fff;
+      }
+    }
+
+    .t_table {
+      color: #fff;
+      width: 100%;
+      margin: 0 auto;
+      border-spacing: 0;
+      text-align: center;
+      box-sizing: border-box;
+      font-size: 14px;
+      table-layout: fixed;
+
+      tr {
+        margin: 0;
+        padding: 0;
+        height: 40px;
+      }
+
+      thead {
+        tr {
+          background: #053a98;
+
+          td {
+            &:first-child {
+              // border-left: 1px solid #053a98;
+            }
+          }
+        }
+      }
+
+      tbody {
+        // display: inline-block;
+        // display: block;
+        width: 100px;
+        overflow: auto;
+        max-height: 100px;
+      }
+
+      td {
+        font-size: 12px;
+      }
+    }
   }
 
   .content_main {
     width: 482px;
     border-radius: 8px;
     height: 100px;
-    background-color: rgba(0, 168, 255, 0.2);
+    background-color: rgba(0, 168, 255, 20%);
     position: absolute;
     bottom: 20px;
     left: 50%;
