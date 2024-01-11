@@ -2,16 +2,13 @@
  * 安防检测
  */
 
-import React from 'react';
 import ReactEcharts from 'echarts-for-react';
-import styles from './index.less'
-
-
+import styles from './index.less';
 
 // 车辆信息
 let diverOption = {
   tooltip: {
-    trigger: 'item'
+    trigger: 'item',
   },
   legend: {
     orient: 'vertical',
@@ -19,15 +16,14 @@ let diverOption = {
     top: 'center',
     data: ['进出总车辆', '外来车辆'],
     formatter: function (name) {
-      return name + ' ' + ' ' + 20
+      return name + ' ' + ' ' + 20;
     },
     itemStyle: {
       opacity: 0,
-
     },
     textStyle: {
-      color: '#fff'
-    }
+      color: '#fff',
+    },
   },
   series: [
     {
@@ -40,24 +36,19 @@ let diverOption = {
         { value: 735, name: '外来车辆' },
       ],
       label: {
-        show: false
-      }
-    }
-  ]
+        show: false,
+      },
+    },
+  ],
 };
 
 const Security = () => {
-
-
   return (
     <div className={styles.security_main}>
       <div className={styles.m_l_2}>
         <div className={styles.card}>
-
           <div className={styles.c_t_head}>
-            <span className={styles.tit}>
-              总体事件
-            </span>
+            <span className={styles.tit}>总体事件</span>
           </div>
 
           <ul className={styles.list}>
@@ -120,9 +111,7 @@ const Security = () => {
 
         <div className={styles.card}>
           <div className={styles.c_t_head}>
-            <span className={styles.tit}>
-              月台数据
-            </span>
+            <span className={styles.tit}>月台数据</span>
 
             <span className={styles.show}>查看》</span>
           </div>
@@ -141,32 +130,25 @@ const Security = () => {
 
         <div className={styles.card}>
           <div className={styles.c_t_head}>
-            <span className={styles.tit}>
-              车辆信息
-            </span>
+            <span className={styles.tit}>车辆信息</span>
 
             <span className={styles.show}>查看》</span>
           </div>
 
-
           <div className={styles.diverPie}>
-            <ReactEcharts option={diverOption} style={{ height: 100 }} />
+            <ReactEcharts option={diverOption} style={{ height: 140 }} />
           </div>
-
         </div>
       </div>
 
       <div className={styles.m_r_2}>
-
         <div className={styles.countdown}>
           安全运营 <i>24</i> 天
         </div>
 
         <div className={styles.card}>
           <div className={styles.c_t_head}>
-            <span className={styles.tit}>
-              摄像头
-            </span>
+            <span className={styles.tit}>摄像头</span>
             <span className={styles.show}>查看》</span>
           </div>
 
@@ -184,9 +166,7 @@ const Security = () => {
 
         <div className={styles.card}>
           <div className={styles.c_t_head}>
-            <span className={styles.tit}>
-              违规上报列表
-            </span>
+            <span className={styles.tit}>违规上报列表</span>
           </div>
 
           <div className={styles.table_box}>
@@ -245,15 +225,10 @@ const Security = () => {
               </tbody>
             </table>
           </div>
-
-
         </div>
       </div>
-
-
     </div>
-
-  )
-}
+  );
+};
 
 export default Security;
