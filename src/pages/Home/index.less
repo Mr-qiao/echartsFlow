@@ -33,20 +33,20 @@
     }
   }
 
-  .floatBox {
+  .card {
     margin-top: 20px;
-    width: 382px;
+    width: 392px;
     border-radius: 8px;
-    // height: 380px;
     background-color: rgba(0, 168, 255, 20%);
     display: flex;
     flex-direction: column;
-    padding: 0 20px 20px;
+    padding: 0 10px 20px;
 
     .barsBox {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding: 0 10px 0;
 
       .tit {
         font-size: 18px;
@@ -54,67 +54,61 @@
       }
     }
 
-    .t_table {
-      color: #fff;
-      width: 100%;
-      margin: 0 auto;
-      border-spacing: 0;
-      text-align: center;
-      box-sizing: border-box;
-      font-size: 14px;
-      table-layout: fixed;
+    .table_box {
+      max-height: 140px;
+      overflow: auto;
 
-      tr {
-        margin: 0;
-        padding: 0;
-        height: 40px;
-      }
+      .t_table {
+        color: #fff;
+        width: 100%;
+        margin: 0 auto;
+        border-spacing: 0;
+        text-align: center;
+        box-sizing: border-box;
+        font-size: 12px;
+        table-layout: fixed;
 
-      thead {
         tr {
-          background: #053a98;
+          margin: 0;
+          padding: 0;
+          line-height: 28px;
+        }
 
-          td {
-            &:first-child {
-              // border-left: 1px solid #053a98;
-            }
+        thead {
+          position: sticky;
+          top: 0;
+          tr {
+            background: #053a98;
           }
         }
-      }
 
-      tbody {
-        // display: inline-block;
-        // display: block;
-        width: 100px;
-        overflow: auto;
-        max-height: 100px;
-      }
-
-      td {
-        font-size: 12px;
+        td {
+          font-size: 12px;
+        }
       }
     }
   }
 
   .content_main {
-    width: 482px;
+    width: 422px;
     border-radius: 8px;
     height: 100px;
     background-color: rgba(0, 168, 255, 20%);
     position: absolute;
-    bottom: 20px;
+    bottom: 0;
     left: 50%;
     right: 50%;
     transform: translate(-50%, -50%);
 
     .content_main_f {
       color: #fff;
-      font-size: 14px;
+      font-size: 12px;
       display: flex;
       height: 100%;
       align-items: center;
 
       .flexBox {
+        cursor: pointer;
         flex: 1;
         display: flex;
         flex-direction: column;
