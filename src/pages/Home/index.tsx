@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import ReactEcharts from 'echarts-for-react';
 import styles from './index.less';
 
@@ -34,8 +34,11 @@ let option = {
 const Home: any = () => {
 
 
+  const [type, setType] = useState('1')
+
   const handleHistory = (type: string) => {
-    console.log(type, 'iiii')
+    console.log(type)
+    setType(type);
   }
 
   return (
@@ -71,282 +74,285 @@ const Home: any = () => {
 
       <div className={styles.main}>
 
+        {
+          type === '1' ? (
+            <div className={styles.m_l}>
+              <div className={styles.card}>
+                <div className={styles.barsBox}>
+                  <span className={styles.tit}>火灾预警</span>
+                  <ReactEcharts
+                    option={option}
+                    style={{ width: 180, height: 140 }}
+                  />
+                </div>
+                <div className={styles.table_box}>
+                  <table className={styles.t_table}>
+                    <thead>
+                      <tr>
+                        <th>区域</th>
+                        <th>上报时间</th>
+                        <th>跟进人</th>
+                        <th>处理状态</th>
+                        <th>操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>A区</td>
+                        <td>09-21 19:30</td>
+                        <td>王大锤</td>
+                        <td>待处理</td>
+                        <td>详情</td>
+                      </tr>
+                      <tr>
+                        <td>A区</td>
+                        <td>09-21 19:30</td>
+                        <td>王大锤</td>
+                        <td>待处理</td>
+                        <td>详情</td>
+                      </tr>
+                      <tr>
+                        <td>A区</td>
+                        <td>09-21 19:30</td>
+                        <td>王大锤</td>
+                        <td>待处理</td>
+                        <td>详情</td>
+                      </tr>
+                      <tr>
+                        <td>A区</td>
+                        <td>09-21 19:30</td>
+                        <td>王大锤</td>
+                        <td>待处理</td>
+                        <td>详情</td>
+                      </tr>
+                      <tr>
+                        <td>A区</td>
+                        <td>09-21 19:30</td>
+                        <td>王大锤</td>
+                        <td>待处理</td>
+                        <td>详情</td>
+                      </tr>
+                      <tr>
+                        <td>A区</td>
+                        <td>09-21 19:30</td>
+                        <td>王大锤</td>
+                        <td>待处理</td>
+                        <td>详情</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div className={styles.card}>
+                <div className={styles.barsBox}>
+                  <span className={styles.tit}>园区巡警</span>
+                  <ReactEcharts
+                    option={option}
+                    style={{ width: 180, height: 140 }}
+                  />
+                </div>
+                <div className={styles.table_box}>
+                  <table className={styles.t_table}>
+                    <thead>
+                      <tr>
+                        <th>区域</th>
+                        <th>上报时间</th>
+                        <th>跟进人</th>
+                        <th>处理状态</th>
+                        <th>操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>A区</td>
+                        <td>09-21 19:30</td>
+                        <td>王大锤</td>
+                        <td>待处理</td>
+                        <td>详情</td>
+                      </tr>
+                      <tr>
+                        <td>A区</td>
+                        <td>09-21 19:30</td>
+                        <td>王大锤</td>
+                        <td>待处理</td>
+                        <td>详情</td>
+                      </tr>
+                      <tr>
+                        <td>A区</td>
+                        <td>09-21 19:30</td>
+                        <td>王大锤</td>
+                        <td>待处理</td>
+                        <td>详情</td>
+                      </tr>
+                      <tr>
+                        <td>A区</td>
+                        <td>09-21 19:30</td>
+                        <td>王大锤</td>
+                        <td>待处理</td>
+                        <td>详情</td>
+                      </tr>
+                      <tr>
+                        <td>A区</td>
+                        <td>09-21 19:30</td>
+                        <td>王大锤</td>
+                        <td>待处理</td>
+                        <td>详情</td>
+                      </tr>
+                      <tr>
+                        <td>A区</td>
+                        <td>09-21 19:30</td>
+                        <td>王大锤</td>
+                        <td>待处理</td>
+                        <td>详情</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          ) : null
+        }
 
 
-        <div className={styles.m_l}>
-
-
-          <div className={styles.card}>
-            <div className={styles.barsBox}>
-              <span className={styles.tit}>火灾预警</span>
-              <ReactEcharts
-                option={option}
-                style={{ width: 180, height: 140 }}
-              />
+        {
+          type === '1' ? (
+            <div className={styles.m_r}>
+              <div className={styles.card}>
+                <div className={styles.barsBox}>
+                  <span className={styles.tit}>安全生产</span>
+                  <ReactEcharts
+                    option={option}
+                    style={{ width: 180, height: 140 }}
+                  />
+                </div>
+                <div className={styles.table_box}>
+                  <table className={styles.t_table}>
+                    <thead>
+                      <tr>
+                        <th>区域</th>
+                        <th>上报时间</th>
+                        <th>跟进人</th>
+                        <th>处理状态</th>
+                        <th>操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>A区</td>
+                        <td>09-21 19:30</td>
+                        <td>王大锤</td>
+                        <td>待处理</td>
+                        <td>详情</td>
+                      </tr>
+                      <tr>
+                        <td>A区</td>
+                        <td>09-21 19:30</td>
+                        <td>王大锤</td>
+                        <td>待处理</td>
+                        <td>详情</td>
+                      </tr>
+                      <tr>
+                        <td>A区</td>
+                        <td>09-21 19:30</td>
+                        <td>王大锤</td>
+                        <td>待处理</td>
+                        <td>详情</td>
+                      </tr>
+                      <tr>
+                        <td>A区</td>
+                        <td>09-21 19:30</td>
+                        <td>王大锤</td>
+                        <td>待处理</td>
+                        <td>详情</td>
+                      </tr>
+                      <tr>
+                        <td>A区</td>
+                        <td>09-21 19:30</td>
+                        <td>王大锤</td>
+                        <td>待处理</td>
+                        <td>详情</td>
+                      </tr>
+                      <tr>
+                        <td>A区</td>
+                        <td>09-21 19:30</td>
+                        <td>王大锤</td>
+                        <td>待处理</td>
+                        <td>详情</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div className={styles.card}>
+                <div className={styles.barsBox}>
+                  <span className={styles.tit}>事件总量</span>
+                  <ReactEcharts
+                    option={option}
+                    style={{ width: 180, height: 140 }}
+                  />
+                </div>
+                <div className={styles.table_box}>
+                  <table className={styles.t_table}>
+                    <thead>
+                      <tr>
+                        <th>区域</th>
+                        <th>上报时间</th>
+                        <th>跟进人</th>
+                        <th>处理状态</th>
+                        <th>操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>A区</td>
+                        <td>09-21 19:30</td>
+                        <td>王大锤</td>
+                        <td>待处理</td>
+                        <td>详情</td>
+                      </tr>
+                      <tr>
+                        <td>A区</td>
+                        <td>09-21 19:30</td>
+                        <td>王大锤</td>
+                        <td>待处理</td>
+                        <td>详情</td>
+                      </tr>
+                      <tr>
+                        <td>A区</td>
+                        <td>09-21 19:30</td>
+                        <td>王大锤</td>
+                        <td>待处理</td>
+                        <td>详情</td>
+                      </tr>
+                      <tr>
+                        <td>A区</td>
+                        <td>09-21 19:30</td>
+                        <td>王大锤</td>
+                        <td>待处理</td>
+                        <td>详情</td>
+                      </tr>
+                      <tr>
+                        <td>A区</td>
+                        <td>09-21 19:30</td>
+                        <td>王大锤</td>
+                        <td>待处理</td>
+                        <td>详情</td>
+                      </tr>
+                      <tr>
+                        <td>A区</td>
+                        <td>09-21 19:30</td>
+                        <td>王大锤</td>
+                        <td>待处理</td>
+                        <td>详情</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
-            <div className={styles.table_box}>
-              <table className={styles.t_table}>
-                <thead>
-                  <tr>
-                    <th>区域</th>
-                    <th>上报时间</th>
-                    <th>跟进人</th>
-                    <th>处理状态</th>
-                    <th>操作</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>A区</td>
-                    <td>09-21 19:30</td>
-                    <td>王大锤</td>
-                    <td>待处理</td>
-                    <td>详情</td>
-                  </tr>
-                  <tr>
-                    <td>A区</td>
-                    <td>09-21 19:30</td>
-                    <td>王大锤</td>
-                    <td>待处理</td>
-                    <td>详情</td>
-                  </tr>
-                  <tr>
-                    <td>A区</td>
-                    <td>09-21 19:30</td>
-                    <td>王大锤</td>
-                    <td>待处理</td>
-                    <td>详情</td>
-                  </tr>
-                  <tr>
-                    <td>A区</td>
-                    <td>09-21 19:30</td>
-                    <td>王大锤</td>
-                    <td>待处理</td>
-                    <td>详情</td>
-                  </tr>
-                  <tr>
-                    <td>A区</td>
-                    <td>09-21 19:30</td>
-                    <td>王大锤</td>
-                    <td>待处理</td>
-                    <td>详情</td>
-                  </tr>
-                  <tr>
-                    <td>A区</td>
-                    <td>09-21 19:30</td>
-                    <td>王大锤</td>
-                    <td>待处理</td>
-                    <td>详情</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <div className={styles.card}>
-            <div className={styles.barsBox}>
-              <span className={styles.tit}>园区巡警</span>
-              <ReactEcharts
-                option={option}
-                style={{ width: 180, height: 140 }}
-              />
-            </div>
-            <div className={styles.table_box}>
-              <table className={styles.t_table}>
-                <thead>
-                  <tr>
-                    <th>区域</th>
-                    <th>上报时间</th>
-                    <th>跟进人</th>
-                    <th>处理状态</th>
-                    <th>操作</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>A区</td>
-                    <td>09-21 19:30</td>
-                    <td>王大锤</td>
-                    <td>待处理</td>
-                    <td>详情</td>
-                  </tr>
-                  <tr>
-                    <td>A区</td>
-                    <td>09-21 19:30</td>
-                    <td>王大锤</td>
-                    <td>待处理</td>
-                    <td>详情</td>
-                  </tr>
-                  <tr>
-                    <td>A区</td>
-                    <td>09-21 19:30</td>
-                    <td>王大锤</td>
-                    <td>待处理</td>
-                    <td>详情</td>
-                  </tr>
-                  <tr>
-                    <td>A区</td>
-                    <td>09-21 19:30</td>
-                    <td>王大锤</td>
-                    <td>待处理</td>
-                    <td>详情</td>
-                  </tr>
-                  <tr>
-                    <td>A区</td>
-                    <td>09-21 19:30</td>
-                    <td>王大锤</td>
-                    <td>待处理</td>
-                    <td>详情</td>
-                  </tr>
-                  <tr>
-                    <td>A区</td>
-                    <td>09-21 19:30</td>
-                    <td>王大锤</td>
-                    <td>待处理</td>
-                    <td>详情</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <div className={styles.m_r}>
-
-
-          <div className={styles.card}>
-            <div className={styles.barsBox}>
-              <span className={styles.tit}>安全生产</span>
-              <ReactEcharts
-                option={option}
-                style={{ width: 180, height: 140 }}
-              />
-            </div>
-            <div className={styles.table_box}>
-              <table className={styles.t_table}>
-                <thead>
-                  <tr>
-                    <th>区域</th>
-                    <th>上报时间</th>
-                    <th>跟进人</th>
-                    <th>处理状态</th>
-                    <th>操作</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>A区</td>
-                    <td>09-21 19:30</td>
-                    <td>王大锤</td>
-                    <td>待处理</td>
-                    <td>详情</td>
-                  </tr>
-                  <tr>
-                    <td>A区</td>
-                    <td>09-21 19:30</td>
-                    <td>王大锤</td>
-                    <td>待处理</td>
-                    <td>详情</td>
-                  </tr>
-                  <tr>
-                    <td>A区</td>
-                    <td>09-21 19:30</td>
-                    <td>王大锤</td>
-                    <td>待处理</td>
-                    <td>详情</td>
-                  </tr>
-                  <tr>
-                    <td>A区</td>
-                    <td>09-21 19:30</td>
-                    <td>王大锤</td>
-                    <td>待处理</td>
-                    <td>详情</td>
-                  </tr>
-                  <tr>
-                    <td>A区</td>
-                    <td>09-21 19:30</td>
-                    <td>王大锤</td>
-                    <td>待处理</td>
-                    <td>详情</td>
-                  </tr>
-                  <tr>
-                    <td>A区</td>
-                    <td>09-21 19:30</td>
-                    <td>王大锤</td>
-                    <td>待处理</td>
-                    <td>详情</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div className={styles.card}>
-            <div className={styles.barsBox}>
-              <span className={styles.tit}>事件总量</span>
-              <ReactEcharts
-                option={option}
-                style={{ width: 180, height: 140 }}
-              />
-            </div>
-            <div className={styles.table_box}>
-              <table className={styles.t_table}>
-                <thead>
-                  <tr>
-                    <th>区域</th>
-                    <th>上报时间</th>
-                    <th>跟进人</th>
-                    <th>处理状态</th>
-                    <th>操作</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>A区</td>
-                    <td>09-21 19:30</td>
-                    <td>王大锤</td>
-                    <td>待处理</td>
-                    <td>详情</td>
-                  </tr>
-                  <tr>
-                    <td>A区</td>
-                    <td>09-21 19:30</td>
-                    <td>王大锤</td>
-                    <td>待处理</td>
-                    <td>详情</td>
-                  </tr>
-                  <tr>
-                    <td>A区</td>
-                    <td>09-21 19:30</td>
-                    <td>王大锤</td>
-                    <td>待处理</td>
-                    <td>详情</td>
-                  </tr>
-                  <tr>
-                    <td>A区</td>
-                    <td>09-21 19:30</td>
-                    <td>王大锤</td>
-                    <td>待处理</td>
-                    <td>详情</td>
-                  </tr>
-                  <tr>
-                    <td>A区</td>
-                    <td>09-21 19:30</td>
-                    <td>王大锤</td>
-                    <td>待处理</td>
-                    <td>详情</td>
-                  </tr>
-                  <tr>
-                    <td>A区</td>
-                    <td>09-21 19:30</td>
-                    <td>王大锤</td>
-                    <td>待处理</td>
-                    <td>详情</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
+          ) : null
+        }
 
         <div className={styles.main_middle}>
           <div className={styles.m_m_f}>
