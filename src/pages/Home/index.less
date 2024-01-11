@@ -1,36 +1,34 @@
-.bg {
+.container {
   width: 100%;
   min-height: 100vh;
-  background-image: url('../../../public/img/bg.png');
-  background-size: 100% 100%;
+  background: url('../../../public/img/bg.png') no-repeat #061537;
+  background-size: cover;
+  overflow: hidden;
   position: relative;
+  z-index: -2;
+  min-width: 1386px;
 }
 
-.content {
-  min-width: 1366px;
-  padding: 20px 40px;
+.main,
+.top_tit {
+  padding: 20px 40px 0 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 
-  .content_l {
-    .year_chose {
-      background-color: transparent;
-      color: #72e3ff;
-      border: #00c0ef 2px solid;
-      width: 200px;
-      text-indent: 0.6em;
-      border-radius: 5px;
-    }
+  .year_chose {
+    background-color: transparent;
+    color: #72e3ff;
+    border: #00c0ef 2px solid;
+    width: 200px;
+    text-indent: 0.6em;
+    border-radius: 5px;
   }
 
-  .content_r {
+  .content_r_time {
     text-align: right;
-
-    .content_r_time {
-      color: #fff;
-      font-size: 15px;
-    }
+    color: #fff;
+    font-size: 15px;
   }
 
   .card {
@@ -89,7 +87,7 @@
     }
   }
 
-  .content_main {
+  .main_middle {
     width: 422px;
     border-radius: 8px;
     height: 100px;
@@ -100,12 +98,12 @@
     right: 50%;
     transform: translate(-50%, -50%);
 
-    .content_main_f {
+    .m_m_f {
       color: #fff;
       font-size: 12px;
       display: flex;
-      height: 100%;
       align-items: center;
+      height: 100%;
 
       .flexBox {
         cursor: pointer;
