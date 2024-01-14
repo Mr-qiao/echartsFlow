@@ -2,10 +2,8 @@
 import { navigateToLogin } from '@/utils';
 import type { RequestConfig } from '@umijs/max';
 import { message, notification } from 'antd';
-import Cookies from 'js-cookie';
 
 const { ajaxBaseUrl } = config;
-
 
 const codeMessage: any = {
   200: '服务器成功返回请求的数据。',
@@ -34,13 +32,9 @@ const codeMessage: any = {
 export const errorConfig: RequestConfig = {
   baseURL: ajaxBaseUrl,
   timeout: 10000,
-  // headers: {
-  // 	// 'app-code': 'SCM',
-  // 	token: localStorage.getItem('token') || '',
-  // },
   // 错误处理： umi@3 的错误处理方案。
   errorConfig: {
-    errorThrower: (res) => { },
+    errorThrower: (res) => {},
     // 错误接收及处理
     errorHandler: (error: any, opts: any) => {
       if (opts?.skipErrorHandler) throw error;
@@ -70,15 +64,15 @@ export const errorConfig: RequestConfig = {
     (config: any) => {
       // 拦截请求配置，进行个性化处理。
       // TODO：目前token还兼容老接口
-      const token =
-        Cookies.get('supplier-token') || localStorage.getItem('supplier-token');
+      // const token =
+      //   Cookies.get('supplier-token') || localStorage.getItem('supplier-token');
 
-      if (token) {
-        config.headers = {
-          ...config.headers,
-          token,
-        };
-      }
+      // if (token) {
+      //   config.headers = {
+      //     ...config.headers,
+      //     token,
+      //   };
+      // }
 
       return config;
     },
@@ -87,29 +81,6 @@ export const errorConfig: RequestConfig = {
   // 响应拦截器
   responseInterceptors: [
     (response: any) => {
-      // 拦截响应数据，进行个性化处理
-      if (
-        'isDownload' in response.config &&
-        response.headers['content-disposition']
-      ) {
-        const fileName = response.headers['content-disposition']
-          .split(';')[1]
-          .split('=')[1]; // 根据接口返回情况拿到文件名
-        const blob: Blob = new Blob([response.data as Blob]); // 通过返回的流数据 手动构建blob 流
-        const reader = new FileReader();
-        reader.readAsDataURL(blob); // 转换为base64，可以直接放入a标签的href （转换base64还可用 window.atob ，未实验过）
-        reader.onload = (e) => {
-          // 转换完成，创建一个a标签用于下载
-          const a = document.createElement('a');
-          console.log(decodeURIComponent(fileName));
-          a.download = decodeURIComponent(fileName); // 构建 下载的文件名称以及下载的文件格式（可通过传值输入）
-          if (typeof e.target?.result === 'string') {
-            a.href = e.target.result;
-          }
-          a.click();
-        };
-        return false;
-      }
       const { data } = response as unknown;
       if (
         [1000010001, 1000010031].includes(data.code) ||
