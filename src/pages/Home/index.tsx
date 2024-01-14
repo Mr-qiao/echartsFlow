@@ -1,30 +1,14 @@
-
-import React, { useState } from 'react';
-import ReactEcharts from 'echarts-for-react';
+import { useState } from 'react';
+import Footer from './Footer';
+import styles from './index.less';
 import Park from './Park';
 import Security from './Security';
 
-import styles from './index.less';
-
-
-
-
-
-
-
-
 const Home: any = () => {
-
-
-  const [type, setType] = useState('1')
-
-  const handleHistory = (type: string) => {
-    setType(type);
-  }
+  const [type, setType] = useState('1');
 
   return (
     <div className={styles.container}>
-
       <div className={styles.top_tit}>
         <select className={styles.year_chose}>
           <option> 北京市</option>
@@ -53,36 +37,10 @@ const Home: any = () => {
         <span className={styles.content_r_time}>统计截止时间：2023-9-20</span>
       </div>
 
-      {
-        '1' === type ? (
-          <Park />
-        ) : <Security />
-      }
+      {'1' === type ? <Park /> : <Security />}
 
-      {/* footer */}
-      <div className={styles.main_middle}>
-        <div className={styles.m_m_f}>
-          <div className={styles.flexBox} onClick={() => handleHistory('1')}>
-            <img alt="" src="" />
-            <span>园区概况</span>
-          </div>
-
-          <div className={styles.flexBox} onClick={() => handleHistory('2')}>
-            <img src="" alt="" />
-            <span>历史监控</span>
-          </div>
-
-          <div className={styles.flexBox} onClick={() => handleHistory('3')}>
-            <img src="" alt="" />
-            <span>实时监控</span>
-          </div>
-
-          <div className={styles.flexBox} onClick={() => handleHistory('4')}>
-            <img src="" alt="" />
-            <span>安防检测</span>
-          </div>
-        </div>
-      </div>
+      {/* 底部导航 */}
+      <Footer onClick={(key) => setType(key)} />
     </div>
   );
 };
