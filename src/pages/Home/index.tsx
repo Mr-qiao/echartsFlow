@@ -5,7 +5,7 @@ import Park from './Park';
 import Security from './Security';
 
 const Home: any = () => {
-  const [type, setType] = useState('1');
+  const [type, setType] = useState('park');
 
   return (
     <div className={styles.container}>
@@ -37,7 +37,7 @@ const Home: any = () => {
         <span className={styles.content_r_time}>统计截止时间：2023-9-20</span>
       </div>
 
-      {'1' === type ? <Park /> : <Security />}
+      {'park' === type ? <Park /> : <Security />}
 
       {/* 底部导航 */}
       <Footer onClick={(key) => setType(key)} />

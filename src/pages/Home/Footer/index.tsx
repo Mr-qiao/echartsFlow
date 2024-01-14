@@ -1,25 +1,25 @@
 import { DEFAULT_IMG_SRC } from '@/constants';
-
+import { history } from '@umijs/max'
 import styles from './index.less';
 
 const footerPath = [
   {
-    path: '1',
+    path: 'park',
     title: '园区概况',
     img: DEFAULT_IMG_SRC,
   },
   {
-    path: '2',
+    path: '/monitor/list/1',
     title: '历史监控',
     img: DEFAULT_IMG_SRC,
   },
   {
-    path: '3',
+    path: '/monitor/list/2',
     title: '实时监控',
     img: DEFAULT_IMG_SRC,
   },
   {
-    path: '4',
+    path: 'security',
     title: '安防检测',
     img: DEFAULT_IMG_SRC,
   },
@@ -30,6 +30,15 @@ interface FooterProps {
 }
 
 const Footer = ({ onClick }: FooterProps) => {
+
+
+  const handleToPath = (route: string) => {
+    if (/\//.test(route)) {
+      history.push(route);
+    }
+    onClick(route);
+  }
+
   return (
     <div className={styles.main_middle}>
       <div className={styles.m_m_f}>
@@ -37,7 +46,7 @@ const Footer = ({ onClick }: FooterProps) => {
           <div
             key={i}
             className={styles.flexBox}
-            onClick={() => onClick(item.path)}
+            onClick={() => handleToPath(item.path)}
           >
             <img alt="" src={item.img} />
             <span>{item.title}</span>
