@@ -1,5 +1,4 @@
 // 运行时配置
-import AvatarName from '@/components/AvatarName';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-components';
 import { useLocation } from '@umijs/max';
@@ -41,8 +40,6 @@ export const layout = () => {
     },
     menuHeaderRender: () => (
       <div className="u-f__center">
-        {/* <img src={logo} style={{ width: '200px', height: '80px' }} /> */}
-        {/* <img src={logo} alt="" style={{ width: '200px', height: '80px' }} /> */}
         <h1 className="u-fs20" style={{ margin: '20px 0 20px 20px' }}>
           可视化监管平台
         </h1>
@@ -80,7 +77,6 @@ export const layout = () => {
       const isHome = location.pathname === '/home';
       return (
         <div>
-          {/* <AvatarName /> */}
           <PageContainer className="PageContainer">
             <ConfigProvider locale={zhCN}>{children}</ConfigProvider>
           </PageContainer>

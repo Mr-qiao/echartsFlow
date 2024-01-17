@@ -7,7 +7,7 @@ export const DAYFORMAT_SECOND = 'YYYY-MM-DD HH:mm:ss';
 export const DAYFORMAT_MINUTE = 'YYYY-MM-DD HH:mm';
 export const SECOND_BIAS_EXCLUDE_YEAR = 'MM/DD HH:mm:ss';
 export const MINUTE_BIAS = 'YYYY/MM/DD HH:mm';
-//盖亚系统兜底头像
+
 export const DEFAULT_HEADER_SRC =
   'https://s.xinc818.com/files/webcilb659sisy4vmah/img_moren.png';
 export const DEFAULT_IMG_SRC =
