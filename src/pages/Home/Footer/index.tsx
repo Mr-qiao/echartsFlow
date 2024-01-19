@@ -40,7 +40,7 @@ const Footer = ({ onClick }: FooterProps) => {
   }
 
   return (
-    <div className={styles.main_middle}>
+    <footer className={styles.main_middle}>
       <div className={styles.m_m_f}>
         {footerPath.map((item, i) => (
           <div
@@ -53,7 +53,7 @@ const Footer = ({ onClick }: FooterProps) => {
           </div>
         ))}
       </div>
-    </div>
+    </footer>
   );
 };
 

@@ -9,8 +9,11 @@ const Home: any = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.top_tit}>
-        <select className={styles.year_chose}>
+      <header className={styles.header}>
+
+        <h3 className={styles.title}>大屏数据可视化模板</h3>
+
+        <select className={styles.h_c}>
           <option> 北京市</option>
           <option>自贡市</option>
           <option>攀枝花市</option>
@@ -34,8 +37,8 @@ const Home: any = () => {
           <option>凉山州</option>
         </select>
 
-        <span className={styles.content_r_time}>统计截止时间：2023-9-20</span>
-      </div>
+        <span className={styles.h_t}>统计截止时间：2023-9-20</span>
+      </header>
 
       {'park' === type ? <Park /> : <Security />}
 
