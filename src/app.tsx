@@ -11,7 +11,6 @@ import 'dayjs/locale/zh-cn';
 import { useState } from 'react';
 import './global.less';
 import { errorConfig } from './requestErrorConfig';
-import './style/base.less';
 
 dayjs.locale('zh-cn');
 
@@ -35,7 +34,7 @@ export const layout = () => {
         colorBgHeader: '#fff',
       },
       pageContainer: {
-        colorBgPageContainer: '#001529',
+        colorBgPageContainer: '#fff',
       },
     },
     menuHeaderRender: () => (
@@ -48,25 +47,25 @@ export const layout = () => {
     menu: {
       locale: false,
     },
-    // collapsed: collapsed,
-    // collapsedButtonRender: () => (
-    //   <div
-    //     className="u-c__gray u-f__end u-cr__p u-mr8"
-    //     onClick={() => setCollapsed(!collapsed)}
-    //   >
-    //     {!collapsed ? (
-    //       <>
-    //         <span className="u-fs12 u-mr5">收起</span>
-    //         <MenuFoldOutlined style={{ color: '#C9CDD4' }} />
-    //       </>
-    //     ) : (
-    //       <>
-    //         <span className="u-fs12 u-mr5">展开</span>
-    //         <MenuUnfoldOutlined style={{ color: '#C9CDD4' }} />
-    //       </>
-    //     )}
-    //   </div>
-    // ),
+    collapsed: collapsed,
+    collapsedButtonRender: () => (
+      <div
+        className="u-c__gray u-f__end u-cr__p u-mr8"
+        onClick={() => setCollapsed(!collapsed)}
+      >
+        {!collapsed ? (
+          <>
+            <span className="u-fs12 u-mr5">收起</span>
+            <MenuFoldOutlined style={{ color: '#C9CDD4' }} />
+          </>
+        ) : (
+          <>
+            <span className="u-fs12 u-mr5">展开</span>
+            <MenuUnfoldOutlined style={{ color: '#C9CDD4' }} />
+          </>
+        )}
+      </div>
+    ),
     siderWidth: 240,
     disableMobile: true, //禁止自动切换到移动页面
     contentStyle: {
