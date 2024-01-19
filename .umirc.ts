@@ -58,9 +58,9 @@ export default defineConfig({
   },
   // proxy: {
   //   '/api': {
-  //     'target': 'http://192.168.12.124:8080',
+  //     'target': 'https://echarts.apache.org/examples',
   //     'changeOrigin': true,
-  //     'pathRewrite': { '^/api' : '' },
+  //     'pathRewrite': { '^/api': '' },
   //   }
   // }
 });
