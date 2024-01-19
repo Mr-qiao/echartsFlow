@@ -6,22 +6,22 @@ const footerPath = [
   {
     path: 'park',
     title: '园区概况',
-    img: DEFAULT_IMG_SRC,
+    icon: DEFAULT_IMG_SRC,
   },
   {
     path: '/monitor/list/1',
     title: '历史监控',
-    img: DEFAULT_IMG_SRC,
+    icon: DEFAULT_IMG_SRC,
   },
   {
     path: '/monitor/list/2',
     title: '实时监控',
-    img: DEFAULT_IMG_SRC,
+    icon: DEFAULT_IMG_SRC,
   },
   {
     path: 'security',
     title: '安防检测',
-    img: DEFAULT_IMG_SRC,
+    icon: DEFAULT_IMG_SRC,
   },
 ];
 
@@ -48,7 +48,7 @@ const Footer = ({ onClick }: FooterProps) => {
             className={styles.flexBox}
             onClick={() => handleToPath(item.path)}
           >
-            <img alt="" src={item.img} />
+            <img alt={item.icon} src={item.icon} />
             <span>{item.title}</span>
           </div>
         ))}

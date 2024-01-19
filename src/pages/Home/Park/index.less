@@ -4,32 +4,103 @@
   justify-content: space-between;
   align-items: center;
 
-  // 园区概况
-  .m_l_1,
-  .m_r_1 {
+  // 安防检测
+  .m_l_2,
+  .m_r_2 {
+    margin-top: 50px;
     .card {
       margin-top: 20px;
-      width: 392px;
+      width: 342px;
       border-radius: 8px;
       background-color: rgba(0, 168, 255, 20%);
+      // background: rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 30px 10px rgba(0, 0, 0, 0.3);
       display: flex;
       flex-direction: column;
-      padding: 0 10px 20px;
+      padding: 0 10px 0px;
 
-      .barsBox {
+      .c_t_head {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 0 10px 0;
-
-        .tit {
-          font-size: 18px;
-          color: #fff;
+        color: #fff;
+        padding: 5px;
+        line-height: 40px;
+        border-bottom: 1px solid #fff;
+        .show {
+          font-size: 12px;
         }
       }
 
+      // 总体事件
+      .list {
+        list-style: none;
+        font-size: 10px;
+        color: #868fa8;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0;
+        padding: 20px;
+
+        li {
+          display: flex;
+          flex-direction: column;
+
+          .tit {
+            color: #30fdf0;
+            font-size: 16px;
+            i {
+              font-style: normal;
+              font-size: 24px;
+            }
+          }
+          div {
+            margin-top: 10px;
+
+            span {
+              &:nth-child(2) {
+                margin-left: 4px;
+                color: #fff;
+              }
+            }
+          }
+        }
+      }
+
+      // 月台数据
+      .moonData {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        font-size: 10px;
+        color: #868fa8;
+
+        div {
+          display: flex;
+          flex-direction: column;
+          align-items: start;
+          .moonData_tit {
+            margin-bottom: 10px;
+          }
+          .nums {
+            font-size: 24px;
+            color: #fff;
+          }
+        }
+      }
+
+      // // 车辆信息
+      .diverPie {
+        height: 100%;
+      }
+
+      // 违规上报列表
       .table_box {
-        max-height: 140px;
+        margin: 20px 0;
+        max-height: 248px;
         overflow: auto;
 
         .t_table {
@@ -37,7 +108,6 @@
           width: 100%;
           margin: 0 auto;
           border-spacing: 0;
-          text-align: center;
           box-sizing: border-box;
           font-size: 12px;
           table-layout: fixed;
@@ -45,14 +115,16 @@
           tr {
             margin: 0;
             padding: 0;
-            line-height: 28px;
+            line-height: 30px;
           }
 
           thead {
             position: sticky;
             top: 0;
+            text-align: left;
             tr {
-              background: #053a98;
+              // background: #053a98;
+              background: #394e73;
             }
           }
 
@@ -60,6 +132,17 @@
             font-size: 12px;
           }
         }
+      }
+    }
+    .countdown {
+      width: 100%;
+      text-align: right;
+      color: #fff;
+      font-size: 24px;
+      i {
+        font-style: normal;
+        font-size: 38px;
+        color: #30fdf0;
       }
     }
   }

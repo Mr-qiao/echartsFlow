@@ -4,100 +4,32 @@
   justify-content: space-between;
   align-items: center;
 
-  // 安防检测
-  .m_l_2,
-  .m_r_2 {
-    margin-top: 100px;
+  // 园区概况
+  .m_l_1,
+  .m_r_1 {
     .card {
       margin-top: 20px;
-      width: 342px;
+      width: 392px;
       border-radius: 8px;
       background-color: rgba(0, 168, 255, 20%);
       display: flex;
       flex-direction: column;
-      padding: 0 10px 0px;
+      padding: 0 10px 20px;
 
-      .c_t_head {
+      .barsBox {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        color: #fff;
-        padding: 5px;
-        line-height: 40px;
-        border-bottom: 1px solid #fff;
-        .show {
-          font-size: 12px;
+        padding: 0 10px 0;
+
+        .tit {
+          font-size: 18px;
+          color: #fff;
         }
       }
 
-      // 总体事件
-      .list {
-        list-style: none;
-        font-size: 10px;
-        color: #868fa8;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin: 0;
-        padding: 20px;
-
-        li {
-          display: flex;
-          flex-direction: column;
-
-          .tit {
-            color: #30fdf0;
-            font-size: 16px;
-            i {
-              font-style: normal;
-              font-size: 24px;
-            }
-          }
-          div {
-            margin-top: 10px;
-
-            span {
-              &:nth-child(2) {
-                margin-left: 4px;
-                color: #fff;
-              }
-            }
-          }
-        }
-      }
-
-      // 月台数据
-      .moonData {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 20px;
-        font-size: 10px;
-        color: #868fa8;
-
-        div {
-          display: flex;
-          flex-direction: column;
-          align-items: start;
-          .moonData_tit {
-            margin-bottom: 10px;
-          }
-          .nums {
-            font-size: 24px;
-            color: #fff;
-          }
-        }
-      }
-
-      // // 车辆信息
-      .diverPie {
-        height: 100%;
-      }
-
-      // 违规上报列表
       .table_box {
-        margin: 20px 0;
-        max-height: 248px;
+        max-height: 140px;
         overflow: auto;
 
         .t_table {
@@ -105,6 +37,7 @@
           width: 100%;
           margin: 0 auto;
           border-spacing: 0;
+          text-align: center;
           box-sizing: border-box;
           font-size: 12px;
           table-layout: fixed;
@@ -112,13 +45,12 @@
           tr {
             margin: 0;
             padding: 0;
-            line-height: 30px;
+            line-height: 28px;
           }
 
           thead {
             position: sticky;
             top: 0;
-            text-align: left;
             tr {
               background: #053a98;
             }
@@ -128,17 +60,6 @@
             font-size: 12px;
           }
         }
-      }
-    }
-    .countdown {
-      width: 100%;
-      text-align: right;
-      color: #fff;
-      font-size: 24px;
-      i {
-        font-style: normal;
-        font-size: 38px;
-        color: #30fdf0;
       }
     }
   }
