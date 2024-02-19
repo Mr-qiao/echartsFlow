@@ -1,7 +1,7 @@
 /**
  * 安防检测
  */
-
+import React from 'react';
 import ReactEcharts from 'echarts-for-react';
 import styles from './index.less';
 
