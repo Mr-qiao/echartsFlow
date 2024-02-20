@@ -82,7 +82,7 @@ const Home: any = () => {
       {/* 底部导航 */}
       {/* <Footer onClick={(key) => setType(key)} /> */}
 
-      <Sider style={{ position: 'absolute', left: '50%', top: '50%' }} width={200}>
+      {/* <Sider style={{ position: 'absolute', left: '50%', top: '50%' }} width={200}>
         <Menu
           mode="inline"
           defaultSelectedKeys={['1']}
@@ -90,7 +90,7 @@ const Home: any = () => {
           style={{ height: '100%' }}
           items={items2}
         />
-      </Sider>
+      </Sider> */}
     </div>
   );
 };

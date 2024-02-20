@@ -32,6 +32,10 @@ export default defineConfig({
     // href的图片你可以放在public里面，直接./图片名.png 就可以了，也可以是cdn链接
     { rel: 'icon', href: 'https://s.xinc818.com/assets/images/favicon.ico' },
   ],
+  scripts: [
+    // require.resolve('./js/echarts.min.js'),
+    // require.resolve('./js/china.js')
+  ],
   history: { type: 'hash' },
   routes,
   npmClient: 'yarn',
