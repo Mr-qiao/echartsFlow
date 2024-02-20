@@ -141,6 +141,11 @@ const Park = () => {
         </div>
       </div>
 
+      {/* 中间内容 */}
+      <div className={styles.m_l_m}>
+        xxxx
+      </div>
+
       <div className={styles.m_r_2}>
         <div className={styles.countdown}>
           安全运营 <i>24</i> 天
