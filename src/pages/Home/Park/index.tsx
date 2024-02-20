@@ -614,7 +614,8 @@ const Park = () => {
 
 
       <div className={styles.data_middle}>
-        <ReactEcharts option={option} />
+        {/* <ReactEcharts option={option} /> */}
+        高德地图引入问题处理中
       </div>
 
       <div className={styles.m_r_2}>
