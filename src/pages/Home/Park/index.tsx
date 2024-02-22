@@ -1,9 +1,19 @@
 /**
  * 安防检测
  */
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import ReactEcharts from 'echarts-for-react';
 import styles from './index.less';
+import AMapLoader from "@amap/amap-jsapi-loader";
+import Loca from 'Loca';
+import AMap from 'AMap';
+import events from 'events';
+
+
+
+
+
+
 
 // 车辆信息
 let diverOption = {
@@ -42,9 +52,40 @@ let diverOption = {
   ],
 };
 
+
+
 const Park = () => {
+
+  const mapRef = useRef(null);
+  const locaRef = useRef(null);
+
+  const init = () => {
+    // init map
+    mapRef.current = new AMap.Map("map_e", {
+      zoom: 10,
+      resizeEnable: true,
+      center: [120.19, 30.26], // 杭州 余杭
+      skyColor: '#00163e',
+      mapStyle: 'amap://styles/04076502cfb9788a53ed0d362165cf99'
+    });
+    // init loac
+    locaRef.current = new Loca.Container({
+      map: mapRef.current
+    })
+  }
+
+  useEffect(() => {
+    init();
+    return () => {
+      mapRef.current?.destroy();
+    };
+  }, []);
+
+
+
   return (
     <div className={styles.park_main}>
+      {/* left */}
       <div className={styles.m_l_2}>
         <div className={styles.card}>
           <div className={styles.c_t_head}>
@@ -142,10 +183,9 @@ const Park = () => {
       </div>
 
       {/* 中间内容 */}
-      <div className={styles.m_l_m}>
-        xxxx
-      </div>
+      <div id="map_e" className={styles.m_l_m} style={{ width: '70%', height: '450px' }} />
 
+      {/* right */}
       <div className={styles.m_r_2}>
         <div className={styles.countdown}>
           安全运营 <i>24</i> 天

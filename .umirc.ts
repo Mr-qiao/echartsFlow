@@ -10,6 +10,12 @@ export default defineConfig({
   initialState: {},
   devtool: 'source-map',
   request: {},
+  externals: {
+    'AMap': 'AMap',
+    'Loca': 'Loca',
+    'AMapUI': 'AMapUI',
+    'events': "events"
+  },
   locale: {
     default: 'zh-CN', // 工程默认语言
     antd: true,
@@ -21,6 +27,13 @@ export default defineConfig({
       locale: zhCN,
     },
   },
+  scripts: [
+    // "https://s.xinc818.com/files/flexible.js",
+    "https://a.amap.com/jsapi_demos/static/resource/heatmapData.js",
+    'https://webapi.amap.com/maps?v=2.0&key=89891f300af25a591b87a190d71165a2&plugin=AMap.Scale,AMap.ToolBar',
+    "https://webapi.amap.com/loca?v=2.0.0&key=89891f300af25a591b87a190d71165a2",
+    'https://a.amap.com/Loca/static/loca-v2/demos/mock_data/events.js'
+  ],
   alias: {
     dayjs: path.join(__dirname, './node_modules/dayjs'),
   },
