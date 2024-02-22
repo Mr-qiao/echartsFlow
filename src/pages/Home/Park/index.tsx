@@ -5,6 +5,16 @@ import React, { useEffect, useRef } from 'react';
 import ReactEcharts from 'echarts-for-react';
 import * as echarts from 'echarts';
 import styles from './index.less';
+import AMapLoader from "@amap/amap-jsapi-loader";
+import Loca from 'Loca';
+import AMap from 'AMap';
+import events from 'events';
+
+
+
+
+
+
 
 import { data, geoCoordMap } from './contants';
 
@@ -49,101 +59,36 @@ let diverOption = {
 
 const Park = () => {
 
-  const myCharts = useRef(null);
-
+  const mapRef = useRef(null);
+  const locaRef = useRef(null);
 
   const init = () => {
-
-    myCharts.current = echarts.init(document.getElementById('map_1'));
-    // handle data
-    const convertData = function (data) {
-      let res = [];
-      for (let i = 0; i < data.length; i++) {
-        let geoCoord = geoCoordMap[data[i].name];
-        if (geoCoord) {
-          res.push({
-            name: data[i].name,
-            value: geoCoord.concat(data[i].value)
-          });
-        }
-      }
-      return res;
-    };
-
-    // config
-    let option = {
-      tooltip: {
-        trigger: 'item',
-        formatter: function (params) {
-          if (typeof (params.value)[2] === "undefined") {
-            return params.name + ' : ' + params.value;
-          } else {
-            return params.name + ' : ' + params.value[2];
-          }
-        }
-      },
-      geo: {
-        map: 'china',
-        label: {
-          emphasis: {
-            show: true
-          }
-        },
-        roam: false,//禁止其放大缩小
-        itemStyle: {
-          normal: {
-            areaColor: '#4c60ff',
-            borderColor: '#002097'
-          },
-          emphasis: {
-            areaColor: '#293fff'
-          }
-        }
-      },
-      series: [
-        {
-          name: '消费金额',
-          type: 'scatter',
-          coordinateSystem: 'geo',
-          data: convertData(data),
-          symbolSize: function (val) {
-            return val[2] / 15;
-          },
-          label: {
-            normal: {
-              formatter: '{b}',
-              position: 'right',
-              show: false
-            },
-            emphasis: {
-              show: true
-            }
-          },
-          itemStyle: {
-            normal: {
-              color: '#ffeb7b'
-            }
-          }
-        }
-      ]
-    };
-
-
-    myCharts.current.setOption(option);
-    window.addEventListener("resize", function () {
-      myCharts.current.resize();
+    // init map
+    mapRef.current = new AMap.Map("map_e", {
+      zoom: 10,
+      resizeEnable: true,
+      center: [120.19, 30.26], // 杭州 余杭
+      skyColor: '#00163e',
+      mapStyle: 'amap://styles/04076502cfb9788a53ed0d362165cf99'
     });
+    // init loac
+    locaRef.current = new Loca.Container({
+      map: mapRef.current
+    })
   }
 
   useEffect(() => {
     init();
-  }, [])
-
+    return () => {
+      mapRef.current?.destroy();
+    };
+  }, []);
 
 
 
   return (
     <div className={styles.park_main}>
+      {/* left */}
       <div className={styles.m_l_2}>
         <div className={styles.card}>
           <div className={styles.c_t_head}>
@@ -240,11 +185,10 @@ const Park = () => {
         </div>
       </div>
 
+      {/* 中间内容 */}
+      <div id="map_e" className={styles.m_l_m} style={{ width: '70%', height: '450px' }} />
 
-      <div id="map_1" style={{ height: '1000px', width: '1000px' }} className={styles.data_middle}>
-        {/* <ReactEcharts option={option} /> */}
-      </div>
-
+      {/* right */}
       <div className={styles.m_r_2}>
         <div className={styles.countdown}>
           安全运营 <i>24</i> 天
