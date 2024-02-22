@@ -9,7 +9,8 @@ const footerPath = [
     icon: DEFAULT_IMG_SRC,
   },
   {
-    path: '/monitor/list/1',
+    // path: '/monitor/list/1',
+    path: '/historyMonitor',
     title: '历史监控',
     icon: DEFAULT_IMG_SRC,
   },

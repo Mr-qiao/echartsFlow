@@ -1,0 +1,62 @@
+.historyMonitorContainer {
+  width: 100%;
+  min-width: 1200px;
+  min-height: 100vh;
+  background: rgb(40, 30, 47) url('../../../public/img/bg.png') 0 0 / 100% 100%
+    no-repeat;
+  // background: rgb(40, 30, 47)
+  //   url(http://k21vin.gitee.io/front-end-data-visualization/assets/bg01.13dfb262.jpg)
+  //   0 0 / 100% 100% no-repeat;
+  overflow: hidden;
+  position: relative;
+
+  color: #fff;
+
+  padding: 5%;
+}
+
+.historyMonitorWarp {
+  width: 100%;
+  height: 690px;
+  display: flex;
+  justify-content: space-between;
+
+  .h_left,
+  .h_right {
+    flex: 1;
+    width: 20%;
+    border: 1px solid #fff;
+  }
+
+  .h_left {
+    padding: 1%;
+
+    .search_inp {
+      margin: 20px 0;
+    }
+  }
+
+  .h_middle {
+    flex: 2;
+    margin: 0 1%;
+    border: 1px solid #fff;
+
+    .h_middle_ul {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      padding: 10px;
+
+      li {
+        width: 31%;
+        list-style: none;
+        height: 100px;
+        background-color: #bbb;
+        &:nth-child(3n + 3) {
+          margin-bottom: 10px;
+        }
+      }
+    }
+  }
+}

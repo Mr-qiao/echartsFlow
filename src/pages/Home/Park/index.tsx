@@ -10,12 +10,6 @@ import Loca from 'Loca';
 import AMap from 'AMap';
 import events from 'events';
 
-
-
-
-
-
-
 import { data, geoCoordMap } from './contants';
 
 // 车辆信息
@@ -69,7 +63,7 @@ const Park = () => {
       resizeEnable: true,
       center: [120.19, 30.26], // 杭州 余杭
       skyColor: '#00163e',
-      mapStyle: 'amap://styles/04076502cfb9788a53ed0d362165cf99'
+      mapStyle: 'amap://styles/dark'
     });
     // init loac
     locaRef.current = new Loca.Container({

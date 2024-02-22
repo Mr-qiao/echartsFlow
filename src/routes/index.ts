@@ -7,6 +7,12 @@ const GlobalRouters = [
     layout: false,
     component: './Home',
   },
+  {
+    name: '历史监控',
+    path: '/historyMonitor',
+    layout: false,
+    component: './HistoryMonitor',
+  },
   ...monitor,
 ];
 
