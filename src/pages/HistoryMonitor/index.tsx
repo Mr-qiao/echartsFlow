@@ -3,7 +3,7 @@ import React from 'react';
 
 import { Layout, Menu, Input } from 'antd';
 import type { MenuProps, } from 'antd';
-import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
+import { LaptopOutlined, NotificationOutlined, UserOutlined, VideoCameraAddOutlined } from '@ant-design/icons';
 import styles from './index.less';
 
 const { Sider } = Layout;
@@ -57,12 +57,12 @@ const HistoryMonitor = () => {
             onSearch={onSearch}
           />
 
-          <Sider style={{ height: '100%' }} width="100%">
+          <Sider style={{ height: '100%' }} width="100%" className={styles.h_sider}>
             <Menu
               mode="inline"
               defaultSelectedKeys={['1']}
               defaultOpenKeys={['sub1']}
-              style={{ height: '100%' }}
+              // style={{ height: '100%' }}
               items={items2}
             />
           </Sider>
@@ -70,15 +70,101 @@ const HistoryMonitor = () => {
         </div>
         {/* 中间 */}
         <div className={styles.h_middle}>
-          <ul className={styles.h_middle_ul}>
-            {
-              [1, 2, 3, 4, 5, 6, 7, 8, 9].map(item => (
-                <li key={item}>
-                  {item}
-                </li>
-              ))
-            }
-          </ul>
+
+          <div className={styles.h_flex}>
+            <div className={styles.h_flex_item}>
+              <div className={styles.h_device_item}>
+                <img src={require('@/assets/img/1.jpeg')} alt="" />
+                <div className={styles.info}>
+                  <div className={styles.icon}><VideoCameraAddOutlined /></div>
+                  <div className={styles.name}>南门摄像头</div>
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.h_flex_item}>
+              <div className={styles.h_device_item}>
+                <img src={require('@/assets/img/2.jpeg')} alt="" />
+                <div className={styles.info}>
+                  <div className={styles.icon}><VideoCameraAddOutlined /></div>
+                  <div className={styles.name}>南门摄像头</div>
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.h_flex_item}>
+              <div className={styles.h_device_item}>
+                <img src={require('@/assets/img/3.jpeg')} alt="" />
+                <div className={styles.info}>
+                  <div className={styles.icon}><VideoCameraAddOutlined /></div>
+                  <div className={styles.name}>南门摄像头</div>
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.h_flex_item}>
+              <div className={styles.h_device_item}>
+                <img src={require('@/assets/img/3.jpg')} alt="" />
+                <div className={styles.info}>
+                  <div className={styles.icon}><VideoCameraAddOutlined /></div>
+                  <div className={styles.name}>南门摄像头</div>
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.h_flex_item}>
+              <div className={styles.h_device_item}>
+                <img src={require('@/assets/img/4.jpeg')} alt="" />
+                <div className={styles.info}>
+                  <div className={styles.icon}><VideoCameraAddOutlined /></div>
+                  <div className={styles.name}>南门摄像头</div>
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.h_flex_item}>
+              <div className={styles.h_device_item}>
+                <img src={require('@/assets/img/5.jpeg')} alt="" />
+                <div className={styles.info}>
+                  <div className={styles.icon}><VideoCameraAddOutlined /></div>
+                  <div className={styles.name}>南门摄像头</div>
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.h_flex_item}>
+              <div className={styles.h_device_item}>
+                <img src={require('@/assets/img/11.jpeg')} alt="" />
+                <div className={styles.info}>
+                  <div className={styles.icon}><VideoCameraAddOutlined /></div>
+                  <div className={styles.name}>南门摄像头</div>
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.h_flex_item}>
+              <div className={styles.h_device_item}>
+                <img src={require('@/assets/img/22.webp')} alt="" />
+                <div className={styles.info}>
+                  <div className={styles.icon}><VideoCameraAddOutlined /></div>
+                  <div className={styles.name}>南门摄像头</div>
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.h_flex_item}>
+              <div className={styles.h_device_item}>
+                <img src={require('@/assets/img/33.webp')} alt="" />
+                <div className={styles.info}>
+                  <div className={styles.icon}><VideoCameraAddOutlined /></div>
+                  <div className={styles.name}>南门摄像头</div>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+
 
         </div>
         {/* 右边 */}
