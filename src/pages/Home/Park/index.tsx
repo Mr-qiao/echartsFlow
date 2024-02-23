@@ -55,20 +55,222 @@ const Park = () => {
 
   const mapRef = useRef(null);
   const locaRef = useRef(null);
+  const geoRef = useRef(null);
 
   const init = () => {
     // init map
     mapRef.current = new AMap.Map("map_e", {
-      zoom: 10,
+      zoom: 5,
       resizeEnable: true,
       center: [120.19, 30.26], // 杭州 余杭
       skyColor: '#00163e',
-      mapStyle: 'amap://styles/dark'
+      mapStyle: 'amap://styles/darkblue'
     });
     // init loac
     locaRef.current = new Loca.Container({
       map: mapRef.current
     })
+
+
+    geoRef.current = new Loca.GeoJSONSource({
+      // data: [],
+      url: 'https://a.amap.com/Loca/static/loca-v2/demos/mock_data/china_traffic_event.json',
+    });
+
+    var scatter = new Loca.ScatterLayer({
+      // loca,
+      zIndex: 10,
+      opacity: 1,
+      visible: true,
+      zooms: [2, 22],
+    });
+
+    scatter.setSource(geoRef.current, {
+      unit: 'px',
+      size: [20, 20],
+      texture: 'https://a.amap.com/Loca/static/loca-v2/demos/images/blue.png',
+      borderWidth: 0,
+    });
+    locaRef.current.add(scatter);
+
+
+    // 呼吸
+    var top10 = {
+      type: 'FeatureCollection',
+      features: [
+        {
+          "type": "Feature",
+          "properties": {
+            "cityName": "韶关市",
+            "ratio": 0,
+            "rank": 96
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              113.58052,
+              24.760098
+            ]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "cityName": "乐山市",
+            "ratio": 0,
+            "rank": 97
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              103.75082,
+              29.58099
+            ]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "cityName": "阜阳市",
+            "ratio": 0,
+            "rank": 98
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              115.82654,
+              32.889915
+            ]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "cityName": "荆门市",
+            "ratio": 0,
+            "rank": 99
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              112.209816,
+              30.997377
+            ]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "cityName": "哈尔滨市",
+            "ratio": 0,
+            "rank": 100
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              126.61314,
+              45.746685
+            ]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "cityName": "达州市",
+            "ratio": 0,
+            "rank": 101
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              107.493,
+              31.205515
+            ]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "cityName": "自贡市",
+            "ratio": 0,
+            "rank": 102
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              104.777824,
+              29.34555
+            ]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "cityName": "陇南市",
+            "ratio": 0,
+            "rank": 103
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              104.93356,
+              33.388184
+            ]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "cityName": "南充市",
+            "ratio": 0,
+            "rank": 104
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              106.1188,
+              30.800997
+            ]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "cityName": "恩施土家族苗族自治州",
+            "ratio": 0,
+            "rank": 105
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              109.48512,
+              30.298103
+            ]
+          }
+        }
+      ]
+    };
+    var breath = new Loca.ScatterLayer({
+      zIndex: 121,
+    });
+    breath.setSource(new Loca.GeoJSONSource({
+      data: top10,
+    }));
+    breath.setStyle({
+      unit: 'px',
+      size: [50, 50],
+      texture: 'https://a.amap.com/Loca/static/loca-v2/demos/images/breath_red.png',
+      animate: true,
+      duration: 1000,
+    });
+    locaRef.current.add(breath);
+    locaRef.current.animate.start();
+
+    var dat = new Loca.Dat();
+    dat.addLayer(breath, '呼吸点');
+    dat.addLayer(scatter, '蓝色气泡');
+
+
   }
 
   useEffect(() => {
