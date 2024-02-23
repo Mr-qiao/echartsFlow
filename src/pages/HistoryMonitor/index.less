@@ -25,7 +25,6 @@
   .h_right {
     flex: 1;
     width: 15%;
-    border: 1px solid #fff;
   }
 
   .h_left {
@@ -44,23 +43,37 @@
   }
 
   .h_middle {
-    flex: 2;
-    margin: 0 1%;
-    border: 1px solid #fff;
+    flex: 3;
+    margin: 0 5px;
+
+    .h_warpper {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .h_f {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
 
     .h_flex {
+      flex: 2;
+
       display: flex;
+      justify-content: space-between;
+      align-items: center;
       flex-wrap: wrap;
 
       .h_flex_item {
-        flex: 1;
-
+        margin: 4px;
         .h_device_item {
-          width: 13.125rem;
+          width: 267px;
           overflow: hidden;
-          height: 14.0625rem;
+          height: 190px;
           box-shadow: 0 0 0.5vh #11111122;
-          margin: 2px;
 
           position: relative;
 
@@ -90,6 +103,28 @@
               font-size: 3rem;
             }
           }
+        }
+      }
+    }
+
+    .h_footer_handle {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .h_handle_box,
+      .h_handle_play {
+        display: flex;
+        align-items: center;
+
+        div {
+          width: 50px;
+          height: 50px;
+          border: 1px solid rgba(255, 255, 255, 0.3);
+          text-align: center;
+          line-height: 50px;
+          font-size: 14px;
+          font-weight: bold;
         }
       }
     }
