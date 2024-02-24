@@ -2,14 +2,13 @@ import { DEFAULT_IMG_SRC } from '@/constants';
 import { history } from '@umijs/max'
 import styles from './index.less';
 
-const footerPath = [
+const MenuBarPath = [
   {
-    path: 'park',
+    path: '/parkMonitor',
     title: '园区概况',
     icon: DEFAULT_IMG_SRC,
   },
   {
-    // path: '/monitor/list/1',
     path: '/historyMonitor',
     title: '历史监控',
     icon: DEFAULT_IMG_SRC,
@@ -20,30 +19,30 @@ const footerPath = [
     icon: DEFAULT_IMG_SRC,
   },
   {
-    path: 'security',
+    path: '/securityMonitor',
     title: '安防检测',
     icon: DEFAULT_IMG_SRC,
   },
 ];
 
-interface FooterProps {
-  onClick: (type: string) => void;
-}
+// interface MenuBarProps {
+//   onClick: (type: string) => void;
+// }
 
-const Footer = ({ onClick }: FooterProps) => {
+const MenuBar = () => {
 
 
   const handleToPath = (route: string) => {
     if (/\//.test(route)) {
       history.push(route);
     }
-    onClick(route);
+    // onClick(route);
   }
 
   return (
-    <footer className={styles.footer}>
+    <footer className={styles.MenuBar}>
       <div className={styles.f_warp}>
-        {footerPath.map((item, i) => (
+        {MenuBarPath.map((item, i) => (
           <div
             key={i}
             className={styles.flexBox}
@@ -58,4 +57,4 @@ const Footer = ({ onClick }: FooterProps) => {
   );
 };
 
-export default Footer;
+export default MenuBar;

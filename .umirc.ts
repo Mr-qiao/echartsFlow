@@ -34,10 +34,11 @@ export default defineConfig({
   alias: {
     dayjs: path.join(__dirname, './node_modules/dayjs'),
   },
-  layout: {
-    title: '可视化监控大屏',
-    logo: '',
-  },
+  // layout: {
+  //   title: '可视化监控大屏',
+  //   logo: '',
+  // },
+  layout: false,
   links: [
     // href的图片你可以放在public里面，直接./图片名.png 就可以了，也可以是cdn链接
     { rel: 'icon', href: 'https://s.xinc818.com/assets/images/favicon.ico' },

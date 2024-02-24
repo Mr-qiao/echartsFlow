@@ -1,11 +1,19 @@
-import monitor from './monitor';
 
 const GlobalRouters = [
   {
-    name: '监控大屏页',
     path: '/',
+    redirect: '/parkMonitor',
+  },
+  {
+    name: '园区概况',
+    path: '/parkMonitor',
+    component: './ParkMonitor'
+  },
+  {
+    name: '安防检测',
+    path: '/securityMonitor',
     layout: false,
-    component: './Home',
+    component: './SecurityMonitor'
   },
   {
     name: '历史监控',
@@ -13,7 +21,12 @@ const GlobalRouters = [
     layout: false,
     component: './HistoryMonitor',
   },
-  ...monitor,
+  {
+    name: '实时监控',
+    path: '/realtimeMonitor',
+    layout: false,
+    component: './RealtimeMonitor'
+  }
 ];
 
 export default GlobalRouters;

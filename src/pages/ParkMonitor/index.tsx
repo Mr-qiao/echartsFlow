@@ -1,14 +1,16 @@
 /**
- * 安防检测
+ * 园区监控
  */
 import React, { useEffect, useRef } from 'react';
 import ReactEcharts from 'echarts-for-react';
 import * as echarts from 'echarts';
 import styles from './index.less';
 import AMapLoader from "@amap/amap-jsapi-loader";
-import Loca from 'Loca';
-import AMap from 'AMap';
+// import Loca from 'Loca';
+// import AMap from 'AMap';
 import events from 'events';
+
+import Layout from '@/layouts';
 
 import { data, geoCoordMap } from './contants';
 
@@ -91,7 +93,9 @@ const Park = () => {
       texture: 'https://a.amap.com/Loca/static/loca-v2/demos/images/blue.png',
       borderWidth: 0,
     });
-    locaRef.current.add(scatter);
+    if (locaRef.current) {
+      locaRef.current?.add(scatter);
+    }
 
 
     // 呼吸
@@ -273,16 +277,17 @@ const Park = () => {
 
   }
 
-  useEffect(() => {
-    init();
-    return () => {
-      mapRef.current?.destroy();
-    };
-  }, []);
+  // useEffect(() => {
+  //   // init();
+  //   // return () => {
+  //   //   mapRef.current?.destroy();
+  //   // };
+  // }, [locaRef.current]);
 
 
 
   return (
+    // <Layout>
     <div className={styles.park_main}>
       {/* left */}
       <div className={styles.m_l_2}>
@@ -382,7 +387,7 @@ const Park = () => {
       </div>
 
       {/* 中间内容 */}
-      <div id="map_e" className={styles.m_l_m} style={{ width: '70%', height: '450px' }} />
+      {/* <div id="map_e" className={styles.m_l_m} style={{ width: '70%', height: '450px' }} /> */}
 
       {/* right */}
       <div className={styles.m_r_2}>
@@ -472,6 +477,7 @@ const Park = () => {
         </div>
       </div>
     </div>
+    // {/* </Layout> */ }
   );
 };
 

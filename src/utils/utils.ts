@@ -24,17 +24,7 @@ export const href = ((): any => {
   }
   return `https://api.xinxuan818.com`;
 })();
-// export const xincHref = ((): any => {
-//   const host = window.location.host;
-//   if (host.indexOf('daily') > -1) {
-//     return `https://api.daily.xinc818.net`;
-//   } else if (host.indexOf('dev') > -1 || host.indexOf('localhost') > -1) {
-//     return `https://api.dev.xinc818.net`;
-//   } else if (host.indexOf('gray') > -1) {
-//     return `https://api.gray.xinc818.net`;
-//   }
-//   return `https://api.xinc818.com`;
-// })();
+
 //get参数拼接
 export const getQueryStr = (url: string, query: any = {}) => {
   const queryStr = Object.keys(query)

@@ -1,21 +1,21 @@
-import React, { useState } from 'react';
-import Footer from './Footer';
-import Security from './Security';
-import Park from './Park';
+import React from 'react';
 
-import styles from './index.less';
+import MenuBar from '../components/MenuBar';
+
+import styles from './index.less'
+
+import { Outlet } from 'umi'
 
 
 
+const Layout = ({ children }) => {
 
-const Home: any = () => {
-  const [type, setType] = useState('park');
 
   return (
     <div className={styles.container}>
       {/* 头部导航 */}
       <header className={styles.header}>
-        <h3 className={styles.title}>{'park' === type ? '可视化数据大屏' : '园区监控系统'}</h3>
+        <h3 className={styles.title}>园区监控系统</h3>
         <div className={styles.flexBox}>
           <select className={styles.h_c}>
             <option> 北京市</option>
@@ -45,14 +45,15 @@ const Home: any = () => {
         </div>
       </header>
 
+      <Outlet />
 
-      {'park' === type ? <Park /> : <Security />}
-
-      {/* 底部导航 */}
-      <Footer onClick={(key) => setType(key)} />
+      {/* 路由导航 */}
+      <MenuBar />
 
     </div>
-  );
-};
+  )
+}
 
-export default Home;
+
+
+export default Layout;
