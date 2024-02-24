@@ -276,8 +276,15 @@ const Park = () => {
   }
 
   useEffect(() => {
-    init();
+    if (locaRef.current && mapRef.current) {
+      init();
+    }
+    return () => {
+      mapRef.current?.destroy();
+      locaRef.current?.destory();
+    };
   }, [locaRef.current]);
+
 
 
 
