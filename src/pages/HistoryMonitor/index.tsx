@@ -17,12 +17,12 @@ const HistoryMonitor = () => {
   const tabsConfig = [
     {
       key: '1',
-      label: 'Tab 1',
+      label: '历史监控',
       children: 'Content of Tab Pane 1',
     },
     {
       key: '2',
-      label: 'Tab 2',
+      label: '实时监控',
       children: 'Content of Tab Pane 2',
     },
   ]
@@ -30,12 +30,10 @@ const HistoryMonitor = () => {
   const items2: MenuProps['items'] = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
     (icon, index) => {
       const key = String(index + 1);
-
       return {
         key: `sub${key}`,
         icon: React.createElement(icon),
         label: `北京大兴 ${key}`,
-
         children: new Array(4).fill(null).map((_, j) => {
           const subKey = index * 4 + j + 1;
           return {
@@ -87,7 +85,7 @@ const HistoryMonitor = () => {
         {/* 中间 */}
         <div className={styles.h_middle}>
           {/* tab切换 */}
-          <Tabs defaultActiveKey="1" items={tabsConfig} onChange={onChangeTabs} />
+          <Tabs defaultActiveKey="1" items={tabsConfig} onChange={onChangeTabs} className={styles.h_tabs} tabBarStyle={{ backgroundColor: '#0C0031' }} />
 
           <div className={styles.h_warpper}>
             {/* 时间筛选操作栏 */}
