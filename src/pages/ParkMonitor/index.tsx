@@ -6,11 +6,9 @@ import ReactEcharts from 'echarts-for-react';
 import * as echarts from 'echarts';
 import styles from './index.less';
 import AMapLoader from "@amap/amap-jsapi-loader";
-// import Loca from 'Loca';
-// import AMap from 'AMap';
-import events from 'events';
+import Loca from 'Loca';
+import AMap from 'AMap';
 
-import Layout from '@/layouts';
 
 import { data, geoCoordMap } from './contants';
 
@@ -70,7 +68,7 @@ const Park = () => {
     });
     // init loac
     locaRef.current = new Loca.Container({
-      map: mapRef.current
+      map: mapRef.current,
     })
 
 
@@ -277,12 +275,9 @@ const Park = () => {
 
   }
 
-  // useEffect(() => {
-  //   // init();
-  //   // return () => {
-  //   //   mapRef.current?.destroy();
-  //   // };
-  // }, [locaRef.current]);
+  useEffect(() => {
+    init();
+  }, [locaRef.current]);
 
 
 
@@ -387,7 +382,7 @@ const Park = () => {
       </div>
 
       {/* 中间内容 */}
-      {/* <div id="map_e" className={styles.m_l_m} style={{ width: '70%', height: '450px' }} /> */}
+      <div id="map_e" className={styles.m_l_m} style={{ width: '70%', height: '450px' }} />
 
       {/* right */}
       <div className={styles.m_r_2}>

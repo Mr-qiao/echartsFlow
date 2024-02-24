@@ -14,7 +14,7 @@ const MenuBarPath = [
     icon: DEFAULT_IMG_SRC,
   },
   {
-    path: '/monitor/list/2',
+    path: '/realtimeMonitor',
     title: '实时监控',
     icon: DEFAULT_IMG_SRC,
   },

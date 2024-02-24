@@ -15,9 +15,8 @@ const RealtimeMonitor = () => {
 
 
   return (
-    <Layout>
-      <div>xxx</div>
-    </Layout>
+
+    <div>xxx</div>
   )
 }
 export default RealtimeMonitor;
