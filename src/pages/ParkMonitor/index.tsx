@@ -77,7 +77,7 @@ const Park = () => {
       url: 'https://a.amap.com/Loca/static/loca-v2/demos/mock_data/china_traffic_event.json',
     });
 
-    var scatter = new Loca.ScatterLayer({
+    let scatter = new Loca.ScatterLayer({
       // loca,
       zIndex: 10,
       opacity: 1,
@@ -97,7 +97,7 @@ const Park = () => {
 
 
     // 呼吸
-    var top10 = {
+    let top10 = {
       type: 'FeatureCollection',
       features: [
         {
@@ -252,7 +252,7 @@ const Park = () => {
         }
       ]
     };
-    var breath = new Loca.ScatterLayer({
+    let breath = new Loca.ScatterLayer({
       zIndex: 121,
     });
     breath.setSource(new Loca.GeoJSONSource({
@@ -268,7 +268,7 @@ const Park = () => {
     locaRef.current.add(breath);
     locaRef.current.animate.start();
 
-    var dat = new Loca.Dat();
+    let dat = new Loca.Dat();
     dat.addLayer(breath, '呼吸点');
     dat.addLayer(scatter, '蓝色气泡');
 
@@ -276,12 +276,13 @@ const Park = () => {
   }
 
   useEffect(() => {
-    if (locaRef.current && mapRef.current) {
-      init();
-    }
+    console.log(locaRef.current, mapRef.current, '======----======')
+    // if (locaRef.current && mapRef.current) {
+    init();
+    // }
     return () => {
       mapRef.current?.destroy();
-      locaRef.current?.destory();
+      // locaRef.current?.destory();
     };
   }, [locaRef.current]);
 
