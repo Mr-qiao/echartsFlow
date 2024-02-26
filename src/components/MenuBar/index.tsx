@@ -5,29 +5,26 @@ import styles from './index.less';
 const MenuBarPath = [
   {
     path: '/parkMonitor',
+    title: '全国概况',
+    icon: DEFAULT_IMG_SRC,
+  },
+  {
+    path: '/realtimeMonitor',
     title: '园区概况',
     icon: DEFAULT_IMG_SRC,
   },
   {
     path: '/historyMonitor',
-    title: '历史监控',
+    title: '园区监控',
     icon: DEFAULT_IMG_SRC,
   },
-  {
-    path: '/realtimeMonitor',
-    title: '实时监控',
-    icon: DEFAULT_IMG_SRC,
-  },
-  {
-    path: '/securityMonitor',
-    title: '安防检测',
-    icon: DEFAULT_IMG_SRC,
-  },
+  // {
+  //   path: '/securityMonitor',
+  //   title: '安防检测',
+  //   icon: DEFAULT_IMG_SRC,
+  // },
 ];
 
-// interface MenuBarProps {
-//   onClick: (type: string) => void;
-// }
 
 const MenuBar = () => {
 
