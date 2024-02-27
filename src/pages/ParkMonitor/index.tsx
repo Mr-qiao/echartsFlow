@@ -247,16 +247,15 @@ const Park = () => {
 
   useEffect(() => {
     init();
-    // return () => {
-    //   mapRef.current?.destroy();
-    // };
+    return () => {
+      mapRef.current?.destroy();
+    };
   }, []);
 
 
 
 
   return (
-    // <Layout>
     <div className={styles.park_main}>
       {/* left */}
       <div className={styles.m_l_2}>
@@ -356,7 +355,7 @@ const Park = () => {
       </div>
 
       {/* 中间内容 */}
-      <div id="map_e" className={styles.m_l_m} style={{ width: '70%', height: '450px' }} />
+      <div id="map_e" className={styles.m_l_m} style={{ width: '41.25rem', height: '37.5rem' }} />
 
       {/* right */}
       <div className={styles.m_r_2}>
@@ -446,7 +445,6 @@ const Park = () => {
         </div>
       </div>
     </div>
-    // {/* </Layout> */ }
   );
 };
 

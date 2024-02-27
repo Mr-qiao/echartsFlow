@@ -1,8 +1,6 @@
 import type, { IApi } from 'umi';
 
 export default function (api: IApi) {
-
-  console.log('点击')
   api.addHTMLHeadScripts(() => {
     return [
       {
