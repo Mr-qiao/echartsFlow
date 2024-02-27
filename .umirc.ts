@@ -12,8 +12,8 @@ export default defineConfig({
   request: {},
   externals: {
     'AMap': 'AMap',
-    'Loca': 'Loca',
-    'AMapUI': 'AMapUI',
+    // 'Loca': 'Loca',
+    // 'AMapUI': 'AMapUI',
   },
   locale: {
     default: 'zh-CN', // 工程默认语言
@@ -26,10 +26,8 @@ export default defineConfig({
       locale: zhCN,
     },
   },
-  scripts: [
-    // "https://s.xinc818.com/files/flexible.js",
-    'https://webapi.amap.com/maps?v=2.0&key=89891f300af25a591b87a190d71165a2',
-    "https://webapi.amap.com/loca?v=2.0.0&key=89891f300af25a591b87a190d71165a2",
+  plugins: [
+    require.resolve('./src/plugins/umi-plugin-map.ts')
   ],
   alias: {
     dayjs: path.join(__dirname, './node_modules/dayjs'),
@@ -41,7 +39,7 @@ export default defineConfig({
   layout: false,
   links: [
     // href的图片你可以放在public里面，直接./图片名.png 就可以了，也可以是cdn链接
-    { rel: 'icon', href: 'https://s.xinc818.com/assets/images/favicon.ico' },
+    // { rel: 'icon', href: 'https://s.xinc818.com/assets/images/favicon.ico' },
   ],
   history: { type: 'hash' },
   routes,

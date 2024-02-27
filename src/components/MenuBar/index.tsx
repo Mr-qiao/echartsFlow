@@ -18,11 +18,11 @@ const MenuBarPath = [
     title: '园区监控',
     icon: DEFAULT_IMG_SRC,
   },
-  // {
-  //   path: '/securityMonitor',
-  //   title: '安防检测',
-  //   icon: DEFAULT_IMG_SRC,
-  // },
+  {
+    path: '/securityMonitor',
+    title: '安防检测',
+    icon: DEFAULT_IMG_SRC,
+  },
 ];
 
 

@@ -3,14 +3,9 @@
  */
 import React, { useEffect, useRef } from 'react';
 import ReactEcharts from 'echarts-for-react';
-import * as echarts from 'echarts';
 import styles from './index.less';
-import AMapLoader from "@amap/amap-jsapi-loader";
-import Loca from 'Loca';
-import AMap from 'AMap';
 
 
-import { data, geoCoordMap } from './contants';
 
 // 车辆信息
 let diverOption = {
@@ -60,9 +55,10 @@ const Park = () => {
   const init = () => {
     // init map
     mapRef.current = new AMap.Map("map_e", {
-      zoom: 5,
+      zoom: 4.5,
       resizeEnable: true,
       center: [120.19, 30.26], // 杭州 余杭
+      viewMode: '3D',//使用3D视图
       skyColor: '#00163e',
       mapStyle: 'amap://styles/darkblue'
     });
@@ -71,29 +67,6 @@ const Park = () => {
       map: mapRef.current,
     })
 
-
-    geoRef.current = new Loca.GeoJSONSource({
-      // data: [],
-      url: 'https://a.amap.com/Loca/static/loca-v2/demos/mock_data/china_traffic_event.json',
-    });
-
-    let scatter = new Loca.ScatterLayer({
-      // loca,
-      zIndex: 10,
-      opacity: 1,
-      visible: true,
-      zooms: [2, 22],
-    });
-
-    scatter.setSource(geoRef.current, {
-      unit: 'px',
-      size: [20, 20],
-      texture: 'https://a.amap.com/Loca/static/loca-v2/demos/images/blue.png',
-      borderWidth: 0,
-    });
-    if (locaRef.current) {
-      locaRef.current?.add(scatter);
-    }
 
 
     // 呼吸
@@ -270,21 +243,14 @@ const Park = () => {
 
     let dat = new Loca.Dat();
     dat.addLayer(breath, '呼吸点');
-    dat.addLayer(scatter, '蓝色气泡');
-
-
   }
 
   useEffect(() => {
-    console.log(locaRef.current, mapRef.current, '======----======')
-    // if (locaRef.current && mapRef.current) {
     init();
-    // }
-    return () => {
-      mapRef.current?.destroy();
-      // locaRef.current?.destory();
-    };
-  }, [locaRef.current]);
+    // return () => {
+    //   mapRef.current?.destroy();
+    // };
+  }, []);
 
 
 
@@ -361,7 +327,7 @@ const Park = () => {
           <div className={styles.c_t_head}>
             <span className={styles.tit}>月台数据</span>
 
-            <span className={styles.show}>查看》</span>
+            <span className={styles.show}>查看 &gt;</span>
           </div>
 
           <div className={styles.moonData}>
@@ -380,7 +346,7 @@ const Park = () => {
           <div className={styles.c_t_head}>
             <span className={styles.tit}>车辆信息</span>
 
-            <span className={styles.show}>查看》</span>
+            <span className={styles.show}>查看 &gt;</span>
           </div>
 
           <div className={styles.diverPie}>
@@ -401,7 +367,7 @@ const Park = () => {
         <div className={styles.card}>
           <div className={styles.c_t_head}>
             <span className={styles.tit}>摄像头</span>
-            <span className={styles.show}>查看》</span>
+            <span className={styles.show}>查看 &gt;</span>
           </div>
 
           <div className={styles.moonData}>
