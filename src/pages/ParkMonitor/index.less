@@ -1,7 +1,7 @@
 .nationalOverviewContainer {
   width: 100%;
   min-width: 1200px;
-  min-height: 100vh;
+  // min-height: 100vh;
   background: rgb(40, 30, 47) url('../../../public/img/bg.png') 0 0 / 100% 100%
     no-repeat;
   // background: rgb(40, 30, 47)
@@ -11,209 +11,207 @@
   position: relative;
 
   color: #fff;
-
   padding: 1% 3%;
 }
 
-.nationalOverviewWarp {
-  width: 100%;
-  height: 690px;
-  display: flex;
-  justify-content: space-between;
+// .nationalOverviewWarp {
+// width: 100%;
+// height: 690px;
+// display: flex;
+// justify-content: space-between;
 
-  .h_left,
-  .h_right {
-    flex: 1;
-    width: 15%;
+// .h_left,
+// .h_right {
+//   flex: 1;
+//   width: 15%;
+// }
+
+// .h_left {
+//   padding: 1%;
+
+.search_inp {
+  margin: 20px 0;
+}
+
+.h_sider {
+  :where(.css-dev-only-do-not-override-1xg9z9n).ant-menu-light,
+  :where(.css-dev-only-do-not-override-1xg9z9n).ant-menu-light > .ant-menu {
+    background-color: aqua;
   }
+}
+// }
 
-  .h_left {
-    padding: 1%;
+// .h_middle {
+// flex: 3;
+// margin: 0 5px;
 
-    .search_inp {
-      margin: 20px 0;
-    }
-
-    .h_sider {
-      :where(.css-dev-only-do-not-override-1xg9z9n).ant-menu-light,
-      :where(.css-dev-only-do-not-override-1xg9z9n).ant-menu-light > .ant-menu {
-        background-color: aqua;
-      }
-    }
-  }
-
-  .h_middle {
-    flex: 3;
-    margin: 0 5px;
-
-    .h_tabs {
-      .ant-tabs-nav {
-        .ant-tabs-nav-wrap {
-          .ant-tabs-nav-list {
-            .ant-tabs-tab {
-              .ant-tabs-tab-btn {
-                color: #fff;
-              }
-            }
-          }
-        }
-      }
-    }
-
-    .h_warpper {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      height: ;
-    }
-
-    // 时间筛选操作栏
-    .h_f {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      .h_play_box {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-        .h_button_group {
-          display: flex;
-
-          > div {
-            width: 35px;
-            height: 35px;
-            border: 1px solid #fff;
-            margin-right: 5px;
-            line-height: 35px;
-            text-align: center;
-            cursor: pointer;
-            &:hover {
-              border: 1px solid red;
-            }
-
-            &.active {
-              border: 1px solid red;
-            }
-          }
-        }
-      }
-    }
-
-    .h_flex {
-      // width: 100%;
-      // display: flex;
-      // align-items: center;
-      // justify-content: center;
-      // margin: 1.25rem 0;
-      display: flex;
-
-      // 九宫格
-      .h_flex_9 {
-        flex: 1;
-        // margin: 2px;
-        // box-sizing: border-box;
-        .h_play {
-          // width: 15.6875rem;
-          // overflow: hidden;
-          // height: 7.5rem;
-          // width: 33.33%;
-          // height: 33.33% !important;
-          // box-shadow: 0 0 0.5vh #11111122;
-
-          // position: relative;
-
-          width: 100%;
-          overflow: hidden;
-          height: 11vh;
-          position: relative;
-          box-shadow: 0 0 0.5vh #11111122;
-
-          .info {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: #11111122;
-            text-align: center;
-            cursor: pointer;
+.h_tabs {
+  .ant-tabs-nav {
+    .ant-tabs-nav-wrap {
+      .ant-tabs-nav-list {
+        .ant-tabs-tab {
+          .ant-tabs-tab-btn {
             color: #fff;
-
-            &:hover {
-              background: #00fac144;
-            }
-
-            .icon {
-              margin-top: 10%;
-              font-size: 3rem;
-            }
           }
-        }
-      }
-
-      .h_flex_4 {
-        width: 48%;
-        height: 200px;
-        margin: 0.25rem;
-        box-sizing: border-box;
-        .h_play {
-          overflow: hidden;
-          box-shadow: 0 0 0.5vh #11111122;
-          position: relative;
-
-          img {
-            width: 100%;
-            height: 100%;
-            border-radius: 3px;
-          }
-
-          .info {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: #11111122;
-            text-align: center;
-            cursor: pointer;
-            color: #fff;
-
-            &:hover {
-              background: #00fac144;
-            }
-
-            .icon {
-              margin-top: 10%;
-              font-size: 3rem;
-            }
-          }
-        }
-      }
-    }
-
-    .h_footer_handle {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: 0 5px;
-
-      .h_handle_box,
-      .h_handle_play {
-        display: flex;
-        align-items: center;
-
-        div {
-          width: 50px;
-          height: 50px;
-          border: 1px solid rgba(255, 255, 255, 0.3);
-          text-align: center;
-          line-height: 50px;
-          font-size: 14px;
-          font-weight: bold;
         }
       }
     }
   }
 }
+
+.h_warpper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+// 时间筛选操作栏
+.h_f {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .h_play_box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .h_button_group {
+      display: flex;
+
+      > div {
+        width: 35px;
+        height: 35px;
+        border: 1px solid #fff;
+        margin-right: 5px;
+        line-height: 35px;
+        text-align: center;
+        cursor: pointer;
+        &:hover {
+          border: 1px solid red;
+        }
+
+        &.active {
+          border: 1px solid red;
+        }
+      }
+    }
+  }
+}
+
+.h_flex {
+  // width: 100%;
+  // display: flex;
+  // align-items: center;
+  // justify-content: center;
+  // margin: 1.25rem 0;
+  display: flex;
+
+  // 九宫格
+  .h_flex_9 {
+    flex: 1;
+    // margin: 2px;
+    // box-sizing: border-box;
+    .h_play {
+      // width: 15.6875rem;
+      // overflow: hidden;
+      // height: 7.5rem;
+      // width: 33.33%;
+      // height: 33.33% !important;
+      // box-shadow: 0 0 0.5vh #11111122;
+
+      // position: relative;
+
+      width: 100%;
+      overflow: hidden;
+      height: 11vh;
+      position: relative;
+      box-shadow: 0 0 0.5vh #11111122;
+
+      .info {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: #11111122;
+        text-align: center;
+        cursor: pointer;
+        color: #fff;
+
+        &:hover {
+          background: #00fac144;
+        }
+
+        .icon {
+          margin-top: 10%;
+          font-size: 3rem;
+        }
+      }
+    }
+  }
+
+  .h_flex_4 {
+    width: 48%;
+    height: 200px;
+    margin: 0.25rem;
+    box-sizing: border-box;
+    .h_play {
+      overflow: hidden;
+      box-shadow: 0 0 0.5vh #11111122;
+      position: relative;
+
+      img {
+        width: 100%;
+        height: 100%;
+        border-radius: 3px;
+      }
+
+      .info {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: #11111122;
+        text-align: center;
+        cursor: pointer;
+        color: #fff;
+
+        &:hover {
+          background: #00fac144;
+        }
+
+        .icon {
+          margin-top: 10%;
+          font-size: 3rem;
+        }
+      }
+    }
+  }
+}
+
+.h_footer_handle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 5px;
+
+  .h_handle_box,
+  .h_handle_play {
+    display: flex;
+    align-items: center;
+
+    div {
+      width: 50px;
+      height: 50px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      text-align: center;
+      line-height: 50px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+  }
+}
+// }
+// }

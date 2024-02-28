@@ -1,14 +1,17 @@
 /**
- * 园区概况
+ * 园区监控
  */
 
 
 import React, { useState } from 'react';
 
 
-import { Layout, Menu, Input, Tabs, DatePicker, Button } from 'antd';
+import { Layout, Menu, Input, Tabs, DatePicker, Button, Col, Row } from 'antd';
 import type { MenuProps, } from 'antd';
 import { LaptopOutlined, NotificationOutlined, UserOutlined, VideoCameraAddOutlined } from '@ant-design/icons';
+
+import ChartPanel from '@/components/ChartPanel'
+
 import styles from './index.less';
 
 const { Sider } = Layout;
@@ -126,73 +129,77 @@ const parkMonitor = () => {
   return (
     <div className={styles.nationalOverviewContainer}>
 
-      <div className={styles.nationalOverviewWarp}>
-        {/* 左边 */}
-        <div className={styles.h_left}>
-          <h3>监控列表</h3>
-
-          <Search
-            className={styles.search_inp}
-            placeholder="请输入设备名称"
-            allowClear
-            enterButton="搜索"
-            size="large"
-            onSearch={onSearch}
-          />
-
-          <Sider style={{ height: '100%' }} width="100%" className={styles.h_sider}>
-            <Menu
-              mode="inline"
-              defaultSelectedKeys={['1']}
-              defaultOpenKeys={['sub1']}
-              // style={{ height: '100%' }}
-              items={items2}
+      {/* <div className={styles.nationalOverviewWarp}> */}
+      {/* 左边 */}
+      {/* <div className={styles.h_left}> */}
+      <Row gutter={10}>
+        <Col span={6}>
+          <ChartPanel title='监控列表' style={{ minHeight: '80vh', overFlow: 'hiddle' }}>
+            <Search
+              className={styles.search_inp}
+              placeholder="请输入设备名称"
+              allowClear
+              enterButton="搜索"
+              size="large"
+              onSearch={onSearch}
             />
-          </Sider>
 
-        </div>
+            <Sider style={{ height: '100%' }} width="100%" className={styles.h_sider}>
+              <Menu
+                mode="inline"
+                defaultSelectedKeys={['1']}
+                defaultOpenKeys={['sub1']}
+                // style={{ height: '100%' }}
+                items={items2}
+              />
+            </Sider>
+          </ChartPanel>
+        </Col>
+        {/* </div> */}
         {/* 中间 */}
-        <div className={styles.h_middle}>
-          {/* tab切换 */}
-          <Tabs defaultActiveKey="1" items={tabsConfig} onChange={onChangeTabs} className={styles.h_tabs} tabBarStyle={{ backgroundColor: '#0C0031' }} />
+        {/* <div className={styles.h_middle}> */}
+        <Col span={12}>
+          <ChartPanel style={{ height: '66vh' }}>
+            {/* tab切换 */}
+            <Tabs defaultActiveKey="1" items={tabsConfig} onChange={onChangeTabs} className={styles.h_tabs} tabBarStyle={{ backgroundColor: '#0C0031' }} />
 
-          <div className={styles.h_warpper}>
-            {/* 时间筛选操作栏 */}
-            <div className={styles.h_f}>
-              <div className={styles.h_t}>
-                <span>时间选择：</span>
-                <RangePicker />
-              </div>
-
-              <div className={styles.h_play_box}>
-                <div className={styles.h_button_group}>
-                  {
-                    [4, 9].map((item, i) => (
-                      <div className={currentIndex === i ? styles.active : null} key={item} onClick={() => handleIndex(i)}>{item}</div>
-                    ))
-                  }
+            <div className={styles.h_warpper} >
+              {/* 时间筛选操作栏 */}
+              <div className={styles.h_f}>
+                <div className={styles.h_t}>
+                  <span>时间选择：</span>
+                  <RangePicker />
                 </div>
-                <Button type="primary">全部播放</Button>
+
+                <div className={styles.h_play_box}>
+                  <div className={styles.h_button_group}>
+                    {
+                      [4, 9].map((item, i) => (
+                        <div className={currentIndex === i ? styles.active : null} key={item} onClick={() => handleIndex(i)}>{item}</div>
+                      ))
+                    }
+                  </div>
+                  <Button type="primary">全部播放</Button>
+                </div>
               </div>
-            </div>
-            {/* 九宫格视屏播放 */}
-            <div className={styles.h_flex}>
-              {
-                contantsPlay.map(item => {
-                  return (
-                    <div className={styles.h_flex_9} key={item.key}>
-                      <div className={styles.h_play}>
-                        <img src={item.playVideo} alt="" style={{ width: '100%', height: '100%', borderRadius: '3px' }} />
-                        <div className={styles.info}>
-                          <div className={styles.icon}>{item.icon}</div>
-                          <div className={styles.name}>{item.name}</div>
+              {/* 九宫格视屏播放 */}
+              <div className={styles.h_flex} >
+                {
+                  contantsPlay.map(item => {
+                    return (
+                      <div className={styles.h_flex_9} key={item.key}>
+                        <div className={styles.h_play}>
+                          <img src={item.playVideo} alt="" style={{ width: '100%', height: '100%', borderRadius: '3px' }} />
+                          <div className={styles.info}>
+                            <div className={styles.icon}>{item.icon}</div>
+                            <div className={styles.name}>{item.name}</div>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  )
-                })
-              }
-              {/* {
+                    )
+                  })
+                }
+                {/* {
                 contantsPlay.map(item => {
                   return (
                     <div className={styles.h_flex_4} key={item.key}>
@@ -207,34 +214,39 @@ const parkMonitor = () => {
                   )
                 })
               } */}
-            </div>
-
-            {/* 底部操作 */}
-            <div className={styles.h_footer_handle}>
-              <div className={styles.h_handle_box}>
-                <div>1</div>
-                <div>2</div>
-                <div>3</div>
-                <div>4</div>
-                <div>5</div>
               </div>
 
-              <div className={styles.h_handle_play}>
-                <div>录视频</div>
-                <div>导出</div>
-                <div>音量</div>
-                <div>抓拍</div>
+              {/* 底部操作 */}
+              <div className={styles.h_footer_handle}>
+                <div className={styles.h_handle_box}>
+                  <div>1</div>
+                  <div>2</div>
+                  <div>3</div>
+                  <div>4</div>
+                  <div>5</div>
+                </div>
+
+                <div className={styles.h_handle_play}>
+                  <div>录视频</div>
+                  <div>导出</div>
+                  <div>音量</div>
+                  <div>抓拍</div>
+                </div>
               </div>
             </div>
-          </div>
+          </ChartPanel>
+        </Col>
 
 
-
-        </div>
+        {/* </div> */}
         {/* 右边 */}
-        <div className={styles.h_right}>右边</div>
-      </div>
-
+        <Col span={6}>
+          <ChartPanel title='AI信息' style={{ height: '80vh' }}>
+            <div className={styles.h_right}></div>
+          </ChartPanel>
+        </Col>
+        {/* </div> */}
+      </Row>
     </div>
   )
 }
