@@ -74,7 +74,7 @@ const contantsPlay = [
   // },
 ]
 
-const ParkMonitor = () => {
+const parkMonitor = () => {
 
 
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -239,4 +239,4 @@ const ParkMonitor = () => {
   )
 }
 
-export default ParkMonitor
+export default parkMonitor

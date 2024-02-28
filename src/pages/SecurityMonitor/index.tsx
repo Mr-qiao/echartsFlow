@@ -34,7 +34,7 @@ let option = {
 };
 
 
-const Security = () => {
+const security = () => {
   return (
     <div className={styles.security_main}>
 
@@ -313,4 +313,4 @@ const Security = () => {
   )
 }
 
-export default Security;
+export default security;

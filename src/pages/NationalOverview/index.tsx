@@ -1,5 +1,5 @@
 /**
- * 园区监控
+ * 全国概况
  */
 import React, { useEffect, useRef } from 'react';
 import ReactEcharts from 'echarts-for-react';
@@ -49,7 +49,7 @@ let diverOption = {
 
 
 
-const NationalOverview = () => {
+const nationalOverview = () => {
 
   const mapRef = useRef(null);
   const locaRef = useRef(null);
@@ -522,4 +522,4 @@ const NationalOverview = () => {
   );
 };
 
-export default NationalOverview;
+export default nationalOverview;
