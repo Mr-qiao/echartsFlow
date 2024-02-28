@@ -355,7 +355,7 @@ const Park = () => {
       </div>
 
       {/* 中间内容 */}
-      <div id="map_e" className={styles.m_l_m} style={{ width: '41.25rem', height: '37.5rem' }} />
+      <div id="map_e" className={styles.m_l_m} style={{ width: '48vw', height: '37.5rem' }} />
 
       {/* right */}
       <div className={styles.m_r_2}>
