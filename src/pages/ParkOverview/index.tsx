@@ -10,7 +10,7 @@ import Layout from '@/layouts';
 
 
 
-const RealtimeMonitor = () => {
+const parkOverview = () => {
 
 
 
@@ -19,4 +19,4 @@ const RealtimeMonitor = () => {
     <div>xxx</div>
   )
 }
-export default RealtimeMonitor;
+export default parkOverview;

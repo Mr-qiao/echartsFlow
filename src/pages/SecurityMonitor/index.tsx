@@ -37,7 +37,9 @@ let option = {
 const Security = () => {
   return (
     <div className={styles.security_main}>
-      <div className={styles.m_l_1}>
+
+      开发中...
+      {/* <div className={styles.m_l_1}>
         <div className={styles.card}>
           <div className={styles.barsBox}>
             <span className={styles.tit}>火灾预警</span>
@@ -306,7 +308,7 @@ const Security = () => {
             </table>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }

@@ -1,0 +1,85 @@
+@charset "utf-8";
+
+.chart {
+  border: 0.1vh solid #00fac166;
+  position: relative;
+  padding: 0 1vh;
+
+  .chart_title {
+    font-size: 1rem;
+    font-weight: bold;
+    line-height: 4vh;
+    height: 4vh;
+    background: linear-gradient(
+      to left,
+      #03f4d3,
+      #21f3e9,
+      #00d4ad,
+      #0ad8ed,
+      #16e342,
+      #20dd7d,
+      #18dbae,
+      #0acde1
+    );
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  .border_line {
+    position: absolute;
+    background: #fff;
+
+    &.topleft1 {
+      top: 0;
+      left: 0;
+      width: 0.8vw;
+      height: 0.1vh;
+    }
+    &.topleft2 {
+      top: 0.8vh;
+      left: -0.4vw;
+      width: 0.8vw;
+      height: 0.2vh;
+      transform: rotate(90deg);
+    }
+    &.topright1 {
+      top: 0;
+      right: 0;
+      width: 0.8vw;
+      height: 0.1vh;
+    }
+    &.topright2 {
+      top: 0.8vh;
+      right: -0.4vw;
+      width: 0.8vw;
+      height: 0.2vh;
+      transform: rotate(90deg);
+    }
+    &.bottomleft1 {
+      bottom: -0.1vh;
+      left: -0.1vh;
+      width: 0.8vw;
+      height: 0.1vh;
+    }
+    &.bottomleft2 {
+      bottom: 0.6vh;
+      left: -0.4vw;
+      width: 0.8vw;
+      height: 0.2vh;
+      transform: rotate(90deg);
+    }
+    &.bottomright1 {
+      bottom: -0.1vh;
+      right: 0;
+      width: 0.8vw;
+      height: 0.1vh;
+    }
+    &.bottomright2 {
+      bottom: 0.6vh;
+      right: -0.4vw;
+      width: 0.8vw;
+      height: 0.2vh;
+      transform: rotate(90deg);
+    }
+  }
+}

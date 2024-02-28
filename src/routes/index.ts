@@ -2,27 +2,27 @@
 const GlobalRouters = [
   {
     path: '/',
-    redirect: '/parkMonitor',
+    redirect: '/nationalOverview',
+  },
+  {
+    name: '全国概况',
+    path: '/nationalOverview',
+    component: './NationalOverview'
   },
   {
     name: '园区概况',
+    path: '/parkOverview',
+    component: './ParkOverview'
+  },
+  {
+    name: '园区监控',
     path: '/parkMonitor',
-    component: './ParkMonitor'
+    component: './ParkMonitor',
   },
   {
     name: '安防检测',
     path: '/securityMonitor',
     component: './SecurityMonitor'
-  },
-  {
-    name: '历史监控',
-    path: '/historyMonitor',
-    component: './HistoryMonitor',
-  },
-  {
-    name: '实时监控',
-    path: '/realtimeMonitor',
-    component: './RealtimeMonitor'
   }
 ];
 

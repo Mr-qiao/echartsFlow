@@ -4,17 +4,17 @@ import styles from './index.less';
 
 const MenuBarPath = [
   {
-    path: '/parkMonitor',
+    path: '/nationalOverview',
     title: '全国概况',
     icon: DEFAULT_IMG_SRC,
   },
   {
-    path: '/realtimeMonitor',
+    path: '/parkOverview',
     title: '园区概况',
     icon: DEFAULT_IMG_SRC,
   },
   {
-    path: '/historyMonitor',
+    path: '/parkMonitor',
     title: '园区监控',
     icon: DEFAULT_IMG_SRC,
   },

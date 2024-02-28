@@ -1,451 +1,242 @@
 /**
- * 园区监控
+ * 园区概况
  */
-import React, { useEffect, useRef } from 'react';
-import ReactEcharts from 'echarts-for-react';
+
+
+import React, { useState } from 'react';
+
+
+import { Layout, Menu, Input, Tabs, DatePicker, Button } from 'antd';
+import type { MenuProps, } from 'antd';
+import { LaptopOutlined, NotificationOutlined, UserOutlined, VideoCameraAddOutlined } from '@ant-design/icons';
 import styles from './index.less';
 
+const { Sider } = Layout;
+const { Search } = Input;
+const { RangePicker } = DatePicker;
 
 
-// 车辆信息
-let diverOption = {
-  tooltip: {
-    trigger: 'item',
+// mock Json
+const contantsPlay = [
+  {
+    key: 1,
+    playVideo: require('@/assets/img/3.jpeg'),
+    icon: <VideoCameraAddOutlined />,
+    name: '南门摄像头'
   },
-  legend: {
-    orient: 'vertical',
-    right: 60,
-    top: 'center',
-    data: ['进出总车辆', '外来车辆'],
-    formatter: function (name) {
-      return name + ' ' + ' ' + 20;
-    },
-    itemStyle: {
-      opacity: 0,
-    },
-    textStyle: {
-      color: '#fff',
-    },
+  {
+    key: 2,
+    playVideo: require('@/assets/img/3.jpeg'),
+    icon: <VideoCameraAddOutlined />,
+    name: '南门摄像头'
   },
-  series: [
+  {
+    key: 3,
+    playVideo: require('@/assets/img/3.jpeg'),
+    icon: <VideoCameraAddOutlined />,
+    name: '南门摄像头'
+  },
+  {
+    key: 4,
+    playVideo: require('@/assets/img/3.jpeg'),
+    icon: <VideoCameraAddOutlined />,
+    name: '南门摄像头'
+  },
+  // {
+  //   key: 5,
+  //   playVideo: require('@/assets/img/3.jpeg'),
+  //   icon: <VideoCameraAddOutlined />,
+  //   name: '南门摄像头'
+  // },
+  // {
+  //   key: 6,
+  //   playVideo: require('@/assets/img/3.jpeg'),
+  //   icon: <VideoCameraAddOutlined />,
+  //   name: '南门摄像头'
+  // },
+  // {
+  //   key: 7,
+  //   playVideo: require('@/assets/img/3.jpeg'),
+  //   icon: <VideoCameraAddOutlined />,
+  //   name: '南门摄像头'
+  // },
+  // {
+  //   key: 8,
+  //   playVideo: require('@/assets/img/3.jpeg'),
+  //   icon: <VideoCameraAddOutlined />,
+  //   name: '南门摄像头'
+  // },
+  // {
+  //   key: 9,
+  //   playVideo: require('@/assets/img/3.jpeg'),
+  //   icon: <VideoCameraAddOutlined />,
+  //   name: '南门摄像头'
+  // },
+]
+
+const ParkMonitor = () => {
+
+
+  const [currentIndex, setCurrentIndex] = useState(0)
+
+  const tabsConfig = [
     {
-      name: '车辆信息',
-      type: 'pie',
-      radius: '50%',
-      right: 180,
-      data: [
-        { value: 1048, name: '进出总车辆' },
-        { value: 735, name: '外来车辆' },
-      ],
-      label: {
-        show: false,
-      },
+      key: '1',
+      label: '历史监控',
+      children: 'Content of Tab Pane 1',
     },
-  ],
-};
+    {
+      key: '2',
+      label: '实时监控',
+      children: 'Content of Tab Pane 2',
+    },
+  ]
+
+  const items2: MenuProps['items'] = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
+    (icon, index) => {
+      const key = String(index + 1);
+      return {
+        key: `sub${key}`,
+        icon: React.createElement(icon),
+        label: `北京大兴 ${key}`,
+        children: new Array(4).fill(null).map((_, j) => {
+          const subKey = index * 4 + j + 1;
+          return {
+            key: subKey,
+            label: `摄像头${subKey}`,
+          };
+        }),
+      };
+    },
+  );
 
 
-
-const Park = () => {
-
-  const mapRef = useRef(null);
-  const locaRef = useRef(null);
-  const geoRef = useRef(null);
-
-  const init = () => {
-    // init map
-    mapRef.current = new AMap.Map("map_e", {
-      zoom: 4.5,
-      resizeEnable: true,
-      center: [120.19, 30.26], // 杭州 余杭
-      viewMode: '3D',//使用3D视图
-      skyColor: '#00163e',
-      mapStyle: 'amap://styles/darkblue'
-    });
-    // init loac
-    locaRef.current = new Loca.Container({
-      map: mapRef.current,
-    })
-
-
-
-    // 呼吸
-    let top10 = {
-      type: 'FeatureCollection',
-      features: [
-        {
-          "type": "Feature",
-          "properties": {
-            "cityName": "韶关市",
-            "ratio": 0,
-            "rank": 96
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              113.58052,
-              24.760098
-            ]
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {
-            "cityName": "乐山市",
-            "ratio": 0,
-            "rank": 97
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              103.75082,
-              29.58099
-            ]
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {
-            "cityName": "阜阳市",
-            "ratio": 0,
-            "rank": 98
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              115.82654,
-              32.889915
-            ]
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {
-            "cityName": "荆门市",
-            "ratio": 0,
-            "rank": 99
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              112.209816,
-              30.997377
-            ]
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {
-            "cityName": "哈尔滨市",
-            "ratio": 0,
-            "rank": 100
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              126.61314,
-              45.746685
-            ]
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {
-            "cityName": "达州市",
-            "ratio": 0,
-            "rank": 101
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              107.493,
-              31.205515
-            ]
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {
-            "cityName": "自贡市",
-            "ratio": 0,
-            "rank": 102
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              104.777824,
-              29.34555
-            ]
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {
-            "cityName": "陇南市",
-            "ratio": 0,
-            "rank": 103
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              104.93356,
-              33.388184
-            ]
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {
-            "cityName": "南充市",
-            "ratio": 0,
-            "rank": 104
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              106.1188,
-              30.800997
-            ]
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {
-            "cityName": "恩施土家族苗族自治州",
-            "ratio": 0,
-            "rank": 105
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              109.48512,
-              30.298103
-            ]
-          }
-        }
-      ]
-    };
-    let breath = new Loca.ScatterLayer({
-      zIndex: 121,
-    });
-    breath.setSource(new Loca.GeoJSONSource({
-      data: top10,
-    }));
-    breath.setStyle({
-      unit: 'px',
-      size: [50, 50],
-      texture: 'https://a.amap.com/Loca/static/loca-v2/demos/images/breath_red.png',
-      animate: true,
-      duration: 1000,
-    });
-    locaRef.current.add(breath);
-    locaRef.current.animate.start();
-
-    let dat = new Loca.Dat();
-    dat.addLayer(breath, '呼吸点');
+  const onSearch = (e) => {
+    console.log(e, '----')
   }
 
-  useEffect(() => {
-    init();
-    return () => {
-      mapRef.current?.destroy();
-    };
-  }, []);
+  const onChangeTabs = (e) => {
+    console.log(e, '===----')
+  }
 
-
-
+  const handleIndex = (idx: number) => {
+    setCurrentIndex(idx);
+  }
 
   return (
-    <div className={styles.park_main}>
-      {/* left */}
-      <div className={styles.m_l_2}>
-        <div className={styles.card}>
-          <div className={styles.c_t_head}>
-            <span className={styles.tit}>总体事件</span>
-          </div>
+    <div className={styles.nationalOverviewContainer}>
 
-          <ul className={styles.list}>
-            <li>
-              <span className={styles.tit}>
-                <i>30</i>项
-              </span>
-              <span>安全生产</span>
-              <div>
-                <span>已处理</span>
-                <span>20</span>
-              </div>
-              <div>
-                <span>待处理</span>
-                <span>20</span>
-              </div>
-              <div>
-                <span>处理中</span>
-                <span>20</span>
-              </div>
-            </li>
-            <li>
-              <span className={styles.tit}>
-                <i>30</i>项
-              </span>
-              <span>火灾预警</span>
-              <div>
-                <span>已处理</span>
-                <span>20</span>
-              </div>
-              <div>
-                <span>待处理</span>
-                <span>20</span>
-              </div>
-              <div>
-                <span>处理中</span>
-                <span>20</span>
-              </div>
-            </li>
-            <li>
-              <span className={styles.tit}>
-                <i>30</i>项
-              </span>
-              <span>违章停靠</span>
-              <div>
-                <span>已处理</span>
-                <span>20</span>
-              </div>
-              <div>
-                <span>待处理</span>
-                <span>20</span>
-              </div>
-              <div>
-                <span>处理中</span>
-                <span>20</span>
-              </div>
-            </li>
-          </ul>
+      <div className={styles.nationalOverviewWarp}>
+        {/* 左边 */}
+        <div className={styles.h_left}>
+          <h3>监控列表</h3>
+
+          <Search
+            className={styles.search_inp}
+            placeholder="请输入设备名称"
+            allowClear
+            enterButton="搜索"
+            size="large"
+            onSearch={onSearch}
+          />
+
+          <Sider style={{ height: '100%' }} width="100%" className={styles.h_sider}>
+            <Menu
+              mode="inline"
+              defaultSelectedKeys={['1']}
+              defaultOpenKeys={['sub1']}
+              // style={{ height: '100%' }}
+              items={items2}
+            />
+          </Sider>
+
         </div>
+        {/* 中间 */}
+        <div className={styles.h_middle}>
+          {/* tab切换 */}
+          <Tabs defaultActiveKey="1" items={tabsConfig} onChange={onChangeTabs} className={styles.h_tabs} tabBarStyle={{ backgroundColor: '#0C0031' }} />
 
-        <div className={styles.card}>
-          <div className={styles.c_t_head}>
-            <span className={styles.tit}>月台数据</span>
+          <div className={styles.h_warpper}>
+            {/* 时间筛选操作栏 */}
+            <div className={styles.h_f}>
+              <div className={styles.h_t}>
+                <span>时间选择：</span>
+                <RangePicker />
+              </div>
 
-            <span className={styles.show}>查看 &gt;</span>
-          </div>
-
-          <div className={styles.moonData}>
-            <div>
-              <span className={styles.moonData_tit}>月台总量</span>
-              <span className={styles.nums}>2000</span>
+              <div className={styles.h_play_box}>
+                <div className={styles.h_button_group}>
+                  {
+                    [4, 9].map((item, i) => (
+                      <div className={currentIndex === i ? styles.active : null} key={item} onClick={() => handleIndex(i)}>{item}</div>
+                    ))
+                  }
+                </div>
+                <Button type="primary">全部播放</Button>
+              </div>
             </div>
-            <div>
-              <span className={styles.moonData_tit}>空余月台</span>
-              <span className={styles.nums}>398</span>
+            {/* 九宫格视屏播放 */}
+            <div className={styles.h_flex}>
+              {
+                contantsPlay.map(item => {
+                  return (
+                    <div className={styles.h_flex_9} key={item.key}>
+                      <div className={styles.h_play}>
+                        <img src={item.playVideo} alt="" style={{ width: '100%', height: '100%', borderRadius: '3px' }} />
+                        <div className={styles.info}>
+                          <div className={styles.icon}>{item.icon}</div>
+                          <div className={styles.name}>{item.name}</div>
+                        </div>
+                      </div>
+                    </div>
+                  )
+                })
+              }
+              {/* {
+                contantsPlay.map(item => {
+                  return (
+                    <div className={styles.h_flex_4} key={item.key}>
+                      <div className={styles.h_play}>
+                        <img src={item.playVideo} alt="" />
+                        <div className={styles.info}>
+                          <div className={styles.icon}>{item.icon}</div>
+                          <div className={styles.name}>{item.name}</div>
+                        </div>
+                      </div>
+                    </div>
+                  )
+                })
+              } */}
+            </div>
+
+            {/* 底部操作 */}
+            <div className={styles.h_footer_handle}>
+              <div className={styles.h_handle_box}>
+                <div>1</div>
+                <div>2</div>
+                <div>3</div>
+                <div>4</div>
+                <div>5</div>
+              </div>
+
+              <div className={styles.h_handle_play}>
+                <div>录视频</div>
+                <div>导出</div>
+                <div>音量</div>
+                <div>抓拍</div>
+              </div>
             </div>
           </div>
+
+
+
         </div>
-
-        <div className={styles.card}>
-          <div className={styles.c_t_head}>
-            <span className={styles.tit}>车辆信息</span>
-
-            <span className={styles.show}>查看 &gt;</span>
-          </div>
-
-          <div className={styles.diverPie}>
-            <ReactEcharts option={diverOption} style={{ height: 140 }} />
-          </div>
-        </div>
+        {/* 右边 */}
+        <div className={styles.h_right}>右边</div>
       </div>
 
-      {/* 中间内容 */}
-      <div id="map_e" className={styles.m_l_m} style={{ width: '48vw', height: '37.5rem' }} />
-
-      {/* right */}
-      <div className={styles.m_r_2}>
-        <div className={styles.countdown}>
-          安全运营 <i>24</i> 天
-        </div>
-
-        <div className={styles.card}>
-          <div className={styles.c_t_head}>
-            <span className={styles.tit}>摄像头</span>
-            <span className={styles.show}>查看 &gt;</span>
-          </div>
-
-          <div className={styles.moonData}>
-            <div>
-              <span className={styles.moonData_tit}>总量</span>
-              <span className={styles.nums}>2000</span>
-            </div>
-            <div>
-              <span className={styles.moonData_tit}>异常数据</span>
-              <span className={styles.nums}>398</span>
-            </div>
-          </div>
-        </div>
-
-        <div className={styles.card}>
-          <div className={styles.c_t_head}>
-            <span className={styles.tit}>违规上报列表</span>
-          </div>
-
-          <div className={styles.table_box}>
-            <table className={styles.t_table}>
-              <thead>
-                <tr>
-                  <th>违规类型</th>
-                  <th>上报时间</th>
-                  <th>报进人</th>
-                  <th>处理状态</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>火灾预警</td>
-                  <td>09-21 19:30</td>
-                  <td>王大锤</td>
-                  <td>待处理</td>
-                </tr>
-                <tr>
-                  <td>火灾预警</td>
-                  <td>09-21 19:30</td>
-                  <td>王大锤</td>
-                  <td>待处理</td>
-                </tr>
-                <tr>
-                  <td>火灾预警</td>
-                  <td>09-21 19:30</td>
-                  <td>王大锤</td>
-                  <td>待处理</td>
-                </tr>
-                <tr>
-                  <td>火灾预警</td>
-                  <td>09-21 19:30</td>
-                  <td>王大锤</td>
-                  <td>待处理</td>
-                </tr>
-                <tr>
-                  <td>火灾预警</td>
-                  <td>09-21 19:30</td>
-                  <td>王大锤</td>
-                  <td>待处理</td>
-                </tr>
-                <tr>
-                  <td>火灾预警</td>
-                  <td>09-21 19:30</td>
-                  <td>王大锤</td>
-                  <td>待处理</td>
-                </tr>
-                <tr>
-                  <td>火灾预警</td>
-                  <td>09-21 19:30</td>
-                  <td>王大锤</td>
-                  <td>待处理</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
     </div>
-  );
-};
+  )
+}
 
-export default Park;
+export default ParkMonitor
