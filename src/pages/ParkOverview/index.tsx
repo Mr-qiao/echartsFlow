@@ -84,10 +84,6 @@ const parkOverview = () => {
       <Row gutter={10}>
         <Col span={6}>
           <ChartPanel title='总体事件' style={{ height: '25vh' }}>
-            {/* <div className={styles.card}> */}
-            {/* <div className={styles.c_t_head}>
-              <span className={styles.tit}>总体事件</span>
-            </div> */}
 
             <ul className={styles.list}>
               <li>
@@ -145,7 +141,6 @@ const parkOverview = () => {
                 </div>
               </li>
             </ul>
-            {/* </div> */}
 
             {/* <div className={styles.card}>
             <div className={styles.c_t_head}>
@@ -167,19 +162,10 @@ const parkOverview = () => {
           </div> */}
           </ChartPanel>
           <ChartPanel title='车辆信息' style={{ marginTop: '1vh', height: '60vh' }}>
-            {/* <div className={styles.card}> */}
-            {/* <div className={styles.c_t_head}>
-                <span className={styles.tit}>车辆信息</span>
-
-                <span className={styles.show}>查看 &gt;</span>
-              </div> */}
-
             <div className={styles.diverPie}>
               <ReactEcharts option={diverOption} />
             </div>
-            {/* </div> */}
           </ChartPanel>
-          {/* </div> */}
         </Col>
 
         {/* 中间内容 */}
@@ -190,18 +176,13 @@ const parkOverview = () => {
         </Col>
         {/* right */}
 
-        {/* <div className={styles.m_r_2}> */}
         <Col span={6}>
           <ChartPanel title='摄像头' style={{ height: '25vh' }}>
             <div className={styles.countdown}>
               安全运营 <i>24</i> 天
             </div>
 
-            {/* <div classN/ame={styles.card}> */}
-            {/* <div className={styles.c_t_head}>
-                <span className={styles.tit}>摄像头</span>
-                <span className={styles.show}>查看 &gt;</span>
-              </div> */}
+
 
             <div className={styles.moonData}>
               <div>
@@ -213,15 +194,10 @@ const parkOverview = () => {
                 <span className={styles.nums}>398</span>
               </div>
             </div>
-            {/* </div> */}
           </ChartPanel>
 
 
           <ChartPanel title='违规上报列表' style={{ marginTop: '1vh', height: '60vh' }}>
-            {/* <div className={styles.card}> */}
-            {/* <div className={styles.c_t_head}>
-                <span className={styles.tit}>违规上报列表</span>
-              </div> */}
 
             <div className={styles.table_box}>
               <table className={styles.t_table}>
@@ -333,11 +309,9 @@ const parkOverview = () => {
                 </tbody>
               </table>
             </div>
-            {/* </div> */}
           </ChartPanel>
         </Col>
       </Row>
-      {/* </div> */}
     </div>
   );
 };

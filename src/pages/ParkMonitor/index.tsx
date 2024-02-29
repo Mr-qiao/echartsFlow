@@ -129,9 +129,6 @@ const parkMonitor = () => {
   return (
     <div className={styles.nationalOverviewContainer}>
 
-      {/* <div className={styles.nationalOverviewWarp}> */}
-      {/* 左边 */}
-      {/* <div className={styles.h_left}> */}
       <Row gutter={10}>
         <Col span={6}>
           <ChartPanel title='监控列表' style={{ minHeight: '80vh', overFlow: 'hiddle' }}>
@@ -238,14 +235,12 @@ const parkMonitor = () => {
         </Col>
 
 
-        {/* </div> */}
         {/* 右边 */}
         <Col span={6}>
           <ChartPanel title='AI信息' style={{ height: '80vh' }}>
             <div className={styles.h_right}></div>
           </ChartPanel>
         </Col>
-        {/* </div> */}
       </Row>
     </div>
   )
