@@ -21,7 +21,7 @@ const Layout = () => {
     <div className={styles.container}>
       {/* 头部导航 */}
       <header className={styles.header}>
-        <h3 className={styles.title}>园区监控系统</h3>
+        <h3 className={styles.title}>德力西电气监控视频汇聚平台</h3>
         <div className={styles.flexBox}>
           <Select
             showSearch

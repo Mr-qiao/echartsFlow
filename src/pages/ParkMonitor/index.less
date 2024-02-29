@@ -74,85 +74,73 @@
   }
 }
 
-.h_flex {
-  display: flex;
+.videogrid_wrapper {
+  margin: 10px 0;
 
-  // 九宫格
-  .h_flex_9 {
-    flex: 1;
-    .h_play {
-      width: 100%;
-      overflow: hidden;
-      height: 11vh;
-      position: relative;
-      box-shadow: 0 0 0.5vh #11111122;
+  .videogrid {
+    display: grid;
+    grid-column-gap: 2px;
+    grid-row-gap: 2px;
+    width: 100%;
+    height: 100%;
 
-      .info {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background: #11111122;
-        text-align: center;
-        cursor: pointer;
-        color: #fff;
+    // 四宫格
+    &.videogrid_4 {
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(2, 1fr);
 
-        &:hover {
-          background: #00fac144;
-        }
-
-        .icon {
-          margin-top: 10%;
-          font-size: 3rem;
-        }
+      > div:nth-child(1) {
+        grid-area: 1 / 1 / 2 / 2;
+      }
+      > div:nth-child(2) {
+        grid-area: 1 / 2 / 2 / 3;
+      }
+      > div:nth-child(3) {
+        grid-area: 2 / 1 / 3 / 2;
+      }
+      > div:nth-child(4) {
+        grid-area: 2 / 2 / 3 / 3;
       }
     }
-  }
-
-  .h_flex_4 {
-    width: 48%;
-    height: 200px;
-    margin: 0.25rem;
-    box-sizing: border-box;
-    .h_play {
-      overflow: hidden;
-      box-shadow: 0 0 0.5vh #11111122;
-      position: relative;
-
-      img {
-        width: 100%;
-        height: 100%;
-        border-radius: 3px;
+    // 九宫格
+    &.videogrid_9 {
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      > div:nth-child(1) {
+        grid-area: 1 / 1 / 2 / 2;
       }
-
-      .info {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background: #11111122;
-        text-align: center;
-        cursor: pointer;
-        color: #fff;
-
-        &:hover {
-          background: #00fac144;
-        }
-
-        .icon {
-          margin-top: 10%;
-          font-size: 3rem;
-        }
+      > div:nth-child(2) {
+        grid-area: 1 / 2 / 2 / 3;
+      }
+      > div:nth-child(3) {
+        grid-area: 1 / 3 / 2 / 4;
+      }
+      > div:nth-child(4) {
+        grid-area: 2 / 1 / 3 / 2;
+      }
+      > div:nth-child(5) {
+        grid-area: 2 / 2 / 3 / 3;
+      }
+      > div:nth-child(6) {
+        grid-area: 2 / 3 / 3 / 4;
+      }
+      > div:nth-child(7) {
+        grid-area: 3 / 1 / 4 / 2;
+      }
+      > div:nth-child(8) {
+        grid-area: 3 / 2 / 4 / 3;
+      }
+      > div:nth-child(9) {
+        grid-area: 3 / 3 / 4 / 4;
       }
     }
   }
 }
 
+// footer handle
 .h_footer_handle {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   margin: 0 5px;
 
@@ -161,16 +149,6 @@
     display: flex;
     align-items: center;
 
-    div {
-      width: 50px;
-      height: 50px;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      text-align: center;
-      line-height: 50px;
-      font-size: 14px;
-      font-weight: bold;
-    }
+    cursor: pointer;
   }
 }
-// }
-// }
