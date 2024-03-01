@@ -1,4 +1,4 @@
-export const DEFAULT_NAME = '可视化大屏';
+export const DEFAULT_NAME = '德力西电气监控视频汇聚平台';
 
 export const NULLVALUE = '--';
 export const NOTHING = '无';

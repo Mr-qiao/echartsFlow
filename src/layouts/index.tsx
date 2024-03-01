@@ -1,9 +1,10 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React from 'react';
 
 import MenuBar from '../components/MenuBar';
-import { Outlet } from 'umi'
+import { Outlet, connect } from 'umi'
 import { Select } from 'antd';
 import city from 'province-city-china/dist/city.json';
+import { DEFAULT_NAME } from '@/constants';
 
 import styles from './index.less'
 
@@ -16,12 +17,26 @@ city?.unshift({
 })
 
 
-const Layout = () => {
+
+const Layout: React.FC<any> = (props) => {
+
+  const { dispatch } = props;
+
+
+  const onChangeCity = (e) => {
+    dispatch({
+      type: 'searchCity/onChangeCityCode',
+      payload: {
+        cityCode: e
+      }
+    })
+  }
+
   return (
     <div className={styles.container}>
       {/* 头部导航 */}
       <header className={styles.header}>
-        <h3 className={styles.title}>德力西电气监控视频汇聚平台</h3>
+        <h3 className={styles.title}>{DEFAULT_NAME}</h3>
         <div className={styles.flexBox}>
           <Select
             showSearch
@@ -36,6 +51,7 @@ const Layout = () => {
               label: 'name',
               value: 'code',
             }}
+            onChange={onChangeCity}
             options={city || []}
           />
 
@@ -47,11 +63,12 @@ const Layout = () => {
 
       {/* 路由导航 */}
       <MenuBar />
-
     </div>
   )
 }
 
 
 
-export default Layout;
+export default connect(({ searchCity }: any) => ({
+  searchCity
+}))(Layout);

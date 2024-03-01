@@ -1,5 +1,4 @@
 import { defineConfig } from '@umijs/max';
-// import {routes} from './src/routes';
 import zhCN from 'antd/lib/locale/zh_CN';
 import routes from './src/routes';
 import path from 'path'
@@ -12,9 +11,10 @@ export default defineConfig({
   request: {},
   externals: {
     'AMap': 'AMap',
-    // 'Loca': 'Loca',
-    // 'AMapUI': 'AMapUI',
+    'Loca': 'Loca',
+    'AMapUI': 'AMapUI',
   },
+  dva: {},
   locale: {
     default: 'zh-CN', // 工程默认语言
     antd: true,

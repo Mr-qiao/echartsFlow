@@ -5,51 +5,23 @@ import React, { useEffect, useRef } from 'react';
 import ReactEcharts from 'echarts-for-react';
 import ChartPanel from '@/components/ChartPanel'
 import { Row, Col } from 'antd';
+import { connect } from 'umi'
+
+import { diverOption } from './config';
+
 
 import styles from './index.less';
 
 
 
-// 车辆信息
-let diverOption = {
-  tooltip: {
-    trigger: 'item',
-  },
-  legend: {
-    orient: 'vertical',
-    right: 60,
-    top: 'center',
-    data: ['进出总车辆', '外来车辆'],
-    formatter: function (name) {
-      return name + ' ' + ' ' + 20;
-    },
-    itemStyle: {
-      opacity: 0,
-    },
-    textStyle: {
-      color: '#fff',
-    },
-  },
-  series: [
-    {
-      name: '车辆信息',
-      type: 'pie',
-      radius: '50%',
-      right: 180,
-      data: [
-        { value: 1048, name: '进出总车辆' },
-        { value: 735, name: '外来车辆' },
-      ],
-      label: {
-        show: false,
-      },
-    },
-  ],
-};
 
 
 
-const nationalOverview = () => {
+const nationalOverview = (props) => {
+
+  // 城市编码
+  const { searchCity } = props;
+
 
   const mapRef = useRef(null);
   const locaRef = useRef(null);
@@ -255,15 +227,12 @@ const nationalOverview = () => {
   }, []);
 
 
-
-
   return (
     <div className={styles.park_main}>
       {/* left */}
       <Row gutter={10}>
         <Col span={6}>
           <ChartPanel title='总体事件' style={{ height: '25vh' }}>
-
             <ul className={styles.list}>
               <li>
                 <span className={styles.tit}>
@@ -331,12 +300,16 @@ const nationalOverview = () => {
 
         {/* 中间内容 */}
         <Col span={12}>
-          <ChartPanel style={{ padding: 0 }}>
-            <div id="chainMap" style={{ width: '100%', height: '66vh' }} />
-          </ChartPanel>
+          {
+            searchCity.cityCode === -1 ? (
+              <ChartPanel style={{ padding: 0 }}>
+                <div id="chainMap" style={{ width: '100%', height: '66vh' }} />
+              </ChartPanel>
+            ) : <div>园区处理</div>
+          }
         </Col>
-        {/* right */}
 
+        {/* right */}
         <Col span={6}>
           <ChartPanel title='摄像头' style={{ height: '25vh' }}>
             <div className={styles.countdown}>
@@ -357,7 +330,6 @@ const nationalOverview = () => {
 
 
           <ChartPanel title='违规上报列表' style={{ marginTop: '1vh', height: '60vh' }}>
-
             <div className={styles.table_box}>
               <table className={styles.t_table}>
                 <thead>
@@ -475,4 +447,6 @@ const nationalOverview = () => {
   );
 };
 
-export default nationalOverview;
+export default connect(({ searchCity }: any) => ({
+  searchCity
+}))(nationalOverview);
