@@ -11,7 +11,7 @@ import styles from './index.less'
 
 // handle city json
 city?.unshift({
-  code: '-1', name: '全部',
+  code: '-1', name: '全国',
   province: '99',
   city: '99'
 })

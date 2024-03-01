@@ -224,7 +224,7 @@ const nationalOverview = (props) => {
     return () => {
       mapRef.current?.destroy();
     };
-  }, []);
+  }, [mapRef.current]);
 
 
   return (
