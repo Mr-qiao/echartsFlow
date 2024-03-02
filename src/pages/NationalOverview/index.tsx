@@ -26,6 +26,9 @@ const nationalOverview = (props) => {
   const mapRef = useRef(null);
   const locaRef = useRef(null);
 
+
+
+  // init map
   const init = () => {
     // init map
     mapRef.current = new AMap.Map("chainMap", {
@@ -36,187 +39,185 @@ const nationalOverview = (props) => {
       skyColor: '#00163e',
       mapStyle: 'amap://styles/darkblue'
     });
-    // init loac
-    locaRef.current = new Loca.Container({
-      map: mapRef.current,
-    })
-
-
+    // 全国
+    // locaRef.current = new Loca.Container({
+    //   map: mapRef.current,
+    // })
 
     // 呼吸
-    let top10 = {
-      type: 'FeatureCollection',
-      features: [
-        {
-          "type": "Feature",
-          "properties": {
-            "cityName": "韶关市",
-            "ratio": 0,
-            "rank": 96
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              113.58052,
-              24.760098
-            ]
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {
-            "cityName": "乐山市",
-            "ratio": 0,
-            "rank": 97
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              103.75082,
-              29.58099
-            ]
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {
-            "cityName": "阜阳市",
-            "ratio": 0,
-            "rank": 98
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              115.82654,
-              32.889915
-            ]
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {
-            "cityName": "荆门市",
-            "ratio": 0,
-            "rank": 99
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              112.209816,
-              30.997377
-            ]
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {
-            "cityName": "哈尔滨市",
-            "ratio": 0,
-            "rank": 100
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              126.61314,
-              45.746685
-            ]
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {
-            "cityName": "达州市",
-            "ratio": 0,
-            "rank": 101
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              107.493,
-              31.205515
-            ]
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {
-            "cityName": "自贡市",
-            "ratio": 0,
-            "rank": 102
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              104.777824,
-              29.34555
-            ]
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {
-            "cityName": "陇南市",
-            "ratio": 0,
-            "rank": 103
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              104.93356,
-              33.388184
-            ]
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {
-            "cityName": "南充市",
-            "ratio": 0,
-            "rank": 104
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              106.1188,
-              30.800997
-            ]
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {
-            "cityName": "恩施土家族苗族自治州",
-            "ratio": 0,
-            "rank": 105
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              109.48512,
-              30.298103
-            ]
-          }
-        }
-      ]
-    };
-    let breath = new Loca.ScatterLayer({
-      zIndex: 121,
-    });
-    breath.setSource(new Loca.GeoJSONSource({
-      data: top10,
-    }));
-    breath.setStyle({
-      unit: 'px',
-      size: [50, 50],
-      texture: 'https://a.amap.com/Loca/static/loca-v2/demos/images/breath_red.png',
-      animate: true,
-      duration: 1000,
-    });
-    locaRef.current.add(breath);
-    locaRef.current.animate.start();
+    // let top10 = {
+    //   type: 'FeatureCollection',
+    //   features: [
+    //     {
+    //       "type": "Feature",
+    //       "properties": {
+    //         "cityName": "韶关市",
+    //         "ratio": 0,
+    //         "rank": 96
+    //       },
+    //       "geometry": {
+    //         "type": "Point",
+    //         "coordinates": [
+    //           113.58052,
+    //           24.760098
+    //         ]
+    //       }
+    //     },
+    //     {
+    //       "type": "Feature",
+    //       "properties": {
+    //         "cityName": "乐山市",
+    //         "ratio": 0,
+    //         "rank": 97
+    //       },
+    //       "geometry": {
+    //         "type": "Point",
+    //         "coordinates": [
+    //           103.75082,
+    //           29.58099
+    //         ]
+    //       }
+    //     },
+    //     {
+    //       "type": "Feature",
+    //       "properties": {
+    //         "cityName": "阜阳市",
+    //         "ratio": 0,
+    //         "rank": 98
+    //       },
+    //       "geometry": {
+    //         "type": "Point",
+    //         "coordinates": [
+    //           115.82654,
+    //           32.889915
+    //         ]
+    //       }
+    //     },
+    //     {
+    //       "type": "Feature",
+    //       "properties": {
+    //         "cityName": "荆门市",
+    //         "ratio": 0,
+    //         "rank": 99
+    //       },
+    //       "geometry": {
+    //         "type": "Point",
+    //         "coordinates": [
+    //           112.209816,
+    //           30.997377
+    //         ]
+    //       }
+    //     },
+    //     {
+    //       "type": "Feature",
+    //       "properties": {
+    //         "cityName": "哈尔滨市",
+    //         "ratio": 0,
+    //         "rank": 100
+    //       },
+    //       "geometry": {
+    //         "type": "Point",
+    //         "coordinates": [
+    //           126.61314,
+    //           45.746685
+    //         ]
+    //       }
+    //     },
+    //     {
+    //       "type": "Feature",
+    //       "properties": {
+    //         "cityName": "达州市",
+    //         "ratio": 0,
+    //         "rank": 101
+    //       },
+    //       "geometry": {
+    //         "type": "Point",
+    //         "coordinates": [
+    //           107.493,
+    //           31.205515
+    //         ]
+    //       }
+    //     },
+    //     {
+    //       "type": "Feature",
+    //       "properties": {
+    //         "cityName": "自贡市",
+    //         "ratio": 0,
+    //         "rank": 102
+    //       },
+    //       "geometry": {
+    //         "type": "Point",
+    //         "coordinates": [
+    //           104.777824,
+    //           29.34555
+    //         ]
+    //       }
+    //     },
+    //     {
+    //       "type": "Feature",
+    //       "properties": {
+    //         "cityName": "陇南市",
+    //         "ratio": 0,
+    //         "rank": 103
+    //       },
+    //       "geometry": {
+    //         "type": "Point",
+    //         "coordinates": [
+    //           104.93356,
+    //           33.388184
+    //         ]
+    //       }
+    //     },
+    //     {
+    //       "type": "Feature",
+    //       "properties": {
+    //         "cityName": "南充市",
+    //         "ratio": 0,
+    //         "rank": 104
+    //       },
+    //       "geometry": {
+    //         "type": "Point",
+    //         "coordinates": [
+    //           106.1188,
+    //           30.800997
+    //         ]
+    //       }
+    //     },
+    //     {
+    //       "type": "Feature",
+    //       "properties": {
+    //         "cityName": "恩施土家族苗族自治州",
+    //         "ratio": 0,
+    //         "rank": 105
+    //       },
+    //       "geometry": {
+    //         "type": "Point",
+    //         "coordinates": [
+    //           109.48512,
+    //           30.298103
+    //         ]
+    //       }
+    //     }
+    //   ]
+    // };
+    // let breath = new Loca.ScatterLayer({
+    //   zIndex: 121,
+    // });
+    // breath.setSource(new Loca.GeoJSONSource({
+    //   data: top10,
+    // }));
+    // breath.setStyle({
+    //   unit: 'px',
+    //   size: [50, 50],
+    //   texture: 'https://a.amap.com/Loca/static/loca-v2/demos/images/breath_red.png',
+    //   animate: true,
+    //   duration: 1000,
+    // });
+    // locaRef.current.add(breath);
+    // locaRef.current.animate.start();
 
-    let dat = new Loca.Dat();
-    dat.addLayer(breath, '呼吸点');
+    // let dat = new Loca.Dat();
+    // dat.addLayer(breath, '呼吸点');
   }
 
   useEffect(() => {
@@ -224,7 +225,7 @@ const nationalOverview = (props) => {
     return () => {
       mapRef.current?.destroy();
     };
-  }, [mapRef.current]);
+  }, [mapRef.current, searchCity]);
 
 
   return (

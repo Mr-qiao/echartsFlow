@@ -55,7 +55,7 @@ const Layout: React.FC<any> = (props) => {
             options={city || []}
           />
 
-          <span className={styles.h_t}>统计截止时间：2023-9-20</span>
+          <span className={styles.h_t}>统计截止时间：{new Date().toLocaleDateString()}</span>
         </div>
       </header>
 
