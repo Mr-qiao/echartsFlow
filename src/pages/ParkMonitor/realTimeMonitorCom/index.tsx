@@ -2,7 +2,7 @@
  * 实时监控
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { DatePicker, Button } from 'antd';
 
 import { ExpandOutlined, AppstoreOutlined, TableOutlined, VideoCameraAddOutlined } from '@ant-design/icons';
@@ -78,6 +78,7 @@ const RealTimeMonitorCom = () => {
   const [currentIndex, setCurrentIndex] = useState(9)
   const [playVideoList, setPlayVideoList] = useState(contantsPlay || []);
 
+  const [maxView, setMaxView] = useState(false);
 
   const handleIndex = (idx: number) => {
 
@@ -90,6 +91,22 @@ const RealTimeMonitorCom = () => {
     setCurrentIndex(idx);
   }
 
+
+
+  useEffect(() => {
+    document.addEventListener('keydown', (e) => {
+      if (e?.keyCode === 27) {
+        setMaxView(false);
+      }
+    });
+
+    return () => {
+      document.removeEventListener('keydown', (e) => {
+        setMaxView(false);
+      })
+    }
+
+  }, [])
 
   return (
     <div className={styles.h_warpper} >
@@ -107,11 +124,11 @@ const RealTimeMonitorCom = () => {
               ))
             }
           </div>
-          <Button icon={<ExpandOutlined />}></Button>
+          <Button icon={<ExpandOutlined />} onClick={() => setMaxView(true)}></Button>
         </div>
       </div>
       {/* 4 / 9 */}
-      <div className={styles.videogrid_wrapper}>
+      <div className={`${styles.videogrid_wrapper} ${maxView ? styles.fullscreen : null}`}>
         {
           <div className={`${styles.videogrid} ${currentIndex === 9 ? styles.videogrid_9 : styles.videogrid_4}`} id="maxView">
             {
