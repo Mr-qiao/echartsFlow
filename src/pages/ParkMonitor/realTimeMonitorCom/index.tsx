@@ -111,9 +111,9 @@ const RealTimeMonitorCom = () => {
         </div>
       </div>
       {/* 4 / 9 */}
-      <div className={styles.videogrid_wrapper} >
+      <div className={styles.videogrid_wrapper}>
         {
-          <div className={`${styles.videogrid} ${currentIndex === 9 ? styles.videogrid_9 : styles.videogrid_4}`} >
+          <div className={`${styles.videogrid} ${currentIndex === 9 ? styles.videogrid_9 : styles.videogrid_4}`} id="maxView">
             {
               playVideoList.map(item => {
                 return (

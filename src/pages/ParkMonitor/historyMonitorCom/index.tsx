@@ -2,7 +2,7 @@
  * 历史监控
  */
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Layout, Menu, Input, Tabs, DatePicker, Button, Col, Row } from 'antd';
 
 import { ExpandOutlined, AppstoreOutlined, TableOutlined, VideoCameraAddOutlined } from '@ant-design/icons';
@@ -74,13 +74,12 @@ const contantsPlay = [
 
 
 const HistoryMonitorCom = () => {
-
   const [currentIndex, setCurrentIndex] = useState(9)
   const [playVideoList, setPlayVideoList] = useState(contantsPlay || []);
+  const [maxView, setMaxView] = useState(false);
 
 
   const handleIndex = (idx: number) => {
-
     if (idx === 4) {
       const newplayVideoList = contantsPlay.slice(0, 4);
       setPlayVideoList(newplayVideoList)
@@ -89,6 +88,22 @@ const HistoryMonitorCom = () => {
     }
     setCurrentIndex(idx);
   }
+
+
+  useEffect(() => {
+    document.addEventListener('keydown', (e) => {
+      if (e?.keyCode === 27) {
+        setMaxView(false);
+      }
+    });
+
+    return () => {
+      document.removeEventListener('keydown', (e) => {
+        setMaxView(false);
+      })
+    }
+
+  }, [])
 
 
   return (
@@ -108,13 +123,13 @@ const HistoryMonitorCom = () => {
               ))
             }
           </div>
-          <Button icon={<ExpandOutlined />}></Button>
+          <Button icon={<ExpandOutlined />} onClick={() => setMaxView(true)}></Button>
         </div>
       </div>
       {/* 4 / 9 */}
-      <div className={styles.videogrid_wrapper} >
+      <div className={`${styles.videogrid_wrapper} ${maxView ? styles.fullscreen : null}`} >
         {
-          <div className={`${styles.videogrid} ${currentIndex === 9 ? styles.videogrid_9 : styles.videogrid_4}`} >
+          <div className={`${styles.videogrid} ${currentIndex === 9 ? styles.videogrid_9 : styles.videogrid_4} ${maxView ? styles.fullscreen : null}`} id="maxView">
             {
               playVideoList.map(item => {
                 return (

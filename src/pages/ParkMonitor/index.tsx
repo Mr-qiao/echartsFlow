@@ -79,7 +79,7 @@ const parkMonitor = () => {
         </Col>
         {/* 中间 */}
         <Col span={12}>
-          <ChartPanel style={{ height: '70vh' }}>
+          <ChartPanel>
             {/* tab切换 */}
             <Tabs defaultActiveKey="1" items={[
               {
