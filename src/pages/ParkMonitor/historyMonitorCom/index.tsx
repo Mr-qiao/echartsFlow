@@ -78,6 +78,8 @@ const HistoryMonitorCom = () => {
   const [playVideoList, setPlayVideoList] = useState(contantsPlay || []);
   const [maxView, setMaxView] = useState(false);
 
+  const [activeIndex, setActiveIndex] = useState(1)
+
 
   const handleIndex = (idx: number) => {
     if (idx === 4) {
@@ -104,6 +106,11 @@ const HistoryMonitorCom = () => {
     }
 
   }, [])
+
+  // active click
+  const handleActive = (key: number) => {
+    setActiveIndex(key);
+  }
 
 
   return (
@@ -133,8 +140,20 @@ const HistoryMonitorCom = () => {
             {
               playVideoList.map(item => {
                 return (
-                  <div className={styles.vgw_player_wrapper} key={item.key}>
+                  <div className={`${styles.player_wrapper} ${item.key === activeIndex ? styles.activeIndex : null}`} key={item.key} onClick={() => handleActive(item.key)}>
                     <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.87)', width: '100%', aspectRatio: 'auto 16 / 9', maxWidth: '100%', height: '0px', paddingTop: '56.25%' }}>
+                      <video controls style={{ width: '100%', aspectRatio: 'auto 16 / 9', maxWidth: '100%', height: '0px', paddingTop: '56.25%' }}>
+                        <source src="/media/cc0-videos/flower.webm" type="video/webm" />
+
+                        <source src="/media/cc0-videos/flower.mp4" type="video/mp4" />
+
+                        Download the
+                        <a href="/media/cc0-videos/flower.webm">WEBM</a>
+                        or
+                        <a href="/media/cc0-videos/flower.mp4">MP4</a>
+                        video.
+                      </video>
+
                     </div>
                   </div>
                 )
