@@ -7,13 +7,14 @@ import styles from './index.less';
 interface ChartPanelIProps {
   children: React.ReactNode;
   style?: any;
-  title?: string
+  title?: string,
+  className?: string
 }
 
-const ChartPanel = ({ children, style, title }: ChartPanelIProps) => {
+const ChartPanel = ({ children, style, title, className }: ChartPanelIProps) => {
 
   return (
-    <div className={styles.chart} style={style}>
+    <div className={`${styles.chart} ${className}`} style={style}>
 
       {title && <div className={styles.chart_title}>{title}</div>}
 

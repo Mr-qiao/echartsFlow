@@ -12,3 +12,5 @@ export const DEFAULT_HEADER_SRC =
   'https://s.xinc818.com/files/webcilb659sisy4vmah/img_moren.png';
 export const DEFAULT_IMG_SRC =
   'https://s.xinc818.com/files/webcilfs1socyx4sy6q/default@2x.png';
+
+

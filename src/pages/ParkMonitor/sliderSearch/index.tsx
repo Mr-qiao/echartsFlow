@@ -10,15 +10,10 @@ import ChartPanel from '@/components/ChartPanel'
 import type { DataNode } from 'antd/es/tree';
 const { Search } = Input;
 
-
 import styles from '../index.less';
 
 
-
 // mock 数据
-const x = 1;
-const y = 2;
-const z = 1;
 const defaultData: TreeDataNode[] = [
   {
     title: '北京大兴',
@@ -40,32 +35,6 @@ const defaultData: TreeDataNode[] = [
   }
 ];
 
-const generateData = (_level: number, _preKey?: React.Key, _tns?: TreeDataNode[]) => {
-  const preKey = _preKey || '0';
-  const tns = _tns || defaultData;
-
-  const children: React.Key[] = [];
-  for (let i = 0; i < x; i++) {
-    const key = `${preKey}-${i}`;
-    tns.push({ title: key, key });
-    if (i < y) {
-      children.push(key);
-    }
-  }
-  if (_level < 0) {
-    return tns;
-  }
-  const level = _level - 1;
-  children.forEach((key, index) => {
-    tns[index].children = [];
-    return generateData(level, key, tns[index].children);
-  });
-};
-generateData(z);
-
-
-
-
 const dataList: { key: React.Key; title: string }[] = [];
 const generateList = (data: TreeDataNode[]) => {
   for (let i = 0; i < data.length; i++) {
@@ -79,7 +48,6 @@ const generateList = (data: TreeDataNode[]) => {
 };
 generateList(defaultData);
 
-console.log(dataList, 'dataList')
 // 筛选父元素
 const getParentKey = (key, tree) => {
   let parentKey;
@@ -142,6 +110,8 @@ const SilderSearch = () => {
     setAutoExpandParent(false);
   };
 
+  console.log(autoExpandParent, '======-----======')
+
 
   // 搜索下拉框
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -157,7 +127,6 @@ const SilderSearch = () => {
     setExpandedKeys(newExpandedKeys);
     setSearchValue(value);
     setAutoExpandParent(true);
-
   }
 
   return (
@@ -171,8 +140,8 @@ const SilderSearch = () => {
         onChange={handleSearch}
       />
 
-
       <Tree
+        defaultExpandAll={true}
         onExpand={onExpand}
         expandedKeys={expandedKeys} // （受控）展开指定的树节点
         autoExpandParent={autoExpandParent} // 是否自动展开父节点
