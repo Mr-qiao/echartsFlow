@@ -142,7 +142,7 @@ const HistoryMonitorCom = () => {
                 return (
                   <div className={`${styles.player_wrapper} ${item.key === activeIndex ? styles.activeIndex : null}`} key={item.key} onClick={() => handleActive(item.key)}>
                     <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.87)', width: '100%', aspectRatio: 'auto 16 / 9', maxWidth: '100%', height: '0px', paddingTop: '56.25%' }}>
-                      <video controls style={{ width: '100%', aspectRatio: 'auto 16 / 9', maxWidth: '100%', height: '0px', paddingTop: '56.25%' }}>
+                      {/* <video controls style={{ width: '100%', aspectRatio: 'auto 16 / 9', maxWidth: '100%', height: '0px', paddingTop: '56.25%' }}>
                         <source src="/media/cc0-videos/flower.webm" type="video/webm" />
 
                         <source src="/media/cc0-videos/flower.mp4" type="video/mp4" />
@@ -152,7 +152,7 @@ const HistoryMonitorCom = () => {
                         or
                         <a href="/media/cc0-videos/flower.mp4">MP4</a>
                         video.
-                      </video>
+                      </video> */}
 
                     </div>
                   </div>
