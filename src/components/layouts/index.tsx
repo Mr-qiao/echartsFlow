@@ -6,6 +6,9 @@ import { Select } from 'antd';
 import city from 'province-city-china/dist/city.json';
 import { DEFAULT_NAME } from '@/constants';
 
+import AvatarName from '../AvatarName';
+
+
 import styles from './index.less'
 
 
@@ -56,6 +59,7 @@ const Layout: React.FC<any> = (props) => {
           />
 
           {/* <span className={styles.h_t}>统计截止时间：{new Date().toLocaleDateString()}</span> */}
+          <AvatarName />
         </div>
       </header>
 
