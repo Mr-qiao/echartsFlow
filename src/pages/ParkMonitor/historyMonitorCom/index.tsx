@@ -141,19 +141,8 @@ const HistoryMonitorCom = () => {
               playVideoList.map(item => {
                 return (
                   <div className={`${styles.player_wrapper} ${item.key === activeIndex ? styles.activeIndex : null}`} key={item.key} onClick={() => handleActive(item.key)}>
-                    <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.87)', width: '100%', aspectRatio: 'auto 16 / 9', maxWidth: '100%', height: '0px', paddingTop: '56.25%' }}>
-                      {/* <video controls style={{ width: '100%', aspectRatio: 'auto 16 / 9', maxWidth: '100%', height: '0px', paddingTop: '56.25%' }}>
-                        <source src="/media/cc0-videos/flower.webm" type="video/webm" />
-
-                        <source src="/media/cc0-videos/flower.mp4" type="video/mp4" />
-
-                        Download the
-                        <a href="/media/cc0-videos/flower.webm">WEBM</a>
-                        or
-                        <a href="/media/cc0-videos/flower.mp4">MP4</a>
-                        video.
-                      </video> */}
-
+                    <div className={`${styles.xgplayer_skin_default}`} style={{ backgroundColor: 'rgba(255, 255, 255, 0.87)', width: '100%', aspectRatio: 'auto 16 / 9', maxWidth: '100%', height: '0px', paddingTop: '56.25%' }}>
+                      <video autoPlay tabIndex={2} crossorigin="anonymous" style={{ position: 'absolute', top: '0px', left: '0px' }} src='blob:http://120.78.93.97/74697d4c-547f-4933-8d2b-bb9672c7a021' />
                     </div>
                   </div>
                 )
