@@ -15,7 +15,7 @@ import HistoryMonitorCom from './historyMonitorCom';
 import RealTimeMonitorCom from './realTimeMonitorCom';
 
 import SliderSearch from './sliderSearch';
-import Layouts from '@/layouts'
+import Layouts from '@/components/layouts'
 
 import styles from './index.less';
 

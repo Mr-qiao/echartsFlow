@@ -1,6 +1,6 @@
 import React from 'react';
 
-import MenuBar from '../components/MenuBar';
+import MenuBar from '../MenuBar';
 import { Outlet, connect } from 'umi'
 import { Select } from 'antd';
 import city from 'province-city-china/dist/city.json';

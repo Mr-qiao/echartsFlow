@@ -7,7 +7,7 @@ import ChartPanel from '@/components/ChartPanel'
 import { Row, Col } from 'antd';
 import { connect } from 'umi'
 
-import Layouts from '@/layouts';
+import Layouts from '@/components/layouts';
 
 import { diverOption } from './config';
 

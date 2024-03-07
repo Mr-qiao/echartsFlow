@@ -5,7 +5,7 @@
 import React from 'react';
 import ReactEcharts from 'echarts-for-react';
 import styles from './index.less'
-import Layouts from '@/layouts';
+import Layouts from '@/components/layouts';
 
 let option = {
   legend: [

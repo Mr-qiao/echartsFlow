@@ -1,9 +1,9 @@
 
+
+
+import system from "./system";
+
 const GlobalRouters = [
-  // {
-  //   path: '/',
-  //   redirect: '/nationalOverview',
-  // },
   {
     path: '/',
     redirect: '/login',
@@ -37,7 +37,8 @@ const GlobalRouters = [
     path: '/securityMonitor',
     layout: false,
     component: './SecurityMonitor'
-  }
+  },
+  ...system
 ];
 
 export default GlobalRouters;

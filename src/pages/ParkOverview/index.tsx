@@ -6,7 +6,7 @@ import ReactEcharts from 'echarts-for-react';
 import ChartPanel from '@/components/ChartPanel'
 import { Row, Col } from 'antd';
 
-import Layouts from '@/layouts';
+import Layouts from '@/components/layouts';
 
 import styles from './index.less';
 

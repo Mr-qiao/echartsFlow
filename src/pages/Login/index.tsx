@@ -33,7 +33,8 @@ const Launch: any = () => {
 
   return (
     <div style={bgStyle}>
-      <div className={styles.jf}>设计师平台-工厂端</div>
+      <div className={styles.jf}>德力西电气监控视频汇聚平台
+      </div>
       <div className={styles.content}>
         <div className={styles.login}>登录</div>
         <Form
