@@ -5,6 +5,7 @@
 import React from 'react';
 import ReactEcharts from 'echarts-for-react';
 import styles from './index.less'
+import Layouts from '@/layouts';
 
 let option = {
   legend: [
@@ -36,10 +37,11 @@ let option = {
 
 const security = () => {
   return (
-    <div className={styles.security_main}>
+    <Layouts>
+      <div className={styles.security_main}>
 
-      开发中...
-      {/* <div className={styles.m_l_1}>
+        开发中...
+        {/* <div className={styles.m_l_1}>
         <div className={styles.card}>
           <div className={styles.barsBox}>
             <span className={styles.tit}>火灾预警</span>
@@ -309,7 +311,8 @@ const security = () => {
           </div>
         </div>
       </div> */}
-    </div>
+      </div>
+    </Layouts>
   )
 }
 

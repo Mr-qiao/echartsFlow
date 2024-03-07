@@ -20,7 +20,7 @@ city?.unshift({
 
 const Layout: React.FC<any> = (props) => {
 
-  const { dispatch } = props;
+  const { dispatch, children } = props;
 
 
   const onChangeCity = (e) => {
@@ -55,11 +55,12 @@ const Layout: React.FC<any> = (props) => {
             options={city || []}
           />
 
-          <span className={styles.h_t}>统计截止时间：{new Date().toLocaleDateString()}</span>
+          {/* <span className={styles.h_t}>统计截止时间：{new Date().toLocaleDateString()}</span> */}
         </div>
       </header>
 
-      <Outlet />
+      {/* <Outlet /> */}
+      {children}
 
       {/* 路由导航 */}
       <MenuBar />
