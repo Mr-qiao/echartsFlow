@@ -1,12 +1,14 @@
 /**
  * 用户列表
  */
-import React, { useState } from 'react';
-import { EllipsisOutlined, PlusOutlined } from '@ant-design/icons';
+import React, { useState, useRef } from 'react';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
-import { ProTable, TableDropdown } from '@ant-design/pro-components';
-import { Button, Modal, Form, Input, Select } from 'antd';
-import { useRef } from 'react';
+import { ProTable } from '@ant-design/pro-components';
+import { Button } from 'antd';
+
+import UserModal from './UserModal';
+
+
 import request from 'umi-request';
 export const waitTimePromise = async (time: number = 100) => {
   return new Promise((resolve) => {
@@ -20,7 +22,6 @@ export const waitTime = async (time: number = 100) => {
   await waitTimePromise(time);
 };
 
-const { TextArea } = Input;
 
 type GithubIssueItem = {
   url: string;
@@ -43,9 +44,7 @@ type GithubIssueItem = {
 
 const User = () => {
   const actionRef = useRef<ActionType>();
-  const [form] = Form.useForm();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [visible, setVisible] = useState(false);
 
   const columns: ProColumns<GithubIssueItem>[] = [
     {
@@ -83,9 +82,6 @@ const User = () => {
       render: (text, record, _, action) => [
         <a
           key="editable"
-          // onClick={() => {
-          //   // action?.startEditable?.(record.id);
-          // }}
           onClick={() => handleModal('edit')}
         >
           编辑
@@ -95,15 +91,7 @@ const User = () => {
   ];
 
   const handleModal = (type?: string) => {
-    setIsModalOpen(true);
-  };
-
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalOpen(false);
+    setVisible(true)
   };
 
 
@@ -164,76 +152,14 @@ const User = () => {
         toolBarRender={() => [
           <Button
             key="button"
-            onClick={() => handleModal('')}
+            onClick={() => setVisible(true)}
             type="primary"
           >
             添加
           </Button>
         ]}
       />
-      <Modal title="添加用户" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-        <Form form={form} initialValues={{ type: 1 }}>
-          <Form.Item label="用户名" name="userName" rules={[
-            {
-              required: true,
-              message: '请输入密码',
-            },
-          ]}>
-            <Input placeholder="请输入用户名" />
-          </Form.Item>
-          <Form.Item
-            label="密码"
-            name="password"
-            rules={[
-              {
-                required: true,
-                message: '请输入密码',
-              },
-            ]}
-          >
-            <Input placeholder="请输入密码" />;
-          </Form.Item>
-
-          <Form.Item
-            label="权限"
-            name="password"
-            rules={[
-              {
-                required: true,
-                message: '请输入密码',
-              },
-            ]}
-          >
-            <Select
-              defaultValue="default"
-              options={[
-                {
-                  value: 'admin',
-                  label: '管理员',
-                },
-                {
-                  value: 'default',
-                  label: '普通用户',
-                },
-
-              ]}
-            />
-          </Form.Item>
-
-          <Form.Item
-            label="备注"
-            name="remark"
-            rules={[
-              {
-                required: true,
-                message: '请输入备注内容',
-              },
-            ]}
-          >
-            <TextArea showCount maxLength={500} rows={5} placeholder="请输入内容" />
-          </Form.Item>
-        </Form>
-      </Modal>
+      <UserModal open={visible} onCancel={() => setVisible(false)} onOk={() => actionRef?.current?.reload()} />
     </>
 
   );

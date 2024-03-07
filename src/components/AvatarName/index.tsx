@@ -1,4 +1,5 @@
-import { Dropdown, Avatar } from 'antd'
+import React, { useState } from 'react';
+import { Dropdown, Avatar, Modal, Form, Input } from 'antd'
 import './index.less';
 import { history } from 'umi';
 import Cookies from "js-cookie";
@@ -7,6 +8,8 @@ import styles from './index.less'
 
 export default function () {
 	const info: any = window.localStorage.getItem('info') || '';
+	const [form] = Form.useForm()
+	const [isModalOpen, setIsModalOpen] = useState(false);
 	const JSONInfo = JSON.parse(info || '{}');
 	// const clearAllCookie = () => {
 	// 	var keys = document.cookie.match(/[^ =;]+(?=\=)/g);
@@ -15,6 +18,19 @@ export default function () {
 	// 			document.cookie = keys[i] + '=0;expires=' + new Date(0).toUTCString()
 	// 	}
 	// }
+
+	const handleModal = () => {
+		setIsModalOpen(true);
+	};
+
+	const handleOk = () => {
+		setIsModalOpen(false);
+	};
+
+	const handleCancel = () => {
+		setIsModalOpen(false);
+	};
+
 	useEffect(() => {
 		console.log(history)
 		if (!info) {
@@ -33,6 +49,11 @@ export default function () {
 							onClick: () => {
 								history.replace('/system');
 							},
+						},
+						{
+							label: '修改密码',
+							key: 'rePassWord',
+							onClick: handleModal,
 						},
 						{
 							label: '退出登录',
@@ -61,6 +82,39 @@ export default function () {
 					</span> */}
 				</div>
 			</Dropdown>
+
+			<Modal title="修改密码" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+				<Form form={form} labelCol={{ span: 3 }} wrapperCol={{ span: 16 }}>
+
+					<Form.Item
+						label="密码"
+						name="password"
+						rules={[
+							{
+								required: true,
+								message: '请输入密码',
+							},
+						]}
+					>
+						<Input placeholder="请输入密码" />
+					</Form.Item>
+
+					<Form.Item
+						label="新密码"
+						name="newpassword"
+						rules={[
+							{
+								required: true,
+								message: '请输入新密码',
+							},
+						]}
+					>
+						<Input placeholder="请输入新密码" />
+					</Form.Item>
+
+				</Form>
+			</Modal>
+
 		</div>
 	);
 }

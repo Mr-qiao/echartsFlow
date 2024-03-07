@@ -2,6 +2,7 @@
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-components';
 import { useLocation } from '@umijs/max';
+import { Link } from 'umi'
 import { ConfigProvider } from 'antd';
 import zhCN from 'antd/es/locale/zh_CN';
 
@@ -20,6 +21,7 @@ dayjs.locale('zh-cn');
 export const layout = () => {
   const [collapsed, setCollapsed] = useState(false);
   return {
+    // title: '德力西电气监控视频汇聚平台',
     navTheme: 'light',
     headerTheme: 'light',
     token: {
@@ -37,11 +39,11 @@ export const layout = () => {
       },
     },
     // menuHeaderRender: () => (
-    //   // <div className="u-f__center">
-    //   //   <h1 className="u-fs20" style={{ margin: '20px 0 20px 20px' }}>
-    //   //     德力西电气监控视频汇聚平台
-    //   //   </h1>
-    //   // </div>
+    //   <Link to={'/nationalOverview'}>
+    //     <div className="u-f__center">
+    //       Logo
+    //     </div>
+    //   </Link>
     // ),
     menu: {
       locale: false,
