@@ -36,13 +36,13 @@ export const layout = () => {
         colorBgPageContainer: '#fff',
       },
     },
-    menuHeaderRender: () => (
-      <div className="u-f__center">
-        <h1 className="u-fs20" style={{ margin: '20px 0 20px 20px' }}>
-          可视化监管平台
-        </h1>
-      </div>
-    ),
+    // menuHeaderRender: () => (
+    //   // <div className="u-f__center">
+    //   //   <h1 className="u-fs20" style={{ margin: '20px 0 20px 20px' }}>
+    //   //     德力西电气监控视频汇聚平台
+    //   //   </h1>
+    //   // </div>
+    // ),
     menu: {
       locale: false,
     },

@@ -30,7 +30,7 @@ export default defineConfig({
     dayjs: path.join(__dirname, './node_modules/dayjs'),
   },
   layout: {
-    title: '可视化监控大屏',
+    title: '德力西电气监控视频汇聚平台',
     logo: '',
   },
   history: { type: 'hash' },
