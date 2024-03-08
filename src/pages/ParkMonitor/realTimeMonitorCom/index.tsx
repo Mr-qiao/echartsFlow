@@ -145,11 +145,11 @@ const RealTimeMonitorCom = () => {
         }
       </div>
       {/* 底部操作 */}
-      <div className={styles.h_footer_handle}>
+      {/* <div className={styles.h_footer_handle}>
         <div className={styles.h_handle_play}>
           <Button icon={<VideoCameraAddOutlined />}></Button>
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }

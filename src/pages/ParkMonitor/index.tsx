@@ -39,14 +39,15 @@ const parkMonitor = () => {
               <Tabs defaultActiveKey="1" items={[
                 {
                   key: '1',
-                  label: '历史监控',
-                  children: <HistoryMonitorCom />,
-                },
-                {
-                  key: '2',
                   label: '实时监控',
                   children: <RealTimeMonitorCom />,
                 },
+                {
+                  key: '2',
+                  label: '历史监控',
+                  children: <HistoryMonitorCom />,
+                },
+
               ]} className={styles.h_tabs} tabBarStyle={{ backgroundColor: '#0C0031' }} />
             </ChartPanel>
           </Col>
