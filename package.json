@@ -34,7 +34,11 @@
     "province-city-china": "^8.5.7",
     "react-icons": "^5.0.1",
     "shelljs": "^0.8.5",
-    "umi-request": "^1.4.0"
+    "umi-request": "^1.4.0",
+    "video-react": "^0.16.0",
+    "xgplayer": "^3.0.14",
+    "xgplayer-flv": "^3.0.14",
+    "xgplayer-hls": "^3.0.14"
   },
   "devDependencies": {
     "@types/lodash-es": "^4.17.7",

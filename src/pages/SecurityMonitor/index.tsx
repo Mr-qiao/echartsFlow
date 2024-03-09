@@ -37,10 +37,10 @@ let option = {
 
 const security = () => {
   return (
-    <Layouts>
+    <Layouts time={false}>
       <div className={styles.security_main}>
 
-        开发中...
+        敬请期待...
         {/* <div className={styles.m_l_1}>
         <div className={styles.card}>
           <div className={styles.barsBox}>

@@ -3,9 +3,14 @@
  */
 
 import React, { useEffect, useState } from 'react';
-import { Layout, Menu, Input, Tabs, DatePicker, Button, Col, Row } from 'antd';
+import { DatePicker, Button } from 'antd';
 
 import { ExpandOutlined, AppstoreOutlined, TableOutlined, VideoCameraAddOutlined } from '@ant-design/icons';
+
+import mp4Player from 'xgplayer';
+import flyPlayer from 'xgplayer-flv';
+import hlsPlayer from 'xgplayer-hls';
+
 
 import styles from '../index.less';
 
@@ -80,6 +85,8 @@ const HistoryMonitorCom = () => {
 
   const [activeIndex, setActiveIndex] = useState(1)
 
+  const [mode, setMode] = useState<'hls' | 'flv' | 'mp4' | 'stop' | 'wait' | 'transcode'>('wait');
+
 
   const handleIndex = (idx: number) => {
     if (idx === 4) {
@@ -90,6 +97,19 @@ const HistoryMonitorCom = () => {
     }
     setCurrentIndex(idx);
   }
+
+  // active click
+  const handleActive = (key: number) => {
+    setActiveIndex(key);
+  }
+
+
+
+  useEffect(() => {
+    console.log('xxx');
+  }, []);
+
+
 
 
   useEffect(() => {
@@ -107,10 +127,7 @@ const HistoryMonitorCom = () => {
 
   }, [])
 
-  // active click
-  const handleActive = (key: number) => {
-    setActiveIndex(key);
-  }
+
 
 
   return (
@@ -141,8 +158,8 @@ const HistoryMonitorCom = () => {
               playVideoList.map(item => {
                 return (
                   <div className={`${styles.player_wrapper} ${item.key === activeIndex ? styles.activeIndex : null}`} key={item.key} onClick={() => handleActive(item.key)}>
-                    <div className={`${styles.xgplayer_skin_default}`} style={{ backgroundColor: 'rgba(255, 255, 255, 0.87)', width: '100%', aspectRatio: 'auto 16 / 9', maxWidth: '100%', height: '0px', paddingTop: '56.25%' }}>
-                      <video autoPlay tabIndex={2} crossorigin="anonymous" style={{ position: 'absolute', top: '0px', left: '0px' }} src='blob:http://120.78.93.97/7d5d6392-10d5-4ff9-a55e-e50ffd94abd8' />
+                    <div id='monitorVideo' className={`${styles.xgplayer_skin_default}`} style={{ backgroundColor: 'rgba(255, 255, 255, 0.87)', width: '100%', aspectRatio: 'auto 16 / 9', maxWidth: '100%', height: '0px', paddingTop: '56.25%' }}>
+                      {/* <video autoPlay tabIndex={2} crossorigin="anonymous" style={{ position: 'absolute', top: '0px', left: '0px' }} src='blob:http://120.78.93.97/7d5d6392-10d5-4ff9-a55e-e50ffd94abd8' /> */}
                     </div>
                   </div>
                 )

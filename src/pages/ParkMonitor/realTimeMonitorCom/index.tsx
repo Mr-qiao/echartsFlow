@@ -135,7 +135,7 @@ const RealTimeMonitorCom = () => {
               playVideoList.map(item => {
                 return (
                   <div className={styles.vgw_player_wrapper} key={item.key}>
-                    <div style={{ backgroundColor: 'rgba(0, 0, 0, 0.87)', width: '100%', aspectRatio: 'auto 16 / 9', maxWidth: '100%', height: '0px', paddingTop: '56.25%' }}>
+                    <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.87)', width: '100%', aspectRatio: 'auto 16 / 9', maxWidth: '100%', height: '0px', paddingTop: '56.25%' }}>
                     </div>
                   </div>
                 )

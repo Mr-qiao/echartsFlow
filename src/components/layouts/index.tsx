@@ -23,7 +23,7 @@ city?.unshift({
 
 const Layout: React.FC<any> = (props) => {
 
-  const { dispatch, children } = props;
+  const { dispatch, time = true, children } = props;
 
 
   const onChangeCity = (e) => {
@@ -40,27 +40,31 @@ const Layout: React.FC<any> = (props) => {
       {/* 头部导航 */}
       <header className={styles.header}>
         <h3 className={styles.title}>{DEFAULT_NAME}</h3>
-        <div className={styles.flexBox}>
-          <Select
-            showSearch
-            style={{ width: 200 }}
-            placeholder="请搜索"
-            defaultValue={city[0]?.code}
-            filterOption={(input, option) => (option?.code ?? '').includes(input)}
-            filterSort={(optionA, optionB) =>
-              (optionA?.code ?? '').toLowerCase().localeCompare((optionB?.code ?? '').toLowerCase())
-            }
-            fieldNames={{
-              label: 'name',
-              value: 'code',
-            }}
-            onChange={onChangeCity}
-            options={city || []}
-          />
+        {
+          time && (
+            <div className={styles.flexBox}>
+              <Select
+                showSearch
+                style={{ width: 200 }}
+                placeholder="请搜索"
+                defaultValue={city[0]?.code}
+                filterOption={(input, option) => (option?.code ?? '').includes(input)}
+                filterSort={(optionA, optionB) =>
+                  (optionA?.code ?? '').toLowerCase().localeCompare((optionB?.code ?? '').toLowerCase())
+                }
+                fieldNames={{
+                  label: 'name',
+                  value: 'code',
+                }}
+                onChange={onChangeCity}
+                options={city || []}
+              />
 
-          {/* <span className={styles.h_t}>统计截止时间：{new Date().toLocaleDateString()}</span> */}
-          <AvatarName />
-        </div>
+              {/* <span className={styles.h_t}>统计截止时间：{new Date().toLocaleDateString()}</span> */}
+              <AvatarName />
+            </div>
+          )
+        }
       </header>
 
       {/* <Outlet /> */}

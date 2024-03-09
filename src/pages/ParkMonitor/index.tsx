@@ -26,7 +26,7 @@ import styles from './index.less';
 const parkMonitor = () => {
 
   return (
-    <Layouts>
+    <Layouts time={false}>
       <div className={styles.nationalOverviewContainer}>
         <Row gutter={10}>
           <Col span={6}>
