@@ -3,8 +3,9 @@
 import { request as maxRequest } from '@umijs/max';
 import request from 'umi-request'
 
-import ajaxBaseUrl from '@/config';
+import config from '@/config';
 
+const { ajaxBaseUrl } = config;
 
 
 /**
