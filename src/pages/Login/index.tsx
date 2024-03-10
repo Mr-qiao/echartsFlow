@@ -1,3 +1,5 @@
+
+import { useEffect, useState } from 'react';
 import {
   EyeInvisibleOutlined,
   EyeTwoTone,
@@ -5,7 +7,7 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 import { Button, Form, Input, message, Spin } from 'antd';
-import { useEffect, useState } from 'react';
+import { login } from '@/services/login';
 import { history } from 'umi';
 import styles from './index.less';
 
@@ -25,10 +27,18 @@ const Launch: any = () => {
   const [form] = Form.useForm();
 
   // 登陆
-  const handleSubmit = (val: any) => {
-    history.push('/nationalOverview')
+  const handleSubmit = async (val: any) => {
+    try {
+      const res = await login(val);
+      if (res.code === 0) {
+        window.localStorage.setItem('token', res.data?.token);
+        message.success('登陆成功')
+        history.push('/nationalOverview')
+      }
+    } catch (error) {
+      console.log(error, '登陆报错~')
+    }
   };
-
 
 
   return (
@@ -46,7 +56,7 @@ const Launch: any = () => {
         >
           <Form.Item
             label=""
-            name="loginName"
+            name="uname"
             rules={[
               {
                 required: true,
@@ -63,7 +73,7 @@ const Launch: any = () => {
           </Form.Item>
           <Form.Item
             label=""
-            name="password"
+            name="passwd"
             rules={[
               {
                 required: true,

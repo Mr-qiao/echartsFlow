@@ -2,7 +2,7 @@
 import { navigateToLogin } from '@/utils';
 import type { RequestConfig } from '@umijs/max';
 import { message, notification } from 'antd';
-
+import Cookies from 'js-cookie';
 const { ajaxBaseUrl } = config;
 
 const codeMessage: any = {
@@ -34,7 +34,7 @@ export const errorConfig: RequestConfig = {
   timeout: 10000,
   // 错误处理： umi@3 的错误处理方案。
   errorConfig: {
-    errorThrower: (res) => {},
+    errorThrower: (res) => { },
     // 错误接收及处理
     errorHandler: (error: any, opts: any) => {
       if (opts?.skipErrorHandler) throw error;
@@ -62,17 +62,17 @@ export const errorConfig: RequestConfig = {
   // 请求拦截器
   requestInterceptors: [
     (config: any) => {
-      // 拦截请求配置，进行个性化处理。
-      // TODO：目前token还兼容老接口
-      // const token =
-      //   Cookies.get('supplier-token') || localStorage.getItem('supplier-token');
 
-      // if (token) {
-      //   config.headers = {
-      //     ...config.headers,
-      //     token,
-      //   };
-      // }
+      // 拦截请求配置，进行个性化处理。
+      const token = Cookies.get('token') || localStorage.getItem('token');
+
+      if (token) {
+        config.headers = {
+          ...config.headers,
+          token,
+        };
+      }
+
 
       return config;
     },

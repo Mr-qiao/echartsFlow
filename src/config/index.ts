@@ -1,17 +1,9 @@
-// const host = location.host;
 
-// let env = 'daily';
-
-
-// const ajaxBaseUrl = {
-//   development: 'https://api.dev.xinc818.net',
-//   daily: 'https://api.daily.xinc818.net',
-//   gray: 'https://api.gray.xinc818.net',
-//   production: 'https://api.xinc818.com',
-// }[env];
+// TODO: 静态域名
+const ajaxBaseUrl = 'http://192.168.18.46:9366';
+// const ajaxBaseUrl = `http://121.40.237.64:16816`;
 
 
-// export default {
-//   ajaxBaseUrl,
-//   env,
-// };
+export default {
+  ajaxBaseUrl
+};
