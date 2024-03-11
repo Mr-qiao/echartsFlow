@@ -5,12 +5,14 @@ import { history } from 'umi';
 import Cookies from "js-cookie";
 import { useEffect } from "react";
 import styles from './index.less'
+import { logout, changePasswd } from '@/services/login'
+import { userList } from '@/services/user'
+import RestPassword from './resetPassword';
 
 export default function () {
 	const info: any = window.localStorage.getItem('info') || '';
-	const [form] = Form.useForm()
-	const [isModalOpen, setIsModalOpen] = useState(false);
 	const JSONInfo = JSON.parse(info || '{}');
+	const [visible, setVisible] = useState(false);
 	// const clearAllCookie = () => {
 	// 	var keys = document.cookie.match(/[^ =;]+(?=\=)/g);
 	// 	if (keys) {
@@ -20,23 +22,28 @@ export default function () {
 	// }
 
 	const handleModal = () => {
-		setIsModalOpen(true);
+		setVisible(true);
 	};
 
-	const handleOk = () => {
-		setIsModalOpen(false);
-	};
-
-	const handleCancel = () => {
-		setIsModalOpen(false);
-	};
-
-	useEffect(() => {
-		console.log(history)
-		if (!info) {
-			history.replace('/login');
+	const handleSubmitRestPasswd = async (val) => {
+		try {
+			const parmas = {
+				passwd: val.passwd
+			}
+			const res = await changePasswd(parmas);
+			console.log(res, 'res')
+			if (res.code === 200) {
+				setVisible(false);
+			}
+		} catch (error) {
+			console.log(error, 'error')
 		}
-	}, [])
+	}
+	// useEffect(() => {
+	// 	if (!info) {
+	// 		history.replace('/login');
+	// 	}
+	// }, [])
 	return (
 		<div className={'avatar-name'}>
 			<Dropdown
@@ -58,12 +65,14 @@ export default function () {
 						{
 							label: '退出登录',
 							key: 'logout',
-							onClick: () => {
-								Cookies.remove('supplier-token')
-								// clearAllCookie()
-								localStorage.removeItem('supplier-token')
-								history.replace('/login');
-								console.log('已经退出！！！');
+							onClick: async () => {
+								try {
+									// await logout();
+									await userList()
+									// localStorage.removeItem('token')
+									// history.replace('/login');
+								} catch (error) {
+								}
 							},
 						},
 					]
@@ -83,7 +92,8 @@ export default function () {
 				</div>
 			</Dropdown>
 
-			<Modal title="修改密码" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+			<RestPassword open={visible} onCancel={() => setVisible(false)} onOk={handleSubmitRestPasswd} />
+			{/* <Modal title="修改密码" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
 				<Form form={form} labelCol={{ span: 3 }} wrapperCol={{ span: 16 }}>
 
 					<Form.Item
@@ -113,7 +123,8 @@ export default function () {
 					</Form.Item>
 
 				</Form>
-			</Modal>
+			</Modal> */}
+
 
 		</div>
 	);

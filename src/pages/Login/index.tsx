@@ -30,7 +30,7 @@ const Launch: any = () => {
   const handleSubmit = async (val: any) => {
     try {
       const res = await login(val);
-      if (res.code === 0) {
+      if (res?.code === 0) {
         window.localStorage.setItem('token', res.data?.token);
         message.success('登陆成功')
         history.push('/nationalOverview')

@@ -32,39 +32,43 @@ const codeMessage: any = {
 export const errorConfig: RequestConfig = {
   baseURL: ajaxBaseUrl,
   timeout: 10000,
+  // headers: {
+  //   'Access-Control-Allow-Origin': "*"
+  // },
   // 错误处理： umi@3 的错误处理方案。
   errorConfig: {
     errorThrower: (res) => { },
     // 错误接收及处理
-    errorHandler: (error: any, opts: any) => {
-      if (opts?.skipErrorHandler) throw error;
-      // 我们的 errorThrower 抛出的错误。
-      if (error.response && error.response.status) {
-        const errorText =
-          codeMessage[error.response.status] || error.response.statusText;
-        const {
-          status,
-          data: { path },
-        } = error.response;
-        notification.error({
-          message: `请求错误 ${status}: ${ajaxBaseUrl}${path}`,
-          description: errorText,
-        });
-      } else if (!error.response) {
-        notification.error({
-          description: '您的网络发生异常，无法连接服务器',
-          message: '网络异常',
-        });
-      }
-    },
+    // errorHandler: (error: any, opts: any) => {
+    //   if (opts?.skipErrorHandler) throw error;
+    //   // 我们的 errorThrower 抛出的错误。
+    //   if (error.response && error.response.status) {
+    //     const errorText =
+    //       codeMessage[error.response.status] || error.response.statusText;
+    //     const {
+    //       status,
+    //       data: { path },
+    //     } = error.response;
+    //     notification.error({
+    //       message: `请求错误 ${status}: ${ajaxBaseUrl}${path}`,
+    //       description: errorText,
+    //     });
+    //   } else if (!error.response) {
+    //     notification.error({
+    //       description: '您的网络发生异常，无法连接服务器',
+    //       message: '网络异常',
+    //     });
+    //   }
+    // },
   },
 
   // 请求拦截器
   requestInterceptors: [
     (config: any) => {
-
+      console.log(config, 'config')
+      // console.log(config, '进的来吗？')
       // 拦截请求配置，进行个性化处理。
-      const token = Cookies.get('token') || localStorage.getItem('token');
+      const token = localStorage.getItem('token');
 
       if (token) {
         config.headers = {
@@ -77,23 +81,22 @@ export const errorConfig: RequestConfig = {
       return config;
     },
   ],
-
   // 响应拦截器
   responseInterceptors: [
     (response: any) => {
-      const { data } = response as unknown;
-      if (
-        [1000010001, 1000010031].includes(data.code) ||
-        ['1000010001', '1000010031'].includes(data.responseCode)
-      ) {
-        navigateToLogin();
-      }
+      // const { data } = response as unknown;
+      // if (
+      //   [1000010001, 1000010031].includes(data.code) ||
+      //   ['1000010001', '1000010031'].includes(data.responseCode)
+      // ) {
+      //   navigateToLogin();
+      // }
 
-      if (
-        !('code' in data ? 200 === data.code : data.status || response.status)
-      ) {
-        message.error(data.message || data.exception);
-      }
+      // if (
+      //   !('code' in data ? 200 === data.code : data.status || response.status)
+      // ) {
+      //   message.error(data.message || data.exception);
+      // }
 
       return response;
     },

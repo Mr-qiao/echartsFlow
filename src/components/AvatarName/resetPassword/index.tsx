@@ -3,11 +3,12 @@
  */
 import React from 'react';
 import { Modal, Form, Input, ModalProps } from 'antd';
-
-
-
-
-
+import {
+  EyeInvisibleOutlined,
+  EyeTwoTone,
+  LockOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
 type AddModalIProps = ModalProps & {
   record?: Recordable<string | undefined>;
 };
@@ -21,8 +22,7 @@ const RestPassword: React.FC<AddModalIProps> = ({ onOk, record, ...restProps }) 
   const handleOk = async (e: any) => {
     try {
       const values = await form.validateFields();
-      console.log(values, '提交')
-      await onOk?.(e);
+      await onOk?.(values);
     } catch (err) {
       console.log(err);
     }
@@ -39,15 +39,26 @@ const RestPassword: React.FC<AddModalIProps> = ({ onOk, record, ...restProps }) 
             {
               required: true,
               message: '请输入密码',
+              pattern: new RegExp(/^[A-Za-z0-9]+$/, 'g'),
             },
           ]}
         >
-          <Input placeholder="请输入密码" />
+          <Input.Password
+            prefix={<LockOutlined className="site-form-item-icon" />}
+            type="password"
+            size={'large'}
+            placeholder="请输入密码"
+            bordered
+            iconRender={(visible) =>
+              visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+            }
+            maxLength={20}
+          />
         </Form.Item>
 
         <Form.Item
           label="新密码"
-          name="newpassword"
+          name="passwd"
           rules={[
             {
               required: true,
@@ -55,7 +66,17 @@ const RestPassword: React.FC<AddModalIProps> = ({ onOk, record, ...restProps }) 
             },
           ]}
         >
-          <Input placeholder="请输入新密码" />
+          <Input.Password
+            prefix={<LockOutlined className="site-form-item-icon" />}
+            type="password"
+            size={'large'}
+            placeholder="请输入密码"
+            bordered
+            iconRender={(visible) =>
+              visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+            }
+            maxLength={20}
+          />
         </Form.Item>
 
       </Form>

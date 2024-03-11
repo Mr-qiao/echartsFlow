@@ -20,9 +20,15 @@ export const createUser = (body: any) => {
  * @param data 
  * @returns 
  */
-export const userList = (data: any) => {
-  return request('/user/createUser', {
+export const userList = (data?: any) => {
+  return request('/user/list', {
     method: 'GET',
-    params: data,
+    // params: data,
+    // headers: {
+    //   'Access-Control-Allow-Origin': "*"
+    // }
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
   });
 }

@@ -1,7 +1,7 @@
 
 
 import { request as maxRequest } from '@umijs/max';
-import request from 'umi-request'
+// import request from 'umi-request'
 
 import config from '@/config';
 
@@ -12,12 +12,19 @@ const { ajaxBaseUrl } = config;
  * 登录
  */
 export const login = (body: any, options?: any) => {
-  return request(`${ajaxBaseUrl}/user/login`, {
+  const formData = new FormData();
+  formData.set('uname', body.uname);
+  formData.set('passwd', body.passwd);
+
+  return maxRequest(`/user/login`, {
     method: 'POST',
-    data: body,
-    requestType: 'form'
-  },
-  )
+    data: formData,
+    ...(options || {
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded;charset=UTF-8',
+      },
+    }),
+  })
 }
 
 /**
@@ -36,6 +43,9 @@ export const changePasswd = (body: any) => {
 export function logout() {
   return maxRequest('/user/logout', {
     method: 'POST',
+    headers: {
+      'Access-Control-Allow-Origin': "http://192.168.18.46:9366"
+    }
   })
 }
 

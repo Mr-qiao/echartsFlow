@@ -57,11 +57,11 @@ export default defineConfig({
       },
     });
   },
-  // proxy: {
-  //   '/api': {
-  //     'target': 'http://192.168.12.124:8080',
-  //     'changeOrigin': true,
-  //     'pathRewrite': { '^/api' : '' },
-  //   }
-  // }
+  proxy: {
+    '/api': {
+      'target': 'http://192.168.18.46:9366',
+      'changeOrigin': true,
+      'pathRewrite': { '^/api': '' },
+    }
+  }
 });
