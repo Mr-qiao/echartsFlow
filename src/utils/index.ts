@@ -184,15 +184,7 @@ export const jumpExportCenter = () => {
   });
 };
 
-export const filterPageName = (params: any) => {
-  const newParams = {
-    ...params,
-    pageNum: params.current,
-    pageSize: params.pageSize,
-  };
-  delete newParams.current;
-  return newParams;
-};
+
 
 //枚举 constants
 export const dict = function (val: string, type: string, defaultValue = '-') {

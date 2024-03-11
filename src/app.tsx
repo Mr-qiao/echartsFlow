@@ -3,7 +3,7 @@ import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-components';
 import { useLocation } from '@umijs/max';
 import { Link } from 'umi'
-import { ConfigProvider } from 'antd';
+import { ConfigProvider, Layout } from 'antd';
 import zhCN from 'antd/es/locale/zh_CN';
 
 import 'antd/dist/reset.css';
@@ -17,6 +17,10 @@ dayjs.locale('zh-cn');
 
 // 全局初始化数据配置，用于 Layout 用户信息和权限初始化
 // 更多信息见文档：https://umijs.org/docs/api/runtime-config#getinitialstate
+
+
+
+const { Header } = Layout;
 
 export const layout = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -54,7 +58,7 @@ export const layout = () => {
         className="u-c__gray u-f__end u-cr__p u-mr8"
         onClick={() => setCollapsed(!collapsed)}
       >
-        {!collapsed ? (
+        {/* {!collapsed ? (
           <>
             <span className="u-fs12 u-mr5">收起</span>
             <MenuFoldOutlined style={{ color: '#C9CDD4' }} />
@@ -64,32 +68,32 @@ export const layout = () => {
             <span className="u-fs12 u-mr5">展开</span>
             <MenuUnfoldOutlined style={{ color: '#C9CDD4' }} />
           </>
-        )}
+        )} */}
       </div>
     ),
-    siderWidth: 240,
-    disableMobile: true, //禁止自动切换到移动页面
-    contentStyle: {
-      minHeight: '100vh',
-    },
+    siderWidth: 200,
+    // disableMobile: true, //禁止自动切换到移动页面
+    // contentStyle: {
+    //   minHeight: '100vh',
+    // },
 
-    menuExtraRender: false,
-    rightContentRender: false,
-    menuFooterRender: false,
-    footerRender: false,
+    // menuExtraRender: false,
+    // rightContentRender: false,
+    // menuFooterRender: false,
+    // footerRender: false,
     // headerRender: () => <span>headerRender</span>,
-    headerContentRender: false,
-    childrenRender: (children: any) => {
-      // const location = useLocation();
-      // const isHome = location.pathname === '/home';
-      return (
-        <div>
-          <PageContainer className="PageContainer">
-            <ConfigProvider locale={zhCN}>{children}</ConfigProvider>
-          </PageContainer>
-        </div>
-      );
-    },
+    // headerContentRender: false,
+    // childrenRender: (children: any) => {
+    //   // const location = useLocation();
+    //   // const isHome = location.pathname === '/home';
+    //   return (
+    //     <div>
+    //       <PageContainer className="PageContainer">
+    //         <ConfigProvider locale={zhCN}>{children}</ConfigProvider>
+    //       </PageContainer>
+    //     </div>
+    //   );
+    // },
   };
 };
 

@@ -5,44 +5,13 @@ import React, { useState, useRef } from 'react';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import { Button } from 'antd';
+import { GithubIssueItem } from './type';
 
 import UserModal from './UserModal';
 
 
-import request from 'umi-request';
-export const waitTimePromise = async (time: number = 100) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(true);
-    }, time);
-  });
-};
 
-export const waitTime = async (time: number = 100) => {
-  await waitTimePromise(time);
-};
-
-
-type GithubIssueItem = {
-  url: string;
-  id: number;
-  number: number;
-  title: string;
-  labels: {
-    name: string;
-    color: string;
-  }[];
-  state: string;
-  comments: number;
-  created_at: string;
-  updated_at: string;
-  closed_at?: string;
-};
-
-
-
-
-const User = () => {
+const User: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const [visible, setVisible] = useState(false);
 
@@ -54,23 +23,30 @@ const User = () => {
       width: 100,
     },
     {
-      title: '账户',
-      dataIndex: 'state',
-      hideInSearch: true,
-    },
-    {
       title: '用户名',
-      dataIndex: 'userName',
+      dataIndex: 'uname',
       hideInTable: true,
     },
     {
-      title: '姓名',
-      dataIndex: 'state',
+      title: '权限',
+      dataIndex: 'role',
+      hideInSearch: true,
+    },
+    {
+      title: '状态',
+      dataIndex: 'status',
       hideInSearch: true,
     },
     {
       title: '创建时间',
-      key: 'showTime',
+      key: 'addTime',
+      dataIndex: 'created_at',
+      valueType: 'date',
+      hideInSearch: true,
+    },
+    {
+      title: '更新时间',
+      key: 'updateTime',
       dataIndex: 'created_at',
       valueType: 'date',
       hideInSearch: true,
@@ -101,13 +77,7 @@ const User = () => {
         columns={columns}
         actionRef={actionRef}
         request={async (params, sort, filter) => {
-          console.log(sort, filter);
-          await waitTime(2000);
-          return request<{
-            data: GithubIssueItem[];
-          }>('https://proapi.azurewebsites.net/github/issues', {
-            params,
-          });
+          console.log(params, 'params')
         }}
         cardBordered={false}
         columnsState={{
@@ -123,8 +93,6 @@ const User = () => {
         rowKey="id"
         search={{
           defaultCollapsed: false,
-          // span: 6,
-          // labelWidth: 105,
           className: 'search-form',
         }}
         options={{
@@ -159,9 +127,9 @@ const User = () => {
           </Button>
         ]}
       />
+      {/* 添加用户 */}
       <UserModal open={visible} onCancel={() => setVisible(false)} onOk={() => actionRef?.current?.reload()} />
     </>
-
   );
 };
 
