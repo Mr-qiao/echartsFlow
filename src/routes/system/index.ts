@@ -12,13 +12,13 @@ export default [
         title: '用户列表',
         component: './System/User'
       },
-      {
-        exact: true,
-        path: 'park',
-        name: '园区列表',
-        title: '园区列表',
-        component: './System/Park'
-      }
+      // {
+      //   exact: true,
+      //   path: 'park',
+      //   name: '园区列表',
+      //   title: '园区列表',
+      //   component: './System/Park'
+      // }
     ]
   }
 ]
