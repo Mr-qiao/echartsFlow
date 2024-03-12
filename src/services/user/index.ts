@@ -23,12 +23,6 @@ export const createUser = (body: any) => {
 export const userList = (data?: any) => {
   return request('/user/list', {
     method: 'GET',
-    // params: data,
-    // headers: {
-    //   'Access-Control-Allow-Origin': "*"
-    // }
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
+    params: data,
   });
 }
