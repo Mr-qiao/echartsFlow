@@ -20,8 +20,6 @@ const RestPassword: React.FC<AddModalIProps> = ({ onOk, record, ...restProps }) 
   const handleOk = async (e: any) => {
     try {
       const values = await form.validateFields();
-      await changePasswd({ passwd: values?.passwd })
-      message.success('更新密码成功')
       await onOk?.(values);
     } catch (err) {
       console.log(err);

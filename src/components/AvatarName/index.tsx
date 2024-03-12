@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Dropdown, Avatar } from 'antd'
+import { Dropdown, Avatar, message } from 'antd'
 import './index.less';
 import { history } from 'umi';
 import { logout, changePasswd } from '@/services/login'
@@ -45,10 +45,8 @@ export default function () {
 				passwd: val.passwd
 			}
 			const res = await changePasswd(parmas);
-			console.log(res, 'res')
-			if (res.code === 200) {
-				setVisible(false);
-			}
+			message.success('密码更新成功')
+			setVisible(false);
 		} catch (error) {
 			console.log(error, 'error')
 		}
