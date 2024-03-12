@@ -1,8 +1,15 @@
 /**
  * 添加用户/编辑用户
  */
-import React, { useState } from 'react';
-import { Button, Modal, Form, Input, Select, ModalProps } from 'antd';
+import React, { useEffect, useState } from 'react';
+import {
+  EyeInvisibleOutlined,
+  EyeTwoTone,
+  LockOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
+import { Button, Modal, Form, Input, Select, ModalProps, message } from 'antd';
+import { createUser } from '@/services/user'
 
 
 
@@ -10,7 +17,7 @@ import { Button, Modal, Form, Input, Select, ModalProps } from 'antd';
 const { TextArea } = Input;
 
 type AddModalIProps = ModalProps & {
-  record?: Recordable<string | undefined>;
+  record?: any;
 };
 
 
@@ -23,7 +30,8 @@ const UserModal: React.FC<AddModalIProps> = ({ onOk, record, ...restProps }) => 
   const handleOk = async (e: any) => {
     try {
       const values = await form.validateFields();
-      console.log(values, '提交')
+      await createUser(values);
+      message.success(record ? '更新成功' : '添加成功');
       await onOk?.(e);
     } catch (err) {
       console.log(err);
@@ -31,49 +39,69 @@ const UserModal: React.FC<AddModalIProps> = ({ onOk, record, ...restProps }) => 
   };
 
 
+  useEffect(() => {
+    if (record) {
+      form.setFieldsValue({
+        ...record
+      })
+    }
+  }, [record])
+
+
   return (
-    <Modal title="添加用户" {...restProps} onOk={handleOk}>
-      <Form form={form} labelCol={{ span: 3 }} wrapperCol={{ span: 16 }}>
-        <Form.Item label="用户名" name="userName" rules={[
+    <Modal title={record ? '添加用户' : "编辑用户"} {...restProps} onOk={handleOk}>
+      <Form form={form} labelCol={{ span: 4 }} wrapperCol={{ span: 16 }}>
+        <Form.Item label="用户名" name="uname" rules={[
           {
             required: true,
-            message: '请输入密码',
+            message: '请输入用户名',
           },
         ]}>
           <Input placeholder="请输入用户名" />
         </Form.Item>
         <Form.Item
           label="密码"
-          name="password"
+          name="passwd"
           rules={[
             {
               required: true,
               message: '请输入密码',
+              pattern: new RegExp(/^[A-Za-z0-9]+$/, 'g'),
             },
           ]}
         >
-          <Input placeholder="请输入密码" />;
+          <Input.Password
+            prefix={<LockOutlined className="site-form-item-icon" />}
+            type="password"
+            size={'large'}
+            placeholder="请输入密码"
+            bordered
+            iconRender={(visible) =>
+              visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+            }
+            maxLength={20}
+          />
         </Form.Item>
 
         <Form.Item
           label="权限"
-          name="password"
+          name="role"
           rules={[
             {
               required: true,
-              message: '请输入密码',
+              message: '请选择权限',
             },
           ]}
         >
           <Select
-            defaultValue="default"
+            // defaultValue="1"
             options={[
               {
-                value: 'admin',
+                value: '1',
                 label: '管理员',
               },
               {
-                value: 'default',
+                value: '2',
                 label: '普通用户',
               },
 
@@ -83,7 +111,7 @@ const UserModal: React.FC<AddModalIProps> = ({ onOk, record, ...restProps }) => 
 
         <Form.Item
           label="备注"
-          name="remark"
+          name="remarks"
           rules={[
             {
               required: true,

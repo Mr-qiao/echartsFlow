@@ -8,7 +8,7 @@ import { request } from '@umijs/max';
  * @returns 
  */
 export const createUser = (body: any) => {
-  return request('/user/createUser', {
+  return request('/user/create', {
     method: 'POST',
     data: body,
   });

@@ -68,6 +68,14 @@ export default function () {
 				{
 					label: '退出登录',
 					key: 'logout',
+					onClick: async () => {
+						try {
+							await logout();
+							localStorage.removeItem('token')
+							history.replace('/login');
+						} catch (error) {
+						}
+					},
 				}])
 		}
 
