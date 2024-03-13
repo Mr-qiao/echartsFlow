@@ -50,7 +50,12 @@ const UserModal: React.FC<AddModalIProps> = ({ onOk, record, ...restProps }) => 
 
   return (
     <Modal title={record ? '添加用户' : "编辑用户"} {...restProps} onOk={handleOk}>
-      <Form form={form} labelCol={{ span: 4 }} wrapperCol={{ span: 16 }}>
+      <Form form={form} labelCol={{ span: 4 }} preserve wrapperCol={{ span: 16 }} initialValues={{
+        uname: '',
+        passwd: '',
+        role: '',
+        remarks: ''
+      }}>
         <Form.Item label="用户名" name="uname" rules={[
           {
             required: true,
@@ -65,22 +70,12 @@ const UserModal: React.FC<AddModalIProps> = ({ onOk, record, ...restProps }) => 
           rules={[
             {
               required: true,
-              message: '请输入密码',
-              pattern: new RegExp(/^[A-Za-z0-9]+$/, 'g'),
-            },
+              pattern: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d]{4,16}$/g,
+              message: '密码至少由4个字符组成，必须包含数字、大小写字母，区分大小写'
+            }
           ]}
         >
-          <Input.Password
-            prefix={<LockOutlined className="site-form-item-icon" />}
-            type="password"
-            size={'large'}
-            placeholder="请输入密码"
-            bordered
-            iconRender={(visible) =>
-              visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-            }
-            maxLength={20}
-          />
+          <Input.Password />
         </Form.Item>
 
         <Form.Item

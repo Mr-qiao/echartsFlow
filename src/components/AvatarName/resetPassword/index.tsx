@@ -49,7 +49,7 @@ const RestPassword: React.FC<AddModalIProps> = ({ onOk, record, ...restProps }) 
             {
               required: true,
               pattern: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d]{4,16}$/g,
-              message: '密码至少由8个字符组成，必须包含数字、大小写字母，区分大小写'
+              message: '密码至少由4个字符组成，必须包含数字、大小写字母，区分大小写'
             }
           ]}
         >
