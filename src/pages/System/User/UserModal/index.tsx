@@ -9,7 +9,7 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 import { Button, Modal, Form, Input, Select, ModalProps, message } from 'antd';
-import { createUser } from '@/services/user'
+import { createUser } from '@/services/system'
 
 
 

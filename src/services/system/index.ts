@@ -26,3 +26,12 @@ export const userList = (data?: any) => {
     params: data,
   });
 }
+
+/**
+ * 园区列表
+ */
+export const parkList = () => {
+  return request('/zone/list', {
+    method: 'GET',
+  });
+}

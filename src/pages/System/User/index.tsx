@@ -6,7 +6,7 @@ import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import { Button } from 'antd';
 import { GithubIssueItem } from './type';
-import { userList } from '@/services/user';
+import { userList } from '@/services/system';
 
 import UserModal from './UserModal';
 
