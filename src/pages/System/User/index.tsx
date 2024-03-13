@@ -5,7 +5,6 @@ import React, { useState, useRef } from 'react';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import { Button } from 'antd';
-import { GithubIssueItem } from './type';
 import { userList } from '@/services/system';
 
 import UserModal from './UserModal';
@@ -17,7 +16,7 @@ const User: React.FC = () => {
   const [visible, setVisible] = useState(false);
   const [info, setInfo] = useState(null)
 
-  const columns: ProColumns<GithubIssueItem>[] = [
+  const columns: ProColumns<any>[] = [
     {
       title: '编号',
       dataIndex: 'index',
@@ -80,7 +79,7 @@ const User: React.FC = () => {
 
   return (
     <>
-      <ProTable<GithubIssueItem>
+      <ProTable
         columns={columns}
         actionRef={actionRef}
         request={async (params, sort, filter) => {
