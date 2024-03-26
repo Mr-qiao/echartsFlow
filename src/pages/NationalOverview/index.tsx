@@ -7,27 +7,25 @@ import ChartPanel from '@/components/ChartPanel'
 import { Row, Col } from 'antd';
 import { connect } from 'umi'
 
+
+import { history } from '@umijs/max'
 import Layouts from '@/components/layouts';
 
 import { diverOption } from './config';
 
 
 import styles from './index.less';
+import { getParkListApi } from '@/services/system';
 
 
 const nationalOverview = (props) => {
 
-  // 城市编码
-  const { searchCity } = props;
-
-
+  const { searchCity, dispatch, } = props
   const mapRef = useRef(null);
   const locaRef = useRef(null);
 
-
-
   // init map
-  const init = () => {
+  const init = (data: any) => {
     // init map
     mapRef.current = new AMap.Map("chainMap", {
       zoom: 4.5,
@@ -38,7 +36,6 @@ const nationalOverview = (props) => {
       mapStyle: 'amap://styles/darkblue'
     });
 
-
     // 全国
     locaRef.current = new Loca.Container({
       map: mapRef.current,
@@ -47,159 +44,29 @@ const nationalOverview = (props) => {
     // 呼吸
     let top10 = {
       type: 'FeatureCollection',
-      features: [
-        {
+      features: data.map((item: any) => {
+        return {
           "type": "Feature",
           "properties": {
-            "cityName": "韶关市",
+            "cityName": `${item.name}`,
+            'deviceNum': `${item.deviceNum}`,
+            'deviceOnlineNum': `${item.deviceOnlineNum}`,
+            'id': `${item.id}`,
             "ratio": 0,
             "rank": 96
           },
           "geometry": {
             "type": "Point",
             "coordinates": [
-              113.58052,
-              24.760098
-            ]
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {
-            "cityName": "乐山市",
-            "ratio": 0,
-            "rank": 97
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              103.75082,
-              29.58099
-            ]
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {
-            "cityName": "阜阳市",
-            "ratio": 0,
-            "rank": 98
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              115.82654,
-              32.889915
-            ]
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {
-            "cityName": "荆门市",
-            "ratio": 0,
-            "rank": 99
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              112.209816,
-              30.997377
-            ]
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {
-            "cityName": "哈尔滨市",
-            "ratio": 0,
-            "rank": 100
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              126.61314,
-              45.746685
-            ]
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {
-            "cityName": "达州市",
-            "ratio": 0,
-            "rank": 101
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              107.493,
-              31.205515
-            ]
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {
-            "cityName": "自贡市",
-            "ratio": 0,
-            "rank": 102
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              104.777824,
-              29.34555
-            ]
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {
-            "cityName": "陇南市",
-            "ratio": 0,
-            "rank": 103
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              104.93356,
-              33.388184
-            ]
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {
-            "cityName": "南充市",
-            "ratio": 0,
-            "rank": 104
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              106.1188,
-              30.800997
-            ]
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {
-            "cityName": "恩施土家族苗族自治州",
-            "ratio": 0,
-            "rank": 105
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              109.48512,
-              30.298103
+              item.lng,
+              item.lat
             ]
           }
         }
-      ]
+      }
+      )
     };
+
     // 初始化呼吸图层，features数据一定要带个空数组，否则报错
     let breath = new Loca.ScatterLayer({
       zIndex: 121,
@@ -214,23 +81,76 @@ const nationalOverview = (props) => {
       animate: true,
       duration: 1000,
     });
+
+    mapRef.current.on('click', function (e) {
+      const feat = breath.queryFeature(e.pixel.toArray())
+      if (feat) {
+        if (feat.properties.id !== '-1') {
+          history.push('/parkOverview');
+        }
+        dispatch({
+          type: 'searchCity/onChangeShowAll',
+          payload: {
+            showAll: feat.properties.id === '-1'
+          }
+        })
+        dispatch({
+          type: 'searchCity/onChangeCityCode',
+          payload: {
+            cityCode: feat.properties.id
+          }
+        })
+      }
+    })
+    let infoWindow;
+    mapRef.current.on('mousemove', function (e) {
+      const feat = breath.queryFeature(e.pixel.toArray())
+      infoWindow = new AMap.InfoWindow({
+        content: `<div>
+          <p>姓名：${feat?.properties?.cityName}
+          </p>
+
+          <p>设备数量：${feat?.properties?.deviceNum}
+          </p>
+
+          <p>在线数量：${feat?.properties?.deviceOnlineNum}
+          </p>
+          </div>`,
+      })
+      if (feat) {
+        infoWindow.open(mapRef.current, feat.coordinates)
+      } else {
+        infoWindow.close()
+      }
+    })
+
     locaRef.current.add(breath);
     locaRef.current.animate.start();
   }
 
+  const getParkList = async () => {
+    const res = await getParkListApi();
+    init(res.data);
+    dispatch({
+      type: 'searchCity/onChangeCityCode',
+      payload: {
+        cityCode: '-1'
+      }
+    })
+  }
+
   useEffect(() => {
-    init();
+    try {
+      getParkList()
+    } catch (e) { console.log(e) }
     return () => {
       mapRef.current?.destroy();
     };
-  }, [mapRef.current]);
-
+  }, []);
 
   return (
     <Layouts>
       <div className={styles.park_main}>
-
-
         {/* left */}
         <Row gutter={10}>
           <Col span={6}>
@@ -302,13 +222,9 @@ const nationalOverview = (props) => {
 
           {/* 中间内容 */}
           <Col span={12}>
-            {
-              searchCity.cityCode === -1 ? (
-                <ChartPanel style={{ padding: 0 }} className={styles.mapChart}>
-                  <div id="chainMap" style={{ width: '100%', height: '66vh' }} />
-                </ChartPanel>
-              ) : <div>园区处理</div>
-            }
+            <ChartPanel style={{ padding: 0 }} className={styles.mapChart}>
+              <div id="chainMap" style={{ width: '100%', height: '66vh' }} />
+            </ChartPanel>
           </Col>
 
           {/* right */}
@@ -450,6 +366,6 @@ const nationalOverview = (props) => {
   );
 };
 
-export default connect(({ searchCity }: any) => ({
+export default connect(({ searchCity, }: any) => ({
   searchCity
 }))(nationalOverview);

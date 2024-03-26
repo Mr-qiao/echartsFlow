@@ -1,15 +1,18 @@
 /**
  * 园区概况
  */
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ReactEcharts from 'echarts-for-react';
 import ChartPanel from '@/components/ChartPanel'
-import { Row, Col } from 'antd';
+import { Row, Col, Tooltip } from 'antd';
 
 import Layouts from '@/components/layouts';
 
 import styles from './index.less';
 
+import { getDeviceListApi, getParkListApi } from '@/services/system';
+import { connect } from '@umijs/max';
+import { EnvironmentOutlined } from '@ant-design/icons';
 
 
 // 车辆信息
@@ -49,34 +52,36 @@ let diverOption = {
   ],
 };
 
+const parkOverview = (props) => {
+  const { searchCity, dispatch } = props;
+  const [imgUrl, setImgUrl] = useState('')
+  const [translateList, setTranslateList] = useState([])
 
+  const getParkList = async () => {
+    const res = await getParkListApi();
+    const url = res.data.find((item: any) => item.id === searchCity.cityCode)?.imageUrl
+    getDeviceListApi(searchCity.cityCode).then((res) => {
+      try {
+        setTranslateList(res.data)
+      } catch { }
+    })
 
-const parkOverview = () => {
-
-  const mapRef = useRef(null);
-  const locaRef = useRef(null);
-
-  const init = () => {
-    // init map
-    mapRef.current = new AMap.Map("chainMap", {
-      zoom: 4.5,
-      resizeEnable: true,
-      center: [120.19, 30.26], // 杭州 余杭
-      viewMode: '3D',//使用3D视图
-      skyColor: '#00163e',
-      mapStyle: 'amap://styles/darkblue'
-    });
-    // init loac
+    setImgUrl(`http://121.40.237.64:16816${url}`)
+    if (searchCity.cityCode === '-1') {
+      dispatch({
+        type: 'searchCity/onChangeCityCode',
+        payload: {
+          cityCode: res.data[0].id
+        }
+      })
+    }
   }
 
   useEffect(() => {
-    init();
-    return () => {
-      mapRef.current?.destroy();
-    };
-  }, []);
-
-
+    try {
+      getParkList()
+    } catch (e) { console.log(e) }
+  }, [imgUrl, searchCity.cityCode]);
 
 
   return (
@@ -145,24 +150,6 @@ const parkOverview = () => {
                 </li>
               </ul>
 
-              {/* <div className={styles.card}>
-            <div className={styles.c_t_head}>
-              <span className={styles.tit}>月台数据</span>
-
-              <span className={styles.show}>查看 &gt;</span>
-            </div>
-
-            <div className={styles.moonData}>
-              <div>
-                <span className={styles.moonData_tit}>月台总量</span>
-                <span className={styles.nums}>2000</span>
-              </div>
-              <div>
-                <span className={styles.moonData_tit}>空余月台</span>
-                <span className={styles.nums}>398</span>
-              </div>
-            </div>
-          </div> */}
             </ChartPanel>
             <ChartPanel title='车辆信息' style={{ marginTop: '1vh', height: '60vh' }}>
               <div className={styles.diverPie}>
@@ -172,11 +159,30 @@ const parkOverview = () => {
           </Col>
 
           {/* 中间内容 */}
-          <Col span={12}>
-            <ChartPanel style={{ padding: 0 }}>
-              <div id="chainMap" style={{ width: '100%', height: '66vh' }} />
-            </ChartPanel>
-          </Col>
+          {imgUrl &&
+            <Col span={12}>
+              <ChartPanel style={{
+                position: 'relative',
+                padding: 0,
+              }}>
+                <img src={imgUrl} alt="" style={{
+                  width: '100%'
+                }} />
+                {
+                  translateList.map(item => {
+                    return <Tooltip key={item.id} placement="topLeft" title={item.name}>
+                      <EnvironmentOutlined style={{
+                        position: 'absolute',
+                        zIndex: 999,
+                        left: `${item.lng}px`,
+                        top: `${item.lat}px`,
+                      }} />
+                    </Tooltip>
+                  })
+                }
+              </ChartPanel>
+            </Col>
+          }
           {/* right */}
 
           <Col span={6}>
@@ -184,8 +190,6 @@ const parkOverview = () => {
               <div className={styles.countdown}>
                 安全运营 <i>24</i> 天
               </div>
-
-
 
               <div className={styles.moonData}>
                 <div>
@@ -316,8 +320,11 @@ const parkOverview = () => {
           </Col>
         </Row>
       </div>
-    </Layouts>
+    </Layouts >
   );
 };
 
-export default parkOverview;
+
+export default connect(({ searchCity, }: any) => ({
+  searchCity
+}))(parkOverview);

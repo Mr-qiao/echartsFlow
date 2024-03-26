@@ -65,7 +65,6 @@ export const errorConfig: RequestConfig = {
   // 请求拦截器
   requestInterceptors: [
     (config: any) => {
-      console.log(config, 'config')
       // console.log(config, '进的来吗？')
       // 拦截请求配置，进行个性化处理。
       const token = localStorage.getItem('token');
@@ -84,6 +83,9 @@ export const errorConfig: RequestConfig = {
   // 响应拦截器
   responseInterceptors: [
     (response: any) => {
+      if (response.data.code === 1002) {
+        navigateToLogin();
+      }
       // const { data } = response as unknown;
       // if (
       //   [1000010001, 1000010031].includes(data.code) ||

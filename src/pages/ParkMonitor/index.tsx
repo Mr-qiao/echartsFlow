@@ -1,15 +1,9 @@
 /**
  * 园区监控
  */
-
-
 import React from 'react';
-
-
 import { Tabs, Col, Row } from 'antd';
-
 import ChartPanel from '@/components/ChartPanel'
-
 
 import HistoryMonitorCom from './historyMonitorCom';
 import RealTimeMonitorCom from './realTimeMonitorCom';
@@ -18,19 +12,22 @@ import SliderSearch from './sliderSearch';
 import Layouts from '@/components/layouts'
 
 import styles from './index.less';
-
-
-
-
+import { deviceStreamApi } from '@/services/system';
 
 const parkMonitor = () => {
+
+  const [videoUrl, setVideoUrl] = React.useState<string[]>([])
+
+  const handleSetVideoUrl = (url: string[]) => {
+    setVideoUrl(url)
+  }
 
   return (
     <Layouts time={false}>
       <div className={styles.nationalOverviewContainer}>
         <Row gutter={10}>
           <Col span={6}>
-            <SliderSearch />
+            <SliderSearch setDeviceId={handleSetVideoUrl} />
           </Col>
           {/* 中间 */}
           <Col span={12}>
@@ -40,7 +37,7 @@ const parkMonitor = () => {
                 {
                   key: '1',
                   label: '实时监控',
-                  children: <RealTimeMonitorCom />,
+                  children: <RealTimeMonitorCom videoUrlList={videoUrl} />,
                 },
                 {
                   key: '2',

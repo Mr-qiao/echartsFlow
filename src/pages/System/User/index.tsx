@@ -5,9 +5,10 @@ import React, { useState, useRef } from 'react';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import { Button } from 'antd';
-import { userList } from '@/services/system';
+import { delUserApi, getUserPageApi, userListApi } from '@/services/system';
 
 import UserModal from './UserModal';
+import { css, cx } from '@emotion/css';
 
 
 
@@ -15,6 +16,19 @@ const User: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const [visible, setVisible] = useState(false);
   const [info, setInfo] = useState(null)
+
+  const handleModal = (record?: any) => {
+    setInfo(record)
+    setVisible(true)
+  };
+
+  const handleDel = (record: any) => {
+    delUserApi(record.id).then(res => {
+      if (res.msg === 'SUCCESS') {
+        actionRef?.current?.reload()
+      }
+    })
+  }
 
   const columns: ProColumns<any>[] = [
     {
@@ -26,7 +40,8 @@ const User: React.FC = () => {
     {
       title: '用户名',
       dataIndex: 'uname',
-      hideInTable: true,
+      // hideInTable: true,
+      // hideInSearch: true,
     },
     {
       title: '权限',
@@ -63,39 +78,62 @@ const User: React.FC = () => {
             onClick={() => handleModal(record)}
           >
             编辑
+          </a>,
+          <a key='del' onClick={() => handleDel(record)}>
+            删除
           </a>
         ]
       }
     },
   ];
 
-  const handleModal = (record?: any) => {
-    if (record) {
-      setInfo(record)
-    }
-    setVisible(true)
-  };
-
 
   return (
     <>
       <ProTable
+        className={cx(css`
+        .ant-form{
+          padding: 0 ;
+          .ant-form-item{
+            margin-bottom: 0;
+          }
+        }
+      `)}
         columns={columns}
         actionRef={actionRef}
         request={async (params, sort, filter) => {
-          const { current, pageSize, updateTime, ...rest } = params;
-          const res = await userList();
+          const { current, uname, pageSize, updateTime, ...rest } = params;
+          const res = await getUserPageApi({
+            pageSize,
+            uname,
+            page: current
+          });
           return {
-            data: res.data || [],
+            data: res.data.items || [],
             success: true,
-            total: 0,
+            total: res.data.total,
           }
+        }}
+        columnsState={{
+          persistenceKey: 'pro-table-singe-demos',
+          persistenceType: 'localStorage',
+          defaultValue: {
+            option: { fixed: 'right', disable: true },
+          },
+          onChange(value) {
+            console.log('value: ', value);
+          },
         }}
         cardBordered={false}
         rowKey="id"
         search={{
-          defaultCollapsed: false,
-          className: 'search-form',
+          // defaultCollapsed: false,
+          // className: 'search-form',
+          labelWidth: 'auto',
+        }}
+        pagination={{
+          pageSize: 10,
+          onChange: (page) => console.log(page),
         }}
         form={{
           // 由于配置了 transform，提交的参与与定义的不同这里需要转化一下
@@ -109,7 +147,6 @@ const User: React.FC = () => {
             return values;
           },
         }}
-        pagination={false}
         dateFormatter="string"
         toolBarRender={() => [
           <Button
@@ -122,10 +159,16 @@ const User: React.FC = () => {
         ]}
       />
       {/* 添加用户 */}
-      <UserModal open={visible} record={info} onCancel={() => setVisible(false)} onOk={() => {
-        setVisible(false)
-        actionRef?.current?.reload()
-      }} />
+      {
+        visible && <UserModal open={visible} record={info} onCancel={() => {
+          setVisible(false)
+          setInfo(null)
+        }} onOk={() => {
+          setInfo(null)
+          setVisible(false)
+          actionRef?.current?.reload()
+        }} />
+      }
     </>
   );
 };

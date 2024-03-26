@@ -2,15 +2,15 @@
  * 侧边栏类目处理
  */
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Input, Tree } from 'antd';
 import type { TreeDataNode } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
 import ChartPanel from '@/components/ChartPanel'
 import type { DataNode } from 'antd/es/tree';
 const { Search } = Input;
 
 import styles from '../index.less';
+import { getDeviceListApi, getParkListApi } from '@/services/system';
 
 
 // mock 数据
@@ -64,11 +64,49 @@ const getParentKey = (key, tree) => {
   return parentKey;
 }
 
+const updateTreeData = (list: DataNode[], key: React.Key, children: DataNode[]): DataNode[] =>
+  list.map((node) => {
+    if (node.key === key) {
+      return {
+        ...node,
+        children,
+      };
+    }
+    if (node.children) {
+      return {
+        ...node,
+        children: updateTreeData(node.children, key, children),
+      };
+    }
+    return node;
+  });
 
-const SilderSearch = () => {
+
+type Props = {
+  setDeviceId: (url: string[]) => void
+}
+const SilderSearch = (props: Props) => {
+  const { setDeviceId } = props;
   const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
   const [searchValue, setSearchValue] = useState('');
   const [autoExpandParent, setAutoExpandParent] = useState(true);
+  const [data, setData] = useState<DataNode[]>([])
+  const getParkList = async () => {
+    try {
+      const res = await getParkListApi();
+      setData(res.data.map((item: any) => {
+        return {
+          title: item.name,
+          key: item.id,
+        }
+      }
+      ))
+    } catch (e) { }
+  }
+
+  useEffect(() => {
+    getParkList()
+  }, [])
 
 
   // 重构数据结构
@@ -98,9 +136,9 @@ const SilderSearch = () => {
         key: item.key,
       };
     });
-    return loop(defaultData);
+    return loop(data);
 
-  }, [searchValue]);
+  }, [searchValue, data]);
 
 
 
@@ -110,15 +148,12 @@ const SilderSearch = () => {
     setAutoExpandParent(false);
   };
 
-  console.log(autoExpandParent, '======-----======')
-
-
   // 搜索下拉框
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    const newExpandedKeys = dataList
+    const newExpandedKeys = data
       .map((item) => {
-        if (item.title.indexOf(value) > -1) {
+        if ((item.title as string).indexOf(value) > -1) {
           return getParentKey(item.key, defaultData);
         }
         return null;
@@ -128,6 +163,34 @@ const SilderSearch = () => {
     setSearchValue(value);
     setAutoExpandParent(true);
   }
+
+  const handleSelect = (selectedKeys: React.Key[], info: any) => {
+    const arr = [] as string[]
+    data.forEach(item => {
+      item.children?.forEach((child) => {
+        if (selectedKeys.includes(child.key)) {
+          arr.push((child as any).deviceId as string)
+        }
+      })
+    })
+    setDeviceId(arr)
+  }
+
+  const onLoadData = ({ key, children }: any) =>
+    getDeviceListApi(key).then((res) => {
+      try {
+        setData((origin) =>
+          updateTreeData(origin, key, res.data.map((item: any) => {
+            return {
+              title: item.name,
+              key: item.id,
+              deviceId: item.deviceId
+            }
+          }
+          )),
+        );
+      } catch { }
+    })
 
   return (
     <ChartPanel title='监控列表' style={{ minHeight: '80vh', overFlow: 'hiddle' }}>
@@ -141,8 +204,10 @@ const SilderSearch = () => {
       />
 
       <Tree
+        loadData={onLoadData}
         defaultExpandAll={true}
         onExpand={onExpand}
+        onSelect={handleSelect}
         expandedKeys={expandedKeys} // （受控）展开指定的树节点
         autoExpandParent={autoExpandParent} // 是否自动展开父节点
         treeData={treeData}

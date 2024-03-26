@@ -1,38 +1,28 @@
-
-
-
-
-
-
-
-
-
-
-
-
-import React from 'react';
 import { Outlet } from '@umijs/max';
 import { Layout, ConfigProvider, Button } from 'antd';
 import AvatarName from '@/components/AvatarName';
 import zhCN from 'antd/es/locale/zh_CN';
 
-
 const { Header } = Layout;
 
 export default () => {
 
-
-
-
-
   return (
-    <div>
-      <Header className="xc-layout-header">
+    <div style={{
+      padding: '0',
+      margin: '0',
+    }}>
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        backgroundColor: '#fff',
+        marginRight: '20px',
+      }}>
         <div></div>
         <div className="use-info">
           <AvatarName />
         </div>
-      </Header>
+      </div>
       <div className="xc-main-wrapper">
         <ConfigProvider locale={zhCN}>
           <Outlet />

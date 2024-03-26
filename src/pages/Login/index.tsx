@@ -32,8 +32,11 @@ const Launch: any = () => {
       const res = await login(val);
       if (res?.code === 0) {
         window.localStorage.setItem('token', res.data?.token);
+        window.localStorage.setItem('userInfo', JSON.stringify(res.data))
         message.success('登陆成功')
         history.push('/nationalOverview')
+      } else {
+        message.error(res.msg)
       }
     } catch (error) {
       console.log(error, '登陆报错~')

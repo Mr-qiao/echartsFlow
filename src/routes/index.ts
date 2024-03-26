@@ -6,7 +6,7 @@ import system from "./system";
 const GlobalRouters = [
   {
     path: '/',
-    redirect: '/login',
+    redirect: './NationalOverview',
   },
   {
     name: '登录',

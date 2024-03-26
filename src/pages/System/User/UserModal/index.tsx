@@ -9,7 +9,7 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 import { Button, Modal, Form, Input, Select, ModalProps, message } from 'antd';
-import { createUser } from '@/services/system'
+import { createUserApi } from '@/services/system'
 
 
 
@@ -25,12 +25,11 @@ type AddModalIProps = ModalProps & {
 const UserModal: React.FC<AddModalIProps> = ({ onOk, record, ...restProps }) => {
   const [form] = Form.useForm();
 
-
   // 用户提交操作
   const handleOk = async (e: any) => {
     try {
       const values = await form.validateFields();
-      await createUser(values);
+      await createUserApi(values);
       message.success(record ? '更新成功' : '添加成功');
       await onOk?.(e);
     } catch (err) {
@@ -45,11 +44,14 @@ const UserModal: React.FC<AddModalIProps> = ({ onOk, record, ...restProps }) => 
         ...record
       })
     }
+    return () => {
+      form.resetFields()
+    }
   }, [record])
 
 
   return (
-    <Modal title={record ? '添加用户' : "编辑用户"} {...restProps} onOk={handleOk}>
+    <Modal title={record ? '编辑用户' : "添加用户"} {...restProps} onOk={handleOk}>
       <Form form={form} labelCol={{ span: 4 }} preserve wrapperCol={{ span: 16 }} initialValues={{
         uname: '',
         passwd: '',

@@ -31,24 +31,34 @@ export const layout = () => {
     token: {
       sider: {
         colorMenuBackground: '#001529',
-        colorTextMenuTitle: 'rgba(255,255,255,0.95)',
+        // colorTextMenuTitle: 'rgba(255,255,255,0.95)',
+        // colorTextMenu: 'rgba(255,255,255,0.75)',
+        // colorTextMenuSelected: '#fff',
+
+        colorBgCollapsedButton: '#fff',
+        colorTextCollapsedButtonHover: '#1677ff',
+        colorTextCollapsedButton: 'rgba(0,0,0,0.45)',
+        // colorMenuBackground: '#fff',
+        colorBgMenuItemCollapsedElevated: 'rgba(0,0,0,0.85)',
+        colorMenuItemDivider: 'rgba(255,255,255,0.15)',
+        colorBgMenuItemHover: 'rgba(0,0,0,0.06)',
+        colorBgMenuItemSelected: 'rgba(0,0,0,0.05)',
+        colorTextMenuSelected: '#1677ff',
+        colorTextMenuItemHover: '#1677ff',
         colorTextMenu: 'rgba(255,255,255,0.75)',
-        colorTextMenuSelected: '#fff',
+        colorTextMenuSecondary: 'rgba(255,255,255,0.65)',
+        colorTextMenuTitle: 'rgba(255,255,255,0.95)',
+        colorTextMenuActive: '#1677ff',
+        colorTextSubMenuSelected: '#1677ff',
+
       },
       header: {
-        colorBgHeader: '#fff',
+        // colorBgHeader: '#fff',
       },
       pageContainer: {
-        colorBgPageContainer: '#fff',
+        // colorBgPageContainer: '#fff',
       },
     },
-    // menuHeaderRender: () => (
-    //   <Link to={'/nationalOverview'}>
-    //     <div className="u-f__center">
-    //       Logo
-    //     </div>
-    //   </Link>
-    // ),
     menu: {
       locale: false,
     },
@@ -58,42 +68,9 @@ export const layout = () => {
         className="u-c__gray u-f__end u-cr__p u-mr8"
         onClick={() => setCollapsed(!collapsed)}
       >
-        {/* {!collapsed ? (
-          <>
-            <span className="u-fs12 u-mr5">收起</span>
-            <MenuFoldOutlined style={{ color: '#C9CDD4' }} />
-          </>
-        ) : (
-          <>
-            <span className="u-fs12 u-mr5">展开</span>
-            <MenuUnfoldOutlined style={{ color: '#C9CDD4' }} />
-          </>
-        )} */}
       </div>
     ),
     siderWidth: 200,
-    // disableMobile: true, //禁止自动切换到移动页面
-    // contentStyle: {
-    //   minHeight: '100vh',
-    // },
-
-    // menuExtraRender: false,
-    // rightContentRender: false,
-    // menuFooterRender: false,
-    // footerRender: false,
-    // headerRender: () => <span>headerRender</span>,
-    // headerContentRender: false,
-    // childrenRender: (children: any) => {
-    //   // const location = useLocation();
-    //   // const isHome = location.pathname === '/home';
-    //   return (
-    //     <div>
-    //       <PageContainer className="PageContainer">
-    //         <ConfigProvider locale={zhCN}>{children}</ConfigProvider>
-    //       </PageContainer>
-    //     </div>
-    //   );
-    // },
   };
 };
 

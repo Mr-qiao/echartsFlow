@@ -1,4 +1,4 @@
-import { history } from '@umijs/max'
+import { connect, history } from '@umijs/max'
 
 
 import styles from './index.less';
@@ -27,14 +27,19 @@ const MenuBarPath = [
 ];
 
 
-const MenuBar = () => {
-
+const MenuBar = (props) => {
+  const { dispatch, searchCity } = props;
 
   const handleToPath = (route: string) => {
+    dispatch({
+      type: 'searchCity/onChangeShowAll',
+      payload: {
+        showAll: route === '/nationalOverview'
+      }
+    })
     if (/\//.test(route)) {
       history.push(route);
     }
-    // onClick(route);
   }
 
   return (
@@ -55,4 +60,7 @@ const MenuBar = () => {
   );
 };
 
-export default MenuBar;
+
+export default connect(({ searchCity }: any) => ({
+  searchCity
+}))(MenuBar);

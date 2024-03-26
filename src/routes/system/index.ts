@@ -18,7 +18,14 @@ export default [
         name: '园区列表',
         title: '园区列表',
         component: './System/Park'
-      }
+      },
+      {
+        exact: true,
+        path: 'device',
+        name: '设备列表',
+        title: '设备列表',
+        component: './System/Device'
+      },
     ]
   }
 ]
