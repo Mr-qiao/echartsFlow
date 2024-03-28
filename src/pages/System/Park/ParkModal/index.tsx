@@ -8,8 +8,8 @@ import {
   LockOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Button, Modal, Form, Input, Select, ModalProps, message } from 'antd';
-import { createUserApi, createZoneApi, updateZoneApi } from '@/services/system'
+import { Button, Modal, Form, Input, Select, ModalProps, message, Upload, UploadProps } from 'antd';
+import { createUserApi, createZoneApi, fileUploadApi, updateZoneApi } from '@/services/system'
 
 
 
@@ -20,11 +20,10 @@ type AddModalIProps = ModalProps & {
   record?: any;
 };
 
-
-
 const ParkModal: React.FC<AddModalIProps> = ({ onOk, record, ...restProps }) => {
   const [form] = Form.useForm();
-  console.log(record, 'record')
+  const token = window.localStorage.getItem('token') ?? '';
+  const [imageUrl, setImageUrl] = useState('')
   // 用户提交操作
   const handleOk = async (e: any) => {
     try {
@@ -38,6 +37,22 @@ const ParkModal: React.FC<AddModalIProps> = ({ onOk, record, ...restProps }) => 
       console.log(err);
     }
   };
+
+  const handleChange: UploadProps['onChange'] = (info) => {
+    if (info.file.status === 'uploading') {
+      return;
+    }
+    if (info.file.status === 'done') {
+      setImageUrl(info.file.response.data.imageUrl)
+      form.setFieldsValue({
+        imageUrl: info.file.response.data.imageUrl
+      })
+    }
+  };
+
+  const handleInputChange = (e) => {
+    setImageUrl('')
+  }
 
   useEffect(() => {
     if (record) {
@@ -107,33 +122,55 @@ const ParkModal: React.FC<AddModalIProps> = ({ onOk, record, ...restProps }) => 
           <Input placeholder='请输入园区经度' />
         </Form.Item>
 
-        <Form.Item
-          label="园区图片"
-          name="imageUrl"
-          rules={[
-            {
-              required: true,
-              message: '请输入园区图片',
-            },
-          ]}
-        >
-          <Input placeholder='请输入园区图片' />
-        </Form.Item>
+        {
+          imageUrl ?
+            <Form.Item
+              label="园区图片"
+              name="imageUrl"
+              rules={[
+                {
+                  required: true,
+                  message: '请输入园区图片',
+                },
+              ]}
+            >
+              <Input placeholder='请输入园区图片' allowClear onChange={handleInputChange} />
+            </Form.Item> :
+            <Form.Item
+              label="上传图片"
+              rules={[
+                {
+                  required: true,
+                  message: '请输入园区图片',
+                },
+              ]}
+            >
+              <Upload
+                name="file"
+                listType="picture-circle"
+                className="avatar-uploader"
+                showUploadList={false}
+                action="http://121.40.237.64:16816/file/upload"
+                headers={{
+                  token: token,
+                  contextType: 'multipart/form-data'
+                }}
+                onChange={handleChange}
+              >
+                上传图片
+              </Upload>
+            </Form.Item>
+        }
+
 
         <Form.Item
           label="备注"
           name="remarks"
-          rules={[
-            {
-              required: true,
-              message: '请输入备注内容',
-            },
-          ]}
         >
           <TextArea showCount maxLength={500} rows={5} placeholder="请输入内容" />
         </Form.Item>
       </Form>
-    </Modal>
+    </Modal >
   )
 }
 

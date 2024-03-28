@@ -1,30 +1,16 @@
 /**
  * 添加用户/编辑用户
  */
-import React, { useEffect, useState } from 'react';
-import {
-  EyeInvisibleOutlined,
-  EyeTwoTone,
-  LockOutlined,
-  UserOutlined,
-} from '@ant-design/icons';
-import { Button, Modal, Form, Input, Select, ModalProps, message } from 'antd';
+import React, { useEffect, } from 'react';
+import { Modal, Form, Input, Select, ModalProps, message } from 'antd';
 import { createUserApi } from '@/services/system'
-
-
-
-
 const { TextArea } = Input;
 
 type AddModalIProps = ModalProps & {
   record?: any;
 };
-
-
-
 const UserModal: React.FC<AddModalIProps> = ({ onOk, record, ...restProps }) => {
   const [form] = Form.useForm();
-
   // 用户提交操作
   const handleOk = async (e: any) => {
     try {
@@ -36,7 +22,6 @@ const UserModal: React.FC<AddModalIProps> = ({ onOk, record, ...restProps }) => 
       console.log(err);
     }
   };
-
 
   useEffect(() => {
     if (record) {
@@ -91,7 +76,6 @@ const UserModal: React.FC<AddModalIProps> = ({ onOk, record, ...restProps }) => 
           ]}
         >
           <Select
-            // defaultValue="1"
             options={[
               {
                 value: '1',
@@ -109,12 +93,6 @@ const UserModal: React.FC<AddModalIProps> = ({ onOk, record, ...restProps }) => 
         <Form.Item
           label="备注"
           name="remarks"
-          rules={[
-            {
-              required: true,
-              message: '请输入备注内容',
-            },
-          ]}
         >
           <TextArea showCount maxLength={500} rows={5} placeholder="请输入内容" />
         </Form.Item>

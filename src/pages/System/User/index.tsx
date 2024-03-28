@@ -5,7 +5,7 @@ import React, { useState, useRef } from 'react';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import { Button } from 'antd';
-import { delUserApi, getUserPageApi, userListApi } from '@/services/system';
+import { changeUserStatusApi, delUserApi, getUserPageApi, userListApi } from '@/services/system';
 
 import UserModal from './UserModal';
 import { css, cx } from '@emotion/css';
@@ -17,9 +17,12 @@ const User: React.FC = () => {
   const [visible, setVisible] = useState(false);
   const [info, setInfo] = useState(null)
 
-  const handleModal = (record?: any) => {
-    setInfo(record)
-    setVisible(true)
+  const handleChangeUserStatus = (id: string) => () => {
+    changeUserStatusApi(id).then(res => {
+      if (res.msg === 'SUCCESS') {
+        actionRef?.current?.reload()
+      }
+    })
   };
 
   const handleDel = (record: any) => {
@@ -45,26 +48,26 @@ const User: React.FC = () => {
     },
     {
       title: '权限',
-      dataIndex: 'role',
+      dataIndex: 'roleText',
       hideInSearch: true,
     },
     {
       title: '状态',
-      dataIndex: 'status',
+      dataIndex: 'statusText',
       hideInSearch: true,
     },
     {
       title: '创建时间',
       key: 'addTime',
       dataIndex: 'addTime',
-      valueType: 'date',
+      // valueType: 'date',
       hideInSearch: true,
     },
     {
       title: '更新时间',
       key: 'updateTime',
       dataIndex: 'updateTime',
-      valueType: 'date',
+      // valueType: 'date',
       hideInSearch: true,
     },
     {
@@ -73,12 +76,22 @@ const User: React.FC = () => {
       key: 'option',
       render: (text, record, _, action) => {
         return [
-          <a
-            key="editable"
-            onClick={() => handleModal(record)}
-          >
-            编辑
-          </a>,
+          ...(record.status === 1 ? [
+            <a
+              key="editable"
+              onClick={handleChangeUserStatus(record.id)}
+            >
+              禁用
+            </a>
+          ] : [
+            <a
+              key="editable"
+              onClick={handleChangeUserStatus(record.id)}
+            >
+              启用
+            </a>
+          ]),
+
           <a key='del' onClick={() => handleDel(record)}>
             删除
           </a>

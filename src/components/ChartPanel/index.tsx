@@ -15,9 +15,7 @@ const ChartPanel = ({ children, style, title, className }: ChartPanelIProps) => 
 
   return (
     <div className={`${styles.chart} ${className}`} style={style}>
-
       {title && <div className={styles.chart_title}>{title}</div>}
-
 
       <div>{children}</div>
 

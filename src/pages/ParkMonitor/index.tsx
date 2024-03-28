@@ -1,7 +1,7 @@
 /**
  * 园区监控
  */
-import React from 'react';
+import React, { useState } from 'react';
 import { Tabs, Col, Row } from 'antd';
 import ChartPanel from '@/components/ChartPanel'
 
@@ -16,10 +16,21 @@ import { deviceStreamApi } from '@/services/system';
 
 const parkMonitor = () => {
 
-  const [videoUrl, setVideoUrl] = React.useState<string[]>([])
+  const [videoUrl, setVideoUrl] = useState<string[]>([])
+  const [rightList, setRightList] = useState<{
+    name: string
+    url: string
+  }[]>([])
 
   const handleSetVideoUrl = (url: string[]) => {
     setVideoUrl(url)
+  }
+
+  const handleSetRightList = (obj: {
+    name: string
+  }) => {
+    const list = [...rightList]
+    setRightList(list.concat([obj]))
   }
 
   return (
@@ -37,7 +48,7 @@ const parkMonitor = () => {
                 {
                   key: '1',
                   label: '实时监控',
-                  children: <RealTimeMonitorCom videoUrlList={videoUrl} />,
+                  children: <RealTimeMonitorCom videoUrlList={videoUrl} rightList={rightList} setRightList={handleSetRightList} />,
                 },
                 {
                   key: '2',
@@ -51,8 +62,23 @@ const parkMonitor = () => {
 
           {/* 右边 */}
           <Col span={6}>
-            <ChartPanel title='AI信息' style={{ height: '80vh' }}>
-              <div className={styles.h_right}></div>
+            <ChartPanel title='视频截图' style={{ height: '80vh' }}>
+              <div className={styles.rightList} style={{
+                height: '70vh', overflow: 'auto',
+              }}>
+                {
+                  rightList.map((item, index) => {
+                    return <div key={index} className={styles.rightItem} style={{
+                      marginBottom: '10px'
+                    }}>
+                      <img src={item.url} width={50} height={50} style={{
+                        marginRight: '10px'
+                      }} />
+                      <span>{item.name}</span>
+                    </div>
+                  })
+                }
+              </div>
             </ChartPanel>
           </Col>
         </Row>

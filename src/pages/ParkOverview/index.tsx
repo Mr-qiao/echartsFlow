@@ -1,18 +1,20 @@
 /**
  * 园区概况
  */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import ReactEcharts from 'echarts-for-react';
 import ChartPanel from '@/components/ChartPanel'
+import Camera from '@/assets/img/camera.png'
 import { Row, Col, Tooltip } from 'antd';
+import start from '@/assets/img/start.png'
 
 import Layouts from '@/components/layouts';
 
 import styles from './index.less';
 
-import { getDeviceListApi, getParkListApi } from '@/services/system';
+import { deviceStreamApi, getDeviceListApi, getParkListApi } from '@/services/system';
 import { connect } from '@umijs/max';
-import { EnvironmentOutlined } from '@ant-design/icons';
+import TooltipItem from './tooltipItem';
 
 
 // 车辆信息
@@ -55,7 +57,14 @@ let diverOption = {
 const parkOverview = (props) => {
   const { searchCity, dispatch } = props;
   const [imgUrl, setImgUrl] = useState('')
-  const [translateList, setTranslateList] = useState([])
+  const [translateList, setTranslateList] = useState<{
+    id: string,
+    deviceId: string
+    name: string
+    positionX: number
+    positionY: number
+  }[]>([])
+
 
   const getParkList = async () => {
     const res = await getParkListApi();
@@ -165,18 +174,26 @@ const parkOverview = (props) => {
                 position: 'relative',
                 padding: 0,
               }}>
-                <img src={imgUrl} alt="" style={{
+                <img src={imgUrl} id="img_size" alt="" style={{
                   width: '100%'
                 }} />
                 {
                   translateList.map(item => {
-                    return <Tooltip key={item.id} placement="topLeft" title={item.name}>
-                      <EnvironmentOutlined style={{
-                        position: 'absolute',
-                        zIndex: 999,
-                        left: `${item.lng}px`,
-                        top: `${item.lat}px`,
-                      }} />
+                    const urlNode = document.getElementById('img_size') as HTMLElement
+                    const urlNodeClient = urlNode.getBoundingClientRect()
+                    return <Tooltip destroyTooltipOnHide={true} key={item.id} placement="topLeft" title={
+                      <TooltipItem id={item.deviceId} />
+                    }>
+                      <img src={Camera} alt=''
+                        style={{
+                          position: 'absolute',
+                          zIndex: 999,
+                          width: '20px',
+                          height: '20px',
+                          left: `${item.positionX * urlNodeClient?.width}px`,
+                          top: `${item.positionX * urlNodeClient?.height}px`,
+                        }}
+                      />
                     </Tooltip>
                   })
                 }

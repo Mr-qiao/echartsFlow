@@ -54,21 +54,21 @@ const Device: React.FC = () => {
       dataIndex: 'lng',
       hideInSearch: true,
     },
-    {
-      title: '设备状态',
-      dataIndex: 'status',
-      hideInSearch: true,
-    },
-    {
-      title: '在线状态',
-      dataIndex: 'onlineStatus',
-      hideInSearch: true,
-    },
-    {
-      title: '录像状态',
-      dataIndex: 'recordStatus',
-      hideInSearch: true,
-    },
+    // {
+    //   title: '设备状态',
+    //   dataIndex: 'status',
+    //   hideInSearch: true,
+    // },
+    // {
+    //   title: '在线状态',
+    //   dataIndex: 'onlineStatus',
+    //   hideInSearch: true,
+    // },
+    // {
+    //   title: '录像状态',
+    //   dataIndex: 'recordStatus',
+    //   hideInSearch: true,
+    // },
 
     {
       title: '设备更新时间',
@@ -82,19 +82,19 @@ const Device: React.FC = () => {
     },
 
     {
-      title: '设备状态文本描述',
+      title: '设备状态',
       dataIndex: 'statusText',
       hideInSearch: true,
     },
 
     {
-      title: '设备在线状态文本描述',
+      title: '设备在线状态',
       dataIndex: 'onlineStatusText',
       hideInSearch: true,
     },
 
     {
-      title: '设备录像状态文本描述',
+      title: '设备录像状态',
       dataIndex: 'recordStatusText',
       hideInSearch: true,
     },

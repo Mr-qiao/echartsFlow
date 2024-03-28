@@ -28,12 +28,12 @@ const nationalOverview = (props) => {
   const init = (data: any) => {
     // init map
     mapRef.current = new AMap.Map("chainMap", {
-      zoom: 4.5,
+      zoom: 5,
       resizeEnable: true,
       center: [120.19, 30.26], // 杭州 余杭
       viewMode: '3D',//使用3D视图
       skyColor: '#00163e',
-      mapStyle: 'amap://styles/darkblue'
+      mapStyle: 'amap://styles/blue'
     });
 
     // 全国
@@ -107,7 +107,7 @@ const nationalOverview = (props) => {
       const feat = breath.queryFeature(e.pixel.toArray())
       infoWindow = new AMap.InfoWindow({
         content: `<div>
-          <p>姓名：${feat?.properties?.cityName}
+          <p>名称：${feat?.properties?.cityName}
           </p>
 
           <p>设备数量：${feat?.properties?.deviceNum}

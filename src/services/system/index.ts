@@ -14,6 +14,35 @@ export const createUserApi = (body: any) => {
   });
 }
 
+/**
+ * 上传文件
+ * @param body 
+ * @returns 
+ */
+export const fileUploadApi = (file: any) => {
+  const formData = new FormData();
+  formData.set('file', file);
+  return request('/file/upload', {
+    method: 'POST',
+    date: formData,
+    headers: {
+      'content-type': 'application/x-www-form-urlencoded;charset=UTF-8',
+    },
+  });
+}
+
+/**
+ * 更改用户状态
+ * @param body 
+ * @returns 
+ */
+export const changeUserStatusApi = (id: string) => {
+  return request('/user/changeUserStatus', {
+    method: 'POST',
+    params: { uid: id },
+  });
+}
+
 
 /**
  * 用户列表
@@ -38,6 +67,8 @@ export const getUserPageApi = (data?: any) => {
     params: data,
   });
 }
+
+
 
 /**
  * 删除用户

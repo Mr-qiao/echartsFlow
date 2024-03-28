@@ -95,7 +95,7 @@ export default function () {
             color: '#fff',
             marginRight: '10px'
           }}>
-            {userInfo.uname}
+            {userInfo?.uname ?? ''}
           </span>
           <Avatar
             style={{

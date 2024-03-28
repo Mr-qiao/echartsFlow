@@ -1,19 +1,16 @@
 /**
  * 实时监控
  */
-
 import React, { useState, useEffect, useRef, RefObject } from 'react';
 import { Button } from 'antd';
 
-import recordScreen from '@/assets/img/recordScreen.png'
-import screenshot from '@/assets/img/screenshot.png'
 import close from '@/assets/img/close.png'
 
-import { ExpandOutlined, AppstoreOutlined, TableOutlined, BorderOutlined } from '@ant-design/icons';
+import { AppstoreOutlined, TableOutlined, BorderOutlined } from '@ant-design/icons';
 import { cx } from '@emotion/css';
 
 import styles from '../index.less';
-import { VideoPlay } from '../videoPlay';
+import { VideoPlay } from '@/components/videoPlay';
 import { deviceStreamApi } from '@/services/system';
 
 const buttonList = [{
@@ -29,11 +26,18 @@ const buttonList = [{
 
 type Props = {
   videoUrlList: string[]
+  rightList: {
+    name: string
+    url: string
+  }[]
+  setRightList: (obj: {
+    name: string
+    url: string
+  }) => void
 }
 const RealTimeMonitorCom = (props: Props) => {
   const { videoUrlList } = props;
-
-  const [currentIndex, setCurrentIndex] = useState(1)
+  const [currentIndex, setCurrentIndex] = useState(4)
   const [playVideoList, setPlayVideoList] = useState<{
     id: string,
     streamUrl: string
@@ -53,7 +57,6 @@ const RealTimeMonitorCom = (props: Props) => {
       }])
       return;
     };
-    const arr = []
     Promise.all(
       videoIdList.map((id) => {
         return deviceStreamApi(id, {
@@ -80,7 +83,6 @@ const RealTimeMonitorCom = (props: Props) => {
     }
     setCurrentIndex(idx);
   }
-  let recorder
 
   const handleClose = (id) => () => {
     setPlayVideoList((origin) => {
@@ -94,52 +96,10 @@ const RealTimeMonitorCom = (props: Props) => {
     })
   }
 
-  const handleStart = () => {
-    navigator.mediaDevices.getDisplayMedia({
-      video: true,
-      audio: true
-    }).then(stream => {
-      recorder = new MediaRecorder(stream);
-      let data = [];
-      recorder.ondataavailable = (e) => {
-        data.push(e.data as never)
-      }
-      recorder.onstop = () => {
-        stream.getTracks().forEach(track => track.stop());
-        let blob = new Blob(data, { type: 'video/mp4' });
-        let link = document.createElement('a');
-        link.href = URL.createObjectURL(blob); //创建下载的链接
-        link.download = new Date().getTime() + '.mp4'; //下载后文件名
-        document.body.appendChild(link);
-        link.click()
-        URL.revokeObjectURL(link.href); // 释放通过URL.createObjectURL()创建的URL
-        link.remove()
-      }
-      recorder.start();
-    }).catch(err => {
-      console.log(err)
-    })
-  }
-
-  const handleStop = () => {
-    recorder.stop();
-  }
-
-  const handleRecord = (id: string) => () => {
-    let video = document.getElementById(`video_render_${id}`) as any;
-    const canvas = document.createElement('canvas');
-    let ctx = canvas.getContext('2d');
-    let url = '';
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    console.log(ctx, video.width)
-    ctx.drawImage(video, 0, 0);
-    url = canvas.toDataURL('image/jpg');
-    const a = document.createElement('a');
-    const event = new MouseEvent('click');
-    a.download = 'screen_shot';
-    a.href = url;
-    a.dispatchEvent(event);
+  const handleDoubleClick = (id: string) => () => {
+    if (!id) return
+    setCurrentIndex(1)
+    handleFullScreen([id])
   }
 
 
@@ -176,7 +136,7 @@ const RealTimeMonitorCom = (props: Props) => {
             {
               buttonList.map((item, i) => (
                 <Button style={{ marginRight: 10 }}
-                  className={currentIndex === item.id ? styles.active : null}
+                  className={currentIndex === item.id ? styles.active : ''}
                   key={item.id}
                   onClick={() => handleIndex(item.id)}
                   icon={item.icon}>
@@ -184,26 +144,31 @@ const RealTimeMonitorCom = (props: Props) => {
               ))
             }
           </div>
-          <Button icon={<ExpandOutlined />} style={{ marginRight: 10 }} onClick={() => setMaxView(true)}></Button>
-          {/* <Button style={{ marginRight: 10 }} > 录屏</Button>
-          <Button onClick={handleStop}>停止录屏</Button> */}
+          {/* <Button icon={<ExpandOutlined />} style={{ marginRight: 10 }} onClick={() => setMaxView(true)}></Button> */}
         </div>
       </div>
       {/* 4 / 9 */}
       <div className={`${styles.videogrid_wrapper} ${maxView ? styles.fullscreen : null}`}>
         {
           <div
+            style={{
+              marginBottom: '8px',
+            }}
             className={cx(styles.videogrid, {
               [styles.videogrid_9]: currentIndex === 9,
               [styles.videogrid_4]: currentIndex === 4,
             })}
             id="maxView">
             {
-              playVideoList.map(item => {
+              Array.from({ length: currentIndex }).map((_, index) => {
+                const item = playVideoList[index] || {
+                  id: '',
+                  streamUrl: ''
+                };
                 return (
-                  <div className={styles.vgw_player_wrapper} key={item.id}>
+                  <div className={styles.vgw_player_wrapper} key={item.id || index}>
                     <div style={{
-                      backgroundColor: 'rgba(255, 255, 255, 0.87)',
+                      border: '1px solid #e8e8e8',
                       color: 'red',
                       width: '100%',
                       aspectRatio: 'auto 16 / 9',
@@ -211,65 +176,26 @@ const RealTimeMonitorCom = (props: Props) => {
                       height: '0px',
                       paddingTop: '56.25%',
                       position: 'relative',
-                    }}>
-                      <img src={close} alt=''
-                        onClick={handleClose(item.id)}
-                        style={{
-                          width: '30px',
-                          height: '30px',
-                          position: 'absolute',
-                          // background: '#000',
-                          zIndex: 999,
-                          top: '0px',
-                          right: 0,
-                        }}
+                    }}
+                      onDoubleClick={handleDoubleClick(item.id)}
+                    >
+                      {item.id &&
+                        <img src={close} alt=''
+                          className={cx(styles.close)}
+                          onClick={handleClose(item.id)}
+                          style={{
+                            width: '20px',
+                            display: 'none',
+                            height: '20px',
+                            position: 'absolute',
+                            zIndex: 999,
+                            top: '0px',
+                            right: 0,
+                          }}
+                        />
+                      }
+                      <VideoPlay playerUrl={item.streamUrl} id={item.id} key={item.id} {...props}
                       />
-                      <VideoPlay playerUrl={item.streamUrl} id={item.id} key={item.id}
-                      />
-                      <div
-                        style={{
-                          width: '100%',
-                          height: '30px',
-                          position: 'absolute',
-                          // background: '#000',
-                          zIndex: 999,
-                          bottom: '14px',
-                          left: 0,
-                        }}
-                      >
-                        {currentIndex === 1 &&
-                          <div style={{
-                            display: 'flex'
-                          }}>
-                            <img
-                              style={{
-                                width: '30px',
-                                height: '30px',
-                                marginRight: '10px'
-                              }}
-                              onClick={handleStart}
-                              src={recordScreen} alt="" />
-                            <div
-                              onClick={handleRecord(item.id)}
-                              style={{
-                                width: '30px',
-                                height: '30px',
-                                borderRadius: '50%',
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                background: '#fff'
-                              }}>
-                              <img src={screenshot}
-                                style={{
-                                  width: '20px',
-                                  height: '20px',
-                                }}
-                                alt='' />
-                            </div>
-                          </div>
-                        }
-                      </div>
                     </div>
                   </div>
                 )

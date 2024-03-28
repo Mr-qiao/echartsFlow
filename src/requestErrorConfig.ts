@@ -83,7 +83,7 @@ export const errorConfig: RequestConfig = {
   // 响应拦截器
   responseInterceptors: [
     (response: any) => {
-      if (response.data.code === 1002) {
+      if (response.data.code === 1002 || response.data.code === 1001) {
         navigateToLogin();
       }
       // const { data } = response as unknown;

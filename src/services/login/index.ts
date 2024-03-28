@@ -15,7 +15,6 @@ export const login = (body: any, options?: any) => {
   const formData = new FormData();
   formData.set('uname', body.uname);
   formData.set('passwd', body.passwd);
-
   return maxRequest(`/user/login`, {
     method: 'POST',
     data: formData,

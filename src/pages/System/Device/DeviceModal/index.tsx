@@ -3,7 +3,9 @@
  */
 import React, { useEffect, useState } from 'react';
 import { Modal, Form, Input, Select, ModalProps, message } from 'antd';
-import { createDevice, getDeviceListApi, getParkListApi, updateDevice } from '@/services/system'
+import { createDevice, getParkListApi, updateDevice } from '@/services/system'
+import dian from '@/assets/img/dian.jpg'
+import { css, cx } from '@emotion/css';
 const { TextArea } = Input;
 
 type AddModalIProps = ModalProps & {
@@ -12,7 +14,18 @@ type AddModalIProps = ModalProps & {
 
 const DeviceModal: React.FC<AddModalIProps> = ({ onOk, record, ...restProps }) => {
   const [parkList, setParkList] = useState([])
-  const [deviceList, setDeviceList] = useState([])
+  const [url, setUrl] = useState('')
+  // 坐标
+  const [coordinate, setCoordinate] = useState({
+    left: 0,
+    top: 0
+  })
+
+  // 坐标
+  const [viewCoordinate, setViewCoordinate] = useState({
+    left: 0,
+    top: 0
+  })
   const [form] = Form.useForm();
   // 用户提交操作
   const handleOk = async (e: any) => {
@@ -28,14 +41,30 @@ const DeviceModal: React.FC<AddModalIProps> = ({ onOk, record, ...restProps }) =
     }
   };
 
+  const handleImgClick = (event) => {
+    const urlNode = document.getElementById('url') as HTMLElement
+    const urlNodeClient = urlNode.getBoundingClientRect()
+    let x = (event.clientX - urlNodeClient.left) / urlNodeClient.width; //按比例获取 
+    let y = (event.clientY - urlNodeClient.top) / urlNodeClient.height;
+    setViewCoordinate({
+      left: event.clientX - urlNodeClient.left,
+      top: event.clientY - urlNodeClient.top
+    })
+    form.setFieldsValue({
+      positionX: x.toFixed(3),
+      positionY: y.toFixed(3)
+    })
+  }
+
+
   const getList = async () => {
     const res = await getParkListApi();
     setParkList(res.data)
   }
 
   const handleParkChange = async (value) => {
-    const res = await getDeviceListApi(value);
-    setDeviceList(res.data)
+    const img = parkList.find(item => item.id === value)?.imageUrl || ''
+    setUrl(img)
   }
 
   useEffect(() => {
@@ -73,9 +102,7 @@ const DeviceModal: React.FC<AddModalIProps> = ({ onOk, record, ...restProps }) =
             message: '请选择设备ID',
           },
         ]}>
-          <Select placeholder='请选择'>
-            {deviceList.map(item => <Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>)}
-          </Select>
+          <Input placeholder='请输入设备 ID' />
         </Form.Item>
         <Form.Item
           label="设备名称"
@@ -116,31 +143,21 @@ const DeviceModal: React.FC<AddModalIProps> = ({ onOk, record, ...restProps }) =
           <Input placeholder='请输入距离图片上边的距离' />
         </Form.Item>
 
-        <Form.Item
-          label="设备维度"
-          name="lat"
-          rules={[
-            {
-              required: true,
-              message: '请输入设备维度',
-            },
-          ]}
-        >
-          <Input placeholder='请输入设备维度' />
-        </Form.Item>
-
-        <Form.Item
-          label="设备经度"
-          name="lng"
-          rules={[
-            {
-              required: true,
-              message: '请输入设备经度',
-            },
-          ]}
-        >
-          <Input placeholder='请输入设备经度' />
-        </Form.Item>
+        {
+          url && <div style={{
+            position: 'relative',
+            marginBottom: 20
+          }}>
+            <img id='url' onClick={handleImgClick} width='100%' height={240} src={`http://121.40.237.64:16816${url}`} />
+            <img src={dian} alt='' className={cx(css`
+            width: 16px;
+            height: 16px;
+              position: absolute;
+              left:${viewCoordinate.left - 8}px;
+              top: ${viewCoordinate.top - 16}px;
+            `)} />
+          </div>
+        }
 
         <Form.Item
           label="设备类型"
@@ -163,17 +180,11 @@ const DeviceModal: React.FC<AddModalIProps> = ({ onOk, record, ...restProps }) =
         <Form.Item
           label="备注"
           name="remarks"
-          rules={[
-            {
-              required: true,
-              message: '请输入备注内容',
-            },
-          ]}
         >
           <TextArea showCount maxLength={500} rows={5} placeholder="请输入内容" />
         </Form.Item>
       </Form>
-    </Modal>
+    </Modal >
   )
 }
 
